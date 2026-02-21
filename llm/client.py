@@ -55,14 +55,14 @@ class OllamaClient:
 
     def list_models(self) -> List[str]:
         """Return a list of available models from the Ollama server."""
-        url = f"{self.base_url}/api/tags"
+        url = f"{self.base_url}/api/v1/models"
         try:
             response = requests.get(url, timeout=5)
             if not response.ok:
                 return []
             data = response.json()
             models = data.get("models", [])
-            return [model.get("name", "") for model in models if model.get("name")]
+            return [model.get("key", "") for model in models if model.get("key")]
         except requests.exceptions.RequestException:
             return []
         except ValueError:
