@@ -11,7 +11,7 @@ app = FastAPI(title="Java Design Pattern Analyzer")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://127.0.0.1:5500"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
