@@ -69,11 +69,12 @@ def generate_code(request: GenerateRequest):
         raise HTTPException(status_code=503, detail="Ollama server is not running.")
 
     prompt = prompt_service.build_generate_prompt(request.pattern, request.description)
-    generated_code = ollama_client.generate(prompt, request.model)
+    raw = ollama_client.generate(prompt, request.model)
+    parsed = prompt_service.parse_generated_files(raw)
 
     return GenerateResponse(
         model_used=request.model,
         pattern=request.pattern,
         description=request.description,
-        generated_code=generated_code,
+        files=[{"filename": f["filename"], "content": f["content"]} for f in parsed],
     )

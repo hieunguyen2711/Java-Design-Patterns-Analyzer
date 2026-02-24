@@ -39,15 +39,42 @@ class PromptService:
         lines: List[str] = [
             "You are a senior Java software engineer and design pattern expert.",
             "Generate clean, well-structured Java code that implements the design pattern requested by the user.",
-            "Include all necessary classes and interfaces, with comments explaining each role in the pattern.",
-            "Do not include explanations outside the code — use inline Javadoc comments only.",
+            "IMPORTANT: Output each class or interface in its own separate file using EXACTLY this format:",
+            "",
+            "### FILE: ClassName.java",
+            "```java",
+            "// code here",
+            "```",
+            "",
+            "Rules:",
+            "- One class or interface per file.",
+            "- The filename must match the public class/interface name exactly.",
+            "- Include Javadoc comments explaining each role in the pattern.",
+            "- Do not include any explanation outside the file blocks.",
             "",
             f"Design Pattern: {pattern}",
             f"User Description: {description}",
-            "",
-            "Provide the full Java implementation below:",
         ]
         return "\n".join(lines)
+
+    def parse_generated_files(self, raw: str) -> List[Dict[str, str]]:
+        """Parse LLM output into a list of {filename, content} dicts."""
+        import re
+        files: List[Dict[str, str]] = []
+        # Match ### FILE: FileName.java followed by optional ```java ... ``` block
+        pattern = re.compile(
+            r"###\s*FILE:\s*(\S+\.java)\s*\n(?:```java\s*\n)?(.*?)(?:```|(?=###\s*FILE:|\Z))",
+            re.DOTALL,
+        )
+        for match in pattern.finditer(raw):
+            filename = match.group(1).strip()
+            content = match.group(2).strip()
+            if filename and content:
+                files.append({"filename": filename, "content": content})
+        # Fallback: return the whole output as a single file if parsing finds nothing
+        if not files:
+            files.append({"filename": "GeneratedCode.java", "content": raw.strip()})
+        return files
 
         """Construct a prompt to merge partial analyses into a final report."""
         lines: List[str] = [self.SYSTEM_PROMPT]

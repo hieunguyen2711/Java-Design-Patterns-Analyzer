@@ -15,11 +15,18 @@ class AnalysisResponse(BaseModel):
     error: Optional[str] = None
 
 
+class GeneratedFile(BaseModel):
+    """A single generated Java source file."""
+
+    filename: str
+    content: str
+
+
 class GenerateResponse(BaseModel):
     """Structured response containing generated Java code for a design pattern."""
 
     model_used: str
     pattern: str
     description: str
-    generated_code: str
+    files: List[GeneratedFile]
     error: Optional[str] = None
