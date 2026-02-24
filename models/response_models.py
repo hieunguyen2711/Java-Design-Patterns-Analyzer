@@ -13,3 +13,13 @@ class AnalysisResponse(BaseModel):
     raw_analysis: str
     chunks_used: int
     error: Optional[str] = None
+
+
+class GenerateResponse(BaseModel):
+    """Structured response containing generated Java code for a design pattern."""
+
+    model_used: str
+    pattern: str
+    description: str
+    generated_code: str
+    error: Optional[str] = None
