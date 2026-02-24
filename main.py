@@ -1,7 +1,14 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 from routes.analyze import router as analyze_router
 from routes.models import router as models_router
 from llm.client import OllamaClient

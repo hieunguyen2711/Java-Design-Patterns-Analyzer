@@ -1,9 +1,12 @@
+import logging
 from typing import List
 
 import requests
 from fastapi import HTTPException
 
 from config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class OllamaClient:
@@ -23,15 +26,24 @@ class OllamaClient:
             "temperature": settings.LLM_TEMPERATURE,
             "max_tokens": settings.NUM_CTX,
         }
+        logger.info("Sending request to LM Studio: model=%s, prompt_chars=%d", model, len(prompt))
         try:
             response = requests.post(url, json=payload, timeout=settings.LLM_TIMEOUT)
+        except requests.exceptions.Timeout as exc:
+            logger.error("LM Studio request timed out after %ds (model=%s, prompt_chars=%d)", settings.LLM_TIMEOUT, model, len(prompt))
+            raise HTTPException(
+                status_code=502,
+                detail=f"LM Studio timed out after {settings.LLM_TIMEOUT}s. Try a smaller file set or increase LLM_TIMEOUT.",
+            ) from exc
         except requests.exceptions.RequestException as exc:
+            logger.error("LM Studio connection error: %s", exc)
             raise HTTPException(
                 status_code=502,
                 detail="LM Studio is unreachable. Please ensure the server is running.",
             ) from exc
 
         if not response.ok:
+            logger.error("LM Studio returned HTTP %d: %s", response.status_code, response.text[:500])
             raise HTTPException(
                 status_code=502,
                 detail=f"LM Studio returned status {response.status_code}: {response.text}",

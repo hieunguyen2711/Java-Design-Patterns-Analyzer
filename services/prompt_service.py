@@ -1,5 +1,6 @@
 from typing import Dict, List
 
+from config import settings
 
 class PromptService:
     """Build prompts for chunked and merged LLM interactions."""
@@ -43,9 +44,15 @@ class PromptService:
         lines: List[str] = [self.SYSTEM_PROMPT]
         lines.append("Merge the following partial analyses into a single cohesive report.")
 
+        budget = settings.MAX_MERGE_CHARS
+        per_analysis = max(500, budget // max(len(partial_analyses), 1))
+
         for idx, analysis in enumerate(partial_analyses, start=1):
+            truncated = analysis[:per_analysis]
+            if len(analysis) > per_analysis:
+                truncated += "\n[TRUNCATED]"
             lines.append(f"### PARTIAL ANALYSIS {idx}")
-            lines.append(analysis)
+            lines.append(truncated)
             lines.append("-----")
 
         lines.append(
