@@ -76,6 +76,7 @@ class PromptService:
             files.append({"filename": "GeneratedCode.java", "content": raw.strip()})
         return files
 
+    def build_merge_prompt(self, partial_analyses):
         """Construct a prompt to merge partial analyses into a final report."""
         lines: List[str] = [self.SYSTEM_PROMPT]
         lines.append("Merge the following partial analyses into a single cohesive report.")
