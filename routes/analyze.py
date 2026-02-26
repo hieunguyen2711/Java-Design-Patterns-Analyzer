@@ -4,8 +4,8 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from config import settings
 from llm.client import OllamaClient
-from models.request_models import GenerateRequest
-from models.response_models import AnalysisResponse, GenerateResponse
+from models.request_models import FollowUpRequest, GenerateRequest
+from models.response_models import AnalysisResponse, FollowUpResponse, GenerateResponse
 from services.analysis_service import AnalysisService
 from services.file_service import FileService
 from services.prompt_service import PromptService
@@ -78,3 +78,20 @@ def generate_code(request: GenerateRequest):
         description=request.description,
         files=[{"filename": f["filename"], "content": f["content"]} for f in parsed],
     )
+
+
+@router.post("/followup", response_model=FollowUpResponse)
+def followup(request: FollowUpRequest):
+    """Ask a follow-up question grounded in a prior design pattern analysis."""
+    if not ollama_client.is_running():
+        raise HTTPException(status_code=503, detail="Ollama server is not running.")
+
+    prompt = prompt_service.build_followup_prompt(request.analysis, request.question)
+    answer = ollama_client.generate(prompt, request.model)
+
+    return FollowUpResponse(
+        model_used=request.model,
+        question=request.question,
+        answer=answer,
+    )
+

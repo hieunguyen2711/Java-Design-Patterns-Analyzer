@@ -19,3 +19,11 @@ class GenerateRequest(BaseModel):
     pattern: str
     description: str
     model: str = "qwen3-coder-30b-a3b-instruct"
+
+
+class FollowUpRequest(BaseModel):
+    """Request model for asking a follow-up question about a prior pattern analysis."""
+
+    analysis: str
+    question: str
+    model: str = "qwen3-coder-30b-a3b-instruct"

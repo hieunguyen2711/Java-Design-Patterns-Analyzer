@@ -30,3 +30,12 @@ class GenerateResponse(BaseModel):
     description: str
     files: List[GeneratedFile]
     error: Optional[str] = None
+
+
+class FollowUpResponse(BaseModel):
+    """Structured response for a follow-up question about a pattern analysis."""
+
+    model_used: str
+    question: str
+    answer: str
+    error: Optional[str] = None

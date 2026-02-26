@@ -97,3 +97,25 @@ class PromptService:
             "Return a clear final design pattern analysis with evidence and file paths."
         )
         return "\n".join(lines)
+    
+    def build_followup_prompt(self, analysis: str, question: str) -> str:
+        """Construct a prompt for a follow-up question grounded in a prior analysis."""
+        budget = settings.MAX_MERGE_CHARS
+        truncated_analysis = analysis[:budget]
+        if len(analysis) > budget:
+            truncated_analysis += "\n[ANALYSIS TRUNCATED]"
+        lines: List[str] = [
+            "You are a senior Java software architect and design pattern expert.",
+            "The following is a prior design pattern analysis of a Java project:",
+            "",
+            "### PRIOR ANALYSIS",
+            truncated_analysis,
+            "-----",
+            "",
+            "Based on the analysis above, answer the user's question clearly and concisely.",
+            "Cite specific class names, interfaces, or file paths from the analysis where relevant.",
+            "",
+            f"User Question: {question}",
+        ]
+        return "\n".join(lines)
+
