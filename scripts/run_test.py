@@ -199,17 +199,18 @@ PATTERN_ALIASES: dict[str, list[str]] = {
 }
 
 
-def is_match(zipped_stem: str, raw_analysis: str) -> bool:
+def is_match(zipped_stem: str, formatted_repsonse: str) -> bool:
     '''
         This function verifies if the LLM correctly identifies the pattern or not
         It takes in the file name and compare it to the LLM's answer.
     '''
-
-    analysis_lower = raw_analysis.lower()
     aliaes = PATTERN_ALIASES.get(zipped_stem) # Get the list from the key name
     if aliaes:
-        return any(alias in analysis_lower for alias in aliaes)
-    return re.sub(r"[-_]", " ", zipped_stem).lower() in analysis_lower #Fall back if the name differs.
+        return any(alias in formatted_repsonse for alias in aliaes)
+    return re.sub(r"[-_]", " ", zipped_stem).lower() in formatted_repsonse #Fall back if the name differs.
+
+def format_raw_response(raw_res: str) -> str:
+    pass
 
 def main():
     zip_files = sorted(ZIPPED_DIR.glob("*.zip"))
@@ -231,15 +232,30 @@ def main():
                     timeout=360,
                 )
 
-                if not response.ok:
-                    print(f"HTTP {response.status_code}")
-                    results.append({"pattern": stem, 
-                                    "llm_answer": f"ERROR: HTTP {response.status_code}", 
-                                    "status" : "Not Pass!"})
-                    continue
+            if not response.ok:
+                print(f"HTTP {response.status_code}")
+                results.append({"pattern": stem, 
+                                "llm_answer": f"ERROR: HTTP {response.status_code}", 
+                                "status" : "Not Pass!"})
+                continue
+            raw_analysis = response.json().get("raw_analysis", "")
+            formatted_repsonse = format_raw_response(raw_analysis)
+            passed = is_match(stem, formatted_repsonse)
+            label = "Pass" if passed else "Not Pass"
+            print(label)
+            results.append({"pattern": stem, "llm_answer":formatted_repsonse, "Status": label})
+
                 
         except requests.exceptions.Timeout:
             print("TIMEOUT, TRY AGAIN LATER!")
+        except Exception as e:
+            print("Error:", e)
+            results.append({"pattern": stem, "llm_answer": f"Error: {e}", "Status": "Not Passed"})
+        
+        time.sleep(1)
+    OUTPUT_FILE.write_text(json.dumps(results, indent=2, ensure_ascii=False))
+    passed = sum(1 for r in results if r["result"] == "Pass")
+    print(f"\nDone. {passed}/{len(results)} passed. Results -> {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
