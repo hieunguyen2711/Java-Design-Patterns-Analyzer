@@ -209,8 +209,28 @@ def is_match(zipped_stem: str, formatted_repsonse: str) -> bool:
         return any(alias in formatted_repsonse for alias in aliaes)
     return re.sub(r"[-_]", " ", zipped_stem).lower() in formatted_repsonse #Fall back if the name differs.
 
-def format_raw_response(raw_res: str) -> str:
-    pass
+def format_raw_response(raw_analysis: str) -> str:
+    """
+    Extracts just the design pattern name from the LLM's raw analysis.
+    Looks for lines like '**Pattern Identified:** Abstract Factory'
+    Falls back to returning the first non-empty line if no match is found.
+    """
+    # Try to match "Pattern Identified: <name>" (with or without markdown bold)
+    match = re.search(
+        r"\*{0,2}Pattern(?:\s+Identified)?\*{0,2}[:：]\s*\*{0,2}(.+?)\*{0,2}$",
+        raw_analysis,
+        re.IGNORECASE | re.MULTILINE,
+    )
+    if match:
+        return match.group(1).strip()
+
+    # Fallback: return the first non-empty line
+    for line in raw_analysis.splitlines():
+        stripped = line.strip("*# ").strip()
+        if stripped:
+            return stripped
+
+    return raw_analysis.strip()
 
 def main():
     zip_files = sorted(ZIPPED_DIR.glob("*.zip"))
