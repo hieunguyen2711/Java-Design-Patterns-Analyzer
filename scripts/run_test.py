@@ -216,6 +216,31 @@ def main():
     if not zip_files:
         print("No zip files found in", ZIPPED_DIR)
         return
+    
+    results = [] 
+    for idx, zip_path in enumerate(zip_files, start=1):
+        stem = zip_path.stem # Get the names of the file without the extension
+        print(f"[{idx}/{len(zip_files)}] {stem} ...", end=" ", flush=True)
+
+        try:
+            with open(zip_path, "rb") as f: #Try to open the path in the "read binary" mode
+                response = requests.post(
+                    API_URL, 
+                    files={"file": (zip_path.name, f, "application/zip")},
+                    data={"model": MODEL},
+                    timeout=360,
+                )
+
+                if not response.ok:
+                    print(f"HTTP {response.status_code}")
+                    results.append({"pattern": stem, 
+                                    "llm_answer": f"ERROR: HTTP {response.status_code}", 
+                                    "status" : "Not Pass!"})
+                    continue
+                
+        except requests.exceptions.Timeout:
+            print("TIMEOUT, TRY AGAIN LATER!")
+
 
 if __name__ == "__main__":
     main()
