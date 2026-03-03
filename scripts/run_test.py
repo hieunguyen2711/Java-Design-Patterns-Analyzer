@@ -211,3 +211,11 @@ def is_match(zipped_stem: str, raw_analysis: str) -> bool:
         return any(alias in analysis_lower for alias in aliaes)
     return re.sub(r"[-_]", " ", zipped_stem).lower() in analysis_lower #Fall back if the name differs.
 
+def main():
+    zip_files = sorted(ZIPPED_DIR.glob("*.zip"))
+    if not zip_files:
+        print("No zip files found in", ZIPPED_DIR)
+        return
+
+if __name__ == "__main__":
+    main()
