@@ -204,10 +204,11 @@ def is_match(zipped_stem: str, formatted_repsonse: str) -> bool:
         This function verifies if the LLM correctly identifies the pattern or not
         It takes in the file name and compare it to the LLM's answer.
     '''
+    formatted_lower = formatted_repsonse.lower()  # lowercase so comparison is case-insensitive
     aliaes = PATTERN_ALIASES.get(zipped_stem) # Get the list from the key name
     if aliaes:
-        return any(alias in formatted_repsonse for alias in aliaes)
-    return re.sub(r"[-_]", " ", zipped_stem).lower() in formatted_repsonse #Fall back if the name differs.
+        return any(alias in formatted_lower for alias in aliaes)
+    return re.sub(r"[-_]", " ", zipped_stem).lower() in formatted_lower #Fall back if the name differs.
 
 def format_raw_response(raw_analysis: str) -> str:
     """
@@ -268,13 +269,14 @@ def main():
                 
         except requests.exceptions.Timeout:
             print("TIMEOUT, TRY AGAIN LATER!")
+            results.append({"pattern": stem, "llm_answer": "ERROR: Request timed out", "Status": "Not Pass"})
         except Exception as e:
             print("Error:", e)
             results.append({"pattern": stem, "llm_answer": f"Error: {e}", "Status": "Not Passed"})
         
         time.sleep(1)
     OUTPUT_FILE.write_text(json.dumps(results, indent=2, ensure_ascii=False))
-    passed = sum(1 for r in results if r["result"] == "Pass")
+    passed = sum(1 for r in results if r["Status"] == "Pass")
     print(f"\nDone. {passed}/{len(results)} passed. Results -> {OUTPUT_FILE}")
 
 
