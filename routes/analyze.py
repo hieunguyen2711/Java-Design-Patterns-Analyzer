@@ -1,10 +1,14 @@
+import io
+import re
+import zipfile
 from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi.responses import StreamingResponse
 
 from config import settings
 from llm.client import OllamaClient
-from models.request_models import FollowUpRequest, GenerateRequest
+from models.request_models import FollowUpRequest, GenerateRequest, PackageProjectRequest
 from models.response_models import AnalysisResponse, FollowUpResponse, GenerateResponse
 from services.analysis_service import AnalysisService
 from services.file_service import FileService
@@ -93,5 +97,49 @@ def followup(request: FollowUpRequest):
         model_used=request.model,
         question=request.question,
         answer=answer,
+    )
+
+
+@router.post("/package")
+def package_project(request: PackageProjectRequest):
+    """Package generated Java files into a downloadable Maven project zip."""
+    if not request.files:
+        raise HTTPException(status_code=400, detail="No files provided to package.")
+
+    # Build project name from description + pattern, sanitized for use as a folder name
+    raw_name = f"{request.description}-{request.pattern}"
+    project_name = re.sub(r"[^\w\-]+", "-", raw_name).strip("-").lower()
+
+    # Build the zip in memory
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+        # Add each Java file under src/main/java/
+        for f in request.files:
+            path_in_zip = f"{project_name}/src/main/java/{f.filename}"
+            zf.writestr(path_in_zip, f.content)
+
+        # Add a minimal pom.xml so the project opens in any Java IDE
+        pom = f"""<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>{project_name}</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+</project>
+"""
+        zf.writestr(f"{project_name}/pom.xml", pom)
+
+    buffer.seek(0)
+    filename = f"{project_name}.zip"
+    return StreamingResponse(
+        buffer,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 

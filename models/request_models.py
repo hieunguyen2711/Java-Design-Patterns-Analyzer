@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 
 
@@ -27,3 +29,18 @@ class FollowUpRequest(BaseModel):
     analysis: str
     question: str
     model: str = "qwen3-coder-30b-a3b-instruct"
+
+
+class GeneratedFileInput(BaseModel):
+    """A single Java file to include in the packaged project."""
+
+    filename: str
+    content: str
+
+
+class PackageProjectRequest(BaseModel):
+    """Request model for packaging generated Java files into a downloadable project zip."""
+
+    pattern: str
+    description: str
+    files: List[GeneratedFileInput]
