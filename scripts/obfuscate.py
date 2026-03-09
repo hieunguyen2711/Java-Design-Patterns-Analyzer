@@ -24,13 +24,22 @@ OBFUSCATED_PACKAGE_DOT = "com.example.project"
 
 
 def build_name_map(java_paths: list[str]) -> dict[str, str]:
-    """Map each original class name (stem) to a generic name like Class1, Class2, ..."""
-    name_map: dict[str, str] = {}
+    """Map each unique class stem to a generic name like Class1, Class2, ...
+    Keyed by stem so the same logical class referenced across files gets the same obfuscated name.
+    When two different files share a stem (rare), the second gets a unique suffix."""
+    name_map: dict[str, str] = {}  # stem -> obfuscated name
+    seen_obfuscated: set[str] = set()
     counter = 1
     for path in java_paths:
-        stem = PurePosixPath(path).stem  # e.g. "AbstractFactory"
+        stem = PurePosixPath(path).stem
         if stem not in name_map:
-            name_map[stem] = f"Class{counter}"
+            candidate = f"Class{counter}"
+            # Guard against unlikely collisions
+            while candidate in seen_obfuscated:
+                counter += 1
+                candidate = f"Class{counter}"
+            name_map[stem] = candidate
+            seen_obfuscated.add(candidate)
             counter += 1
     return name_map
 
@@ -70,14 +79,12 @@ def obfuscate_zip(zip_path: Path, output_dir: Path) -> int:
         return 0
 
     # Detect the original dot-package from the first java file path
-    # e.g. src/main/java/com/iluwatar/abstractfactory/App.java -> com.iluwatar.abstractfactory
     original_package = ""
     for path in java_files:
         parts = PurePosixPath(path).parts
-        # Find "java" segment and take everything after it as the package
         if "java" in parts:
             idx = parts.index("java")
-            package_parts = parts[idx + 1: -1]  # exclude the filename
+            package_parts = parts[idx + 1: -1]
             if package_parts:
                 original_package = ".".join(package_parts)
                 break
@@ -85,6 +92,8 @@ def obfuscate_zip(zip_path: Path, output_dir: Path) -> int:
     name_map = build_name_map(java_files)
 
     buffer = io.BytesIO()
+    used_paths: set[str] = set()  # track output paths to avoid duplicates
+
     with zipfile.ZipFile(zip_path, "r") as zf_in, \
          zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as zf_out:
 
@@ -95,14 +104,18 @@ def obfuscate_zip(zip_path: Path, output_dir: Path) -> int:
             original_stem = PurePosixPath(entry).stem
             obfuscated_stem = name_map.get(original_stem, original_stem)
 
-            # Rebuild the path: replace package folder and filename
             parts = PurePosixPath(entry).parts
             if "java" in parts:
                 idx = parts.index("java")
-                prefix = "/".join(parts[:idx + 1])  # e.g. src/main/java  or src/test/java
+                prefix = "/".join(parts[:idx + 1])  # e.g. src/main/java or src/test/java
                 new_path = f"{prefix}/{OBFUSCATED_PACKAGE}/{obfuscated_stem}.java"
             else:
-                new_path = entry  # fallback: keep original path
+                new_path = entry
+
+            # If this output path is already used, skip the duplicate
+            if new_path in used_paths:
+                continue
+            used_paths.add(new_path)
 
             raw = zf_in.read(entry)
             try:
@@ -115,7 +128,7 @@ def obfuscate_zip(zip_path: Path, output_dir: Path) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     out_path = output_dir / zip_path.name
     out_path.write_bytes(buffer.getvalue())
-    return len(java_files)
+    return len(used_paths)
 
 
 def main() -> None:
