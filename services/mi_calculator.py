@@ -194,7 +194,7 @@ def compute_mi(
         cyclomatic_complexity=cc,
         sloc=sloc,
         halstead=halstead,
-        file_path=file_path,
+        file_path=os.path.realpath(file_path) if file_path else file_path,
         class_name=class_name,
     )
 
@@ -220,7 +220,7 @@ def analyze_directory_mi(
     wmc_by_file: dict[str, int] = {}
     if ck_class_data:
         for row in ck_class_data:
-            fpath = os.path.normpath(row.get("file", ""))
+            fpath = os.path.realpath(row.get("file", ""))
             wmc = row.get("wmc", 0)
             if isinstance(wmc, str):
                 try:
@@ -244,7 +244,7 @@ def analyze_directory_mi(
                 logger.warning("Could not read %s: %s", full_path, exc)
                 continue
 
-            norm_path = os.path.normpath(full_path)
+            norm_path = os.path.realpath(full_path)
             cc_override = wmc_by_file.get(norm_path)
 
             results.append(compute_mi(source, full_path, cc_override))

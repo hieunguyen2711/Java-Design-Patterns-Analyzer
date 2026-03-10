@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 def _normalise(path: str) -> str:
-    return os.path.normpath(path)
+    return os.path.realpath(path)
 
 
 def analyze_project(project_dir: str, pattern_name: str = "") -> dict:
@@ -168,22 +168,34 @@ def analyze_project(project_dir: str, pattern_name: str = "") -> dict:
     total_methods = len(method_list)
     total_files = len(mi_results)
 
-    # MI aggregates
-    mi_scores = [c["mi"]["mi_score"] for c in class_analyses if c["mi"]]
+    # MI aggregates — use unique *file-level* MI values only.
+    # CK reports inner/anonymous classes separately but they share the
+    # same file.  Averaging over all CK rows would count a file's MI
+    # multiple times, dragging down the average.
+    file_mi: dict[str, dict] = {}   # norm_path → mi dict (first seen)
+    for c in class_analyses:
+        mi_d = c.get("mi")
+        if not mi_d or mi_d["sloc"] == 0:
+            continue
+        fp = _normalise(c.get("file_path", ""))
+        if fp and fp not in file_mi:
+            file_mi[fp] = mi_d
+
+    unique_mi = list(file_mi.values())
+    mi_scores = [m["mi_score"] for m in unique_mi]
     avg_mi = _avg(mi_scores)
     min_mi = min(mi_scores) if mi_scores else 0.0
     max_mi = max(mi_scores) if mi_scores else 0.0
 
     mi_dist = {"green": 0, "yellow": 0, "red": 0}
-    for c in class_analyses:
-        if c["mi"]:
-            mi_dist[c["mi"]["mi_color"]] = mi_dist.get(c["mi"]["mi_color"], 0) + 1
+    for m in unique_mi:
+        mi_dist[m["mi_color"]] = mi_dist.get(m["mi_color"], 0) + 1
 
-    # Halstead aggregates
-    h_volumes = [c["mi"]["halstead_volume"] for c in class_analyses if c["mi"]]
-    h_diffs = [c["mi"]["halstead"]["difficulty"] for c in class_analyses if c["mi"]]
-    h_bugs = [c["mi"]["halstead"]["estimated_bugs"] for c in class_analyses if c["mi"]]
-    slocs = [c["mi"]["sloc"] for c in class_analyses if c["mi"]]
+    # Halstead aggregates (file-level, deduplicated)
+    h_volumes = [m["halstead_volume"] for m in unique_mi]
+    h_diffs = [m["halstead"]["difficulty"] for m in unique_mi]
+    h_bugs = [m["halstead"]["estimated_bugs"] for m in unique_mi]
+    slocs = [m["sloc"] for m in unique_mi]
 
     # CK aggregates (only if available)
     ck_summary: dict = {}

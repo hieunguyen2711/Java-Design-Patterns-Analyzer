@@ -16,7 +16,10 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-CK_JAR_PATH = os.getenv("CK_JAR_PATH", "/opt/tools/ck.jar")
+CK_JAR_PATH = os.getenv(
+    "CK_JAR_PATH",
+    "/Users/hieunguyen/Documents/Coding Projects/ck/target/ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+)
 
 # ---------------------------------------------------------------------------
 # CK quality thresholds (Filó et al. 2015, NASA SATC)
