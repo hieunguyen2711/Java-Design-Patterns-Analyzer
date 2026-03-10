@@ -7,8 +7,9 @@ from pathlib import Path
 import requests
 
 API_URL = "http://localhost:8000/analyze"
-ZIPPED_DIR = Path("datasets_obfuscated")
-OUTPUT_FILE = Path("obfuscated_results.json")
+ROOT_DIR = Path(__file__).resolve().parent.parent
+ZIPPED_DIR = ROOT_DIR / "datasets_obfuscated"
+OUTPUT_FILE = ROOT_DIR / "obfuscated_results.json"
 MODEL = "qwen3-coder-30b-a3b-instruct"
 
 
