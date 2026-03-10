@@ -23,11 +23,20 @@ from services.halstead import compute_halstead, strip_comments_and_strings, Hals
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
-# MI thresholds (Microsoft / SEI standard)
+# MI thresholds — adjusted for Java file-level analysis.
+#
+# The original Microsoft/SEI thresholds (85 / 65) were designed for
+# *per-method* analysis on C#.  When applied at file level to Java code
+# (which is inherently more verbose — braces, type declarations, access
+# modifiers), the raw MI scores are systematically lower.  The thresholds
+# below are calibrated so that:
+#   • Small / simple classes  (≤ 15 SLOC)  → green  (MI ≥ 65)
+#   • Medium / moderate classes (15–80 SLOC) → yellow (MI 35–64)
+#   • Large / complex classes   (> 80 SLOC)  → red   (MI < 35)
 # ---------------------------------------------------------------------------
 MI_THRESHOLDS = {
-    "high_maintainability":      {"min": 85, "label": "Highly Maintainable",      "color": "green"},
-    "moderate_maintainability":  {"min": 65, "label": "Moderately Maintainable",  "color": "yellow"},
+    "high_maintainability":      {"min": 65, "label": "Highly Maintainable",      "color": "green"},
+    "moderate_maintainability":  {"min": 35, "label": "Moderately Maintainable",  "color": "yellow"},
     "low_maintainability":       {"min": 0,  "label": "Difficult to Maintain",    "color": "red"},
 }
 
@@ -73,12 +82,12 @@ def count_sloc(source: str) -> int:
         stripped = line.strip()
         if not stripped:
             continue
-        # Remove line comment but keep code before it
-        # Be careful not to strip // inside string literals for SLOC.
-        # For SLOC purposes a simple approach is fine — we've already
-        # removed block comments and line-only comments will leave
-        # an empty line after stripping.
         if stripped.startswith('//'):
+            continue
+        # Skip brace-only lines — Java convention places { and } on
+        # their own lines, which inflates physical SLOC relative to
+        # languages like C (where the MI formula was calibrated).
+        if stripped in ('{', '}', '};'):
             continue
         count += 1
     return count
@@ -125,9 +134,9 @@ def compute_cyclomatic_complexity(source: str) -> int:
 
 def _classify_mi(score: float) -> tuple[str, str]:
     """Return ``(label, color)`` for a given MI score."""
-    if score >= 85:
-        return MI_THRESHOLDS["high_maintainability"]["label"], "green"
     if score >= 65:
+        return MI_THRESHOLDS["high_maintainability"]["label"], "green"
+    if score >= 35:
         return MI_THRESHOLDS["moderate_maintainability"]["label"], "yellow"
     return MI_THRESHOLDS["low_maintainability"]["label"], "red"
 

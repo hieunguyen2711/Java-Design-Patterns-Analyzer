@@ -28,7 +28,10 @@ class HalsteadResult:
 
 
 # ---------------------------------------------------------------------------
-# Java operator set — keywords that behave as operators + symbolic operators
+# Java operator set — tokens that represent actual operations.
+# Delimiters (parentheses, braces, semicolons, commas) and structural /
+# declarative keywords are EXCLUDED to avoid inflating the Halstead Volume.
+# This follows the approach used by Radon and similar MI tools.
 # ---------------------------------------------------------------------------
 JAVA_OPERATORS: set[str] = {
     # Arithmetic
@@ -41,17 +44,28 @@ JAVA_OPERATORS: set[str] = {
     '&&', '||', '!',
     # Bitwise
     '&', '|', '^', '~', '<<', '>>', '>>>',
-    # Other symbolic
-    '?', ':', '::', '->', '.', ',', ';',
-    '(', ')', '[', ']', '{', '}',
-    # Keywords that act as operators
-    'new', 'instanceof', 'return', 'throw', 'throws',
-    'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'default',
-    'try', 'catch', 'finally', 'break', 'continue',
-    'class', 'interface', 'extends', 'implements', 'import', 'package',
-    'public', 'private', 'protected', 'static', 'final', 'abstract',
-    'void', 'synchronized', 'volatile', 'transient', 'native', 'strictfp',
-    'assert', 'enum', 'super', 'this',
+    # Ternary & member access
+    '?', ':', '::', '->', '.',
+    # Keyword operators (action / control-flow)
+    'new', 'instanceof', 'return', 'throw',
+    'if', 'else', 'for', 'while', 'do',
+    'switch', 'case', 'default',
+    'try', 'catch', 'finally',
+    'break', 'continue', 'assert',
+}
+
+# Structural / declarative keywords — skipped entirely in Halstead counting
+# (not counted as operators OR operands).  Including these would inflate
+# the token count with Java boilerplate that has no bearing on algorithmic
+# complexity.
+JAVA_STRUCTURAL: set[str] = {
+    'class', 'interface', 'extends', 'implements',
+    'import', 'package',
+    'public', 'private', 'protected',
+    'static', 'final', 'abstract',
+    'void',
+    'synchronized', 'volatile', 'transient', 'native', 'strictfp',
+    'enum', 'throws',
 }
 
 # Regex that matches ALL symbolic operators, longest-first (greedy)
@@ -158,8 +172,8 @@ def tokenize_java(cleaned_source: str) -> tuple[list[str], list[str]]:
         r'|&&'
         r'|\|\|'
         r'|[+\-*/%&|^~<>=!]'
-        r'|[(){}\[\];,.\?:]'
-        r')'
+        r'|[.?:]'
+        r')'  # NB: delimiters (){}[];, deliberately excluded
         r'|(?P<num>'
         r'0[xX][0-9a-fA-F_]+[lL]?'
         r'|0[bB][01_]+[lL]?'
@@ -180,6 +194,8 @@ def tokenize_java(cleaned_source: str) -> tuple[list[str], list[str]]:
             word = m.group('word')
             if word in JAVA_OPERATORS:
                 operators.append(word)
+            elif word in JAVA_STRUCTURAL:
+                pass  # structural keyword — not counted in Halstead metrics
             elif word in ('true', 'false', 'null'):
                 operands.append(word)
             elif word in ('STRING_LITERAL', 'CHAR_LITERAL'):
