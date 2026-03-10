@@ -87,7 +87,7 @@ def count_sloc(source: str) -> int:
 # ── Cyclomatic Complexity ──────────────────────────────────────────────────
 
 # Decision-point keywords (word-boundary matched)
-_CC_KW_RE = re.compile(r'\b(?:if|for|while|do|case|catch)\b')
+_CC_KW_RE = re.compile(r'\b(?:if|for|while|case|catch)\b')
 # Short-circuit / ternary operators
 _CC_OP_RE = re.compile(r'&&|\|\||\?')
 
@@ -97,7 +97,9 @@ def compute_cyclomatic_complexity(source: str) -> int:
 
     Rules:
       - Base CC = 1.
-      - Each ``if``, ``for``, ``while``, ``do``, ``case``, ``catch`` → +1.
+      - Each ``if``, ``for``, ``while``, ``case``, ``catch`` → +1.
+      - ``do`` is NOT separately counted because its paired ``while`` keyword
+        already contributes +1.
       - Each ``&&``, ``||`` → +1.
       - Each ``?`` (ternary) → +1.
       - ``else`` is **not** counted.

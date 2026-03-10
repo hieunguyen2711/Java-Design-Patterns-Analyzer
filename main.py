@@ -11,6 +11,7 @@ logging.basicConfig(
 )
 from routes.analyze import router as analyze_router
 from routes.models import router as models_router
+from routes.metrics import router as metrics_router
 from llm.client import OllamaClient
 
 
@@ -25,6 +26,7 @@ app.add_middleware(
 
 app.include_router(analyze_router)
 app.include_router(models_router)
+app.include_router(metrics_router)
 
 
 @app.on_event("startup")
