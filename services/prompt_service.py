@@ -57,6 +57,31 @@ class PromptService:
         ]
         return "\n".join(lines)
 
+    def build_batch_generate_prompt(self, pattern: str, project_context: str) -> str:
+        """Construct a prompt for batch generation with one shared project context."""
+        lines: List[str] = [
+            "You are a senior Java software engineer and design pattern expert.",
+            "Generate a complete, minimal Java project that clearly demonstrates exactly ONE design pattern.",
+            "The requested design pattern must be implemented faithfully and be easy to recognize.",
+            "IMPORTANT: Output each class or interface in its own separate file using EXACTLY this format:",
+            "",
+            "### FILE: ClassName.java",
+            "```java",
+            "// code here",
+            "```",
+            "",
+            "Rules:",
+            "- One class or interface per file.",
+            "- The filename must match the public class/interface name exactly.",
+            "- Include package declaration when appropriate.",
+            "- Keep code compilable and coherent as a single project.",
+            "- Do not include any explanation outside the file blocks.",
+            "",
+            f"Design Pattern: {pattern}",
+            f"Shared Project Context: {project_context}",
+        ]
+        return "\n".join(lines)
+
     def parse_generated_files(self, raw: str) -> List[Dict[str, str]]:
         """Parse LLM output into a list of {filename, content} dicts."""
         import re

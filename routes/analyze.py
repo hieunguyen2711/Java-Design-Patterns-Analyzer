@@ -4,13 +4,25 @@ import zipfile
 from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 
 from config import settings
 from llm.client import OllamaClient
-from models.request_models import FollowUpRequest, GenerateRequest, PackageProjectRequest
-from models.response_models import AnalysisResponse, FollowUpResponse, GenerateResponse
+from models.request_models import (
+    BatchGeneratePassProjectsRequest,
+    FollowUpRequest,
+    GenerateRequest,
+    PackageProjectRequest,
+)
+from models.response_models import (
+    AnalysisResponse,
+    BatchGeneratePassProjectsStartResponse,
+    BatchGeneratePassProjectsStatusResponse,
+    FollowUpResponse,
+    GenerateResponse,
+)
 from services.analysis_service import AnalysisService
+from services.batch_generation_service import BatchGenerationService
 from services.file_service import FileService
 from services.prompt_service import PromptService
 
@@ -20,6 +32,10 @@ file_service = FileService()
 ollama_client = OllamaClient()
 prompt_service = PromptService()
 analysis_service = AnalysisService(file_service=file_service, ollama_client=ollama_client)
+batch_generation_service = BatchGenerationService(
+    ollama_client=ollama_client,
+    prompt_service=prompt_service,
+)
 
 
 @router.post("/analyze", response_model=AnalysisResponse)
@@ -81,6 +97,77 @@ def generate_code(request: GenerateRequest):
         pattern=request.pattern,
         description=request.description,
         files=[{"filename": f["filename"], "content": f["content"]} for f in parsed],
+    )
+
+
+@router.post(
+    "/api/v1/generate-pass-projects",
+    response_model=BatchGeneratePassProjectsStartResponse,
+    status_code=202,
+)
+async def generate_pass_projects(request: BatchGeneratePassProjectsRequest):
+    """Trigger generation for all passing patterns using one shared project context."""
+    if not ollama_client.is_running():
+        raise HTTPException(status_code=503, detail="Ollama server is not running.")
+
+    if request.concurrency > settings.BATCH_MAX_CONCURRENCY:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                f"Requested concurrency {request.concurrency} exceeds configured "
+                f"maximum {settings.BATCH_MAX_CONCURRENCY}."
+            ),
+        )
+
+    try:
+        started = await batch_generation_service.start_job(
+            project_context=request.project_context,
+            model=request.model,
+            concurrency=request.concurrency,
+            patterns_limit=request.patterns_limit,
+        )
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    return BatchGeneratePassProjectsStartResponse(**started)
+
+
+@router.get(
+    "/api/v1/generate-pass-projects/{job_id}",
+    response_model=BatchGeneratePassProjectsStatusResponse,
+)
+def get_generate_pass_projects_status(job_id: str):
+    """Return progress and results for a batch generation job."""
+    job = batch_generation_service.get_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail=f"Batch job not found: {job_id}")
+
+    return BatchGeneratePassProjectsStatusResponse(**job)
+
+
+@router.get("/api/v1/generate-pass-projects/{job_id}/download")
+def download_generate_pass_projects(job_id: str):
+    """Download the final bundle zip for a completed batch generation job."""
+    job = batch_generation_service.get_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail=f"Batch job not found: {job_id}")
+
+    if job.get("status") != "completed":
+        raise HTTPException(
+            status_code=409,
+            detail=f"Batch job {job_id} is not completed yet (status={job.get('status')}).",
+        )
+
+    bundle_path = batch_generation_service.get_final_bundle_path(job_id)
+    if bundle_path is None or not bundle_path.exists():
+        raise HTTPException(status_code=404, detail="Final bundle not found for this job.")
+
+    return FileResponse(
+        path=bundle_path,
+        media_type="application/zip",
+        filename=f"{job_id}_generated_projects.zip",
     )
 
 

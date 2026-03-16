@@ -39,3 +39,40 @@ class FollowUpResponse(BaseModel):
     question: str
     answer: str
     error: Optional[str] = None
+
+
+class PatternGenerationResult(BaseModel):
+    """Result details for a single pattern generation task."""
+
+    pattern: str
+    status: str
+    files_count: int = 0
+    duration_ms: int = 0
+    output_zip_relative_path: Optional[str] = None
+    error: Optional[str] = None
+
+
+class BatchGeneratePassProjectsStartResponse(BaseModel):
+    """Response returned when a batch generation job is started."""
+
+    job_id: str
+    status: str
+    total_patterns: int
+    output_dir: str
+
+
+class BatchGeneratePassProjectsStatusResponse(BaseModel):
+    """Response containing the current status and progress of a batch generation job."""
+
+    job_id: str
+    status: str
+    model_used: str
+    total_patterns: int
+    completed_patterns: int
+    successful_patterns: int
+    failed_patterns: int
+    started_at: float
+    updated_at: float
+    completed_at: Optional[float] = None
+    final_bundle_relative_path: Optional[str] = None
+    results: List[PatternGenerationResult]

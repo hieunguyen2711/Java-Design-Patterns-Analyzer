@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class AnalyzeZipRequest(BaseModel):
@@ -44,3 +44,12 @@ class PackageProjectRequest(BaseModel):
     pattern: str
     description: str
     files: List[GeneratedFileInput]
+
+
+class BatchGeneratePassProjectsRequest(BaseModel):
+    """Request model to generate projects for all passing patterns using one shared project context."""
+
+    project_context: str = Field(min_length=1)
+    model: str = "qwen3-coder-30b-a3b-instruct"
+    concurrency: int = Field(default=1, ge=1, le=8)
+    patterns_limit: int | None = Field(default=None, ge=1)

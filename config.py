@@ -16,6 +16,12 @@ class Settings(BaseSettings):
     MAX_CHARS_PER_CHUNK: int = 8000
     MAX_MERGE_CHARS: int = 6000  # cap merged partial results sent to LLM
     UPLOAD_DIR: str = "temp_uploads"
+    PASS_PATTERNS_FILE: str = "pass.json"
+    BATCH_OUTPUT_DIR: str = "generated_batches"
+    EXPECTED_PASS_PATTERN_COUNT: int = 83
+    BATCH_MAX_CONCURRENCY: int = 2
+    BATCH_RETRY_COUNT: int = 2
+    BATCH_RETRY_DELAY_SECONDS: float = 1.0
     SKIP_DIRS: Set[str] = {
         ".git",
         "target",
