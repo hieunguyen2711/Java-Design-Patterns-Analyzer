@@ -1,0 +1,152 @@
+### FILE: OrderProcessor.java
+```java
+package ecommerce.order;
+
+public interface OrderProcessor {
+    ProcessResult process(Order order);
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package ecommerce.order;
+
+public interface PaymentProcessor {
+    ProcessResult processPayment(Order order);
+}
+```
+
+### FILE: InventoryProcessor.java
+```java
+package ecommerce.order;
+
+public interface InventoryProcessor {
+    ProcessResult checkInventory(Order order);
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+import java.util.function.Function;
+
+public class OrderService {
+    private final PaymentProcessor paymentProcessor;
+    private final InventoryProcessor inventoryProcessor;
+    
+    public OrderService(PaymentProcessor paymentProcessor, 
+                       InventoryProcessor inventoryProcessor) {
+        this.paymentProcessor = paymentProcessor;
+        this.inventoryProcessor = inventoryProcessor;
+    }
+    
+    public ProcessResult processOrder(Order order) {
+        // Trampoline pattern: return continuation functions instead of direct results
+        Function<Order, ProcessResult> trampoline = (o) -> 
+            new ProcessResult("Checking inventory", true, o);
+        
+        return trampoline.apply(order).next(
+            () -> inventoryProcessor.checkInventory(order)
+        ).next(
+            () -> paymentProcessor.processPayment(order)
+        );
+    }
+}
+```
+
+### FILE: ProcessResult.java
+```java
+package ecommerce.order;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+public class ProcessResult {
+    private final String message;
+    private final boolean shouldContinue;
+    private final Order order;
+    
+    public ProcessResult(String message, boolean shouldContinue, Order order) {
+        this.message = message;
+        this.shouldContinue = shouldContinue;
+        this.order = order;
+    }
+    
+    public ProcessResult next(Supplier<ProcessResult> nextStep) {
+        if (shouldContinue) {
+            return nextStep.get();
+        }
+        return this;
+    }
+    
+    // Getters for testing
+    public String getMessage() { return message; }
+    public boolean shouldContinue() { return shouldContinue; }
+    public Order getOrder() { return order; }
+}
+```
+
+### FILE: DefaultPaymentProcessor.java
+```java
+package ecommerce.order;
+
+public class DefaultPaymentProcessor implements PaymentProcessor {
+    @Override
+    public ProcessResult processPayment(Order order) {
+        // Simulate payment processing
+        return new ProcessResult("Payment processed successfully", false, order);
+    }
+}
+```
+
+### FILE: DefaultInventoryProcessor.java
+```java
+package ecommerce.order;
+
+public class DefaultInventoryProcessor implements InventoryProcessor {
+    @Override
+    public ProcessResult checkInventory(Order order) {
+        // Simulate inventory check
+        return new ProcessResult("Inventory checked successfully", true, order);
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private final String orderId;
+    private final double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    // Getters for testing
+    public String getOrderId() { return orderId; }
+    public double getAmount() { return amount; }
+}
+```
+
+### FILE: TrampolineDemo.java
+```java
+package ecommerce.order;
+
+public class TrampolineDemo {
+    public static void main(String[] args) {
+        Order order = new Order("ORD-123", 99.99);
+        
+        PaymentProcessor paymentProcessor = new DefaultPaymentProcessor();
+        InventoryProcessor inventoryProcessor = new DefaultInventoryProcessor();
+        
+        OrderService service = new OrderService(paymentProcessor, inventoryProcessor);
+        ProcessResult result = service.processOrder(order);
+        
+        System.out.println("Final result: " + result.getMessage());
+    }
+}
+```

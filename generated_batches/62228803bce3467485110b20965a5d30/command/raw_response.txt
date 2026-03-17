@@ -1,0 +1,138 @@
+### FILE: Order.java
+```java
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: Command.java
+```java
+public interface Command {
+    void execute();
+    void undo();
+}
+```
+
+### FILE: ProcessOrderCommand.java
+```java
+public class ProcessOrderCommand implements Command {
+    private Order order;
+    private OrderProcessor processor;
+    
+    public ProcessOrderCommand(Order order, OrderProcessor processor) {
+        this.order = order;
+        this.processor = processor;
+    }
+    
+    @Override
+    public void execute() {
+        processor.process(order);
+    }
+    
+    @Override
+    public void undo() {
+        processor.cancel(order);
+    }
+}
+```
+
+### FILE: CancelOrderCommand.java
+```java
+public class CancelOrderCommand implements Command {
+    private Order order;
+    private OrderProcessor processor;
+    
+    public CancelOrderCommand(Order order, OrderProcessor processor) {
+        this.order = order;
+        this.processor = processor;
+    }
+    
+    @Override
+    public void execute() {
+        processor.cancel(order);
+    }
+    
+    @Override
+    public void undo() {
+        processor.process(order);
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+public class OrderProcessor {
+    public void process(Order order) {
+        System.out.println("Processing order " + order.getOrderId() + 
+                          " for amount $" + order.getAmount());
+    }
+    
+    public void cancel(Order order) {
+        System.out.println("Canceling order " + order.getOrderId() + 
+                          " for amount $" + order.getAmount());
+    }
+}
+```
+
+### FILE: OrderCommandInvoker.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderCommandInvoker {
+    private List<Command> commandHistory;
+    
+    public OrderCommandInvoker() {
+        this.commandHistory = new ArrayList<>();
+    }
+    
+    public void executeCommand(Command command) {
+        command.execute();
+        commandHistory.add(command);
+    }
+    
+    public void undoLastCommand() {
+        if (!commandHistory.isEmpty()) {
+            Command lastCommand = commandHistory.remove(commandHistory.size() - 1);
+            lastCommand.undo();
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        Order order1 = new Order("ORD001", 299.99);
+        Order order2 = new Order("ORD002", 149.50);
+        
+        OrderProcessor processor = new OrderProcessor();
+        OrderCommandInvoker invoker = new OrderCommandInvoker();
+        
+        Command processOrder1 = new ProcessOrderCommand(order1, processor);
+        Command cancelOrder2 = new CancelOrderCommand(order2, processor);
+        
+        // Execute commands
+        invoker.executeCommand(processOrder1);
+        invoker.executeCommand(cancelOrder2);
+        
+        // Undo last command
+        invoker.undoLastCommand();
+    }
+}
+```

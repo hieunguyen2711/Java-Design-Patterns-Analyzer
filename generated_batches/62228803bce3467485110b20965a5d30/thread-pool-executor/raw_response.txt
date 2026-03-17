@@ -1,0 +1,100 @@
+### FILE: OrderProcessor.java
+```java
+public class OrderProcessor {
+    private final ThreadPoolExecutor executor;
+    
+    public OrderProcessor() {
+        this.executor = new ThreadPoolExecutor(
+            2, 
+            4,
+            60L,
+            TimeUnit.SECONDS,
+            new LinkedBlockingQueue<>(10)
+        );
+    }
+    
+    public void processOrder(Order order) {
+        executor.submit(() -> {
+            System.out.println("Processing order: " + order.getId() + 
+                             " on thread: " + Thread.currentThread().getName());
+            // Simulate order processing
+            try {
+                Thread.sleep(1000);
+                order.setStatus("PROCESSED");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    public void shutdown() {
+        executor.shutdown();
+    }
+}
+```
+
+### FILE: Order.java
+```java
+public class Order {
+    private final String id;
+    private String status;
+    
+    public Order(String id) {
+        this.id = id;
+        this.status = "PENDING";
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class OrderManagementSystem {
+    private final OrderProcessor orderProcessor;
+    
+    public OrderManagementSystem() {
+        this.orderProcessor = new OrderProcessor();
+    }
+    
+    public void submitOrder(String orderId) {
+        Order order = new Order(orderId);
+        orderProcessor.processOrder(order);
+    }
+    
+    public static void main(String[] args) {
+        OrderManagementSystem system = new OrderManagementSystem();
+        
+        // Submit multiple orders
+        for (int i = 1; i <= 6; i++) {
+            system.submitOrder("ORDER-" + i);
+        }
+        
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        system.shutdown();
+    }
+    
+    public void shutdown() {
+        orderProcessor.shutdown();
+    }
+}
+```

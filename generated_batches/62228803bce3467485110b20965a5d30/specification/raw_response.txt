@@ -1,0 +1,93 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package ecommerce.order;
+
+public interface PaymentProcessor {
+    void processPayment(Order order);
+}
+```
+
+### FILE: CreditCardProcessor.java
+```java
+package ecommerce.order;
+
+public class CreditCardProcessor implements PaymentProcessor {
+    @Override
+    public void processPayment(Order order) {
+        System.out.println("Processing credit card payment for order " + 
+                          order.getOrderId() + " amount: $" + order.getAmount());
+    }
+}
+```
+
+### FILE: PayPalProcessor.java
+```java
+package ecommerce.order;
+
+public class PayPalProcessor implements PaymentProcessor {
+    @Override
+    public void processPayment(Order order) {
+        System.out.println("Processing PayPal payment for order " + 
+                          order.getOrderId() + " amount: $" + order.getAmount());
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+public class OrderService {
+    private PaymentProcessor paymentProcessor;
+    
+    public OrderService(PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+    
+    public void executeOrder(Order order) {
+        System.out.println("Executing order: " + order.getOrderId());
+        paymentProcessor.processPayment(order);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        Order order1 = new Order("ORD001", 299.99);
+        Order order2 = new Order("ORD002", 149.50);
+        
+        OrderService creditCardService = new OrderService(new CreditCardProcessor());
+        OrderService paypalService = new OrderService(new PayPalProcessor());
+        
+        creditCardService.executeOrder(order1);
+        paypalService.executeOrder(order2);
+    }
+}
+```

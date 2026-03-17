@@ -1,0 +1,78 @@
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+public class Order {
+    private final String orderId;
+    private final double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package com.ecommerce.order;
+
+public class PaymentProcessor {
+    private final Order order;
+    
+    public PaymentProcessor(Order order) {
+        this.order = order;
+    }
+    
+    public void processPayment() {
+        System.out.println("Processing payment for order: " + order.getOrderId());
+        // Simulate payment processing
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("Payment completed for order: " + order.getOrderId());
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.ecommerce.order;
+
+public class OrderService {
+    
+    public void processOrder(String orderId, double amount) {
+        Order order = new Order(orderId, amount);
+        
+        // RAII pattern in action - resource (PaymentProcessor) acquired and released automatically
+        try (PaymentProcessor processor = new PaymentProcessor(order)) {
+            processor.processPayment();
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService service = new OrderService();
+        
+        // Process multiple orders demonstrating RAII pattern
+        service.processOrder("ORD-001", 299.99);
+        service.processOrder("ORD-002", 149.50);
+    }
+}
+```

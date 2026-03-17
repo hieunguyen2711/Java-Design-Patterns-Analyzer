@@ -1,0 +1,182 @@
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public abstract class Order {
+    protected String orderId;
+    protected BigDecimal totalAmount;
+    protected LocalDateTime orderDate;
+    protected OrderStatus status;
+    
+    public Order(String orderId, BigDecimal totalAmount) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+        this.orderDate = LocalDateTime.now();
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public abstract void processOrder();
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public LocalDateTime getOrderDate() {
+        return orderDate;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: StandardOrder.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+
+public class StandardOrder extends Order {
+    private String shippingAddress;
+    
+    public StandardOrder(String orderId, BigDecimal totalAmount, String shippingAddress) {
+        super(orderId, totalAmount);
+        this.shippingAddress = shippingAddress;
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing standard order: " + orderId);
+        setStatus(OrderStatus.PROCESSING);
+        // Business logic for standard orders
+    }
+    
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+}
+```
+
+### FILE: ExpressOrder.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+
+public class ExpressOrder extends Order {
+    private String deliveryAddress;
+    private boolean rushDelivery;
+    
+    public ExpressOrder(String orderId, BigDecimal totalAmount, String deliveryAddress, boolean rushDelivery) {
+        super(orderId, totalAmount);
+        this.deliveryAddress = deliveryAddress;
+        this.rushDelivery = rushDelivery;
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing express order: " + orderId);
+        setStatus(OrderStatus.PROCESSING);
+        // Business logic for express orders
+    }
+    
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+    
+    public boolean isRushDelivery() {
+        return rushDelivery;
+    }
+}
+```
+
+### FILE: OrderFactory.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+
+public class OrderFactory {
+    public static Order createOrder(String orderType, String orderId, BigDecimal totalAmount, 
+                                  Object... additionalParams) {
+        switch (orderType.toLowerCase()) {
+            case "standard":
+                return new StandardOrder(orderId, totalAmount, (String) additionalParams[0]);
+            case "express":
+                return new ExpressOrder(orderId, totalAmount, (String) additionalParams[0], 
+                                      (Boolean) additionalParams[1]);
+            default:
+                throw new IllegalArgumentException("Unknown order type: " + orderType);
+        }
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package com.ecommerce.order;
+
+public enum OrderStatus {
+    PENDING,
+    PROCESSING,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderProcessor {
+    private List<Order> orders;
+    
+    public OrderProcessor() {
+        this.orders = new ArrayList<>();
+    }
+    
+    public void addOrder(Order order) {
+        orders.add(order);
+    }
+    
+    public void processAllOrders() {
+        for (Order order : orders) {
+            order.processOrder();
+        }
+    }
+    
+    public static void main(String[] args) {
+        OrderProcessor processor = new OrderProcessor();
+        
+        // Creating different types of orders using single-table inheritance
+        Order standardOrder = OrderFactory.createOrder("standard", "STD001", 
+                                                     new BigDecimal("99.99"), 
+                                                     "123 Main St");
+        Order expressOrder = OrderFactory.createOrder("express", "EXP001", 
+                                                    new BigDecimal("149.99"),
+                                                    "456 Oak Ave", true);
+        
+        processor.addOrder(standardOrder);
+        processor.addOrder(expressOrder);
+        
+        processor.processAllOrders();
+    }
+}
+```

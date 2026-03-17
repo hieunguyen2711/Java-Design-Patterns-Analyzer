@@ -1,0 +1,221 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order {
+    private String orderId;
+    private List<String> items;
+    private double totalAmount;
+    private OrderStatus status;
+    
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.items = new ArrayList<>();
+        this.totalAmount = 0.0;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public void addItem(String item) {
+        items.add(item);
+        totalAmount += calculateItemPrice(item);
+    }
+    
+    private double calculateItemPrice(String item) {
+        // Simplified pricing logic
+        return switch (item.toLowerCase()) {
+            case "laptop" -> 999.99;
+            case "mouse" -> 29.99;
+            case "keyboard" -> 79.99;
+            default -> 0.0;
+        };
+    }
+    
+    public Memento saveToMemento() {
+        return new Memento(orderId, new ArrayList<>(items), totalAmount, status);
+    }
+    
+    public void restoreFromMemento(Memento memento) {
+        this.orderId = memento.getOrderId();
+        this.items = new ArrayList<>(memento.getItems());
+        this.totalAmount = memento.getTotalAmount();
+        this.status = memento.getStatus();
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public List<String> getItems() {
+        return new ArrayList<>(items);
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: Memento.java
+```java
+package ecommerce.order;
+
+import java.util.List;
+
+public class Memento {
+    private String orderId;
+    private List<String> items;
+    private double totalAmount;
+    private OrderStatus status;
+    
+    public Memento(String orderId, List<String> items, double totalAmount, OrderStatus status) {
+        this.orderId = orderId;
+        this.items = new ArrayList<>(items);
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public List<String> getItems() {
+        return new ArrayList<>(items);
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package ecommerce.order;
+
+public enum OrderStatus {
+    PENDING,
+    CONFIRMED,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: OrderCaretaker.java
+```java
+package ecommerce.order;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderCaretaker {
+    private List<Memento> mementos;
+    
+    public OrderCaretaker() {
+        this.mementos = new ArrayList<>();
+    }
+    
+    public void addMemento(Memento memento) {
+        mementos.add(memento);
+    }
+    
+    public Memento getMemento(int index) {
+        return mementos.get(index);
+    }
+    
+    public int getSize() {
+        return mementos.size();
+    }
+}
+```
+
+### FILE: OrderManager.java
+```java
+package ecommerce.order;
+
+public class OrderManager {
+    private Order order;
+    private OrderCaretaker caretaker;
+    
+    public OrderManager(Order order) {
+        this.order = order;
+        this.caretaker = new OrderCaretaker();
+    }
+    
+    public void processOrder() {
+        System.out.println("Processing order: " + order.getOrderId());
+        order.setStatus(OrderStatus.CONFIRMED);
+        saveState();
+        
+        order.addItem("mouse");
+        order.setStatus(OrderStatus.SHIPPED);
+        saveState();
+        
+        order.addItem("keyboard");
+        order.setStatus(OrderStatus.DELIVERED);
+        saveState();
+    }
+    
+    private void saveState() {
+        caretaker.addMemento(order.saveToMemento());
+    }
+    
+    public void undoLastAction() {
+        if (caretaker.getSize() > 1) {
+            int lastIndex = caretaker.getSize() - 2;
+            order.restoreFromMemento(caretaker.getMemento(lastIndex));
+            System.out.println("Undid last action. Current status: " + order.getStatus());
+        } else {
+            System.out.println("No actions to undo");
+        }
+    }
+    
+    public void printCurrentState() {
+        System.out.println("Order ID: " + order.getOrderId());
+        System.out.println("Items: " + order.getItems());
+        System.out.println("Total Amount: $" + order.getTotalAmount());
+        System.out.println("Status: " + order.getStatus());
+        System.out.println();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        Order order = new Order("ORD-001");
+        OrderManager manager = new OrderManager(order);
+        
+        System.out.println("=== Initial State ===");
+        manager.printCurrentState();
+        
+        System.out.println("=== Processing Order ===");
+        manager.processOrder();
+        
+        System.out.println("=== Final State ===");
+        manager.printCurrentState();
+        
+        System.out.println("=== Undo Last Action ===");
+        manager.undoLastAction();
+        manager.printCurrentState();
+    }
+}
+```

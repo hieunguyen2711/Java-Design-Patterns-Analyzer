@@ -1,0 +1,175 @@
+### FILE: Order.java
+```java
+package com.example.ordermanagement;
+
+public class Order {
+    private String id;
+    private String customerId;
+    private double totalAmount;
+    private OrderStatus status;
+
+    public Order(String id, String customerId, double totalAmount) {
+        this.id = id;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+        this.status = OrderStatus.PENDING;
+    }
+
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getCustomerId() { return customerId; }
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
+    
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    
+    public OrderStatus getStatus() { return status; }
+    public void setStatus(OrderStatus status) { this.status = status; }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package com.example.ordermanagement;
+
+public enum OrderStatus {
+    PENDING,
+    PROCESSING,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: OrderRepository.java
+```java
+package com.example.ordermanagement;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
+public interface OrderRepository {
+    void save(Order order);
+    Order findById(String id);
+    List<Order> findByCustomerId(String customerId);
+    List<Order> findAll();
+    void delete(String id);
+}
+```
+
+### FILE: InMemoryOrderRepository.java
+```java
+package com.example.ordermanagement;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class InMemoryOrderRepository implements OrderRepository {
+    private Map<String, Order> orders = new HashMap<>();
+    
+    @Override
+    public void save(Order order) {
+        orders.put(order.getId(), order);
+    }
+    
+    @Override
+    public Order findById(String id) {
+        return orders.get(id);
+    }
+    
+    @Override
+    public List<Order> findByCustomerId(String customerId) {
+        List<Order> customerOrders = new ArrayList<>();
+        for (Order order : orders.values()) {
+            if (order.getCustomerId().equals(customerId)) {
+                customerOrders.add(order);
+            }
+        }
+        return customerOrders;
+    }
+    
+    @Override
+    public List<Order> findAll() {
+        return new ArrayList<>(orders.values());
+    }
+    
+    @Override
+    public void delete(String id) {
+        orders.remove(id);
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.example.ordermanagement;
+
+import java.util.List;
+
+public class OrderService {
+    private OrderRepository orderRepository;
+    
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+    
+    public void createOrder(String id, String customerId, double amount) {
+        Order order = new Order(id, customerId, amount);
+        orderRepository.save(order);
+    }
+    
+    public Order getOrderById(String id) {
+        return orderRepository.findById(id);
+    }
+    
+    public List<Order> getOrdersByCustomer(String customerId) {
+        return orderRepository.findByCustomerId(customerId);
+    }
+    
+    public void updateOrderStatus(String orderId, OrderStatus status) {
+        Order order = orderRepository.findById(orderId);
+        if (order != null) {
+            order.setStatus(status);
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.ordermanagement;
+
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create repository and service
+        OrderRepository repository = new InMemoryOrderRepository();
+        OrderService orderService = new OrderService(repository);
+        
+        // Create some orders
+        orderService.createOrder("1", "customer123", 99.99);
+        orderService.createOrder("2", "customer123", 149.50);
+        orderService.createOrder("3", "customer456", 75.25);
+        
+        // Retrieve orders by customer
+        List<Order> customerOrders = orderService.getOrdersByCustomer("customer123");
+        System.out.println("Orders for customer123:");
+        for (Order order : customerOrders) {
+            System.out.println("- Order " + order.getId() + ": $" + order.getTotalAmount());
+        }
+        
+        // Update an order status
+        orderService.updateOrderStatus("1", OrderStatus.PROCESSING);
+        Order retrievedOrder = orderService.getOrderById("1");
+        System.out.println("Updated order 1 status: " + retrievedOrder.getStatus());
+    }
+}
+```

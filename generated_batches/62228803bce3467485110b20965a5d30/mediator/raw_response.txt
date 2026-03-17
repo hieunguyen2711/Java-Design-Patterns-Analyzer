@@ -1,0 +1,122 @@
+### FILE: Order.java
+```java
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: PaymentService.java
+```java
+public class PaymentService {
+    private Mediator mediator;
+    
+    public PaymentService(Mediator mediator) {
+        this.mediator = mediator;
+    }
+    
+    public void processPayment(Order order) {
+        System.out.println("Processing payment for order: " + order.getOrderId());
+        // Simulate payment processing
+        mediator.notify(this, "paymentProcessed", order);
+    }
+}
+```
+
+### FILE: ShippingService.java
+```java
+public class ShippingService {
+    private Mediator mediator;
+    
+    public ShippingService(Mediator mediator) {
+        this.mediator = mediator;
+    }
+    
+    public void shipOrder(Order order) {
+        System.out.println("Shipping order: " + order.getOrderId());
+        // Simulate shipping
+        mediator.notify(this, "orderShipped", order);
+    }
+}
+```
+
+### FILE: NotificationService.java
+```java
+public class NotificationService {
+    private Mediator mediator;
+    
+    public NotificationService(Mediator mediator) {
+        this.mediator = mediator;
+    }
+    
+    public void sendNotification(Order order) {
+        System.out.println("Sending notification for order: " + order.getOrderId());
+        // Simulate sending notification
+        mediator.notify(this, "notificationSent", order);
+    }
+}
+```
+
+### FILE: Mediator.java
+```java
+public interface Mediator {
+    void notify(Object sender, String event, Order order);
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+public class OrderManagementSystem implements Mediator {
+    private PaymentService paymentService;
+    private ShippingService shippingService;
+    private NotificationService notificationService;
+    
+    public OrderManagementSystem() {
+        this.paymentService = new PaymentService(this);
+        this.shippingService = new ShippingService(this);
+        this.notificationService = new NotificationService(this);
+    }
+    
+    public void processOrder(Order order) {
+        System.out.println("Starting order processing for: " + order.getOrderId());
+        paymentService.processPayment(order);
+    }
+    
+    @Override
+    public void notify(Object sender, String event, Order order) {
+        System.out.println(sender.getClass().getSimpleName() + " triggered " + event);
+        
+        if ("paymentProcessed".equals(event)) {
+            shippingService.shipOrder(order);
+        } else if ("orderShipped".equals(event)) {
+            notificationService.sendNotification(order);
+        } else if ("notificationSent".equals(event)) {
+            System.out.println("Order processing completed for: " + order.getOrderId());
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        OrderManagementSystem system = new OrderManagementSystem();
+        Order order = new Order("ORD-12345", 99.99);
+        system.processOrder(order);
+    }
+}
+```

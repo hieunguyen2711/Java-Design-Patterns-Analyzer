@@ -1,0 +1,176 @@
+### FILE: OrderComponent.java
+```java
+package ecommerce.order;
+
+public interface OrderComponent {
+    double getPrice();
+    void add(OrderComponent component);
+    void remove(OrderComponent component);
+    void display(int depth);
+}
+```
+
+### FILE: Product.java
+```java
+package ecommerce.order;
+
+public class Product implements OrderComponent {
+    private String name;
+    private double price;
+    
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+    
+    @Override
+    public double getPrice() {
+        return price;
+    }
+    
+    @Override
+    public void add(OrderComponent component) {
+        // Products cannot have children
+    }
+    
+    @Override
+    public void remove(OrderComponent component) {
+        // Products cannot have children
+    }
+    
+    @Override
+    public void display(int depth) {
+        StringBuilder indent = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            indent.append("  ");
+        }
+        System.out.println(indent + name + " - $" + price);
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package ecommerce.order;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderItem implements OrderComponent {
+    private String name;
+    private List<OrderComponent> components;
+    
+    public OrderItem(String name) {
+        this.name = name;
+        this.components = new ArrayList<>();
+    }
+    
+    @Override
+    public double getPrice() {
+        double total = 0.0;
+        for (OrderComponent component : components) {
+            total += component.getPrice();
+        }
+        return total;
+    }
+    
+    @Override
+    public void add(OrderComponent component) {
+        components.add(component);
+    }
+    
+    @Override
+    public void remove(OrderComponent component) {
+        components.remove(component);
+    }
+    
+    @Override
+    public void display(int depth) {
+        StringBuilder indent = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            indent.append("  ");
+        }
+        System.out.println(indent + name + " - $" + getPrice());
+        for (OrderComponent component : components) {
+            component.display(depth + 1);
+        }
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order implements OrderComponent {
+    private String orderId;
+    private List<OrderComponent> items;
+    
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.items = new ArrayList<>();
+    }
+    
+    @Override
+    public double getPrice() {
+        double total = 0.0;
+        for (OrderComponent item : items) {
+            total += item.getPrice();
+        }
+        return total;
+    }
+    
+    @Override
+    public void add(OrderComponent component) {
+        items.add(component);
+    }
+    
+    @Override
+    public void remove(OrderComponent component) {
+        items.remove(component);
+    }
+    
+    @Override
+    public void display(int depth) {
+        StringBuilder indent = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            indent.append("  ");
+        }
+        System.out.println(indent + "Order: " + orderId + " - Total: $" + getPrice());
+        for (OrderComponent item : items) {
+            item.display(depth + 1);
+        }
+    }
+}
+```
+
+### FILE: OrderManager.java
+```java
+package ecommerce.order;
+
+public class OrderManager {
+    public static void main(String[] args) {
+        // Create order
+        Order order = new Order("ORD-001");
+        
+        // Add individual products
+        Product laptop = new Product("Laptop", 999.99);
+        Product mouse = new Product("Wireless Mouse", 29.99);
+        
+        // Create an order item for accessories
+        OrderItem accessories = new OrderItem("Accessories");
+        accessories.add(mouse);
+        
+        // Add components to main order
+        order.add(laptop);
+        order.add(accessories);
+        
+        // Display the complete order structure
+        System.out.println("Order Structure:");
+        order.display(0);
+    }
+}
+```

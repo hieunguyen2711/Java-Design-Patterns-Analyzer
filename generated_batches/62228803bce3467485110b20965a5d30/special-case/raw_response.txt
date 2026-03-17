@@ -1,0 +1,157 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    private OrderStatus status;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package ecommerce.order;
+
+public enum OrderStatus {
+    PENDING,
+    PROCESSING,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package ecommerce.order;
+
+public interface PaymentProcessor {
+    boolean processPayment(Order order);
+}
+```
+
+### FILE: CreditCardPaymentProcessor.java
+```java
+package ecommerce.order;
+
+public class CreditCardPaymentProcessor implements PaymentProcessor {
+    @Override
+    public boolean processPayment(Order order) {
+        System.out.println("Processing credit card payment for order " + order.getOrderId());
+        return true;
+    }
+}
+```
+
+### FILE: PayPalPaymentProcessor.java
+```java
+package ecommerce.order;
+
+public class PayPalPaymentProcessor implements PaymentProcessor {
+    @Override
+    public boolean processPayment(Order order) {
+        System.out.println("Processing PayPal payment for order " + order.getOrderId());
+        return true;
+    }
+}
+```
+
+### FILE: SpecialCasePaymentProcessor.java
+```java
+package ecommerce.order;
+
+public class SpecialCasePaymentProcessor implements PaymentProcessor {
+    
+    @Override
+    public boolean processPayment(Order order) {
+        if (order.getAmount() > 10000) {
+            System.out.println("Special case processing for large order " + order.getOrderId());
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### FILE: PaymentProcessorFactory.java
+```java
+package ecommerce.order;
+
+public class PaymentProcessorFactory {
+    
+    public static PaymentProcessor createPaymentProcessor(Order order) {
+        if (order.getAmount() > 10000) {
+            return new SpecialCasePaymentProcessor();
+        } else if (order.getAmount() > 5000) {
+            return new PayPalPaymentProcessor();
+        } else {
+            return new CreditCardPaymentProcessor();
+        }
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+public class OrderService {
+    
+    public void processOrder(Order order) {
+        PaymentProcessor processor = PaymentProcessorFactory.createPaymentProcessor(order);
+        if (processor.processPayment(order)) {
+            order.setStatus(OrderStatus.PROCESSING);
+            System.out.println("Order " + order.getOrderId() + " processed successfully");
+        } else {
+            order.setStatus(OrderStatus.CANCELLED);
+            System.out.println("Order " + order.getOrderId() + " cancelled due to payment failure");
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService service = new OrderService();
+        
+        // Regular order
+        Order regularOrder = new Order("ORD001", 250.0);
+        service.processOrder(regularOrder);
+        
+        // Large order - special case
+        Order largeOrder = new Order("ORD002", 15000.0);
+        service.processOrder(largeOrder);
+        
+        // Medium order
+        Order mediumOrder = new Order("ORD003", 7500.0);
+        service.processOrder(mediumOrder);
+    }
+}
+```

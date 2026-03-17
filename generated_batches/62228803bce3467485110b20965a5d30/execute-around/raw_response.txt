@@ -1,0 +1,146 @@
+### FILE: OrderProcessor.java
+```java
+package com.ecommerce.order;
+
+import java.util.function.Consumer;
+
+public class OrderProcessor {
+    
+    public void processOrder(Order order, Consumer<Order> operation) {
+        // Pre-processing steps
+        System.out.println("Validating order " + order.getId());
+        if (order.getItems().isEmpty()) {
+            throw new IllegalArgumentException("Order must contain items");
+        }
+        
+        try {
+            // Execute the provided operation with the order
+            operation.accept(order);
+            
+            // Post-processing steps
+            System.out.println("Order " + order.getId() + " processed successfully");
+        } catch (Exception e) {
+            System.out.println("Error processing order " + order.getId() + ": " + e.getMessage());
+            throw e;
+        }
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order {
+    private String id;
+    private List<OrderItem> items;
+    
+    public Order(String id) {
+        this.id = id;
+        this.items = new ArrayList<>();
+    }
+    
+    public void addItem(OrderItem item) {
+        items.add(item);
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public List<OrderItem> getItems() {
+        return items;
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package com.ecommerce.order;
+
+public class OrderItem {
+    private String productId;
+    private int quantity;
+    private double price;
+    
+    public OrderItem(String productId, int quantity, double price) {
+        this.productId = productId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    public String getProductId() {
+        return productId;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.ecommerce.order;
+
+public class OrderService {
+    private OrderProcessor processor;
+    
+    public OrderService(OrderProcessor processor) {
+        this.processor = processor;
+    }
+    
+    public void processPayment(Order order) {
+        processor.processOrder(order, o -> {
+            System.out.println("Processing payment for order " + o.getId());
+            // Simulate payment processing
+            double total = o.getItems().stream()
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                .sum();
+            System.out.println("Payment amount: $" + total);
+        });
+    }
+    
+    public void processInventory(Order order) {
+        processor.processOrder(order, o -> {
+            System.out.println("Checking inventory for order " + o.getId());
+            // Simulate inventory check
+            o.getItems().forEach(item -> 
+                System.out.println("Checking stock for product: " + item.getProductId())
+            );
+        });
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderProcessor processor = new OrderProcessor();
+        OrderService service = new OrderService(processor);
+        
+        // Create an order
+        Order order = new Order("ORD-001");
+        order.addItem(new OrderItem("PROD-001", 2, 29.99));
+        order.addItem(new OrderItem("PROD-002", 1, 19.99));
+        
+        // Process payment using execute-around pattern
+        service.processPayment(order);
+        
+        System.out.println("---");
+        
+        // Process inventory using execute-around pattern
+        service.processInventory(order);
+    }
+}
+```

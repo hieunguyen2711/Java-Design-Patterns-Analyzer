@@ -1,0 +1,125 @@
+### FILE: PaymentProcessor.java
+```java
+public interface PaymentProcessor {
+    void processPayment(double amount);
+}
+```
+
+### FILE: CreditCardProcessor.java
+```java
+public class CreditCardProcessor implements PaymentProcessor {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing credit card payment of $" + amount);
+    }
+}
+```
+
+### FILE: PayPalProcessor.java
+```java
+public class PayPalProcessor implements PaymentProcessor {
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing PayPal payment of $" + amount);
+    }
+}
+```
+
+### FILE: ShippingService.java
+```java
+public interface ShippingService {
+    void shipOrder(String orderId);
+}
+```
+
+### FILE: StandardShipping.java
+```java
+public class StandardShipping implements ShippingService {
+    @Override
+    public void shipOrder(String orderId) {
+        System.out.println("Shipping order " + orderId + " via standard shipping");
+    }
+}
+```
+
+### FILE: ExpressShipping.java
+```java
+public class ExpressShipping implements ShippingService {
+    @Override
+    public void shipOrder(String orderId) {
+        System.out.println("Shipping order " + orderId + " via express shipping");
+    }
+}
+```
+
+### FILE: OrderFactory.java
+```java
+public interface OrderFactory {
+    PaymentProcessor createPaymentProcessor();
+    ShippingService createShippingService();
+}
+```
+
+### FILE: OnlineOrderFactory.java
+```java
+public class OnlineOrderFactory implements OrderFactory {
+    @Override
+    public PaymentProcessor createPaymentProcessor() {
+        return new CreditCardProcessor();
+    }
+    
+    @Override
+    public ShippingService createShippingService() {
+        return new StandardShipping();
+    }
+}
+```
+
+### FILE: MobileOrderFactory.java
+```java
+public class MobileOrderFactory implements OrderFactory {
+    @Override
+    public PaymentProcessor createPaymentProcessor() {
+        return new PayPalProcessor();
+    }
+    
+    @Override
+    public ShippingService createShippingService() {
+        return new ExpressShipping();
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+public class OrderService {
+    private final OrderFactory factory;
+    
+    public OrderService(OrderFactory factory) {
+        this.factory = factory;
+    }
+    
+    public void processOrder(String orderId, double amount) {
+        PaymentProcessor processor = factory.createPaymentProcessor();
+        ShippingService shipping = factory.createShippingService();
+        
+        processor.processPayment(amount);
+        shipping.shipOrder(orderId);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Processing online order:");
+        OrderService onlineService = new OrderService(new OnlineOrderFactory());
+        onlineService.processOrder("ON12345", 99.99);
+        
+        System.out.println("\nProcessing mobile order:");
+        OrderService mobileService = new OrderService(new MobileOrderFactory());
+        mobileService.processOrder("MO67890", 149.50);
+    }
+}
+```

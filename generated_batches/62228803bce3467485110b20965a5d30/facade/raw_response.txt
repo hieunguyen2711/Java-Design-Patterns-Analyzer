@@ -1,0 +1,72 @@
+### FILE: OrderFacade.java
+```java
+public class OrderFacade {
+    private InventoryService inventoryService;
+    private PaymentService paymentService;
+    private ShippingService shippingService;
+    
+    public OrderFacade() {
+        this.inventoryService = new InventoryService();
+        this.paymentService = new PaymentService();
+        this.shippingService = new ShippingService();
+    }
+    
+    public void processOrder(String productId, int quantity, String customerInfo) {
+        if (inventoryService.isAvailable(productId, quantity)) {
+            String transactionId = paymentService.processPayment(customerInfo, quantity * 100);
+            if (transactionId != null) {
+                shippingService.shipProduct(productId, quantity, customerInfo);
+                System.out.println("Order processed successfully!");
+            } else {
+                System.out.println("Payment failed. Order cancelled.");
+            }
+        } else {
+            System.out.println("Insufficient inventory. Order cancelled.");
+        }
+    }
+}
+```
+
+### FILE: InventoryService.java
+```java
+public class InventoryService {
+    public boolean isAvailable(String productId, int quantity) {
+        // Simulate inventory check
+        System.out.println("Checking inventory for product " + productId);
+        return true;
+    }
+}
+```
+
+### FILE: PaymentService.java
+```java
+public class PaymentService {
+    public String processPayment(String customerInfo, int amount) {
+        // Simulate payment processing
+        System.out.println("Processing payment of $" + amount + " for " + customerInfo);
+        return "txn_" + System.currentTimeMillis();
+    }
+}
+```
+
+### FILE: ShippingService.java
+```java
+public class ShippingService {
+    public void shipProduct(String productId, int quantity, String customerInfo) {
+        // Simulate shipping
+        System.out.println("Shipping " + quantity + " of product " + productId + " to " + customerInfo);
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+public class OrderManagementSystem {
+    public static void main(String[] args) {
+        OrderFacade orderFacade = new OrderFacade();
+        
+        // Process an order using the facade
+        orderFacade.processOrder("P123", 2, "John Doe");
+    }
+}
+```

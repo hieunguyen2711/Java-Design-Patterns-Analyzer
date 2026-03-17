@@ -1,0 +1,137 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    private OrderStatus status;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package ecommerce.order;
+
+public enum OrderStatus {
+    PENDING,
+    PROCESSING,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package ecommerce.order;
+
+import java.util.concurrent.locks.ReentrantLock;
+
+public class OrderProcessor {
+    private final ReentrantLock lock = new ReentrantLock();
+    
+    public void processOrder(Order order) {
+        try {
+            lock.lock();
+            
+            if (order.getStatus() == OrderStatus.PENDING) {
+                System.out.println("Processing order: " + order.getOrderId());
+                order.setStatus(OrderStatus.PROCESSING);
+                
+                // Simulate processing time
+                Thread.sleep(1000);
+                
+                order.setStatus(OrderStatus.SHIPPED);
+                System.out.println("Order shipped: " + order.getOrderId());
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+import java.util.concurrent.locks.ReentrantLock;
+
+public class OrderService {
+    private final ReentrantLock monitor = new ReentrantLock();
+    private int totalOrders = 0;
+    
+    public void submitOrder(Order order) {
+        try {
+            monitor.lock();
+            
+            System.out.println("Submitting order: " + order.getOrderId());
+            totalOrders++;
+            System.out.println("Total orders processed: " + totalOrders);
+            
+        } finally {
+            monitor.unlock();
+        }
+    }
+    
+    public int getTotalOrders() {
+        try {
+            monitor.lock();
+            return totalOrders;
+        } finally {
+            monitor.unlock();
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService service = new OrderService();
+        OrderProcessor processor = new OrderProcessor();
+        
+        // Create orders
+        Order order1 = new Order("ORD001", 299.99);
+        Order order2 = new Order("ORD002", 149.50);
+        
+        // Submit orders using monitor pattern
+        service.submitOrder(order1);
+        service.submitOrder(order2);
+        
+        // Process orders using monitor pattern
+        processor.processOrder(order1);
+        processor.processOrder(order2);
+        
+        System.out.println("Final order count: " + service.getTotalOrders());
+    }
+}
+```

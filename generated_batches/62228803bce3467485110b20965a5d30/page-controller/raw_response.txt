@@ -1,0 +1,84 @@
+### FILE: OrderController.java
+```java
+package ecommerce.controller;
+
+import ecommerce.model.Order;
+import ecommerce.service.OrderService;
+
+public class OrderController {
+    private final OrderService orderService;
+    
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+    
+    public void processOrder(String orderId, String customerId) {
+        System.out.println("Processing order: " + orderId);
+        Order order = orderService.createOrder(orderId, customerId);
+        orderService.saveOrder(order);
+        System.out.println("Order processed successfully");
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.service;
+
+import ecommerce.model.Order;
+import java.util.HashMap;
+import java.util.Map;
+
+public class OrderService {
+    private final Map<String, Order> orders = new HashMap<>();
+    
+    public Order createOrder(String orderId, String customerId) {
+        return new Order(orderId, customerId);
+    }
+    
+    public void saveOrder(Order order) {
+        orders.put(order.getId(), order);
+        System.out.println("Order saved: " + order.getId());
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package ecommerce.model;
+
+public class Order {
+    private final String id;
+    private final String customerId;
+    
+    public Order(String id, String customerId) {
+        this.id = id;
+        this.customerId = customerId;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce;
+
+import ecommerce.controller.OrderController;
+import ecommerce.service.OrderService;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService orderService = new OrderService();
+        OrderController controller = new OrderController(orderService);
+        
+        controller.processOrder("ORD001", "CUST123");
+    }
+}
+```

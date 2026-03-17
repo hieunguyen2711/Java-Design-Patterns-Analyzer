@@ -1,0 +1,123 @@
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package com.ecommerce.order;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class OrderProcessor {
+    private List<Order> orders;
+    
+    public OrderProcessor(List<Order> orders) {
+        this.orders = orders;
+    }
+    
+    public double calculateTotalAmount() {
+        return orders.stream()
+                .mapToDouble(Order::getAmount)
+                .sum();
+    }
+    
+    public <T> T processOrders(Function<List<Order>, T> processor) {
+        return processor.apply(orders);
+    }
+}
+```
+
+### FILE: OrderCombinator.java
+```java
+package com.ecommerce.order;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class OrderCombinator {
+    
+    public static Function<List<Order>, Double> totalAmount() {
+        return orders -> orders.stream()
+                .mapToDouble(Order::getAmount)
+                .sum();
+    }
+    
+    public static Function<List<Order>, List<String>> orderIds() {
+        return orders -> orders.stream()
+                .map(Order::getOrderId)
+                .collect(Collectors.toList());
+    }
+    
+    public static Function<List<Order>, Double> averageAmount() {
+        return orders -> orders.stream()
+                .mapToDouble(Order::getAmount)
+                .average()
+                .orElse(0.0);
+    }
+    
+    public static <T, U> Function<List<Order>, U> combine(Function<List<Order>, T> first,
+                                                         Function<T, U> second) {
+        return orders -> second.apply(first.apply(orders));
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        List<Order> orders = Arrays.asList(
+            new Order("ORD001", 150.0),
+            new Order("ORD002", 200.0),
+            new Order("ORD003", 75.0)
+        );
+        
+        OrderProcessor processor = new OrderProcessor(orders);
+        
+        // Using combinators to process orders
+        Double totalAmount = processor.processOrders(OrderCombinator.totalAmount());
+        List<String> orderIds = processor.processOrders(OrderCombinator.orderIds());
+        Double averageAmount = processor.processOrders(OrderCombinator.averageAmount());
+        
+        System.out.println("Total Amount: " + totalAmount);
+        System.out.println("Order IDs: " + orderIds);
+        System.out.println("Average Amount: " + averageAmount);
+        
+        // Combining operations
+        Function<List<Order>, String> combined = OrderCombinator.combine(
+            OrderCombinator.totalAmount(),
+            amount -> "Total: $" + amount + ", Average: $" + 
+                     OrderCombinator.averageAmount().apply(orders)
+        );
+        
+        System.out.println(combined.apply(orders));
+    }
+}
+```

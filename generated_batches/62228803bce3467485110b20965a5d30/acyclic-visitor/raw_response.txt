@@ -1,0 +1,109 @@
+### FILE: OrderItem.java
+```java
+public abstract class OrderItem {
+    public abstract void accept(OrderVisitor visitor);
+}
+```
+
+### FILE: ProductItem.java
+```java
+public class ProductItem extends OrderItem {
+    private String name;
+    private double price;
+    
+    public ProductItem(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+    
+    @Override
+    public void accept(OrderVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: ServiceItem.java
+```java
+public class ServiceItem extends OrderItem {
+    private String serviceName;
+    private double cost;
+    
+    public ServiceItem(String serviceName, double cost) {
+        this.serviceName = serviceName;
+        this.cost = cost;
+    }
+    
+    @Override
+    public void accept(OrderVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    public String getServiceName() {
+        return serviceName;
+    }
+    
+    public double getCost() {
+        return cost;
+    }
+}
+```
+
+### FILE: OrderVisitor.java
+```java
+public interface OrderVisitor {
+    void visit(ProductItem productItem);
+    void visit(ServiceItem serviceItem);
+}
+```
+
+### FILE: OrderTotalVisitor.java
+```java
+public class OrderTotalVisitor implements OrderVisitor {
+    private double total = 0.0;
+    
+    @Override
+    public void visit(ProductItem productItem) {
+        total += productItem.getPrice();
+    }
+    
+    @Override
+    public void visit(ServiceItem serviceItem) {
+        total += serviceItem.getCost();
+    }
+    
+    public double getTotal() {
+        return total;
+    }
+}
+```
+
+### FILE: Order.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order {
+    private List<OrderItem> items = new ArrayList<>();
+    
+    public void addItem(OrderItem item) {
+        items.add(item);
+    }
+    
+    public double calculateTotal() {
+        OrderTotalVisitor visitor = new OrderTotalVisitor();
+        for (OrderItem item : items) {
+            item.accept(visitor);
+        }
+        return visitor.getTotal();
+    }
+}
+```

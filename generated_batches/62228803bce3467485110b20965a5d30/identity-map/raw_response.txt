@@ -1,0 +1,118 @@
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+import java.util.Objects;
+
+public class Order {
+    private final String orderId;
+    private final BigDecimal amount;
+    
+    public Order(String orderId, BigDecimal amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public BigDecimal getAmount() {
+        return amount;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(orderId, order.orderId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
+    }
+}
+```
+
+### FILE: OrderRepository.java
+```java
+package com.ecommerce.order;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.math.BigDecimal;
+
+public class OrderRepository {
+    private final Map<String, Order> orderCache = new HashMap<>();
+    
+    public Order findById(String orderId) {
+        return orderCache.computeIfAbsent(orderId, id -> 
+            new Order(id, BigDecimal.valueOf(100.00)));
+    }
+    
+    public void save(Order order) {
+        orderCache.put(order.getOrderId(), order);
+    }
+    
+    public void clearCache() {
+        orderCache.clear();
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+
+public class OrderService {
+    private final OrderRepository repository;
+    
+    public OrderService(OrderRepository repository) {
+        this.repository = repository;
+    }
+    
+    public Order createOrder(String orderId, BigDecimal amount) {
+        Order order = new Order(orderId, amount);
+        repository.save(order);
+        return order;
+    }
+    
+    public Order getOrder(String orderId) {
+        return repository.findById(orderId);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+import java.math.BigDecimal;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderRepository repository = new OrderRepository();
+        OrderService service = new OrderService(repository);
+        
+        // First retrieval - creates and caches the order
+        Order order1 = service.getOrder("ORD-001");
+        System.out.println("First fetch: " + order1.getOrderId());
+        
+        // Second retrieval - returns cached instance
+        Order order2 = service.getOrder("ORD-001");
+        System.out.println("Second fetch: " + order2.getOrderId());
+        
+        // Verify identity map behavior
+        System.out.println("Same object? " + (order1 == order2));
+        
+        // Create new order
+        Order order3 = service.createOrder("ORD-002", BigDecimal.valueOf(250.00));
+        System.out.println("New order: " + order3.getOrderId());
+    }
+}
+```

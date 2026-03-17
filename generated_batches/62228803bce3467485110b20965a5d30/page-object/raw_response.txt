@@ -1,0 +1,113 @@
+### FILE: OrderPage.java
+```java
+package com.ecommerce.order.pageobject;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class OrderPage {
+    private WebDriver driver;
+    
+    @FindBy(id = "order-id")
+    private WebElement orderIdField;
+    
+    @FindBy(id = "customer-name")
+    private WebElement customerNameField;
+    
+    @FindBy(id = "product-list")
+    private WebElement productList;
+    
+    @FindBy(id = "total-amount")
+    private WebElement totalAmountField;
+    
+    @FindBy(id = "submit-order")
+    private WebElement submitButton;
+    
+    public OrderPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+    
+    public void enterOrderId(String orderId) {
+        orderIdField.clear();
+        orderIdField.sendKeys(orderId);
+    }
+    
+    public void enterCustomerName(String customerName) {
+        customerNameField.clear();
+        customerNameField.sendKeys(customerName);
+    }
+    
+    public void selectProducts(String... products) {
+        for (String product : products) {
+            WebElement productElement = driver.findElement(
+                org.openqa.selenium.By.xpath("//option[text()='" + product + "']"));
+            productElement.click();
+        }
+    }
+    
+    public String getTotalAmount() {
+        return totalAmountField.getText();
+    }
+    
+    public void submitOrder() {
+        submitButton.click();
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+package com.ecommerce.order.pageobject;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class OrderManagementSystem {
+    private WebDriver driver;
+    private OrderPage orderPage;
+    
+    public OrderManagementSystem() {
+        this.driver = new ChromeDriver();
+        this.orderPage = new OrderPage(driver);
+    }
+    
+    public void createNewOrder(String orderId, String customerName, String... products) {
+        driver.get("https://ecommerce.example.com/order/new");
+        
+        orderPage.enterOrderId(orderId);
+        orderPage.enterCustomerName(customerName);
+        orderPage.selectProducts(products);
+        
+        System.out.println("Total amount: " + orderPage.getTotalAmount());
+        orderPage.submitOrder();
+    }
+    
+    public void close() {
+        driver.quit();
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.ecommerce.order.pageobject;
+
+public class OrderService {
+    private OrderManagementSystem orderSystem;
+    
+    public OrderService() {
+        this.orderSystem = new OrderManagementSystem();
+    }
+    
+    public void processOrder(String orderId, String customerName, String... products) {
+        orderSystem.createNewOrder(orderId, customerName, products);
+    }
+    
+    public void cleanup() {
+        orderSystem.close();
+    }
+}
+```

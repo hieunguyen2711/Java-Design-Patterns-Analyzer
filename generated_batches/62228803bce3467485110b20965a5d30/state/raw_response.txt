@@ -1,0 +1,133 @@
+### FILE: Order.java
+```java
+public class Order {
+    private OrderState state;
+    
+    public Order() {
+        this.state = new PendingState();
+    }
+    
+    public void setState(OrderState state) {
+        this.state = state;
+    }
+    
+    public void processOrder() {
+        state.processOrder(this);
+    }
+    
+    public void shipOrder() {
+        state.shipOrder(this);
+    }
+    
+    public void deliverOrder() {
+        state.deliverOrder(this);
+    }
+}
+```
+
+### FILE: OrderState.java
+```java
+public interface OrderState {
+    void processOrder(Order order);
+    void shipOrder(Order order);
+    void deliverOrder(Order order);
+}
+```
+
+### FILE: PendingState.java
+```java
+public class PendingState implements OrderState {
+    @Override
+    public void processOrder(Order order) {
+        System.out.println("Order is being processed...");
+        order.setState(new ProcessingState());
+    }
+    
+    @Override
+    public void shipOrder(Order order) {
+        System.out.println("Cannot ship order - it's not processed yet");
+    }
+    
+    @Override
+    public void deliverOrder(Order order) {
+        System.out.println("Cannot deliver order - it's not shipped yet");
+    }
+}
+```
+
+### FILE: ProcessingState.java
+```java
+public class ProcessingState implements OrderState {
+    @Override
+    public void processOrder(Order order) {
+        System.out.println("Order is already being processed");
+    }
+    
+    @Override
+    public void shipOrder(Order order) {
+        System.out.println("Order is being shipped...");
+        order.setState(new ShippedState());
+    }
+    
+    @Override
+    public void deliverOrder(Order order) {
+        System.out.println("Cannot deliver order - it's not shipped yet");
+    }
+}
+```
+
+### FILE: ShippedState.java
+```java
+public class ShippedState implements OrderState {
+    @Override
+    public void processOrder(Order order) {
+        System.out.println("Order is already processed");
+    }
+    
+    @Override
+    public void shipOrder(Order order) {
+        System.out.println("Order is already shipped");
+    }
+    
+    @Override
+    public void deliverOrder(Order order) {
+        System.out.println("Order is being delivered...");
+        order.setState(new DeliveredState());
+    }
+}
+```
+
+### FILE: DeliveredState.java
+```java
+public class DeliveredState implements OrderState {
+    @Override
+    public void processOrder(Order order) {
+        System.out.println("Order is already delivered");
+    }
+    
+    @Override
+    public void shipOrder(Order order) {
+        System.out.println("Order is already delivered");
+    }
+    
+    @Override
+    public void deliverOrder(Order order) {
+        System.out.println("Order has already been delivered");
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+public class OrderManagementSystem {
+    public static void main(String[] args) {
+        Order order = new Order();
+        
+        order.processOrder();  // Pending -> Processing
+        order.shipOrder();     // Processing -> Shipped
+        order.deliverOrder();  // Shipped -> Delivered
+        
+        order.deliverOrder();  // Delivered state
+    }
+}
+```

@@ -1,0 +1,57 @@
+### FILE: OrderService.java
+```java
+public interface OrderService {
+    void processOrder(String orderId);
+}
+```
+
+### FILE: RealOrderService.java
+```java
+public class RealOrderService implements OrderService {
+    @Override
+    public void processOrder(String orderId) {
+        System.out.println("Processing order: " + orderId);
+    }
+}
+```
+
+### FILE: OrderServiceProxy.java
+```java
+public class OrderServiceProxy implements OrderService {
+    private RealOrderService realOrderService;
+    private String currentUser;
+
+    public OrderServiceProxy(String currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    @Override
+    public void processOrder(String orderId) {
+        if (currentUser == null || currentUser.isEmpty()) {
+            throw new SecurityException("User not authenticated");
+        }
+        
+        System.out.println("Validating user permissions for: " + currentUser);
+        
+        if (realOrderService == null) {
+            realOrderService = new RealOrderService();
+        }
+        
+        realOrderService.processOrder(orderId);
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+public class OrderManagementSystem {
+    public static void main(String[] args) {
+        OrderService orderService = new OrderServiceProxy("admin");
+        orderService.processOrder("ORD-12345");
+        
+        // This would throw an exception
+        // OrderService invalidService = new OrderServiceProxy("");
+        // invalidService.processOrder("ORD-67890");
+    }
+}
+```

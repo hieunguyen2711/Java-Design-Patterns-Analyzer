@@ -1,0 +1,115 @@
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package com.ecommerce.order;
+
+public interface PaymentProcessor {
+    void processPayment(Order order);
+}
+```
+
+### FILE: CreditCardPaymentProcessor.java
+```java
+package com.ecommerce.order;
+
+public class CreditCardPaymentProcessor implements PaymentProcessor, SerializableOrder {
+    @Override
+    public void processPayment(Order order) {
+        System.out.println("Processing credit card payment for order: " + order.getOrderId());
+    }
+}
+```
+
+### FILE: PayPalPaymentProcessor.java
+```java
+package com.ecommerce.order;
+
+public class PayPalPaymentProcessor implements PaymentProcessor, SerializableOrder {
+    @Override
+    public void processPayment(Order order) {
+        System.out.println("Processing PayPal payment for order: " + order.getOrderId());
+    }
+}
+```
+
+### FILE: SerializableOrder.java
+```java
+package com.ecommerce.order;
+
+public interface SerializableOrder {
+    // Marker interface - no methods required
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.ecommerce.order;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderService {
+    private List<Order> orders;
+    
+    public OrderService() {
+        this.orders = new ArrayList<>();
+    }
+    
+    public void addOrder(Order order) {
+        orders.add(order);
+    }
+    
+    public void processPayments(List<PaymentProcessor> processors) {
+        for (Order order : orders) {
+            for (PaymentProcessor processor : processors) {
+                if (processor instanceof SerializableOrder) {
+                    processor.processPayment(order);
+                }
+            }
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService orderService = new OrderService();
+        
+        orderService.addOrder(new Order("ORD001", 150.00));
+        orderService.addOrder(new Order("ORD002", 275.50));
+        
+        PaymentProcessor creditCardProcessor = new CreditCardPaymentProcessor();
+        PaymentProcessor payPalProcessor = new PayPalPaymentProcessor();
+        
+        orderService.processPayments(Arrays.asList(creditCardProcessor, payPalProcessor));
+    }
+}
+```

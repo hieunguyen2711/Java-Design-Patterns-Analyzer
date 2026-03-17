@@ -1,0 +1,119 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private OrderStatus status;
+    
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package ecommerce.order;
+
+public enum OrderStatus {
+    PENDING,
+    PROCESSING,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package ecommerce.order;
+
+import java.util.concurrent.locks.ReentrantLock;
+
+public class OrderProcessor {
+    private final ReentrantLock lock = new ReentrantLock();
+    
+    public void processOrder(Order order) {
+        // Balking pattern - only process if order is in PENDING state
+        if (!lock.tryLock()) {
+            // Another thread is already processing this order
+            return;
+        }
+        
+        try {
+            if (order.getStatus() != OrderStatus.PENDING) {
+                // Balking: don't process orders that are not pending
+                return;
+            }
+            
+            // Simulate order processing
+            System.out.println("Processing order " + order.getOrderId());
+            Thread.sleep(1000); // Simulate work
+            
+            order.setStatus(OrderStatus.PROCESSING);
+            System.out.println("Order " + order.getOrderId() + " is now PROCESSING");
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+public class OrderService {
+    private final OrderProcessor processor;
+    
+    public OrderService() {
+        this.processor = new OrderProcessor();
+    }
+    
+    public void submitOrder(Order order) {
+        // This method might be called multiple times for the same order
+        // Balking pattern prevents duplicate processing
+        processor.processOrder(order);
+        
+        // Simulate another attempt to process (this will be balked)
+        processor.processOrder(order);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService service = new OrderService();
+        Order order = new Order("ORD-001");
+        
+        System.out.println("Initial status: " + order.getStatus());
+        
+        // Submit the same order multiple times to demonstrate balking
+        service.submitOrder(order);
+        service.submitOrder(order);
+        service.submitOrder(order);
+        
+        System.out.println("Final status: " + order.getStatus());
+    }
+}
+```

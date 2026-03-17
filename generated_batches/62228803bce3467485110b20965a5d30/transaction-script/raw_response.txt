@@ -1,0 +1,132 @@
+### FILE: Order.java
+```java
+public class Order {
+    private int orderId;
+    private String customerName;
+    private double totalAmount;
+    
+    public Order(int orderId, String customerName, double totalAmount) {
+        this.orderId = orderId;
+        this.customerName = customerName;
+        this.totalAmount = totalAmount;
+    }
+    
+    // Getters and setters
+    public int getOrderId() { return orderId; }
+    public void setOrderId(int orderId) { this.orderId = orderId; }
+    
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+    
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+}
+```
+
+### FILE: OrderService.java
+```java
+public class OrderService {
+    private OrderRepository orderRepository;
+    private PaymentProcessor paymentProcessor;
+    private InventoryManager inventoryManager;
+    
+    public OrderService() {
+        this.orderRepository = new OrderRepository();
+        this.paymentProcessor = new PaymentProcessor();
+        this.inventoryManager = new InventoryManager();
+    }
+    
+    // Transaction script method - all steps in one method
+    public boolean processOrder(int orderId, String customerName, double amount, String paymentMethod) {
+        try {
+            // Step 1: Validate order
+            if (orderId <= 0 || amount <= 0) {
+                System.out.println("Invalid order data");
+                return false;
+            }
+            
+            // Step 2: Check inventory availability
+            if (!inventoryManager.checkInventory(amount)) {
+                System.out.println("Insufficient inventory");
+                return false;
+            }
+            
+            // Step 3: Process payment
+            if (!paymentProcessor.processPayment(amount, paymentMethod)) {
+                System.out.println("Payment processing failed");
+                return false;
+            }
+            
+            // Step 4: Create order record
+            Order newOrder = new Order(orderId, customerName, amount);
+            orderRepository.save(newOrder);
+            
+            // Step 5: Update inventory
+            inventoryManager.updateInventory(amount);
+            
+            System.out.println("Order processed successfully");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error processing order: " + e.getMessage());
+            return false;
+        }
+    }
+}
+```
+
+### FILE: OrderRepository.java
+```java
+public class OrderRepository {
+    public void save(Order order) {
+        // Simulate saving to database
+        System.out.println("Saving order " + order.getOrderId() + " for customer " + 
+                          order.getCustomerName() + " with amount $" + order.getTotalAmount());
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+public class PaymentProcessor {
+    public boolean processPayment(double amount, String paymentMethod) {
+        // Simulate payment processing
+        System.out.println("Processing payment of $" + amount + " via " + paymentMethod);
+        return true; // Assume all payments succeed for this example
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+public class InventoryManager {
+    private double currentInventory = 1000.0;
+    
+    public boolean checkInventory(double requiredAmount) {
+        System.out.println("Checking inventory for " + requiredAmount);
+        return currentInventory >= requiredAmount;
+    }
+    
+    public void updateInventory(double amount) {
+        currentInventory -= amount;
+        System.out.println("Updated inventory to " + currentInventory);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        OrderService orderService = new OrderService();
+        
+        // Process a sample order using transaction script pattern
+        boolean success = orderService.processOrder(101, "John Doe", 250.0, "credit_card");
+        
+        if (success) {
+            System.out.println("Order successfully processed!");
+        } else {
+            System.out.println("Order processing failed!");
+        }
+    }
+}
+```

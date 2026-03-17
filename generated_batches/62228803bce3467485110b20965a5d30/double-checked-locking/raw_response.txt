@@ -1,0 +1,78 @@
+### FILE: OrderService.java
+```java
+package com.ecommerce.order;
+
+public class OrderService {
+    private static volatile OrderService instance;
+    
+    private OrderService() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static OrderService getInstance() {
+        if (instance == null) {
+            synchronized (OrderService.class) {
+                if (instance == null) {
+                    instance = new OrderService();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void processOrder(String orderId) {
+        System.out.println("Processing order: " + orderId);
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package com.ecommerce.order;
+
+public class OrderProcessor {
+    private final OrderService orderService;
+    
+    public OrderProcessor() {
+        this.orderService = OrderService.getInstance();
+    }
+    
+    public void handleOrder(String orderId) {
+        orderService.processOrder(orderId);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderProcessor processor1 = new OrderProcessor();
+        OrderProcessor processor2 = new OrderProcessor();
+        
+        processor1.handleOrder("ORD-001");
+        processor2.handleOrder("ORD-002");
+        
+        System.out.println("Singleton instance check: " + 
+            (processor1.getOrderService() == processor2.getOrderService()));
+    }
+    
+    private static class OrderProcessor {
+        private final OrderService orderService;
+        
+        public OrderProcessor() {
+            this.orderService = OrderService.getInstance();
+        }
+        
+        public OrderService getOrderService() {
+            return orderService;
+        }
+        
+        public void handleOrder(String orderId) {
+            orderService.processOrder(orderId);
+        }
+    }
+}
+```

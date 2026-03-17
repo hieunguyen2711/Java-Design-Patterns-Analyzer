@@ -1,0 +1,94 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package ecommerce.order;
+
+import java.util.function.Function;
+
+public class OrderProcessor {
+    private Function<Order, Double> discountCalculator;
+    private Function<Double, Double> taxCalculator;
+    private Function<Double, Double> shippingCalculator;
+    
+    public OrderProcessor(Function<Order, Double> discountCalculator,
+                         Function<Double, Double> taxCalculator,
+                         Function<Double, Double> shippingCalculator) {
+        this.discountCalculator = discountCalculator;
+        this.taxCalculator = taxCalculator;
+        this.shippingCalculator = shippingCalculator;
+    }
+    
+    public double processOrder(Order order) {
+        return shippingCalculator.apply(
+            taxCalculator.apply(
+                discountCalculator.apply(order)
+            )
+        );
+    }
+}
+```
+
+### FILE: OrderProcessingService.java
+```java
+package ecommerce.order;
+
+import java.util.function.Function;
+
+public class OrderProcessingService {
+    private static final Function<Order, Double> DISCOUNT_CALCULATOR = 
+        order -> order.getAmount() * 0.9;
+    
+    private static final Function<Double, Double> TAX_CALCULATOR = 
+        amount -> amount * 1.08;
+    
+    private static final Function<Double, Double> SHIPPING_CALCULATOR = 
+        amount -> amount + 5.0;
+    
+    public double calculateFinalAmount(Order order) {
+        OrderProcessor processor = new OrderProcessor(
+            DISCOUNT_CALCULATOR,
+            TAX_CALCULATOR,
+            SHIPPING_CALCULATOR
+        );
+        
+        return processor.processOrder(order);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        Order order = new Order("ORD001", 100.0);
+        OrderProcessingService service = new OrderProcessingService();
+        
+        double finalAmount = service.calculateFinalAmount(order);
+        System.out.println("Final amount: $" + finalAmount);
+    }
+}
+```

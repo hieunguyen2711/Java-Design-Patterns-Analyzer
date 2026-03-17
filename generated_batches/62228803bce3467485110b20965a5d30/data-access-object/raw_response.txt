@@ -1,0 +1,155 @@
+### FILE: Order.java
+```java
+public class Order {
+    private int id;
+    private String customerName;
+    private double totalAmount;
+    
+    public Order(int id, String customerName, double totalAmount) {
+        this.id = id;
+        this.customerName = customerName;
+        this.totalAmount = totalAmount;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+    
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+}
+```
+
+### FILE: OrderDAO.java
+```java
+import java.util.List;
+
+public interface OrderDAO {
+    void save(Order order);
+    Order findById(int id);
+    List<Order> findAll();
+    void update(Order order);
+    void delete(int id);
+}
+```
+
+### FILE: OrderDAOImpl.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderDAOImpl implements OrderDAO {
+    private List<Order> orders;
+    
+    public OrderDAOImpl() {
+        this.orders = new ArrayList<>();
+    }
+    
+    @Override
+    public void save(Order order) {
+        orders.add(order);
+    }
+    
+    @Override
+    public Order findById(int id) {
+        for (Order order : orders) {
+            if (order.getId() == id) {
+                return order;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Order> findAll() {
+        return new ArrayList<>(orders);
+    }
+    
+    @Override
+    public void update(Order order) {
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getId() == order.getId()) {
+                orders.set(i, order);
+                break;
+            }
+        }
+    }
+    
+    @Override
+    public void delete(int id) {
+        orders.removeIf(order -> order.getId() == id);
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+import java.util.List;
+
+public class OrderService {
+    private OrderDAO orderDAO;
+    
+    public OrderService(OrderDAO orderDAO) {
+        this.orderDAO = orderDAO;
+    }
+    
+    public void createOrder(int id, String customerName, double totalAmount) {
+        Order order = new Order(id, customerName, totalAmount);
+        orderDAO.save(order);
+    }
+    
+    public Order getOrderById(int id) {
+        return orderDAO.findById(id);
+    }
+    
+    public List<Order> getAllOrders() {
+        return orderDAO.findAll();
+    }
+    
+    public void updateOrder(int id, String customerName, double totalAmount) {
+        Order order = new Order(id, customerName, totalAmount);
+        orderDAO.update(order);
+    }
+    
+    public void deleteOrder(int id) {
+        orderDAO.delete(id);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderDAO orderDAO = new OrderDAOImpl();
+        OrderService orderService = new OrderService(orderDAO);
+        
+        // Create orders
+        orderService.createOrder(1, "John Doe", 250.00);
+        orderService.createOrder(2, "Jane Smith", 175.50);
+        
+        // Retrieve all orders
+        List<Order> orders = orderService.getAllOrders();
+        for (Order order : orders) {
+            System.out.println("Order ID: " + order.getId() + 
+                             ", Customer: " + order.getCustomerName() + 
+                             ", Amount: $" + order.getTotalAmount());
+        }
+        
+        // Update an order
+        orderService.updateOrder(1, "John Doe Updated", 300.00);
+        
+        // Retrieve specific order
+        Order foundOrder = orderService.getOrderById(1);
+        if (foundOrder != null) {
+            System.out.println("Found order: " + foundOrder.getCustomerName() + 
+                             " - $" + foundOrder.getTotalAmount());
+        }
+    }
+}
+```

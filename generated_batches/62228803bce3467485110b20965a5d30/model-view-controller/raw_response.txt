@@ -1,0 +1,176 @@
+### FILE: Order.java
+```java
+package ecommerce.model;
+
+public class Order {
+    private String orderId;
+    private double totalAmount;
+    private String status;
+
+    public Order(String orderId, double totalAmount) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+        this.status = "PENDING";
+    }
+
+    // Getters and setters
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderModel.java
+```java
+package ecommerce.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderModel {
+    private List<Order> orders;
+    
+    public OrderModel() {
+        this.orders = new ArrayList<>();
+    }
+    
+    public void addOrder(Order order) {
+        orders.add(order);
+    }
+    
+    public List<Order> getAllOrders() {
+        return orders;
+    }
+    
+    public Order getOrderById(String orderId) {
+        for (Order order : orders) {
+            if (order.getOrderId().equals(orderId)) {
+                return order;
+            }
+        }
+        return null;
+    }
+    
+    public void updateOrderStatus(String orderId, String status) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            order.setStatus(status);
+        }
+    }
+}
+```
+
+### FILE: OrderView.java
+```java
+package ecommerce.view;
+
+import ecommerce.model.Order;
+import java.util.List;
+
+public class OrderView {
+    
+    public void displayOrder(Order order) {
+        System.out.println("Order ID: " + order.getOrderId());
+        System.out.println("Total Amount: $" + order.getTotalAmount());
+        System.out.println("Status: " + order.getStatus());
+        System.out.println("------------------------");
+    }
+    
+    public void displayOrders(List<Order> orders) {
+        System.out.println("=== All Orders ===");
+        for (Order order : orders) {
+            displayOrder(order);
+        }
+    }
+}
+```
+
+### FILE: OrderController.java
+```java
+package ecommerce.controller;
+
+import ecommerce.model.Order;
+import ecommerce.model.OrderModel;
+import ecommerce.view.OrderView;
+
+public class OrderController {
+    private OrderModel model;
+    private OrderView view;
+    
+    public OrderController(OrderModel model, OrderView view) {
+        this.model = model;
+        this.view = view;
+    }
+    
+    public void createOrder(String orderId, double amount) {
+        Order order = new Order(orderId, amount);
+        model.addOrder(order);
+        System.out.println("Order created successfully!");
+    }
+    
+    public void updateOrderStatus(String orderId, String status) {
+        model.updateOrderStatus(orderId, status);
+        System.out.println("Order status updated successfully!");
+    }
+    
+    public void displayAllOrders() {
+        view.displayOrders(model.getAllOrders());
+    }
+    
+    public void displayOrder(String orderId) {
+        Order order = model.getOrderById(orderId);
+        if (order != null) {
+            view.displayOrder(order);
+        } else {
+            System.out.println("Order not found!");
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce;
+
+import ecommerce.controller.OrderController;
+import ecommerce.model.OrderModel;
+import ecommerce.view.OrderView;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create model, view and controller
+        OrderModel model = new OrderModel();
+        OrderView view = new OrderView();
+        OrderController controller = new OrderController(model, view);
+        
+        // Use the MVC pattern to manage orders
+        controller.createOrder("ORD001", 299.99);
+        controller.createOrder("ORD002", 149.50);
+        
+        controller.displayAllOrders();
+        
+        controller.updateOrderStatus("ORD001", "SHIPPED");
+        controller.displayOrder("ORD001");
+    }
+}
+```

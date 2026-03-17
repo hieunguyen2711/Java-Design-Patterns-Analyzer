@@ -1,0 +1,87 @@
+### FILE: Order.java
+```java
+public class Order {
+    private String orderId;
+    private Product product;
+    private int quantity;
+    
+    public Order(String orderId, Product product, int quantity) {
+        this.orderId = orderId;
+        this.product = product;
+        this.quantity = quantity;
+    }
+    
+    public double getTotalPrice() {
+        return product.getPrice() * quantity;
+    }
+    
+    // Getters
+    public String getOrderId() { return orderId; }
+    public Product getProduct() { return product; }
+    public int getQuantity() { return quantity; }
+}
+```
+
+### FILE: Product.java
+```java
+public class Product {
+    private String productId;
+    private String name;
+    private double price;
+    
+    public Product(String productId, String name, double price) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+    }
+    
+    // Getters
+    public String getProductId() { return productId; }
+    public String getName() { return name; }
+    public double getPrice() { return price; }
+}
+```
+
+### FILE: ProductFactory.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ProductFactory {
+    private static final Map<String, Product> productCache = new HashMap<>();
+    
+    public static Product getProduct(String productId, String name, double price) {
+        if (productCache.containsKey(productId)) {
+            return productCache.get(productId);
+        }
+        
+        Product product = new Product(productId, name, price);
+        productCache.put(productId, product);
+        return product;
+    }
+    
+    public static int getCacheSize() {
+        return productCache.size();
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+public class OrderProcessor {
+    public static void main(String[] args) {
+        // Creating orders with shared products using flyweight pattern
+        Order order1 = new Order("O001", ProductFactory.getProduct("P001", "Laptop", 999.99), 1);
+        Order order2 = new Order("O002", ProductFactory.getProduct("P001", "Laptop", 999.99), 2);
+        Order order3 = new Order("O003", ProductFactory.getProduct("P002", "Mouse", 29.99), 3);
+        Order order4 = new Order("O004", ProductFactory.getProduct("P001", "Laptop", 999.99), 1);
+        
+        System.out.println("Order 1 Total: $" + order1.getTotalPrice());
+        System.out.println("Order 2 Total: $" + order2.getTotalPrice());
+        System.out.println("Order 3 Total: $" + order3.getTotalPrice());
+        System.out.println("Order 4 Total: $" + order4.getTotalPrice());
+        
+        System.out.println("Number of unique products in cache: " + ProductFactory.getCacheSize());
+    }
+}
+```

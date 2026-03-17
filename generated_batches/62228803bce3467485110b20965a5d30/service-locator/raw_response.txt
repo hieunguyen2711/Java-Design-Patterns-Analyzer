@@ -1,0 +1,96 @@
+### FILE: OrderService.java
+```java
+public interface OrderService {
+    void processOrder(String orderId);
+}
+```
+
+### FILE: PaymentService.java
+```java
+public interface PaymentService {
+    void processPayment(String paymentId);
+}
+```
+
+### FILE: InventoryService.java
+```java
+public interface InventoryService {
+    boolean checkInventory(String productId);
+}
+```
+
+### FILE: OrderServiceImpl.java
+```java
+public class OrderServiceImpl implements OrderService {
+    @Override
+    public void processOrder(String orderId) {
+        System.out.println("Processing order: " + orderId);
+    }
+}
+```
+
+### FILE: PaymentServiceImpl.java
+```java
+public class PaymentServiceImpl implements PaymentService {
+    @Override
+    public void processPayment(String paymentId) {
+        System.out.println("Processing payment: " + paymentId);
+    }
+}
+```
+
+### FILE: InventoryServiceImpl.java
+```java
+public class InventoryServiceImpl implements InventoryService {
+    @Override
+    public boolean checkInventory(String productId) {
+        System.out.println("Checking inventory for product: " + productId);
+        return true;
+    }
+}
+```
+
+### FILE: ServiceLocator.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ServiceLocator {
+    private static Map<String, Object> services = new HashMap<>();
+    
+    public static void registerService(String serviceName, Object service) {
+        services.put(serviceName, service);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> T getService(Class<T> serviceClass) {
+        for (Object service : services.values()) {
+            if (serviceClass.isInstance(service)) {
+                return (T) service;
+            }
+        }
+        return null;
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+public class OrderManagementSystem {
+    public static void main(String[] args) {
+        // Register services with the locator
+        ServiceLocator.registerService("OrderService", new OrderServiceImpl());
+        ServiceLocator.registerService("PaymentService", new PaymentServiceImpl());
+        ServiceLocator.registerService("InventoryService", new InventoryServiceImpl());
+        
+        // Use services through the service locator
+        OrderService orderService = ServiceLocator.getService(OrderService.class);
+        PaymentService paymentService = ServiceLocator.getService(PaymentService.class);
+        InventoryService inventoryService = ServiceLocator.getService(InventoryService.class);
+        
+        orderService.processOrder("ORD-123");
+        paymentService.processPayment("PAY-456");
+        inventoryService.checkInventory("PROD-789");
+    }
+}
+```

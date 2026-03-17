@@ -1,0 +1,108 @@
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double totalAmount;
+    private String status;
+    
+    public Order(String orderId, double totalAmount, String status) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
+    
+    // Getters and setters
+    public String getOrderId() { return orderId; }
+    public void setOrderId(String orderId) { this.orderId = orderId; }
+    
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+}
+```
+
+### FILE: OrderViewHelper.java
+```java
+package com.ecommerce.order;
+
+public class OrderViewHelper {
+    private Order order;
+    
+    public OrderViewHelper(Order order) {
+        this.order = order;
+    }
+    
+    public String getFormattedTotal() {
+        return "$" + String.format("%.2f", order.getTotalAmount());
+    }
+    
+    public String getStatusBadgeClass() {
+        switch (order.getStatus().toLowerCase()) {
+            case "pending":
+                return "badge-warning";
+            case "shipped":
+                return "badge-info";
+            case "delivered":
+                return "badge-success";
+            default:
+                return "badge-secondary";
+        }
+    }
+    
+    public String getStatusText() {
+        return order.getStatus().substring(0, 1).toUpperCase() + 
+               order.getStatus().substring(1).toLowerCase();
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.ecommerce.order;
+
+public class OrderService {
+    private Order order;
+    
+    public OrderService(Order order) {
+        this.order = order;
+    }
+    
+    public void processOrder() {
+        // Simulate order processing logic
+        System.out.println("Processing order: " + order.getOrderId());
+        order.setStatus("shipped");
+    }
+    
+    public OrderViewHelper getViewHelper() {
+        return new OrderViewHelper(order);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create an order
+        Order order = new Order("ORD-001", 299.99, "pending");
+        
+        // Process the order
+        OrderService service = new OrderService(order);
+        service.processOrder();
+        
+        // Use view helper to format display data
+        OrderViewHelper viewHelper = service.getViewHelper();
+        
+        System.out.println("Order ID: " + order.getOrderId());
+        System.out.println("Total Amount: " + viewHelper.getFormattedTotal());
+        System.out.println("Status: <span class=\"" + viewHelper.getStatusBadgeClass() + "\">" 
+                          + viewHelper.getStatusText() + "</span>");
+    }
+}
+```

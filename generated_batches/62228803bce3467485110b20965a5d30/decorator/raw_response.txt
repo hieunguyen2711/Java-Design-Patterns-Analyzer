@@ -1,0 +1,112 @@
+### FILE: Order.java
+```java
+public interface Order {
+    double getTotalPrice();
+    String getDescription();
+}
+```
+
+### FILE: BasicOrder.java
+```java
+public class BasicOrder implements Order {
+    private double price;
+    private String description;
+    
+    public BasicOrder(double price, String description) {
+        this.price = price;
+        this.description = description;
+    }
+    
+    @Override
+    public double getTotalPrice() {
+        return price;
+    }
+    
+    @Override
+    public String getDescription() {
+        return description;
+    }
+}
+```
+
+### FILE: OrderDecorator.java
+```java
+public abstract class OrderDecorator implements Order {
+    protected Order order;
+    
+    public OrderDecorator(Order order) {
+        this.order = order;
+    }
+    
+    @Override
+    public double getTotalPrice() {
+        return order.getTotalPrice();
+    }
+    
+    @Override
+    public String getDescription() {
+        return order.getDescription();
+    }
+}
+```
+
+### FILE: ShippingDecorator.java
+```java
+public class ShippingDecorator extends OrderDecorator {
+    private double shippingCost;
+    
+    public ShippingDecorator(Order order, double shippingCost) {
+        super(order);
+        this.shippingCost = shippingCost;
+    }
+    
+    @Override
+    public double getTotalPrice() {
+        return order.getTotalPrice() + shippingCost;
+    }
+    
+    @Override
+    public String getDescription() {
+        return order.getDescription() + " + Shipping";
+    }
+}
+```
+
+### FILE: TaxDecorator.java
+```java
+public class TaxDecorator extends OrderDecorator {
+    private double taxRate;
+    
+    public TaxDecorator(Order order, double taxRate) {
+        super(order);
+        this.taxRate = taxRate;
+    }
+    
+    @Override
+    public double getTotalPrice() {
+        return order.getTotalPrice() * (1 + taxRate);
+    }
+    
+    @Override
+    public String getDescription() {
+        return order.getDescription() + " + Tax";
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+public class OrderProcessor {
+    public static void main(String[] args) {
+        Order basicOrder = new BasicOrder(100.0, "Basic Order");
+        
+        Order decoratedOrder = new TaxDecorator(
+            new ShippingDecorator(basicOrder, 10.0), 
+            0.08
+        );
+        
+        System.out.println("Description: " + decoratedOrder.getDescription());
+        System.out.println("Total Price: $" + decoratedOrder.getTotalPrice());
+    }
+}
+```

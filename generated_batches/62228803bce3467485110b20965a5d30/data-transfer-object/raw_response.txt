@@ -1,0 +1,153 @@
+### FILE: Order.java
+```java
+package com.example.ordermanagement;
+
+public class Order {
+    private String orderId;
+    private String customerId;
+    private double totalAmount;
+    
+    public Order(String orderId, String customerId, double totalAmount) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+    }
+    
+    // Getters and setters
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+}
+```
+
+### FILE: OrderDTO.java
+```java
+package com.example.ordermanagement;
+
+public class OrderDTO {
+    private String orderId;
+    private String customerId;
+    private double totalAmount;
+    
+    // Constructor
+    public OrderDTO(String orderId, String customerId, double totalAmount) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+    }
+    
+    // Getters and setters
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package com.example.ordermanagement;
+
+public class OrderService {
+    
+    public OrderDTO getOrderDetails(String orderId) {
+        // Simulate fetching order from database
+        Order order = new Order(orderId, "CUST-123", 299.99);
+        
+        // Transform Order to OrderDTO for transfer
+        return new OrderDTO(
+            order.getOrderId(),
+            order.getCustomerId(), 
+            order.getTotalAmount()
+        );
+    }
+    
+    public void processOrder(OrderDTO orderDTO) {
+        // Process the order using DTO data
+        System.out.println("Processing order: " + orderDTO.getOrderId() + 
+                          " for customer: " + orderDTO.getCustomerId());
+    }
+}
+```
+
+### FILE: OrderController.java
+```java
+package com.example.ordermanagement;
+
+public class OrderController {
+    
+    private OrderService orderService;
+    
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+    
+    public void handleOrderRequest(String orderId) {
+        // Get order data as DTO for transfer
+        OrderDTO orderDTO = orderService.getOrderDetails(orderId);
+        
+        // Use the DTO to process the order
+        orderService.processOrder(orderDTO);
+        
+        // Display transferred data
+        System.out.println("Transferred Order Details:");
+        System.out.println("Order ID: " + orderDTO.getOrderId());
+        System.out.println("Customer ID: " + orderDTO.getCustomerId());
+        System.out.println("Total Amount: $" + orderDTO.getTotalAmount());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.ordermanagement;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService orderService = new OrderService();
+        OrderController controller = new OrderController(orderService);
+        
+        // Simulate handling an order request
+        controller.handleOrderRequest("ORD-456");
+    }
+}
+```

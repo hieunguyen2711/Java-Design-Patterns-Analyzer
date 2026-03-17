@@ -1,0 +1,106 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package ecommerce.order;
+
+public class OrderProcessor {
+    private volatile Order currentOrder;
+    private Order pendingOrder;
+    
+    public OrderProcessor() {
+        this.currentOrder = null;
+        this.pendingOrder = null;
+    }
+    
+    public void processOrder(Order order) {
+        // Double buffering: switch between current and pending buffers
+        if (currentOrder == null) {
+            currentOrder = order;
+        } else {
+            pendingOrder = order;
+        }
+    }
+    
+    public Order getCurrentOrder() {
+        return currentOrder;
+    }
+    
+    public void swapBuffers() {
+        if (pendingOrder != null) {
+            currentOrder = pendingOrder;
+            pendingOrder = null;
+        }
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+public class OrderService {
+    private OrderProcessor orderProcessor;
+    
+    public OrderService() {
+        this.orderProcessor = new OrderProcessor();
+    }
+    
+    public void submitOrder(String orderId, double amount) {
+        Order newOrder = new Order(orderId, amount);
+        orderProcessor.processOrder(newOrder);
+        
+        // Simulate processing
+        orderProcessor.swapBuffers();
+    }
+    
+    public Order getCurrentOrder() {
+        return orderProcessor.getCurrentOrder();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderService service = new OrderService();
+        
+        // Submit orders to demonstrate double buffering
+        service.submitOrder("ORD-001", 150.0);
+        System.out.println("Current order: " + service.getCurrentOrder().getOrderId() 
+                          + ", Amount: $" + service.getCurrentOrder().getAmount());
+        
+        service.submitOrder("ORD-002", 200.0);
+        System.out.println("Current order: " + service.getCurrentOrder().getOrderId() 
+                          + ", Amount: $" + service.getCurrentOrder().getAmount());
+    }
+}
+```

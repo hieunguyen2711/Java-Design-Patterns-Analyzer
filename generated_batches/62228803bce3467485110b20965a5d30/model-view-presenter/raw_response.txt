@@ -1,0 +1,209 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double totalAmount;
+    private String status;
+
+    public Order(String orderId, double totalAmount) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+        this.status = "PENDING";
+    }
+
+    // Getters and setters
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderView.java
+```java
+package ecommerce.order;
+
+public interface OrderView {
+    void displayOrderDetails(Order order);
+    void showSuccessMessage(String message);
+    void showErrorMessage(String message);
+    String getOrderIdInput();
+    double getTotalAmountInput();
+}
+```
+
+### FILE: OrderPresenter.java
+```java
+package ecommerce.order;
+
+public class OrderPresenter {
+    private OrderModel model;
+    private OrderView view;
+
+    public OrderPresenter(OrderModel model, OrderView view) {
+        this.model = model;
+        this.view = view;
+    }
+
+    public void createOrder() {
+        try {
+            String orderId = view.getOrderIdInput();
+            double totalAmount = view.getTotalAmountInput();
+            
+            Order order = new Order(orderId, totalAmount);
+            model.saveOrder(order);
+            
+            view.showSuccessMessage("Order created successfully!");
+            view.displayOrderDetails(order);
+        } catch (Exception e) {
+            view.showErrorMessage("Error creating order: " + e.getMessage());
+        }
+    }
+
+    public void loadOrder(String orderId) {
+        try {
+            Order order = model.getOrderById(orderId);
+            if (order != null) {
+                view.displayOrderDetails(order);
+            } else {
+                view.showErrorMessage("Order not found");
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Error loading order: " + e.getMessage());
+        }
+    }
+
+    public void updateOrderStatus(String orderId, String status) {
+        try {
+            model.updateOrderStatus(orderId, status);
+            view.showSuccessMessage("Order status updated successfully!");
+        } catch (Exception e) {
+            view.showErrorMessage("Error updating order status: " + e.getMessage());
+        }
+    }
+}
+```
+
+### FILE: OrderModel.java
+```java
+package ecommerce.order;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class OrderModel {
+    private Map<String, Order> orders;
+
+    public OrderModel() {
+        this.orders = new HashMap<>();
+    }
+
+    public void saveOrder(Order order) {
+        orders.put(order.getOrderId(), order);
+    }
+
+    public Order getOrderById(String orderId) {
+        return orders.get(orderId);
+    }
+
+    public void updateOrderStatus(String orderId, String status) {
+        Order order = orders.get(orderId);
+        if (order != null) {
+            order.setStatus(status);
+        }
+    }
+}
+```
+
+### FILE: ConsoleOrderView.java
+```java
+package ecommerce.order;
+
+import java.util.Scanner;
+
+public class ConsoleOrderView implements OrderView {
+    private Scanner scanner;
+
+    public ConsoleOrderView() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    @Override
+    public void displayOrderDetails(Order order) {
+        System.out.println("=== ORDER DETAILS ===");
+        System.out.println("Order ID: " + order.getOrderId());
+        System.out.println("Total Amount: $" + order.getTotalAmount());
+        System.out.println("Status: " + order.getStatus());
+        System.out.println("=====================");
+    }
+
+    @Override
+    public void showSuccessMessage(String message) {
+        System.out.println("[SUCCESS] " + message);
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        System.err.println("[ERROR] " + message);
+    }
+
+    @Override
+    public String getOrderIdInput() {
+        System.out.print("Enter Order ID: ");
+        return scanner.nextLine();
+    }
+
+    @Override
+    public double getTotalAmountInput() {
+        System.out.print("Enter Total Amount: $");
+        return Double.parseDouble(scanner.nextLine());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create components following MVP pattern
+        OrderModel model = new OrderModel();
+        ConsoleOrderView view = new ConsoleOrderView();
+        OrderPresenter presenter = new OrderPresenter(model, view);
+
+        // Simulate user interaction
+        System.out.println("E-Commerce Order Management System");
+        System.out.println("==================================");
+
+        // Create an order
+        presenter.createOrder();
+
+        // Load and update an order
+        String orderId = view.getOrderIdInput();
+        presenter.loadOrder(orderId);
+        presenter.updateOrderStatus(orderId, "SHIPPED");
+    }
+}
+```

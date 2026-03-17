@@ -1,0 +1,87 @@
+### FILE: Order.java
+```java
+package com.example.order;
+
+public class Order {
+    private final String orderId;
+    private final double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package com.example.order;
+
+import java.util.Optional;
+import java.util.function.Function;
+
+public class OrderProcessor {
+    
+    public Optional<Order> processOrder(String orderId) {
+        // Simulate order processing that might fail
+        if (orderId == null || orderId.isEmpty()) {
+            return Optional.empty();
+        }
+        
+        return Optional.of(new Order(orderId, 100.0));
+    }
+    
+    public Optional<Double> calculateDiscount(Order order) {
+        if (order == null) {
+            return Optional.empty();
+        }
+        
+        double discount = order.getAmount() * 0.1;
+        return Optional.of(discount);
+    }
+    
+    public Optional<Order> applyDiscount(Order order, Double discount) {
+        if (order == null || discount == null) {
+            return Optional.empty();
+        }
+        
+        double finalAmount = order.getAmount() - discount;
+        return Optional.of(new Order(order.getOrderId(), finalAmount));
+    }
+}
+```
+
+### FILE: OrderMonad.java
+```java
+package com.example.order;
+
+import java.util.Optional;
+import java.util.function.Function;
+
+public class OrderMonad {
+    
+    public static void main(String[] args) {
+        OrderProcessor processor = new OrderProcessor();
+        
+        // Using Optional as a monad to chain operations safely
+        String orderId = "ORD-123";
+        
+        Optional<Order> result = Optional.of(orderId)
+            .flatMap(processor::processOrder)
+            .flatMap(processor::calculateDiscount)
+            .flatMap(discount -> processor.applyDiscount(
+                processor.processOrder(orderId).orElse(null), discount));
+        
+        result.ifPresent(order -> 
+            System.out.println("Final order amount: " + order.getAmount()));
+    }
+}
+```

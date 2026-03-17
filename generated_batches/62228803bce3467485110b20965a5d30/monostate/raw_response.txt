@@ -1,0 +1,83 @@
+### FILE: OrderManager.java
+```java
+package ecommerce.order;
+
+public class OrderManager {
+    private static OrderManager instance;
+    
+    // Private constructor to prevent instantiation
+    private OrderManager() {}
+    
+    // Static method to get the single instance
+    public static synchronized OrderManager getInstance() {
+        if (instance == null) {
+            instance = new OrderManager();
+        }
+        return instance;
+    }
+    
+    // Monostate pattern: all instances share the same state
+    private int totalOrdersProcessed = 0;
+    private double totalRevenue = 0.0;
+    
+    public void processOrder(double amount) {
+        totalOrdersProcessed++;
+        totalRevenue += amount;
+        System.out.println("Order processed. Total orders: " + totalOrdersProcessed + 
+                          ", Total revenue: $" + totalRevenue);
+    }
+    
+    // Getters for shared state
+    public int getTotalOrdersProcessed() {
+        return totalOrdersProcessed;
+    }
+    
+    public double getTotalRevenue() {
+        return totalRevenue;
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+public class OrderService {
+    private OrderManager orderManager = OrderManager.getInstance();
+    
+    public void createOrder(double amount) {
+        System.out.println("Creating order for $" + amount);
+        orderManager.processOrder(amount);
+    }
+    
+    public void displayStatistics() {
+        System.out.println("Total orders processed: " + orderManager.getTotalOrdersProcessed());
+        System.out.println("Total revenue: $" + orderManager.getTotalRevenue());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create multiple services that share the same state
+        OrderService service1 = new OrderService();
+        OrderService service2 = new OrderService();
+        
+        // Process orders through different services
+        service1.createOrder(100.0);
+        service1.createOrder(250.0);
+        service2.createOrder(75.50);
+        
+        // Display statistics from both services (they share the same state)
+        System.out.println("\n--- Service 1 Statistics ---");
+        service1.displayStatistics();
+        
+        System.out.println("\n--- Service 2 Statistics ---");
+        service2.displayStatistics();
+    }
+}
+```

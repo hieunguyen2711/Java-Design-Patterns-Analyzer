@@ -1,0 +1,140 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+public class Order {
+    private String orderId;
+    private List<OrderItem> items;
+    private BigDecimal totalAmount;
+    
+    public Order(String orderId, List<OrderItem> items) {
+        this.orderId = orderId;
+        this.items = items;
+        this.totalAmount = items.stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public List<OrderItem> getItems() {
+        return items;
+    }
+    
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package ecommerce.order;
+
+import java.math.BigDecimal;
+
+public class OrderItem {
+    private String productId;
+    private String productName;
+    private BigDecimal price;
+    private int quantity;
+    
+    public OrderItem(String productId, String productName, BigDecimal price, int quantity) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.quantity = quantity;
+    }
+    
+    public String getProductId() {
+        return productId;
+    }
+    
+    public String getProductName() {
+        return productName;
+    }
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package ecommerce.order;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class OrderProcessor {
+    
+    public List<Order> processOrders(List<Order> orders) {
+        return orders.stream()
+                .filter(order -> order.getTotalAmount().compareTo(BigDecimal.valueOf(100)) > 0)
+                .map(this::applyDiscount)
+                .sorted((o1, o2) -> o2.getTotalAmount().compareTo(o1.getTotalAmount()))
+                .collect(Collectors.toList());
+    }
+    
+    private Order applyDiscount(Order order) {
+        BigDecimal discountedAmount = order.getTotalAmount()
+                .multiply(BigDecimal.valueOf(0.9));
+        
+        return new Order(order.getOrderId(), order.getItems()) {
+            @Override
+            public BigDecimal getTotalAmount() {
+                return discountedAmount;
+            }
+        };
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
+public class OrderService {
+    
+    public static void main(String[] args) {
+        // Create sample orders
+        List<OrderItem> items1 = Arrays.asList(
+            new OrderItem("P001", "Laptop", BigDecimal.valueOf(800), 1),
+            new OrderItem("P002", "Mouse", BigDecimal.valueOf(25), 2)
+        );
+        
+        List<OrderItem> items2 = Arrays.asList(
+            new OrderItem("P003", "Keyboard", BigDecimal.valueOf(75), 1),
+            new OrderItem("P004", "Monitor", BigDecimal.valueOf(300), 1)
+        );
+        
+        List<Order> orders = Arrays.asList(
+            new Order("O001", items1),
+            new Order("O002", items2)
+        );
+        
+        // Process orders using collection-pipeline pattern
+        OrderProcessor processor = new OrderProcessor();
+        List<Order> processedOrders = processor.processOrders(orders);
+        
+        processedOrders.forEach(order -> 
+            System.out.println("Order: " + order.getOrderId() + 
+                             ", Total: $" + order.getTotalAmount()));
+    }
+}
+```

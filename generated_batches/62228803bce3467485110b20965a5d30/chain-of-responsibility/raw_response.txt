@@ -1,0 +1,149 @@
+### FILE: Order.java
+```java
+public class Order {
+    private String orderId;
+    private double amount;
+    private String customerEmail;
+    
+    public Order(String orderId, double amount, String customerEmail) {
+        this.orderId = orderId;
+        this.amount = amount;
+        this.customerEmail = customerEmail;
+    }
+    
+    // Getters and setters
+    public String getOrderId() { return orderId; }
+    public void setOrderId(String orderId) { this.orderId = orderId; }
+    public double getAmount() { return amount; }
+    public void setAmount(double amount) { this.amount = amount; }
+    public String getCustomerEmail() { return customerEmail; }
+    public void setCustomerEmail(String customerEmail) { this.customerEmail = customerEmail; }
+}
+```
+
+### FILE: OrderHandler.java
+```java
+public abstract class OrderHandler {
+    protected OrderHandler nextHandler;
+    
+    public void setNext(OrderHandler handler) {
+        this.nextHandler = handler;
+    }
+    
+    public abstract boolean handleOrder(Order order);
+}
+```
+
+### FILE: PaymentValidationHandler.java
+```java
+public class PaymentValidationHandler extends OrderHandler {
+    @Override
+    public boolean handleOrder(Order order) {
+        if (order.getAmount() <= 0) {
+            System.out.println("Payment validation failed: Invalid amount");
+            return false;
+        }
+        
+        System.out.println("Payment validation passed");
+        
+        if (nextHandler != null) {
+            return nextHandler.handleOrder(order);
+        }
+        
+        return true;
+    }
+}
+```
+
+### FILE: CustomerValidationHandler.java
+```java
+public class CustomerValidationHandler extends OrderHandler {
+    @Override
+    public boolean handleOrder(Order order) {
+        if (order.getCustomerEmail() == null || !order.getCustomerEmail().contains("@")) {
+            System.out.println("Customer validation failed: Invalid email");
+            return false;
+        }
+        
+        System.out.println("Customer validation passed");
+        
+        if (nextHandler != null) {
+            return nextHandler.handleOrder(order);
+        }
+        
+        return true;
+    }
+}
+```
+
+### FILE: DiscountValidationHandler.java
+```java
+public class DiscountValidationHandler extends OrderHandler {
+    @Override
+    public boolean handleOrder(Order order) {
+        if (order.getAmount() > 1000 && order.getCustomerEmail().contains("premium")) {
+            System.out.println("Discount validation passed: Premium customer discount applied");
+        } else {
+            System.out.println("Discount validation: No discount applied");
+        }
+        
+        if (nextHandler != null) {
+            return nextHandler.handleOrder(order);
+        }
+        
+        return true;
+    }
+}
+```
+
+### FILE: OrderProcessingChain.java
+```java
+public class OrderProcessingChain {
+    private OrderHandler firstHandler;
+    
+    public void setFirstHandler(OrderHandler handler) {
+        this.firstHandler = handler;
+    }
+    
+    public boolean processOrder(Order order) {
+        if (firstHandler != null) {
+            return firstHandler.handleOrder(order);
+        }
+        return false;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Create handlers
+        PaymentValidationHandler paymentValidator = new PaymentValidationHandler();
+        CustomerValidationHandler customerValidator = new CustomerValidationHandler();
+        DiscountValidationHandler discountValidator = new DiscountValidationHandler();
+        
+        // Build the chain
+        paymentValidator.setNext(customerValidator);
+        customerValidator.setNext(discountValidator);
+        
+        // Create processing chain
+        OrderProcessingChain chain = new OrderProcessingChain();
+        chain.setFirstHandler(paymentValidator);
+        
+        // Test with valid order
+        System.out.println("Processing valid order:");
+        Order validOrder = new Order("123", 500.0, "customer@example.com");
+        boolean result = chain.processOrder(validOrder);
+        System.out.println("Order processed: " + result);
+        
+        System.out.println("\n---\n");
+        
+        // Test with invalid order
+        System.out.println("Processing invalid order:");
+        Order invalidOrder = new Order("456", -100.0, "invalid-email");
+        boolean result2 = chain.processOrder(invalidOrder);
+        System.out.println("Order processed: " + result2);
+    }
+}
+```

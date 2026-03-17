@@ -1,0 +1,87 @@
+### FILE: Order.java
+```java
+public interface Order {
+    void processOrder();
+    double getTotalAmount();
+}
+```
+
+### FILE: RealOrder.java
+```java
+public class RealOrder implements Order {
+    private String orderId;
+    private double totalAmount;
+    
+    public RealOrder(String orderId, double totalAmount) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+        System.out.println("Real order created for ID: " + orderId);
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing real order: " + orderId);
+        // Simulate some heavy processing
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("Real order processed successfully");
+    }
+    
+    @Override
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+}
+```
+
+### FILE: VirtualOrderProxy.java
+```java
+public class VirtualOrderProxy implements Order {
+    private String orderId;
+    private double totalAmount;
+    private RealOrder realOrder;
+    
+    public VirtualOrderProxy(String orderId, double totalAmount) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+    }
+    
+    @Override
+    public void processOrder() {
+        if (realOrder == null) {
+            System.out.println("Creating virtual proxy for order: " + orderId);
+            realOrder = new RealOrder(orderId, totalAmount);
+        }
+        realOrder.processOrder();
+    }
+    
+    @Override
+    public double getTotalAmount() {
+        if (realOrder == null) {
+            return totalAmount;
+        }
+        return realOrder.getTotalAmount();
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+public class OrderService {
+    public static void main(String[] args) {
+        // Create proxy instead of real order object
+        Order order = new VirtualOrderProxy("ORD-123", 99.99);
+        
+        System.out.println("Order total amount: " + order.getTotalAmount());
+        
+        System.out.println("Processing order...");
+        order.processOrder();
+        
+        System.out.println("Processing same order again...");
+        order.processOrder(); // This will use the already created real object
+    }
+}
+```

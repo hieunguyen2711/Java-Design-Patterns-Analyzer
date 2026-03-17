@@ -1,0 +1,140 @@
+### FILE: OrderProcessor.java
+```java
+package ecommerce.order;
+
+public abstract class OrderProcessor {
+    // Template method
+    public final void processOrder(Order order) {
+        validateOrder(order);
+        calculateTotal(order);
+        applyDiscounts(order);
+        updateInventory(order);
+        notifyCustomer(order);
+    }
+    
+    protected abstract void validateOrder(Order order);
+    protected abstract void calculateTotal(Order order);
+    protected abstract void applyDiscounts(Order order);
+    protected abstract void updateInventory(Order order);
+    protected abstract void notifyCustomer(Order order);
+}
+```
+
+### FILE: StandardOrderProcessor.java
+```java
+package ecommerce.order;
+
+public class StandardOrderProcessor extends OrderProcessor {
+    
+    @Override
+    protected void validateOrder(Order order) {
+        System.out.println("Validating standard order: " + order.getId());
+        // Validation logic for standard orders
+    }
+    
+    @Override
+    protected void calculateTotal(Order order) {
+        System.out.println("Calculating total for standard order: " + order.getId());
+        // Calculation logic for standard orders
+    }
+    
+    @Override
+    protected void applyDiscounts(Order order) {
+        System.out.println("Applying discounts to standard order: " + order.getId());
+        // Discount logic for standard orders
+    }
+    
+    @Override
+    protected void updateInventory(Order order) {
+        System.out.println("Updating inventory for standard order: " + order.getId());
+        // Inventory update logic for standard orders
+    }
+    
+    @Override
+    protected void notifyCustomer(Order order) {
+        System.out.println("Notifying customer about standard order: " + order.getId());
+        // Notification logic for standard orders
+    }
+}
+```
+
+### FILE: PremiumOrderProcessor.java
+```java
+package ecommerce.order;
+
+public class PremiumOrderProcessor extends OrderProcessor {
+    
+    @Override
+    protected void validateOrder(Order order) {
+        System.out.println("Validating premium order: " + order.getId());
+        // Additional validation for premium orders
+    }
+    
+    @Override
+    protected void calculateTotal(Order order) {
+        System.out.println("Calculating total for premium order: " + order.getId());
+        // Special calculation logic for premium orders
+    }
+    
+    @Override
+    protected void applyDiscounts(Order order) {
+        System.out.println("Applying premium discounts to order: " + order.getId());
+        // Premium discount logic
+    }
+    
+    @Override
+    protected void updateInventory(Order order) {
+        System.out.println("Updating inventory for premium order: " + order.getId());
+        // Special inventory handling for premium orders
+    }
+    
+    @Override
+    protected void notifyCustomer(Order order) {
+        System.out.println("Sending premium notification to customer about order: " + order.getId());
+        // Premium notification logic
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String id;
+    private double amount;
+    
+    public Order(String id, double amount) {
+        this.id = id;
+        this.amount = amount;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        Order standardOrder = new Order("STD001", 100.0);
+        Order premiumOrder = new Order("PRM001", 250.0);
+        
+        System.out.println("Processing Standard Order:");
+        OrderProcessor standardProcessor = new StandardOrderProcessor();
+        standardProcessor.processOrder(standardOrder);
+        
+        System.out.println("\nProcessing Premium Order:");
+        OrderProcessor premiumProcessor = new PremiumOrderProcessor();
+        premiumProcessor.processOrder(premiumOrder);
+    }
+}
+```

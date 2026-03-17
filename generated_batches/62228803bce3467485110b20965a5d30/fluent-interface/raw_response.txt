@@ -1,0 +1,133 @@
+### FILE: Order.java
+```java
+package ecommerce.order;
+
+public class Order {
+    private String customerId;
+    private String productId;
+    private int quantity;
+    private double price;
+    private boolean shipped;
+    
+    public Order(String customerId, String productId) {
+        this.customerId = customerId;
+        this.productId = productId;
+    }
+    
+    public Order setQuantity(int quantity) {
+        this.quantity = quantity;
+        return this;
+    }
+    
+    public Order setPrice(double price) {
+        this.price = price;
+        return this;
+    }
+    
+    public Order ship() {
+        this.shipped = true;
+        return this;
+    }
+    
+    // Getters for testing
+    public String getCustomerId() { return customerId; }
+    public String getProductId() { return productId; }
+    public int getQuantity() { return quantity; }
+    public double getPrice() { return price; }
+    public boolean isShipped() { return shipped; }
+}
+```
+
+### FILE: OrderBuilder.java
+```java
+package ecommerce.order;
+
+public class OrderBuilder {
+    private String customerId;
+    private String productId;
+    private int quantity = 1;
+    private double price = 0.0;
+    private boolean shipped = false;
+    
+    public static OrderBuilder createOrder(String customerId, String productId) {
+        return new OrderBuilder(customerId, productId);
+    }
+    
+    private OrderBuilder(String customerId, String productId) {
+        this.customerId = customerId;
+        this.productId = productId;
+    }
+    
+    public OrderBuilder withQuantity(int quantity) {
+        this.quantity = quantity;
+        return this;
+    }
+    
+    public OrderBuilder withPrice(double price) {
+        this.price = price;
+        return this;
+    }
+    
+    public OrderBuilder shipped() {
+        this.shipped = true;
+        return this;
+    }
+    
+    public Order build() {
+        Order order = new Order(customerId, productId);
+        order.setQuantity(quantity);
+        order.setPrice(price);
+        if (shipped) {
+            order.ship();
+        }
+        return order;
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package ecommerce.order;
+
+public class OrderService {
+    
+    public void processOrder(Order order) {
+        System.out.println("Processing order for customer " + 
+                          order.getCustomerId() + " with product " + 
+                          order.getProductId());
+        
+        if (order.isShipped()) {
+            System.out.println("Order has been shipped");
+        }
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+package ecommerce.order;
+
+public class OrderManagementSystem {
+    
+    public static void main(String[] args) {
+        // Using fluent interface to build an order
+        Order order1 = new OrderBuilder()
+            .createOrder("CUST001", "PROD123")
+            .withQuantity(2)
+            .withPrice(29.99)
+            .shipped()
+            .build();
+        
+        // Another example with different configuration
+        Order order2 = new OrderBuilder()
+            .createOrder("CUST002", "PROD456")
+            .withQuantity(1)
+            .withPrice(19.99)
+            .build();
+        
+        OrderService service = new OrderService();
+        service.processOrder(order1);
+        service.processOrder(order2);
+    }
+}
+```

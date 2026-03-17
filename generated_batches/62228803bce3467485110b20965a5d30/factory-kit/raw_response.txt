@@ -1,0 +1,85 @@
+### FILE: Order.java
+```java
+public abstract class Order {
+    protected String orderId;
+    protected double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public abstract void processOrder();
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: StandardOrder.java
+```java
+public class StandardOrder extends Order {
+    
+    public StandardOrder(String orderId, double amount) {
+        super(orderId, amount);
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing standard order " + orderId + " for $" + amount);
+    }
+}
+```
+
+### FILE: ExpressOrder.java
+```java
+public class ExpressOrder extends Order {
+    
+    public ExpressOrder(String orderId, double amount) {
+        super(orderId, amount);
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing express order " + orderId + " for $" + amount);
+    }
+}
+```
+
+### FILE: OrderFactory.java
+```java
+public class OrderFactory {
+    
+    public static Order createOrder(String type, String orderId, double amount) {
+        switch (type.toLowerCase()) {
+            case "standard":
+                return new StandardOrder(orderId, amount);
+            case "express":
+                return new ExpressOrder(orderId, amount);
+            default:
+                throw new IllegalArgumentException("Unknown order type: " + type);
+        }
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+public class OrderManagementSystem {
+    
+    public static void main(String[] args) {
+        // Using the factory to create different types of orders
+        Order standardOrder = OrderFactory.createOrder("standard", "STD001", 299.99);
+        Order expressOrder = OrderFactory.createOrder("express", "EXP001", 499.99);
+        
+        // Processing orders
+        standardOrder.processOrder();
+        expressOrder.processOrder();
+    }
+}
+```

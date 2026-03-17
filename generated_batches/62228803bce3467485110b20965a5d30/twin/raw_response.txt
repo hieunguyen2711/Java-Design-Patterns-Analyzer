@@ -1,0 +1,127 @@
+### FILE: Order.java
+```java
+package com.ecommerce.order;
+
+public class Order {
+    private String orderId;
+    private double amount;
+    
+    public Order(String orderId, double amount) {
+        this.orderId = orderId;
+        this.amount = amount;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+        Order order = (Order) obj;
+        return Double.compare(order.amount, amount) == 0 &&
+               orderId.equals(order.orderId);
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = orderId.hashCode();
+        result = 31 * result + (int) amount;
+        return result;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package com.ecommerce.order;
+
+public class OrderProcessor {
+    private static volatile OrderProcessor instance;
+    
+    private OrderProcessor() {}
+    
+    public static OrderProcessor getInstance() {
+        if (instance == null) {
+            synchronized (OrderProcessor.class) {
+                if (instance == null) {
+                    instance = new OrderProcessor();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void processOrder(Order order) {
+        System.out.println("Processing order: " + order.getOrderId() + 
+                          " for amount: $" + order.getAmount());
+    }
+}
+```
+
+### FILE: PaymentService.java
+```java
+package com.ecommerce.order;
+
+public class PaymentService {
+    private static volatile PaymentService instance;
+    
+    private PaymentService() {}
+    
+    public static PaymentService getInstance() {
+        if (instance == null) {
+            synchronized (PaymentService.class) {
+                if (instance == null) {
+                    instance = new PaymentService();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void processPayment(Order order) {
+        System.out.println("Processing payment for order: " + order.getOrderId());
+    }
+}
+```
+
+### FILE: OrderManagementSystem.java
+```java
+package com.ecommerce.order;
+
+public class OrderManagementSystem {
+    private final OrderProcessor orderProcessor;
+    private final PaymentService paymentService;
+    
+    public OrderManagementSystem() {
+        this.orderProcessor = OrderProcessor.getInstance();
+        this.paymentService = PaymentService.getInstance();
+    }
+    
+    public void handleOrder(String orderId, double amount) {
+        Order order = new Order(orderId, amount);
+        orderProcessor.processOrder(order);
+        paymentService.processPayment(order);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ecommerce.order;
+
+public class Main {
+    public static void main(String[] args) {
+        OrderManagementSystem system = new OrderManagementSystem();
+        
+        system.handleOrder("ORD001", 299.99);
+        system.handleOrder("ORD002", 149.50);
+    }
+}
+```
