@@ -1,0 +1,682 @@
+{
+  "job_id": "cc26896f50764bdba3d51d2daf32bf84",
+  "status": "running",
+  "model_used": "qwen3-coder-30b-a3b-instruct",
+  "project_context": "A social media system",
+  "concurrency": 1,
+  "total_patterns": 83,
+  "completed_patterns": 25,
+  "successful_patterns": 25,
+  "failed_patterns": 0,
+  "started_at": 1773759554.239629,
+  "updated_at": 1773760070.662388,
+  "completed_at": null,
+  "output_dir": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend/generated_batches/cc26896f50764bdba3d51d2daf32bf84",
+  "final_bundle_relative_path": null,
+  "results": [
+    {
+      "pattern": "abstract-factory",
+      "status": "success",
+      "files_count": 13,
+      "duration_ms": 30376,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/abstract-factory/abstract-factory.zip",
+      "error": null
+    },
+    {
+      "pattern": "active-object",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 18237,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/active-object/active-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "actor-model",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 25512,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/actor-model/actor-model.zip",
+      "error": null
+    },
+    {
+      "pattern": "acyclic-visitor",
+      "status": "success",
+      "files_count": 9,
+      "duration_ms": 24807,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/acyclic-visitor/acyclic-visitor.zip",
+      "error": null
+    },
+    {
+      "pattern": "adapter",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 15518,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/adapter/adapter.zip",
+      "error": null
+    },
+    {
+      "pattern": "ambassador",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 17298,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/ambassador/ambassador.zip",
+      "error": null
+    },
+    {
+      "pattern": "balking",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 13492,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/balking/balking.zip",
+      "error": null
+    },
+    {
+      "pattern": "bridge",
+      "status": "success",
+      "files_count": 8,
+      "duration_ms": 14244,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/bridge/bridge.zip",
+      "error": null
+    },
+    {
+      "pattern": "builder",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 15878,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/builder/builder.zip",
+      "error": null
+    },
+    {
+      "pattern": "business-delegate",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 12118,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/business-delegate/business-delegate.zip",
+      "error": null
+    },
+    {
+      "pattern": "chain-of-responsibility",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 27574,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/chain-of-responsibility/chain-of-responsibility.zip",
+      "error": null
+    },
+    {
+      "pattern": "collection-pipeline",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 30275,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/collection-pipeline/collection-pipeline.zip",
+      "error": null
+    },
+    {
+      "pattern": "combinator",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 23464,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/combinator/combinator.zip",
+      "error": null
+    },
+    {
+      "pattern": "command",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 15339,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/command/command.zip",
+      "error": null
+    },
+    {
+      "pattern": "composite",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 25318,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/composite/composite.zip",
+      "error": null
+    },
+    {
+      "pattern": "converter",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 17226,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/converter/converter.zip",
+      "error": null
+    },
+    {
+      "pattern": "curiously-recurring-template-pattern",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 16987,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/curiously-recurring-template-pattern/curiously-recurring-template-pattern.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-access-object",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 29201,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/data-access-object/data-access-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-mapper",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 36377,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/data-mapper/data-mapper.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-transfer-object",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 21728,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/data-transfer-object/data-transfer-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "decorator",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 22978,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/decorator/decorator.zip",
+      "error": null
+    },
+    {
+      "pattern": "dependency-injection",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 12431,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/dependency-injection/dependency-injection.zip",
+      "error": null
+    },
+    {
+      "pattern": "dirty-flag",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 21248,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/dirty-flag/dirty-flag.zip",
+      "error": null
+    },
+    {
+      "pattern": "double-buffer",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 17423,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/double-buffer/double-buffer.zip",
+      "error": null
+    },
+    {
+      "pattern": "double-checked-locking",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 11333,
+      "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/double-checked-locking/double-checked-locking.zip",
+      "error": null
+    },
+    {
+      "pattern": "dynamic-proxy",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "event-sourcing",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "execute-around",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "facade",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "factory-kit",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "factory-method",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "factory",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "fluent-interface",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "flyweight",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "function-composition",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "guarded-suspension",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "identity-map",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "interpreter",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "iterator",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "marker-interface",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "mediator",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "memento",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "model-view-controller",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "model-view-presenter",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "monad",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "monitor",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "monostate",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "multiton",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "null-object",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "object-pool",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "observer",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "page-controller",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "page-object",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "private-class-data",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "promise",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "prototype",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "proxy",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "reactor",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "repository",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "resource-acquisition-is-initialization",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "role-object",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "servant",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "service-layer",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "service-locator",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "service-stub",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "single-table-inheritance",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "singleton",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "special-case",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "specification",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "state",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "strategy",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "table-inheritance",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "table-module",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "template-method",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "thread-pool-executor",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "trampoline",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "transaction-script",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "twin",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "unit-of-work",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "update-method",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "value-object",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "view-helper",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    },
+    {
+      "pattern": "virtual-proxy",
+      "status": "queued",
+      "files_count": 0,
+      "duration_ms": 0,
+      "output_zip_relative_path": null,
+      "error": null
+    }
+  ]
+}

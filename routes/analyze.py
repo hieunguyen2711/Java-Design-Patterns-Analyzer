@@ -18,11 +18,13 @@ from models.response_models import (
     AnalysisResponse,
     BatchGeneratePassProjectsStartResponse,
     BatchGeneratePassProjectsStatusResponse,
+    BatchMetricsResponse,
     FollowUpResponse,
     GenerateResponse,
 )
 from services.analysis_service import AnalysisService
 from services.batch_generation_service import BatchGenerationService
+from services.batch_metrics_service import BatchMetricsService
 from services.file_service import FileService
 from services.prompt_service import PromptService
 
@@ -35,6 +37,10 @@ analysis_service = AnalysisService(file_service=file_service, ollama_client=olla
 batch_generation_service = BatchGenerationService(
     ollama_client=ollama_client,
     prompt_service=prompt_service,
+)
+batch_metrics_service = BatchMetricsService(
+    batch_generation_service=batch_generation_service,
+    file_service=file_service,
 )
 
 
@@ -169,6 +175,30 @@ def download_generate_pass_projects(job_id: str):
         media_type="application/zip",
         filename=f"{job_id}_generated_projects.zip",
     )
+
+
+@router.get(
+    "/generate-pass-projects/{job_id}/analyze-metrics",
+    response_model=BatchMetricsResponse,
+    tags=["batch-generation"],
+)
+async def analyze_batch_metrics(job_id: str):
+    """Run CK + MI metrics on every successfully generated pattern zip in *job_id*.
+
+    - Returns **200** with per-pattern MI and CK summaries when complete.
+    - Returns **404** if the job is not found.
+    - Returns **409** if the job has not yet reached ``completed`` status.
+    """
+    try:
+        result = await batch_metrics_service.analyze_job_metrics(job_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+    return result
 
 
 @router.post("/followup", response_model=FollowUpResponse)
