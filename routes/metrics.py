@@ -9,13 +9,15 @@ import os
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
-from models.metrics import AnalyzeMetricsRequest, AnalyzeMetricsResponse
+from models.metrics import AnalyzeMetricsRequest, AnalyzeMetricsResponse, PIQSResponse
 from services.analysis_pipeline import analyze_project_async
 from services.file_service import FileService
+from services.piqs_service import PIQSService
 
 router = APIRouter(prefix="/api/v1", tags=["metrics"])
 
 file_service = FileService()
+piqs_service = PIQSService()
 
 
 @router.post("/analyze-metrics", response_model=AnalyzeMetricsResponse)
@@ -82,5 +84,32 @@ async def analyze_metrics_dir(req: AnalyzeMetricsRequest):
     try:
         result = await analyze_project_async(req.project_dir, req.pattern_name)
         return AnalyzeMetricsResponse(**result)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/analyze-piqs", response_model=PIQSResponse)
+async def analyze_piqs(
+    files: list[UploadFile] = File(...),
+    pattern_name: str = Form(...),
+):
+    """Calculate PIQS for one supported pattern from uploaded Java files.
+
+    Supported patterns: factory-method, strategy, composite, observer, singleton.
+    """
+    java_files: dict[str, str] = {}
+    for file in files:
+        if not file.filename.lower().endswith(".java"):
+            continue
+        content = await file.read()
+        java_files[file.filename] = content.decode("utf-8", errors="ignore")
+
+    if not java_files:
+        raise HTTPException(status_code=422, detail="No .java files provided.")
+
+    try:
+        return PIQSResponse(**piqs_service.evaluate(pattern_name=pattern_name, java_files=java_files))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))

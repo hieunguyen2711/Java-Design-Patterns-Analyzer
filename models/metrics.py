@@ -128,3 +128,27 @@ class AnalyzeMetricsResponse(BaseModel):
     summary: AnalysisSummary
     classes: list[ClassAnalysis]
     methods: list[MethodMetrics]       # empty list when CK is unavailable
+
+
+# ── PIQS models ───────────────────────────────────────────────────────────
+
+class PIQSPropertyAssessment(BaseModel):
+    property_id: str
+    weight: int
+    satisfaction: int
+    justification: str
+
+
+class PIQSFormulaResult(BaseModel):
+    formula: str
+    result_percent: float
+
+
+class PIQSResponse(BaseModel):
+    pattern_name: str
+    files_analyzed: list[str]
+    logical_assessment: list[PIQSPropertyAssessment]
+    breadth_calculation_psr: PIQSFormulaResult
+    depth_calculation_cpc: PIQSFormulaResult
+    final_quality_result_piqs: PIQSFormulaResult
+    grade: str
