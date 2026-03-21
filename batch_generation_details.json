@@ -1,0 +1,2109 @@
+{
+  "generated_at_utc": "2026-03-21T13:39:26.537757+00:00",
+  "workspace": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend",
+  "summary": {
+    "job_count": 3,
+    "total_patterns": 249,
+    "completed_patterns": 191,
+    "successful_patterns": 191,
+    "failed_patterns": 0,
+    "status_breakdown": {
+      "success": 191,
+      "queued": 58
+    }
+  },
+  "jobs": [
+    {
+      "job_id": "62228803bce3467485110b20965a5d30",
+      "status": "completed",
+      "model_used": "qwen3-coder-30b-a3b-instruct",
+      "project_title": "An e-commerce order management system in Java",
+      "Project title": "An e-commerce order management system in Java",
+      "project_context": "An e-commerce order management system in Java",
+      "concurrency": 1,
+      "totals": {
+        "total_patterns": 83,
+        "completed_patterns": 83,
+        "successful_patterns": 83,
+        "failed_patterns": 0,
+        "status_breakdown": {
+          "success": 83
+        }
+      },
+      "timing": {
+        "started_at_epoch": 1773671229.627969,
+        "updated_at_epoch": 1773672952.527047,
+        "completed_at_epoch": 1773672952.527047,
+        "started_at_utc": "2026-03-16T14:27:09.627969+00:00",
+        "updated_at_utc": "2026-03-16T14:55:52.527047+00:00",
+        "completed_at_utc": "2026-03-16T14:55:52.527047+00:00",
+        "elapsed_seconds": 1722.899
+      },
+      "paths": {
+        "output_dir": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend/generated_batches/62228803bce3467485110b20965a5d30",
+        "final_bundle_relative_path": "62228803bce3467485110b20965a5d30/generated_projects_bundle.zip"
+      },
+      "results": [
+        {
+          "pattern": "abstract-factory",
+          "status": "success",
+          "files_count": 11,
+          "duration_ms": 27114,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/abstract-factory/abstract-factory.zip",
+          "error": null
+        },
+        {
+          "pattern": "active-object",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 24288,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/active-object/active-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "actor-model",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 27725,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/actor-model/actor-model.zip",
+          "error": null
+        },
+        {
+          "pattern": "acyclic-visitor",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 14601,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/acyclic-visitor/acyclic-visitor.zip",
+          "error": null
+        },
+        {
+          "pattern": "adapter",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 12826,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/adapter/adapter.zip",
+          "error": null
+        },
+        {
+          "pattern": "ambassador",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 21258,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/ambassador/ambassador.zip",
+          "error": null
+        },
+        {
+          "pattern": "balking",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 18704,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/balking/balking.zip",
+          "error": null
+        },
+        {
+          "pattern": "bridge",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 12900,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/bridge/bridge.zip",
+          "error": null
+        },
+        {
+          "pattern": "builder",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 20575,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/builder/builder.zip",
+          "error": null
+        },
+        {
+          "pattern": "business-delegate",
+          "status": "success",
+          "files_count": 8,
+          "duration_ms": 15276,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/business-delegate/business-delegate.zip",
+          "error": null
+        },
+        {
+          "pattern": "chain-of-responsibility",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 27858,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/chain-of-responsibility/chain-of-responsibility.zip",
+          "error": null
+        },
+        {
+          "pattern": "collection-pipeline",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 23935,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/collection-pipeline/collection-pipeline.zip",
+          "error": null
+        },
+        {
+          "pattern": "combinator",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 21804,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/combinator/combinator.zip",
+          "error": null
+        },
+        {
+          "pattern": "command",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 21610,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/command/command.zip",
+          "error": null
+        },
+        {
+          "pattern": "composite",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 27353,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/composite/composite.zip",
+          "error": null
+        },
+        {
+          "pattern": "converter",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 18152,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/converter/converter.zip",
+          "error": null
+        },
+        {
+          "pattern": "curiously-recurring-template-pattern",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 21467,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/curiously-recurring-template-pattern/curiously-recurring-template-pattern.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-access-object",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 27965,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/data-access-object/data-access-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-mapper",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 33466,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/data-mapper/data-mapper.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-transfer-object",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 23899,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/data-transfer-object/data-transfer-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "decorator",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 15368,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/decorator/decorator.zip",
+          "error": null
+        },
+        {
+          "pattern": "dependency-injection",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 19417,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/dependency-injection/dependency-injection.zip",
+          "error": null
+        },
+        {
+          "pattern": "dirty-flag",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 16216,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/dirty-flag/dirty-flag.zip",
+          "error": null
+        },
+        {
+          "pattern": "double-buffer",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 17482,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/double-buffer/double-buffer.zip",
+          "error": null
+        },
+        {
+          "pattern": "double-checked-locking",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 12257,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/double-checked-locking/double-checked-locking.zip",
+          "error": null
+        },
+        {
+          "pattern": "dynamic-proxy",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 10391,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/dynamic-proxy/dynamic-proxy.zip",
+          "error": null
+        },
+        {
+          "pattern": "event-sourcing",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 31063,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/event-sourcing/event-sourcing.zip",
+          "error": null
+        },
+        {
+          "pattern": "execute-around",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 24895,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/execute-around/execute-around.zip",
+          "error": null
+        },
+        {
+          "pattern": "facade",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 14051,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/facade/facade.zip",
+          "error": null
+        },
+        {
+          "pattern": "factory-kit",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 13632,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/factory-kit/factory-kit.zip",
+          "error": null
+        },
+        {
+          "pattern": "factory-method",
+          "status": "success",
+          "files_count": 8,
+          "duration_ms": 20789,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/factory-method/factory-method.zip",
+          "error": null
+        },
+        {
+          "pattern": "factory",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 19118,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/factory/factory.zip",
+          "error": null
+        },
+        {
+          "pattern": "fluent-interface",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 20426,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/fluent-interface/fluent-interface.zip",
+          "error": null
+        },
+        {
+          "pattern": "flyweight",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 19131,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/flyweight/flyweight.zip",
+          "error": null
+        },
+        {
+          "pattern": "function-composition",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 14828,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/function-composition/function-composition.zip",
+          "error": null
+        },
+        {
+          "pattern": "guarded-suspension",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 13606,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/guarded-suspension/guarded-suspension.zip",
+          "error": null
+        },
+        {
+          "pattern": "identity-map",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 17288,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/identity-map/identity-map.zip",
+          "error": null
+        },
+        {
+          "pattern": "interpreter",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 13760,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/interpreter/interpreter.zip",
+          "error": null
+        },
+        {
+          "pattern": "iterator",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 18434,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/iterator/iterator.zip",
+          "error": null
+        },
+        {
+          "pattern": "marker-interface",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 18311,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/marker-interface/marker-interface.zip",
+          "error": null
+        },
+        {
+          "pattern": "mediator",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 21008,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/mediator/mediator.zip",
+          "error": null
+        },
+        {
+          "pattern": "memento",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 36812,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/memento/memento.zip",
+          "error": null
+        },
+        {
+          "pattern": "model-view-controller",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 26884,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/model-view-controller/model-view-controller.zip",
+          "error": null
+        },
+        {
+          "pattern": "model-view-presenter",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 33117,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/model-view-presenter/model-view-presenter.zip",
+          "error": null
+        },
+        {
+          "pattern": "monad",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 13828,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/monad/monad.zip",
+          "error": null
+        },
+        {
+          "pattern": "monitor",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 18544,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/monitor/monitor.zip",
+          "error": null
+        },
+        {
+          "pattern": "monostate",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 15849,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/monostate/monostate.zip",
+          "error": null
+        },
+        {
+          "pattern": "multiton",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 9305,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/multiton/multiton.zip",
+          "error": null
+        },
+        {
+          "pattern": "null-object",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 19294,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/null-object/null-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "object-pool",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 18954,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/object-pool/object-pool.zip",
+          "error": null
+        },
+        {
+          "pattern": "observer",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 15608,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/observer/observer.zip",
+          "error": null
+        },
+        {
+          "pattern": "page-controller",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 11700,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/page-controller/page-controller.zip",
+          "error": null
+        },
+        {
+          "pattern": "page-object",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 16672,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/page-object/page-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "private-class-data",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 25327,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/private-class-data/private-class-data.zip",
+          "error": null
+        },
+        {
+          "pattern": "promise",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 24890,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/promise/promise.zip",
+          "error": null
+        },
+        {
+          "pattern": "prototype",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 23660,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/prototype/prototype.zip",
+          "error": null
+        },
+        {
+          "pattern": "proxy",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 11266,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/proxy/proxy.zip",
+          "error": null
+        },
+        {
+          "pattern": "reactor",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 21984,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/reactor/reactor.zip",
+          "error": null
+        },
+        {
+          "pattern": "repository",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 31399,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/repository/repository.zip",
+          "error": null
+        },
+        {
+          "pattern": "resource-acquisition-is-initialization",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 13397,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/resource-acquisition-is-initialization/resource-acquisition-is-initialization.zip",
+          "error": null
+        },
+        {
+          "pattern": "role-object",
+          "status": "success",
+          "files_count": 10,
+          "duration_ms": 37910,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/role-object/role-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "servant",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 23675,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/servant/servant.zip",
+          "error": null
+        },
+        {
+          "pattern": "service-layer",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 37979,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/service-layer/service-layer.zip",
+          "error": null
+        },
+        {
+          "pattern": "service-locator",
+          "status": "success",
+          "files_count": 8,
+          "duration_ms": 16980,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/service-locator/service-locator.zip",
+          "error": null
+        },
+        {
+          "pattern": "service-stub",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 16039,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/service-stub/service-stub.zip",
+          "error": null
+        },
+        {
+          "pattern": "single-table-inheritance",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 27872,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/single-table-inheritance/single-table-inheritance.zip",
+          "error": null
+        },
+        {
+          "pattern": "singleton",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 11589,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/singleton/singleton.zip",
+          "error": null
+        },
+        {
+          "pattern": "special-case",
+          "status": "success",
+          "files_count": 9,
+          "duration_ms": 23803,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/special-case/special-case.zip",
+          "error": null
+        },
+        {
+          "pattern": "specification",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 14210,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/specification/specification.zip",
+          "error": null
+        },
+        {
+          "pattern": "state",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 21441,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/state/state.zip",
+          "error": null
+        },
+        {
+          "pattern": "strategy",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 13948,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/strategy/strategy.zip",
+          "error": null
+        },
+        {
+          "pattern": "table-inheritance",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 15899,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/table-inheritance/table-inheritance.zip",
+          "error": null
+        },
+        {
+          "pattern": "table-module",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 20640,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/table-module/table-module.zip",
+          "error": null
+        },
+        {
+          "pattern": "template-method",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 24250,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/template-method/template-method.zip",
+          "error": null
+        },
+        {
+          "pattern": "thread-pool-executor",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 14800,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/thread-pool-executor/thread-pool-executor.zip",
+          "error": null
+        },
+        {
+          "pattern": "trampoline",
+          "status": "success",
+          "files_count": 9,
+          "duration_ms": 22237,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/trampoline/trampoline.zip",
+          "error": null
+        },
+        {
+          "pattern": "transaction-script",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 25107,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/transaction-script/transaction-script.zip",
+          "error": null
+        },
+        {
+          "pattern": "twin",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 19330,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/twin/twin.zip",
+          "error": null
+        },
+        {
+          "pattern": "unit-of-work",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 29776,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/unit-of-work/unit-of-work.zip",
+          "error": null
+        },
+        {
+          "pattern": "update-method",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 28445,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/update-method/update-method.zip",
+          "error": null
+        },
+        {
+          "pattern": "value-object",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 40412,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/value-object/value-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "view-helper",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 18888,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/view-helper/view-helper.zip",
+          "error": null
+        },
+        {
+          "pattern": "virtual-proxy",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 14752,
+          "output_zip_relative_path": "62228803bce3467485110b20965a5d30/virtual-proxy/virtual-proxy.zip",
+          "error": null
+        }
+      ]
+    },
+    {
+      "job_id": "65a094a1c13f4c769dc4645f6ee9f364",
+      "status": "completed",
+      "model_used": "qwen3-coder-30b-a3b-instruct",
+      "project_title": "a ticket booking system",
+      "Project title": "a ticket booking system",
+      "project_context": "a ticket booking system",
+      "concurrency": 1,
+      "totals": {
+        "total_patterns": 83,
+        "completed_patterns": 83,
+        "successful_patterns": 83,
+        "failed_patterns": 0,
+        "status_breakdown": {
+          "success": 83
+        }
+      },
+      "timing": {
+        "started_at_epoch": 1773760973.435319,
+        "updated_at_epoch": 1773762701.7366972,
+        "completed_at_epoch": 1773762701.7366972,
+        "started_at_utc": "2026-03-17T15:22:53.435319+00:00",
+        "updated_at_utc": "2026-03-17T15:51:41.736697+00:00",
+        "completed_at_utc": "2026-03-17T15:51:41.736697+00:00",
+        "elapsed_seconds": 1728.301
+      },
+      "paths": {
+        "output_dir": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend/generated_batches/65a094a1c13f4c769dc4645f6ee9f364",
+        "final_bundle_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/generated_projects_bundle.zip"
+      },
+      "results": [
+        {
+          "pattern": "abstract-factory",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 17311,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/abstract-factory/abstract-factory.zip",
+          "error": null
+        },
+        {
+          "pattern": "active-object",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 33560,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/active-object/active-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "actor-model",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 35037,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/actor-model/actor-model.zip",
+          "error": null
+        },
+        {
+          "pattern": "acyclic-visitor",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 12461,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/acyclic-visitor/acyclic-visitor.zip",
+          "error": null
+        },
+        {
+          "pattern": "adapter",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 12135,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/adapter/adapter.zip",
+          "error": null
+        },
+        {
+          "pattern": "ambassador",
+          "status": "success",
+          "files_count": 8,
+          "duration_ms": 20269,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/ambassador/ambassador.zip",
+          "error": null
+        },
+        {
+          "pattern": "balking",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 15169,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/balking/balking.zip",
+          "error": null
+        },
+        {
+          "pattern": "bridge",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 12478,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/bridge/bridge.zip",
+          "error": null
+        },
+        {
+          "pattern": "builder",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 24427,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/builder/builder.zip",
+          "error": null
+        },
+        {
+          "pattern": "business-delegate",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 12224,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/business-delegate/business-delegate.zip",
+          "error": null
+        },
+        {
+          "pattern": "chain-of-responsibility",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 22539,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/chain-of-responsibility/chain-of-responsibility.zip",
+          "error": null
+        },
+        {
+          "pattern": "collection-pipeline",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 37036,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/collection-pipeline/collection-pipeline.zip",
+          "error": null
+        },
+        {
+          "pattern": "combinator",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 21446,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/combinator/combinator.zip",
+          "error": null
+        },
+        {
+          "pattern": "command",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 15618,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/command/command.zip",
+          "error": null
+        },
+        {
+          "pattern": "composite",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 18519,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/composite/composite.zip",
+          "error": null
+        },
+        {
+          "pattern": "converter",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 21054,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/converter/converter.zip",
+          "error": null
+        },
+        {
+          "pattern": "curiously-recurring-template-pattern",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 13394,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/curiously-recurring-template-pattern/curiously-recurring-template-pattern.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-access-object",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 30134,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/data-access-object/data-access-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-mapper",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 55285,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/data-mapper/data-mapper.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-transfer-object",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 26134,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/data-transfer-object/data-transfer-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "decorator",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 17589,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/decorator/decorator.zip",
+          "error": null
+        },
+        {
+          "pattern": "dependency-injection",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 12891,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/dependency-injection/dependency-injection.zip",
+          "error": null
+        },
+        {
+          "pattern": "dirty-flag",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 17821,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/dirty-flag/dirty-flag.zip",
+          "error": null
+        },
+        {
+          "pattern": "double-buffer",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 9596,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/double-buffer/double-buffer.zip",
+          "error": null
+        },
+        {
+          "pattern": "double-checked-locking",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 9723,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/double-checked-locking/double-checked-locking.zip",
+          "error": null
+        },
+        {
+          "pattern": "dynamic-proxy",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 16449,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/dynamic-proxy/dynamic-proxy.zip",
+          "error": null
+        },
+        {
+          "pattern": "event-sourcing",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 17008,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/event-sourcing/event-sourcing.zip",
+          "error": null
+        },
+        {
+          "pattern": "execute-around",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 14246,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/execute-around/execute-around.zip",
+          "error": null
+        },
+        {
+          "pattern": "facade",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 21505,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/facade/facade.zip",
+          "error": null
+        },
+        {
+          "pattern": "factory-kit",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 21894,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/factory-kit/factory-kit.zip",
+          "error": null
+        },
+        {
+          "pattern": "factory-method",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 22527,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/factory-method/factory-method.zip",
+          "error": null
+        },
+        {
+          "pattern": "factory",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 20777,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/factory/factory.zip",
+          "error": null
+        },
+        {
+          "pattern": "fluent-interface",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 9890,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/fluent-interface/fluent-interface.zip",
+          "error": null
+        },
+        {
+          "pattern": "flyweight",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 26584,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/flyweight/flyweight.zip",
+          "error": null
+        },
+        {
+          "pattern": "function-composition",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 19305,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/function-composition/function-composition.zip",
+          "error": null
+        },
+        {
+          "pattern": "guarded-suspension",
+          "status": "success",
+          "files_count": 1,
+          "duration_ms": 13865,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/guarded-suspension/guarded-suspension.zip",
+          "error": null
+        },
+        {
+          "pattern": "identity-map",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 19198,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/identity-map/identity-map.zip",
+          "error": null
+        },
+        {
+          "pattern": "interpreter",
+          "status": "success",
+          "files_count": 8,
+          "duration_ms": 24310,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/interpreter/interpreter.zip",
+          "error": null
+        },
+        {
+          "pattern": "iterator",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 13343,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/iterator/iterator.zip",
+          "error": null
+        },
+        {
+          "pattern": "marker-interface",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 17258,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/marker-interface/marker-interface.zip",
+          "error": null
+        },
+        {
+          "pattern": "mediator",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 24197,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/mediator/mediator.zip",
+          "error": null
+        },
+        {
+          "pattern": "memento",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 18730,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/memento/memento.zip",
+          "error": null
+        },
+        {
+          "pattern": "model-view-controller",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 18250,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/model-view-controller/model-view-controller.zip",
+          "error": null
+        },
+        {
+          "pattern": "model-view-presenter",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 22936,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/model-view-presenter/model-view-presenter.zip",
+          "error": null
+        },
+        {
+          "pattern": "monad",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 20859,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/monad/monad.zip",
+          "error": null
+        },
+        {
+          "pattern": "monitor",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 25527,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/monitor/monitor.zip",
+          "error": null
+        },
+        {
+          "pattern": "monostate",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 20523,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/monostate/monostate.zip",
+          "error": null
+        },
+        {
+          "pattern": "multiton",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 15639,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/multiton/multiton.zip",
+          "error": null
+        },
+        {
+          "pattern": "null-object",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 15722,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/null-object/null-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "object-pool",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 39800,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/object-pool/object-pool.zip",
+          "error": null
+        },
+        {
+          "pattern": "observer",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 13664,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/observer/observer.zip",
+          "error": null
+        },
+        {
+          "pattern": "page-controller",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 6845,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/page-controller/page-controller.zip",
+          "error": null
+        },
+        {
+          "pattern": "page-object",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 11831,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/page-object/page-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "private-class-data",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 25344,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/private-class-data/private-class-data.zip",
+          "error": null
+        },
+        {
+          "pattern": "promise",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 30154,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/promise/promise.zip",
+          "error": null
+        },
+        {
+          "pattern": "prototype",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 18691,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/prototype/prototype.zip",
+          "error": null
+        },
+        {
+          "pattern": "proxy",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 13778,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/proxy/proxy.zip",
+          "error": null
+        },
+        {
+          "pattern": "reactor",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 44313,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/reactor/reactor.zip",
+          "error": null
+        },
+        {
+          "pattern": "repository",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 37404,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/repository/repository.zip",
+          "error": null
+        },
+        {
+          "pattern": "resource-acquisition-is-initialization",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 13635,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/resource-acquisition-is-initialization/resource-acquisition-is-initialization.zip",
+          "error": null
+        },
+        {
+          "pattern": "role-object",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 48180,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/role-object/role-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "servant",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 15628,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/servant/servant.zip",
+          "error": null
+        },
+        {
+          "pattern": "service-layer",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 37696,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/service-layer/service-layer.zip",
+          "error": null
+        },
+        {
+          "pattern": "service-locator",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 14509,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/service-locator/service-locator.zip",
+          "error": null
+        },
+        {
+          "pattern": "service-stub",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 20873,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/service-stub/service-stub.zip",
+          "error": null
+        },
+        {
+          "pattern": "single-table-inheritance",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 30400,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/single-table-inheritance/single-table-inheritance.zip",
+          "error": null
+        },
+        {
+          "pattern": "singleton",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 8483,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/singleton/singleton.zip",
+          "error": null
+        },
+        {
+          "pattern": "special-case",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 31394,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/special-case/special-case.zip",
+          "error": null
+        },
+        {
+          "pattern": "specification",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 27564,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/specification/specification.zip",
+          "error": null
+        },
+        {
+          "pattern": "state",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 28270,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/state/state.zip",
+          "error": null
+        },
+        {
+          "pattern": "strategy",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 10883,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/strategy/strategy.zip",
+          "error": null
+        },
+        {
+          "pattern": "table-inheritance",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 29066,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/table-inheritance/table-inheritance.zip",
+          "error": null
+        },
+        {
+          "pattern": "table-module",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 11503,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/table-module/table-module.zip",
+          "error": null
+        },
+        {
+          "pattern": "template-method",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 11668,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/template-method/template-method.zip",
+          "error": null
+        },
+        {
+          "pattern": "thread-pool-executor",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 14476,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/thread-pool-executor/thread-pool-executor.zip",
+          "error": null
+        },
+        {
+          "pattern": "trampoline",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 16688,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/trampoline/trampoline.zip",
+          "error": null
+        },
+        {
+          "pattern": "transaction-script",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 24288,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/transaction-script/transaction-script.zip",
+          "error": null
+        },
+        {
+          "pattern": "twin",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 19673,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/twin/twin.zip",
+          "error": null
+        },
+        {
+          "pattern": "unit-of-work",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 18122,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/unit-of-work/unit-of-work.zip",
+          "error": null
+        },
+        {
+          "pattern": "update-method",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 19223,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/update-method/update-method.zip",
+          "error": null
+        },
+        {
+          "pattern": "value-object",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 24653,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/value-object/value-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "view-helper",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 12378,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/view-helper/view-helper.zip",
+          "error": null
+        },
+        {
+          "pattern": "virtual-proxy",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 12630,
+          "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/virtual-proxy/virtual-proxy.zip",
+          "error": null
+        }
+      ]
+    },
+    {
+      "job_id": "cc26896f50764bdba3d51d2daf32bf84",
+      "status": "running",
+      "model_used": "qwen3-coder-30b-a3b-instruct",
+      "project_title": "A social media system",
+      "Project title": "A social media system",
+      "project_context": "A social media system",
+      "concurrency": 1,
+      "totals": {
+        "total_patterns": 83,
+        "completed_patterns": 25,
+        "successful_patterns": 25,
+        "failed_patterns": 0,
+        "status_breakdown": {
+          "success": 25,
+          "queued": 58
+        }
+      },
+      "timing": {
+        "started_at_epoch": 1773759554.239629,
+        "updated_at_epoch": 1773760070.662388,
+        "completed_at_epoch": null,
+        "started_at_utc": "2026-03-17T14:59:14.239629+00:00",
+        "updated_at_utc": "2026-03-17T15:07:50.662388+00:00",
+        "completed_at_utc": null,
+        "elapsed_seconds": 516.423
+      },
+      "paths": {
+        "output_dir": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend/generated_batches/cc26896f50764bdba3d51d2daf32bf84",
+        "final_bundle_relative_path": null
+      },
+      "results": [
+        {
+          "pattern": "abstract-factory",
+          "status": "success",
+          "files_count": 13,
+          "duration_ms": 30376,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/abstract-factory/abstract-factory.zip",
+          "error": null
+        },
+        {
+          "pattern": "active-object",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 18237,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/active-object/active-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "actor-model",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 25512,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/actor-model/actor-model.zip",
+          "error": null
+        },
+        {
+          "pattern": "acyclic-visitor",
+          "status": "success",
+          "files_count": 9,
+          "duration_ms": 24807,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/acyclic-visitor/acyclic-visitor.zip",
+          "error": null
+        },
+        {
+          "pattern": "adapter",
+          "status": "success",
+          "files_count": 7,
+          "duration_ms": 15518,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/adapter/adapter.zip",
+          "error": null
+        },
+        {
+          "pattern": "ambassador",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 17298,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/ambassador/ambassador.zip",
+          "error": null
+        },
+        {
+          "pattern": "balking",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 13492,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/balking/balking.zip",
+          "error": null
+        },
+        {
+          "pattern": "bridge",
+          "status": "success",
+          "files_count": 8,
+          "duration_ms": 14244,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/bridge/bridge.zip",
+          "error": null
+        },
+        {
+          "pattern": "builder",
+          "status": "success",
+          "files_count": 2,
+          "duration_ms": 15878,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/builder/builder.zip",
+          "error": null
+        },
+        {
+          "pattern": "business-delegate",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 12118,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/business-delegate/business-delegate.zip",
+          "error": null
+        },
+        {
+          "pattern": "chain-of-responsibility",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 27574,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/chain-of-responsibility/chain-of-responsibility.zip",
+          "error": null
+        },
+        {
+          "pattern": "collection-pipeline",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 30275,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/collection-pipeline/collection-pipeline.zip",
+          "error": null
+        },
+        {
+          "pattern": "combinator",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 23464,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/combinator/combinator.zip",
+          "error": null
+        },
+        {
+          "pattern": "command",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 15339,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/command/command.zip",
+          "error": null
+        },
+        {
+          "pattern": "composite",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 25318,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/composite/composite.zip",
+          "error": null
+        },
+        {
+          "pattern": "converter",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 17226,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/converter/converter.zip",
+          "error": null
+        },
+        {
+          "pattern": "curiously-recurring-template-pattern",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 16987,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/curiously-recurring-template-pattern/curiously-recurring-template-pattern.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-access-object",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 29201,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/data-access-object/data-access-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-mapper",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 36377,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/data-mapper/data-mapper.zip",
+          "error": null
+        },
+        {
+          "pattern": "data-transfer-object",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 21728,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/data-transfer-object/data-transfer-object.zip",
+          "error": null
+        },
+        {
+          "pattern": "decorator",
+          "status": "success",
+          "files_count": 6,
+          "duration_ms": 22978,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/decorator/decorator.zip",
+          "error": null
+        },
+        {
+          "pattern": "dependency-injection",
+          "status": "success",
+          "files_count": 5,
+          "duration_ms": 12431,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/dependency-injection/dependency-injection.zip",
+          "error": null
+        },
+        {
+          "pattern": "dirty-flag",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 21248,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/dirty-flag/dirty-flag.zip",
+          "error": null
+        },
+        {
+          "pattern": "double-buffer",
+          "status": "success",
+          "files_count": 4,
+          "duration_ms": 17423,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/double-buffer/double-buffer.zip",
+          "error": null
+        },
+        {
+          "pattern": "double-checked-locking",
+          "status": "success",
+          "files_count": 3,
+          "duration_ms": 11333,
+          "output_zip_relative_path": "cc26896f50764bdba3d51d2daf32bf84/double-checked-locking/double-checked-locking.zip",
+          "error": null
+        },
+        {
+          "pattern": "dynamic-proxy",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "event-sourcing",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "execute-around",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "facade",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "factory-kit",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "factory-method",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "factory",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "fluent-interface",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "flyweight",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "function-composition",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "guarded-suspension",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "identity-map",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "interpreter",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "iterator",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "marker-interface",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "mediator",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "memento",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "model-view-controller",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "model-view-presenter",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "monad",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "monitor",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "monostate",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "multiton",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "null-object",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "object-pool",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "observer",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "page-controller",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "page-object",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "private-class-data",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "promise",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "prototype",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "proxy",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "reactor",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "repository",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "resource-acquisition-is-initialization",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "role-object",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "servant",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "service-layer",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "service-locator",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "service-stub",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "single-table-inheritance",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "singleton",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "special-case",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "specification",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "state",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "strategy",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "table-inheritance",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "table-module",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "template-method",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "thread-pool-executor",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "trampoline",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "transaction-script",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "twin",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "unit-of-work",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "update-method",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "value-object",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "view-helper",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        },
+        {
+          "pattern": "virtual-proxy",
+          "status": "queued",
+          "files_count": 0,
+          "duration_ms": 0,
+          "output_zip_relative_path": null,
+          "error": null
+        }
+      ]
+    }
+  ]
+}
