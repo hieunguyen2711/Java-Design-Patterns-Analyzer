@@ -147,6 +147,8 @@ class PIQSFormulaResult(BaseModel):
 class PIQSResponse(BaseModel):
     pattern_name: str
     files_analyzed: list[str]
+    base_predicates: dict[str, bool]
+    derived_predicates: dict[str, bool]
     logical_assessment: list[PIQSPropertyAssessment]
     breadth_calculation_psr: PIQSFormulaResult
     depth_calculation_cpc: PIQSFormulaResult
