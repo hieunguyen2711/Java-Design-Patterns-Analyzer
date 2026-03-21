@@ -1,0 +1,131 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        Mediator mediator = new BookingMediator();
+        
+        User user1 = new User("Alice", mediator);
+        User user2 = new User("Bob", mediator);
+        PaymentGateway paymentGateway = new PaymentGateway(mediator);
+        NotificationService notificationService = new NotificationService(mediator);
+        
+        mediator.registerUser(user1);
+        mediator.registerUser(user2);
+        mediator.registerPaymentGateway(paymentGateway);
+        mediator.registerNotificationService(notificationService);
+        
+        user1.bookTicket("Concert", 2);
+    }
+}
+```
+
+### FILE: Mediator.java
+```java
+import java.util.List;
+
+public interface Mediator {
+    void registerUser(User user);
+    void registerPaymentGateway(PaymentGateway paymentGateway);
+    void registerNotificationService(NotificationService notificationService);
+    
+    void bookTicket(String event, int quantity, User user);
+    void processPayment(String event, int quantity, User user);
+    void sendNotification(String message, User user);
+}
+```
+
+### FILE: BookingMediator.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookingMediator implements Mediator {
+    private List<User> users = new ArrayList<>();
+    private PaymentGateway paymentGateway;
+    private NotificationService notificationService;
+    
+    @Override
+    public void registerUser(User user) {
+        users.add(user);
+    }
+    
+    @Override
+    public void registerPaymentGateway(PaymentGateway paymentGateway) {
+        this.paymentGateway = paymentGateway;
+    }
+    
+    @Override
+    public void registerNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+    
+    @Override
+    public void bookTicket(String event, int quantity, User user) {
+        System.out.println("Booking " + quantity + " tickets for " + event);
+        processPayment(event, quantity, user);
+    }
+    
+    @Override
+    public void processPayment(String event, int quantity, User user) {
+        paymentGateway.processPayment(event, quantity, user);
+    }
+    
+    @Override
+    public void sendNotification(String message, User user) {
+        notificationService.sendNotification(message, user);
+    }
+}
+```
+
+### FILE: User.java
+```java
+public class User {
+    private String name;
+    private Mediator mediator;
+    
+    public User(String name, Mediator mediator) {
+        this.name = name;
+        this.mediator = mediator;
+    }
+    
+    public void bookTicket(String event, int quantity) {
+        mediator.bookTicket(event, quantity, this);
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: PaymentGateway.java
+```java
+public class PaymentGateway {
+    private Mediator mediator;
+    
+    public PaymentGateway(Mediator mediator) {
+        this.mediator = mediator;
+    }
+    
+    public void processPayment(String event, int quantity, User user) {
+        System.out.println("Processing payment for " + quantity + " tickets to " + event);
+        String message = "Payment successful for " + quantity + " tickets to " + event;
+        mediator.sendNotification(message, user);
+    }
+}
+```
+
+### FILE: NotificationService.java
+```java
+public class NotificationService {
+    private Mediator mediator;
+    
+    public NotificationService(Mediator mediator) {
+        this.mediator = mediator;
+    }
+    
+    public void sendNotification(String message, User user) {
+        System.out.println("Sending notification to " + user.getName() + ": " + message);
+    }
+}
+```

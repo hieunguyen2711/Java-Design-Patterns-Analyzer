@@ -1,0 +1,185 @@
+### FILE: TicketBookingService.java
+```java
+package com.ticketbooking.service;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+public interface TicketBookingService {
+    List<Ticket> searchTickets(String destination);
+    boolean bookTicket(int ticketId, String customerName);
+    boolean cancelBooking(int bookingId);
+}
+```
+
+### FILE: Ticket.java
+```java
+package com.ticketbooking.model;
+
+public class Ticket {
+    private int id;
+    private String destination;
+    private double price;
+    private boolean available;
+    
+    public Ticket(int id, String destination, double price) {
+        this.id = id;
+        this.destination = destination;
+        this.price = price;
+        this.available = true;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getDestination() { return destination; }
+    public void setDestination(String destination) { this.destination = destination; }
+    
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+    
+    public boolean isAvailable() { return available; }
+    public void setAvailable(boolean available) { this.available = available; }
+}
+```
+
+### FILE: BookingRecord.java
+```java
+package com.ticketbooking.model;
+
+public class BookingRecord {
+    private int id;
+    private int ticketId;
+    private String customerName;
+    
+    public BookingRecord(int id, int ticketId, String customerName) {
+        this.id = id;
+        this.ticketId = ticketId;
+        this.customerName = customerName;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public int getTicketId() { return ticketId; }
+    public void setTicketId(int ticketId) { this.ticketId = ticketId; }
+    
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+}
+```
+
+### FILE: TicketBookingServiceImpl.java
+```java
+package com.ticketbooking.service.impl;
+
+import com.ticketbooking.service.TicketBookingService;
+import com.ticketbooking.model.Ticket;
+import com.ticketbooking.model.BookingRecord;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+public class TicketBookingServiceImpl implements TicketBookingService {
+    private List<Ticket> tickets;
+    private Map<Integer, BookingRecord> bookings;
+    private int bookingCounter = 0;
+    
+    public TicketBookingServiceImpl() {
+        this.tickets = new ArrayList<>();
+        this.bookings = new HashMap<>();
+        initializeTickets();
+    }
+    
+    private void initializeTickets() {
+        tickets.add(new Ticket(1, "New York", 250.0));
+        tickets.add(new Ticket(2, "Los Angeles", 300.0));
+        tickets.add(new Ticket(3, "Chicago", 180.0));
+        tickets.add(new Ticket(4, "Miami", 220.0));
+    }
+    
+    @Override
+    public List<Ticket> searchTickets(String destination) {
+        List<Ticket> results = new ArrayList<>();
+        for (Ticket ticket : tickets) {
+            if (ticket.getDestination().equalsIgnoreCase(destination) && ticket.isAvailable()) {
+                results.add(ticket);
+            }
+        }
+        return results;
+    }
+    
+    @Override
+    public boolean bookTicket(int ticketId, String customerName) {
+        Ticket ticket = findTicketById(ticketId);
+        if (ticket != null && ticket.isAvailable()) {
+            ticket.setAvailable(false);
+            bookings.put(++bookingCounter, new BookingRecord(bookingCounter, ticketId, customerName));
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean cancelBooking(int bookingId) {
+        if (bookings.containsKey(bookingId)) {
+            int ticketId = bookings.get(bookingId).getTicketId();
+            Ticket ticket = findTicketById(ticketId);
+            if (ticket != null) {
+                ticket.setAvailable(true);
+                bookings.remove(bookingId);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private Ticket findTicketById(int id) {
+        for (Ticket ticket : tickets) {
+            if (ticket.getId() == id) {
+                return ticket;
+            }
+        }
+        return null;
+    }
+}
+```
+
+### FILE: MainApplication.java
+```java
+package com.ticketbooking;
+
+import com.ticketbooking.service.TicketBookingService;
+import com.ticketbooking.service.impl.TicketBookingServiceImpl;
+import com.ticketbooking.model.Ticket;
+import java.util.List;
+
+public class MainApplication {
+    public static void main(String[] args) {
+        TicketBookingService bookingService = new TicketBookingServiceImpl();
+        
+        // Search for tickets
+        List<Ticket> nyTickets = bookingService.searchTickets("New York");
+        System.out.println("Available New York tickets:");
+        for (Ticket ticket : nyTickets) {
+            System.out.println("- ID: " + ticket.getId() + ", Price: $" + ticket.getPrice());
+        }
+        
+        // Book a ticket
+        boolean booked = bookingService.bookTicket(1, "John Doe");
+        System.out.println("Booking successful: " + booked);
+        
+        // Search again to see availability change
+        List<Ticket> updatedTickets = bookingService.searchTickets("New York");
+        System.out.println("Updated New York tickets:");
+        for (Ticket ticket : updatedTickets) {
+            System.out.println("- ID: " + ticket.getId() + ", Price: $" + ticket.getPrice());
+        }
+    }
+}
+```

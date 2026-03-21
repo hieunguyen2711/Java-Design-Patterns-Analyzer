@@ -1,0 +1,131 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+public class TicketBookingSystem {
+    private static volatile TicketBookingSystem instance;
+    private final String systemName;
+    
+    private TicketBookingSystem(String systemName) {
+        this.systemName = systemName;
+    }
+    
+    public static TicketBookingSystem getInstance() {
+        if (instance == null) {
+            synchronized (TicketBookingSystem.class) {
+                if (instance == null) {
+                    instance = new TicketBookingSystem("Main Booking System");
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public String getSystemName() {
+        return systemName;
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+package com.example.ticketbooking;
+
+public class BookingService {
+    private static volatile BookingService instance;
+    private final TicketBookingSystem bookingSystem;
+    
+    private BookingService(TicketBookingSystem bookingSystem) {
+        this.bookingSystem = bookingSystem;
+    }
+    
+    public static BookingService getInstance() {
+        if (instance == null) {
+            synchronized (BookingService.class) {
+                if (instance == null) {
+                    instance = new BookingService(TicketBookingSystem.getInstance());
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public String getSystemName() {
+        return bookingSystem.getSystemName();
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private final String ticketId;
+    private final String eventName;
+    private final double price;
+    
+    public Ticket(String ticketId, String eventName, double price) {
+        this.ticketId = ticketId;
+        this.eventName = eventName;
+        this.price = price;
+    }
+    
+    public String getTicketId() {
+        return ticketId;
+    }
+    
+    public String getEventName() {
+        return eventName;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: TicketBookingContext.java
+```java
+package com.example.ticketbooking;
+
+public class TicketBookingContext {
+    private final BookingService bookingService;
+    private final Ticket ticket;
+    
+    public TicketBookingContext(BookingService bookingService, Ticket ticket) {
+        this.bookingService = bookingService;
+        this.ticket = ticket;
+    }
+    
+    public void bookTicket() {
+        System.out.println("Booking ticket " + ticket.getTicketId() + 
+                          " for event: " + ticket.getEventName());
+        System.out.println("Using system: " + bookingService.getSystemName());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.ticketbooking;
+
+public class Main {
+    public static void main(String[] args) {
+        // Demonstrating twin pattern with singleton instances
+        TicketBookingSystem system1 = TicketBookingSystem.getInstance();
+        TicketBookingSystem system2 = TicketBookingSystem.getInstance();
+        
+        BookingService service1 = BookingService.getInstance();
+        BookingService service2 = BookingService.getInstance();
+        
+        System.out.println("System 1 == System 2: " + (system1 == system2));
+        System.out.println("Service 1 == Service 2: " + (service1 == service2));
+        
+        // Using the twin pattern in context
+        Ticket ticket = new Ticket("T001", "Concert", 50.0);
+        TicketBookingContext context = new TicketBookingContext(service1, ticket);
+        context.bookTicket();
+    }
+}
+```

@@ -1,0 +1,100 @@
+### FILE: TicketBookingFacade.java
+```java
+public class TicketBookingFacade {
+    private MovieService movieService;
+    private TheaterService theaterService;
+    private BookingService bookingService;
+    
+    public TicketBookingFacade() {
+        this.movieService = new MovieService();
+        this.theaterService = new TheaterService();
+        this.bookingService = new BookingService();
+    }
+    
+    public void bookTicket(String movieName, String theaterName, int seatNumber) {
+        Movie movie = movieService.findMovie(movieName);
+        Theater theater = theaterService.findTheater(theaterName);
+        
+        if (movie != null && theater != null) {
+            bookingService.createBooking(movie, theater, seatNumber);
+            System.out.println("Ticket booked successfully for " + movie.getName() + 
+                             " at " + theater.getName() + " seat " + seatNumber);
+        } else {
+            System.out.println("Movie or theater not found");
+        }
+    }
+}
+```
+
+### FILE: MovieService.java
+```java
+public class MovieService {
+    public Movie findMovie(String name) {
+        // Simulate movie lookup
+        return new Movie(name);
+    }
+}
+```
+
+### FILE: TheaterService.java
+```java
+public class TheaterService {
+    public Theater findTheater(String name) {
+        // Simulate theater lookup
+        return new Theater(name);
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+public class BookingService {
+    public void createBooking(Movie movie, Theater theater, int seatNumber) {
+        // Simulate booking creation
+        System.out.println("Creating booking for " + movie.getName() + 
+                          " at " + theater.getName() + " seat " + seatNumber);
+    }
+}
+```
+
+### FILE: Movie.java
+```java
+public class Movie {
+    private String name;
+    
+    public Movie(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Theater.java
+```java
+public class Theater {
+    private String name;
+    
+    public Theater(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        TicketBookingFacade bookingFacade = new TicketBookingFacade();
+        
+        // Simple interface to book a ticket
+        bookingFacade.bookTicket("Inception", "Grand Theater", 15);
+    }
+}
+```

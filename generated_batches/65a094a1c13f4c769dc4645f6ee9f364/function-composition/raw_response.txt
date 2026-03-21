@@ -1,0 +1,99 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.function.Function;
+import java.util.List;
+import java.util.ArrayList;
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Create functions for different booking operations
+        Function<Ticket, Ticket> validateTicket = ticket -> {
+            if (ticket.getSeatNumber() <= 0 || ticket.getSeatNumber() > 100) {
+                throw new IllegalArgumentException("Invalid seat number");
+            }
+            return ticket;
+        };
+        
+        Function<Ticket, Ticket> checkAvailability = ticket -> {
+            if (ticket.isBooked()) {
+                throw new IllegalStateException("Ticket already booked");
+            }
+            return ticket;
+        };
+        
+        Function<Ticket, Ticket> processPayment = ticket -> {
+            ticket.setPaid(true);
+            System.out.println("Payment processed for ticket " + ticket.getSeatNumber());
+            return ticket;
+        };
+        
+        Function<Ticket, Ticket> confirmBooking = ticket -> {
+            ticket.setBooked(true);
+            System.out.println("Ticket confirmed for seat " + ticket.getSeatNumber());
+            return ticket;
+        };
+        
+        // Compose functions to create a booking pipeline
+        Function<Ticket, Ticket> bookTicketPipeline = validateTicket
+                .andThen(checkAvailability)
+                .andThen(processPayment)
+                .andThen(confirmBooking);
+        
+        // Execute the booking process
+        try {
+            Ticket ticket1 = new Ticket(15, false, false);
+            Ticket result = bookTicketPipeline.apply(ticket1);
+            System.out.println("Booking successful: " + result);
+            
+            Ticket ticket2 = new Ticket(101, false, false); // Invalid seat number
+            bookTicketPipeline.apply(ticket2);
+        } catch (Exception e) {
+            System.err.println("Booking failed: " + e.getMessage());
+        }
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private int seatNumber;
+    private boolean booked;
+    private boolean paid;
+    
+    public Ticket(int seatNumber, boolean booked, boolean paid) {
+        this.seatNumber = seatNumber;
+        this.booked = booked;
+        this.paid = paid;
+    }
+    
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+    
+    public boolean isBooked() {
+        return booked;
+    }
+    
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
+    
+    public boolean isPaid() {
+        return paid;
+    }
+    
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+    
+    @Override
+    public String toString() {
+        return "Ticket{seatNumber=" + seatNumber + ", booked=" + booked + ", paid=" + paid + '}';
+    }
+}
+```

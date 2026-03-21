@@ -1,0 +1,111 @@
+### FILE: Post.java
+```java
+package socialmedia;
+
+public class Post {
+    private String content;
+    private boolean isDirty;
+    
+    public Post(String content) {
+        this.content = content;
+        this.isDirty = false;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+    
+    public void setContent(String content) {
+        this.content = content;
+        this.isDirty = true;
+    }
+    
+    public boolean isDirty() {
+        return isDirty;
+    }
+    
+    public void markClean() {
+        this.isDirty = false;
+    }
+}
+```
+
+### FILE: PostService.java
+```java
+package socialmedia;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PostService {
+    private List<Post> posts;
+    
+    public PostService() {
+        this.posts = new ArrayList<>();
+    }
+    
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+    
+    public void updatePost(int index, String newContent) {
+        if (index >= 0 && index < posts.size()) {
+            posts.get(index).setContent(newContent);
+        }
+    }
+    
+    public List<Post> getDirtyPosts() {
+        List<Post> dirtyPosts = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.isDirty()) {
+                dirtyPosts.add(post);
+            }
+        }
+        return dirtyPosts;
+    }
+    
+    public void saveAllDirtyPosts() {
+        for (Post post : posts) {
+            if (post.isDirty()) {
+                // Simulate saving to database
+                System.out.println("Saving post: " + post.getContent());
+                post.markClean();
+            }
+        }
+    }
+}
+```
+
+### FILE: SocialMediaApplication.java
+```java
+package socialmedia;
+
+public class SocialMediaApplication {
+    public static void main(String[] args) {
+        PostService service = new PostService();
+        
+        // Create posts
+        Post post1 = new Post("Hello World!");
+        Post post2 = new Post("Java is awesome");
+        
+        service.addPost(post1);
+        service.addPost(post2);
+        
+        // Modify posts - this marks them as dirty
+        service.updatePost(0, "Hello Universe!");
+        service.updatePost(1, "Java is really awesome");
+        
+        // Check which posts are dirty
+        System.out.println("Dirty posts:");
+        for (Post post : service.getDirtyPosts()) {
+            System.out.println("- " + post.getContent());
+        }
+        
+        // Save all dirty posts
+        service.saveAllDirtyPosts();
+        
+        // Verify no more dirty posts
+        System.out.println("Remaining dirty posts: " + service.getDirtyPosts().size());
+    }
+}
+```

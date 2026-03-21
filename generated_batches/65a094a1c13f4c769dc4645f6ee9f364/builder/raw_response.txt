@@ -1,0 +1,131 @@
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private final String eventId;
+    private final String eventName;
+    private final String seatNumber;
+    private final double price;
+    private final boolean isVip;
+    private final String customerName;
+    
+    private Ticket(Builder builder) {
+        this.eventId = builder.eventId;
+        this.eventName = builder.eventName;
+        this.seatNumber = builder.seatNumber;
+        this.price = builder.price;
+        this.isVip = builder.isVip;
+        this.customerName = builder.customerName;
+    }
+    
+    public String getEventId() {
+        return eventId;
+    }
+    
+    public String getEventName() {
+        return eventName;
+    }
+    
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    
+    public boolean isVip() {
+        return isVip;
+    }
+    
+    public String getCustomerName() {
+        return customerName;
+    }
+    
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "eventId='" + eventId + '\'' +
+                ", eventName='" + eventName + '\'' +
+                ", seatNumber='" + seatNumber + '\'' +
+                ", price=" + price +
+                ", isVip=" + isVip +
+                ", customerName='" + customerName + '\'' +
+                '}';
+    }
+    
+    public static class Builder {
+        private String eventId;
+        private String eventName;
+        private String seatNumber;
+        private double price;
+        private boolean isVip = false;
+        private String customerName;
+        
+        public Builder setEventId(String eventId) {
+            this.eventId = eventId;
+            return this;
+        }
+        
+        public Builder setEventName(String eventName) {
+            this.eventName = eventName;
+            return this;
+        }
+        
+        public Builder setSeatNumber(String seatNumber) {
+            this.seatNumber = seatNumber;
+            return this;
+        }
+        
+        public Builder setPrice(double price) {
+            this.price = price;
+            return this;
+        }
+        
+        public Builder setIsVip(boolean isVip) {
+            this.isVip = isVip;
+            return this;
+        }
+        
+        public Builder setCustomerName(String customerName) {
+            this.customerName = customerName;
+            return this;
+        }
+        
+        public Ticket build() {
+            return new Ticket(this);
+        }
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Using the builder pattern to create tickets
+        Ticket regularTicket = new Ticket.Builder()
+                .setEventId("EVT001")
+                .setEventName("Concert Night")
+                .setSeatNumber("A12")
+                .setPrice(85.50)
+                .setCustomerName("John Doe")
+                .build();
+        
+        Ticket vipTicket = new Ticket.Builder()
+                .setEventId("EVT002")
+                .setEventName("VIP Gala Dinner")
+                .setSeatNumber("V10")
+                .setPrice(350.00)
+                .setIsVip(true)
+                .setCustomerName("Jane Smith")
+                .build();
+        
+        System.out.println(regularTicket);
+        System.out.println(vipTicket);
+    }
+}
+```

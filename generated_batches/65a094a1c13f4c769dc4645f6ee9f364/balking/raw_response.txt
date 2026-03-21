@@ -1,0 +1,61 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.booking;
+
+public class TicketBookingSystem {
+    private boolean isBookingInProgress = false;
+    
+    public void bookTicket(String ticketId) throws InterruptedException {
+        // Balking pattern: only proceed if no booking is currently in progress
+        if (isBookingInProgress) {
+            System.out.println("Booking already in progress, skipping request for " + ticketId);
+            return;
+        }
+        
+        // Simulate booking process
+        isBookingInProgress = true;
+        System.out.println("Starting booking for ticket: " + ticketId);
+        Thread.sleep(1000); // Simulate processing time
+        System.out.println("Completed booking for ticket: " + ticketId);
+        isBookingInProgress = false;
+    }
+}
+```
+
+### FILE: BookingClient.java
+```java
+package com.example.booking;
+
+public class BookingClient {
+    public static void main(String[] args) {
+        TicketBookingSystem system = new TicketBookingSystem();
+        
+        // Simulate multiple concurrent booking requests
+        Thread t1 = new Thread(() -> {
+            try {
+                system.bookTicket("T001");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        Thread t2 = new Thread(() -> {
+            try {
+                system.bookTicket("T002"); // This should be balked
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        t1.start();
+        t2.start();
+        
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```

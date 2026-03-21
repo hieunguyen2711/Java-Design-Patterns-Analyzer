@@ -1,0 +1,106 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Using Ambassador pattern to handle different booking types
+        BookingService bookingService = new BookingService();
+        
+        // Book concert tickets through ambassador
+        Ticket concertTicket = bookingService.bookTicket("concert", "VIP");
+        System.out.println("Booked: " + concertTicket.getType() + " - " + concertTicket.getCategory());
+        
+        // Book movie tickets through ambassador  
+        Ticket movieTicket = bookingService.bookTicket("movie", "Premium");
+        System.out.println("Booked: " + movieTicket.getType() + " - " + movieTicket.getCategory());
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+public class BookingService {
+    
+    public Ticket bookTicket(String type, String category) {
+        // Ambassador pattern - delegating to appropriate ticket creator
+        TicketCreator creator = getTicketCreator(type);
+        return creator.createTicket(category);
+    }
+    
+    private TicketCreator getTicketCreator(String type) {
+        switch (type.toLowerCase()) {
+            case "concert":
+                return new ConcertTicketCreator();
+            case "movie":
+                return new MovieTicketCreator();
+            default:
+                throw new IllegalArgumentException("Unknown ticket type: " + type);
+        }
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+public abstract class Ticket {
+    private String type;
+    private String category;
+    
+    public Ticket(String type, String category) {
+        this.type = type;
+        this.category = category;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+}
+```
+
+### FILE: ConcertTicket.java
+```java
+public class ConcertTicket extends Ticket {
+    public ConcertTicket(String category) {
+        super("Concert", category);
+    }
+}
+```
+
+### FILE: MovieTicket.java
+```java
+public class MovieTicket extends Ticket {
+    public MovieTicket(String category) {
+        super("Movie", category);
+    }
+}
+```
+
+### FILE: TicketCreator.java
+```java
+public abstract class TicketCreator {
+    public abstract Ticket createTicket(String category);
+}
+```
+
+### FILE: ConcertTicketCreator.java
+```java
+public class ConcertTicketCreator extends TicketCreator {
+    @Override
+    public Ticket createTicket(String category) {
+        return new ConcertTicket(category);
+    }
+}
+```
+
+### FILE: MovieTicketCreator.java
+```java
+public class MovieTicketCreator extends TicketCreator {
+    @Override
+    public Ticket createTicket(String category) {
+        return new MovieTicket(category);
+    }
+}
+```

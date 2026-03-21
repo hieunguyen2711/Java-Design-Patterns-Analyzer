@@ -1,0 +1,172 @@
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public abstract class Ticket {
+    protected String id;
+    protected double price;
+    protected boolean isBooked;
+    
+    public Ticket(String id, double price) {
+        this.id = id;
+        this.price = price;
+        this.isBooked = false;
+    }
+    
+    public abstract void book();
+    
+    public abstract void cancel();
+    
+    public String getId() {
+        return id;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    
+    public boolean isBooked() {
+        return isBooked;
+    }
+}
+```
+
+### FILE: RegularTicket.java
+```java
+package com.example.ticketbooking;
+
+public class RegularTicket extends Ticket {
+    private String seatNumber;
+    
+    public RegularTicket(String id, double price, String seatNumber) {
+        super(id, price);
+        this.seatNumber = seatNumber;
+    }
+    
+    @Override
+    public void book() {
+        if (!isBooked) {
+            isBooked = true;
+            System.out.println("Regular ticket " + id + " booked with seat " + seatNumber);
+        }
+    }
+    
+    @Override
+    public void cancel() {
+        if (isBooked) {
+            isBooked = false;
+            System.out.println("Regular ticket " + id + " cancelled");
+        }
+    }
+    
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+}
+```
+
+### FILE: VIPTicket.java
+```java
+package com.example.ticketbooking;
+
+public class VIPTicket extends Ticket {
+    private String loungeAccess;
+    
+    public VIPTicket(String id, double price, String loungeAccess) {
+        super(id, price);
+        this.loungeAccess = loungeAccess;
+    }
+    
+    @Override
+    public void book() {
+        if (!isBooked) {
+            isBooked = true;
+            System.out.println("VIP ticket " + id + " booked with access to " + loungeAccess);
+        }
+    }
+    
+    @Override
+    public void cancel() {
+        if (isBooked) {
+            isBooked = false;
+            System.out.println("VIP ticket " + id + " cancelled");
+        }
+    }
+    
+    public String getLoungeAccess() {
+        return loungeAccess;
+    }
+}
+```
+
+### FILE: TicketFactory.java
+```java
+package com.example.ticketbooking;
+
+public class TicketFactory {
+    public static Ticket createTicket(String type, String id, double price, String details) {
+        switch (type.toLowerCase()) {
+            case "regular":
+                return new RegularTicket(id, price, details);
+            case "vip":
+                return new VIPTicket(id, price, details);
+            default:
+                throw new IllegalArgumentException("Unknown ticket type: " + type);
+        }
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TicketBookingSystem {
+    private List<Ticket> tickets;
+    
+    public TicketBookingSystem() {
+        this.tickets = new ArrayList<>();
+    }
+    
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
+    
+    public void bookTicket(String id) {
+        for (Ticket ticket : tickets) {
+            if (ticket.getId().equals(id)) {
+                ticket.book();
+                break;
+            }
+        }
+    }
+    
+    public void cancelTicket(String id) {
+        for (Ticket ticket : tickets) {
+            if (ticket.getId().equals(id)) {
+                ticket.cancel();
+                break;
+            }
+        }
+    }
+    
+    public static void main(String[] args) {
+        TicketBookingSystem system = new TicketBookingSystem();
+        
+        // Using single-table inheritance - all tickets are treated as base type
+        Ticket regularTicket = TicketFactory.createTicket("regular", "R001", 50.0, "A12");
+        Ticket vipTicket = TicketFactory.createTicket("vip", "V001", 150.0, "Gold Lounge");
+        
+        system.addTicket(regularTicket);
+        system.addTicket(vipTicket);
+        
+        system.bookTicket("R001");
+        system.bookTicket("V001");
+        
+        system.cancelTicket("R001");
+    }
+}
+```

@@ -1,0 +1,169 @@
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private int id;
+    private String eventName;
+    private String seatNumber;
+    private double price;
+    
+    public Ticket(int id, String eventName, String seatNumber, double price) {
+        this.id = id;
+        this.eventName = eventName;
+        this.seatNumber = seatNumber;
+        this.price = price;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getEventName() { return eventName; }
+    public void setEventName(String eventName) { this.eventName = eventName; }
+    
+    public String getSeatNumber() { return seatNumber; }
+    public void setSeatNumber(String seatNumber) { this.seatNumber = seatNumber; }
+    
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+}
+```
+
+### FILE: TicketRepository.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public interface TicketRepository {
+    Ticket save(Ticket ticket);
+    Ticket findById(int id);
+    List<Ticket> findAll();
+    void deleteById(int id);
+}
+```
+
+### FILE: InMemoryTicketRepository.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+public class InMemoryTicketRepository implements TicketRepository {
+    private List<Ticket> tickets = new ArrayList<>();
+    private int nextId = 1;
+    
+    @Override
+    public Ticket save(Ticket ticket) {
+        if (ticket.getId() == 0) {
+            ticket.setId(nextId++);
+        }
+        tickets.add(ticket);
+        return ticket;
+    }
+    
+    @Override
+    public Ticket findById(int id) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+    
+    @Override
+    public List<Ticket> findAll() {
+        return new ArrayList<>(tickets);
+    }
+    
+    @Override
+    public void deleteById(int id) {
+        tickets = tickets.stream()
+                .filter(ticket -> ticket.getId() != id)
+                .collect(Collectors.toList());
+    }
+}
+```
+
+### FILE: TicketBookingService.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+
+public class TicketBookingService {
+    private final TicketRepository repository;
+    
+    public TicketBookingService(TicketRepository repository) {
+        this.repository = repository;
+    }
+    
+    public Ticket bookTicket(String eventName, String seatNumber, double price) {
+        Ticket ticket = new Ticket(0, eventName, seatNumber, price);
+        return repository.save(ticket);
+    }
+    
+    public Ticket getTicket(int id) {
+        return repository.findById(id);
+    }
+    
+    public List<Ticket> getAllTickets() {
+        return repository.findAll();
+    }
+    
+    public void cancelTicket(int id) {
+        repository.deleteById(id);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        TicketRepository repository = new InMemoryTicketRepository();
+        TicketBookingService service = new TicketBookingService(repository);
+        
+        // Book some tickets
+        Ticket ticket1 = service.bookTicket("Concert", "A1", 50.0);
+        Ticket ticket2 = service.bookTicket("Movie", "B2", 25.0);
+        
+        System.out.println("Booked tickets:");
+        List<Ticket> allTickets = service.getAllTickets();
+        for (Ticket ticket : allTickets) {
+            System.out.println("ID: " + ticket.getId() + 
+                             ", Event: " + ticket.getEventName() + 
+                             ", Seat: " + ticket.getSeatNumber() + 
+                             ", Price: $" + ticket.getPrice());
+        }
+        
+        // Retrieve a specific ticket
+        Ticket retrievedTicket = service.getTicket(ticket1.getId());
+        System.out.println("\nRetrieved ticket:");
+        if (retrievedTicket != null) {
+            System.out.println("ID: " + retrievedTicket.getId() + 
+                             ", Event: " + retrievedTicket.getEventName() + 
+                             ", Seat: " + retrievedTicket.getSeatNumber() + 
+                             ", Price: $" + retrievedTicket.getPrice());
+        }
+        
+        // Cancel a ticket
+        service.cancelTicket(ticket2.getId());
+        System.out.println("\nAfter cancelling ticket:");
+        allTickets = service.getAllTickets();
+        for (Ticket ticket : allTickets) {
+            System.out.println("ID: " + ticket.getId() + 
+                             ", Event: " + ticket.getEventName() + 
+                             ", Seat: " + ticket.getSeatNumber() + 
+                             ", Price: $" + ticket.getPrice());
+        }
+    }
+}
+```

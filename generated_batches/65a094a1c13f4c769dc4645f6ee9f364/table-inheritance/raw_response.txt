@@ -1,0 +1,150 @@
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public abstract class Ticket {
+    protected String id;
+    protected double price;
+    protected boolean isBooked;
+    
+    public Ticket(String id, double price) {
+        this.id = id;
+        this.price = price;
+        this.isBooked = false;
+    }
+    
+    public abstract void book();
+    
+    public abstract void cancel();
+    
+    public String getId() {
+        return id;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    
+    public boolean isBooked() {
+        return isBooked;
+    }
+}
+```
+
+### FILE: ConcertTicket.java
+```java
+package com.example.ticketbooking;
+
+public class ConcertTicket extends Ticket {
+    private String venue;
+    private String date;
+    
+    public ConcertTicket(String id, double price, String venue, String date) {
+        super(id, price);
+        this.venue = venue;
+        this.date = date;
+    }
+    
+    @Override
+    public void book() {
+        if (!isBooked) {
+            isBooked = true;
+            System.out.println("Concert ticket " + id + " booked at " + venue + " on " + date);
+        }
+    }
+    
+    @Override
+    public void cancel() {
+        if (isBooked) {
+            isBooked = false;
+            System.out.println("Concert ticket " + id + " cancelled");
+        }
+    }
+    
+    public String getVenue() {
+        return venue;
+    }
+    
+    public String getDate() {
+        return date;
+    }
+}
+```
+
+### FILE: MovieTicket.java
+```java
+package com.example.ticketbooking;
+
+public class MovieTicket extends Ticket {
+    private String movieTitle;
+    private String theater;
+    
+    public MovieTicket(String id, double price, String movieTitle, String theater) {
+        super(id, price);
+        this.movieTitle = movieTitle;
+        this.theater = theater;
+    }
+    
+    @Override
+    public void book() {
+        if (!isBooked) {
+            isBooked = true;
+            System.out.println("Movie ticket " + id + " booked for " + movieTitle + " at " + theater);
+        }
+    }
+    
+    @Override
+    public void cancel() {
+        if (isBooked) {
+            isBooked = false;
+            System.out.println("Movie ticket " + id + " cancelled");
+        }
+    }
+    
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+    
+    public String getTheater() {
+        return theater;
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TicketBookingSystem {
+    private List<Ticket> tickets;
+    
+    public TicketBookingSystem() {
+        this.tickets = new ArrayList<>();
+    }
+    
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
+    
+    public void bookAllTickets() {
+        for (Ticket ticket : tickets) {
+            ticket.book();
+        }
+    }
+    
+    public static void main(String[] args) {
+        TicketBookingSystem system = new TicketBookingSystem();
+        
+        ConcertTicket concert1 = new ConcertTicket("C001", 85.50, "Madison Square Garden", "2023-12-15");
+        MovieTicket movie1 = new MovieTicket("M001", 25.00, "Avengers: Endgame", "AMC Theater 1");
+        
+        system.addTicket(concert1);
+        system.addTicket(movie1);
+        
+        system.bookAllTickets();
+    }
+}
+```

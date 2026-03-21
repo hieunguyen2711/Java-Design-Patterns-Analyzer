@@ -1,0 +1,90 @@
+### FILE: ActiveObject.java
+```java
+public interface ActiveObject {
+    void postMessage(String message);
+    void followUser(String username);
+    void unfollowUser(String username);
+    String getUserFeed(String username);
+}
+```
+
+### FILE: SocialMediaSystem.java
+```java
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class SocialMediaSystem implements ActiveObject {
+    private final BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
+    private final Thread workerThread;
+    
+    public SocialMediaSystem() {
+        this.workerThread = new Thread(this::processRequests);
+        this.workerThread.start();
+    }
+    
+    @Override
+    public void postMessage(String message) {
+        queue.add(() -> {
+            // Simulate posting logic
+            System.out.println("Posting: " + message);
+        });
+    }
+    
+    @Override
+    public void followUser(String username) {
+        queue.add(() -> {
+            // Simulate following logic
+            System.out.println("Following user: " + username);
+        });
+    }
+    
+    @Override
+    public void unfollowUser(String username) {
+        queue.add(() -> {
+            // Simulate unfollowing logic
+            System.out.println("Unfollowing user: " + username);
+        });
+    }
+    
+    @Override
+    public String getUserFeed(String username) {
+        final StringBuilder result = new StringBuilder();
+        queue.add(() -> {
+            // Simulate feed retrieval
+            result.append("Feed for ").append(username).append(": [post1, post2]");
+        });
+        return result.toString();
+    }
+    
+    private void processRequests() {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                Runnable request = queue.take();
+                request.run();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+}
+```
+
+### FILE: SocialMediaClient.java
+```java
+public class SocialMediaClient {
+    public static void main(String[] args) {
+        ActiveObject system = new SocialMediaSystem();
+        
+        // Asynchronous operations
+        system.postMessage("Hello World!");
+        system.followUser("john_doe");
+        system.postMessage("Java is awesome!");
+        system.unfollowUser("john_doe");
+        
+        // Synchronous operation (will block until processed)
+        String feed = system.getUserFeed("alice");
+        System.out.println(feed);
+    }
+}
+```

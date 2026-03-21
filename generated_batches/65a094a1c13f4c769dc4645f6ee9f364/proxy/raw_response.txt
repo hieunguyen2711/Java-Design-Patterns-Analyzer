@@ -1,0 +1,53 @@
+### FILE: TicketBookingService.java
+```java
+public interface TicketBookingService {
+    void bookTicket(String event, String seat);
+}
+```
+
+### FILE: RealTicketBookingService.java
+```java
+public class RealTicketBookingService implements TicketBookingService {
+    @Override
+    public void bookTicket(String event, String seat) {
+        System.out.println("Booking ticket for " + event + " at seat " + seat);
+    }
+}
+```
+
+### FILE: ProxyTicketBookingService.java
+```java
+public class ProxyTicketBookingService implements TicketBookingService {
+    private RealTicketBookingService realService;
+    private static final int MAX_BOOKINGS_PER_HOUR = 5;
+    private int bookingsThisHour = 0;
+    
+    @Override
+    public void bookTicket(String event, String seat) {
+        if (bookingsThisHour >= MAX_BOOKINGS_PER_HOUR) {
+            System.out.println("Booking limit exceeded for this hour");
+            return;
+        }
+        
+        if (realService == null) {
+            realService = new RealTicketBookingService();
+        }
+        
+        realService.bookTicket(event, seat);
+        bookingsThisHour++;
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        TicketBookingService service = new ProxyTicketBookingService();
+        
+        for (int i = 0; i < 7; i++) {
+            service.bookTicket("Concert", "Seat " + i);
+        }
+    }
+}
+```

@@ -1,0 +1,69 @@
+### FILE: BusinessDelegate.java
+```java
+public class BusinessDelegate {
+    private BookingService bookingService;
+    private PaymentService paymentService;
+    
+    public void bookTicket(String userId, String eventId) {
+        // Business logic coordination
+        if (bookingService == null) {
+            bookingService = new BookingServiceImpl();
+        }
+        
+        if (paymentService == null) {
+            paymentService = new PaymentServiceImpl();
+        }
+        
+        // Delegate to appropriate services
+        String ticketId = bookingService.createBooking(userId, eventId);
+        paymentService.processPayment(ticketId);
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+public interface BookingService {
+    String createBooking(String userId, String eventId);
+}
+```
+
+### FILE: PaymentService.java
+```java
+public interface PaymentService {
+    void processPayment(String ticketId);
+}
+```
+
+### FILE: BookingServiceImpl.java
+```java
+public class BookingServiceImpl implements BookingService {
+    @Override
+    public String createBooking(String userId, String eventId) {
+        // Simulate booking creation
+        System.out.println("Creating booking for user " + userId + " and event " + eventId);
+        return "TICKET-12345";
+    }
+}
+```
+
+### FILE: PaymentServiceImpl.java
+```java
+public class PaymentServiceImpl implements PaymentService {
+    @Override
+    public void processPayment(String ticketId) {
+        // Simulate payment processing
+        System.out.println("Processing payment for ticket " + ticketId);
+    }
+}
+```
+
+### FILE: TicketBookingClient.java
+```java
+public class TicketBookingClient {
+    public static void main(String[] args) {
+        BusinessDelegate delegate = new BusinessDelegate();
+        delegate.bookTicket("USER-001", "EVENT-54321");
+    }
+}
+```

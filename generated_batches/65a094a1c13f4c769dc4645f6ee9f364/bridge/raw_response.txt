@@ -1,0 +1,83 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Create different types of tickets with different booking methods
+        Ticket concertTicket = new ConcertTicket(new OnlineBooking());
+        Ticket movieTicket = new MovieTicket(new PhoneBooking());
+        
+        concertTicket.book();
+        movieTicket.book();
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+public abstract class Ticket {
+    protected BookingMethod bookingMethod;
+    
+    public Ticket(BookingMethod bookingMethod) {
+        this.bookingMethod = bookingMethod;
+    }
+    
+    public abstract void book();
+}
+```
+
+### FILE: ConcertTicket.java
+```java
+public class ConcertTicket extends Ticket {
+    public ConcertTicket(BookingMethod bookingMethod) {
+        super(bookingMethod);
+    }
+    
+    @Override
+    public void book() {
+        System.out.println("Booking concert ticket via:");
+        bookingMethod.book();
+    }
+}
+```
+
+### FILE: MovieTicket.java
+```java
+public class MovieTicket extends Ticket {
+    public MovieTicket(BookingMethod bookingMethod) {
+        super(bookingMethod);
+    }
+    
+    @Override
+    public void book() {
+        System.out.println("Booking movie ticket via:");
+        bookingMethod.book();
+    }
+}
+```
+
+### FILE: BookingMethod.java
+```java
+public interface BookingMethod {
+    void book();
+}
+```
+
+### FILE: OnlineBooking.java
+```java
+public class OnlineBooking implements BookingMethod {
+    @Override
+    public void book() {
+        System.out.println("  - Online booking completed");
+    }
+}
+```
+
+### FILE: PhoneBooking.java
+```java
+public class PhoneBooking implements BookingMethod {
+    @Override
+    public void book() {
+        System.out.println("  - Phone booking completed");
+    }
+}
+```

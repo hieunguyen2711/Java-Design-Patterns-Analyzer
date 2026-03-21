@@ -1,0 +1,88 @@
+### FILE: Ticket.java
+```java
+public abstract class Ticket {
+    public abstract boolean isNull();
+    public abstract String getEventName();
+    public abstract double getPrice();
+}
+```
+
+### FILE: RegularTicket.java
+```java
+public class RegularTicket extends Ticket {
+    private final String eventName;
+    private final double price;
+
+    public RegularTicket(String eventName, double price) {
+        this.eventName = eventName;
+        this.price = price;
+    }
+
+    @Override
+    public boolean isNull() {
+        return false;
+    }
+
+    @Override
+    public String getEventName() {
+        return eventName;
+    }
+
+    @Override
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: NullTicket.java
+```java
+public class NullTicket extends Ticket {
+    @Override
+    public boolean isNull() {
+        return true;
+    }
+
+    @Override
+    public String getEventName() {
+        return "No event";
+    }
+
+    @Override
+    public double getPrice() {
+        return 0.0;
+    }
+}
+```
+
+### FILE: TicketFactory.java
+```java
+public class TicketFactory {
+    public static Ticket createTicket(String eventName, double price) {
+        if (eventName == null || eventName.isEmpty()) {
+            return new NullTicket();
+        }
+        return new RegularTicket(eventName, price);
+    }
+}
+```
+
+### FILE: BookingSystem.java
+```java
+public class BookingSystem {
+    public static void main(String[] args) {
+        Ticket ticket1 = TicketFactory.createTicket("Concert", 50.0);
+        Ticket ticket2 = TicketFactory.createTicket("", 0.0);
+        Ticket ticket3 = TicketFactory.createTicket(null, 0.0);
+
+        System.out.println("Ticket 1 - Event: " + ticket1.getEventName() + 
+                          ", Price: $" + ticket1.getPrice());
+        
+        System.out.println("Ticket 2 - Event: " + ticket2.getEventName() + 
+                          ", Price: $" + ticket2.getPrice());
+        
+        System.out.println("Ticket 3 - Event: " + ticket3.getEventName() + 
+                          ", Price: $" + ticket3.getPrice());
+    }
+}
+```

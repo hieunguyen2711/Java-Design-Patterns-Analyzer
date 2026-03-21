@@ -1,0 +1,166 @@
+### FILE: Actor.java
+```java
+package com.socialmedia.actor;
+
+public interface Actor {
+    void receive(Message message);
+}
+```
+
+### FILE: Message.java
+```java
+package com.socialmedia.actor;
+
+public abstract class Message {
+    private final String sender;
+    
+    public Message(String sender) {
+        this.sender = sender;
+    }
+    
+    public String getSender() {
+        return sender;
+    }
+    
+    public abstract void process();
+}
+```
+
+### FILE: User.java
+```java
+package com.socialmedia.actor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class User implements Actor {
+    private final String userId;
+    private final List<String> followers;
+    private final List<String> following;
+    
+    public User(String userId) {
+        this.userId = userId;
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
+    }
+    
+    @Override
+    public void receive(Message message) {
+        if (message instanceof PostMessage) {
+            ((PostMessage) message).process();
+        } else if (message instanceof FollowMessage) {
+            ((FollowMessage) message).process(this);
+        }
+    }
+    
+    public String getUserId() {
+        return userId;
+    }
+    
+    public List<String> getFollowers() {
+        return followers;
+    }
+    
+    public List<String> getFollowing() {
+        return following;
+    }
+}
+```
+
+### FILE: PostMessage.java
+```java
+package com.socialmedia.actor;
+
+public class PostMessage extends Message {
+    private final String content;
+    
+    public PostMessage(String sender, String content) {
+        super(sender);
+        this.content = content;
+    }
+    
+    @Override
+    public void process() {
+        System.out.println("User " + getSender() + " posted: " + content);
+    }
+    
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+### FILE: FollowMessage.java
+```java
+package com.socialmedia.actor;
+
+public class FollowMessage extends Message {
+    private final String targetUserId;
+    
+    public FollowMessage(String sender, String targetUserId) {
+        super(sender);
+        this.targetUserId = targetUserId;
+    }
+    
+    @Override
+    public void process() {
+        // This would be handled by the receiving user's actor
+    }
+    
+    public void process(User user) {
+        if (!user.getFollowing().contains(targetUserId)) {
+            user.getFollowing().add(targetUserId);
+            System.out.println("User " + getSender() + " is now following " + targetUserId);
+        }
+    }
+}
+```
+
+### FILE: SocialMediaSystem.java
+```java
+package com.socialmedia.actor;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class SocialMediaSystem {
+    private final Map<String, User> users;
+    
+    public SocialMediaSystem() {
+        this.users = new HashMap<>();
+    }
+    
+    public void createUser(String userId) {
+        users.put(userId, new User(userId));
+    }
+    
+    public void postMessage(String userId, String content) {
+        User user = users.get(userId);
+        if (user != null) {
+            PostMessage message = new PostMessage(userId, content);
+            user.receive(message);
+        }
+    }
+    
+    public void followUser(String followerId, String targetUserId) {
+        User follower = users.get(followerId);
+        User target = users.get(targetUserId);
+        
+        if (follower != null && target != null) {
+            FollowMessage message = new FollowMessage(followerId, targetUserId);
+            target.receive(message);
+        }
+    }
+    
+    public static void main(String[] args) {
+        SocialMediaSystem system = new SocialMediaSystem();
+        system.createUser("alice");
+        system.createUser("bob");
+        system.createUser("charlie");
+        
+        system.postMessage("alice", "Hello world!");
+        system.followUser("bob", "alice");
+        system.followUser("charlie", "alice");
+    }
+}
+```

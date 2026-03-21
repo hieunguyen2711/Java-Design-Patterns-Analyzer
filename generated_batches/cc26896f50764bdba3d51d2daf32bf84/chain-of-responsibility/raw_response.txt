@@ -1,0 +1,158 @@
+### FILE: Post.java
+```java
+public class Post {
+    private String content;
+    private String author;
+    
+    public Post(String content, String author) {
+        this.content = content;
+        this.author = author;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+}
+```
+
+### FILE: PostHandler.java
+```java
+public abstract class PostHandler {
+    protected PostHandler nextHandler;
+    
+    public void setNext(PostHandler handler) {
+        this.nextHandler = handler;
+    }
+    
+    public void handlePost(Post post) {
+        if (processPost(post)) {
+            return;
+        }
+        
+        if (nextHandler != null) {
+            nextHandler.handlePost(post);
+        } else {
+            System.out.println("Post rejected: " + post.getContent());
+        }
+    }
+    
+    protected abstract boolean processPost(Post post);
+}
+```
+
+### FILE: SpamFilterHandler.java
+```java
+public class SpamFilterHandler extends PostHandler {
+    private static final String[] SPAM_WORDS = {"spam", "advertisement", "click here"};
+    
+    @Override
+    protected boolean processPost(Post post) {
+        String content = post.getContent().toLowerCase();
+        
+        for (String spamWord : SPAM_WORDS) {
+            if (content.contains(spamWord)) {
+                System.out.println("Spam filter blocked: " + post.getContent());
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
+```
+
+### FILE: ProfanityFilterHandler.java
+```java
+public class ProfanityFilterHandler extends PostHandler {
+    private static final String[] PROFANITY_WORDS = {"badword", "offensive", "inappropriate"};
+    
+    @Override
+    protected boolean processPost(Post post) {
+        String content = post.getContent().toLowerCase();
+        
+        for (String profanityWord : PROFANITY_WORDS) {
+            if (content.contains(profanityWord)) {
+                System.out.println("Profanity filter blocked: " + post.getContent());
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
+```
+
+### FILE: LengthValidatorHandler.java
+```java
+public class LengthValidatorHandler extends PostHandler {
+    
+    @Override
+    protected boolean processPost(Post post) {
+        String content = post.getContent();
+        
+        if (content.length() > 500) {
+            System.out.println("Length validator blocked: " + post.getContent());
+            return true;
+        }
+        
+        if (content.trim().isEmpty()) {
+            System.out.println("Empty post blocked: " + post.getContent());
+            return true;
+        }
+        
+        return false;
+    }
+}
+```
+
+### FILE: SocialMediaSystem.java
+```java
+public class SocialMediaSystem {
+    private PostHandler handlerChain;
+    
+    public SocialMediaSystem() {
+        initializeHandlers();
+    }
+    
+    private void initializeHandlers() {
+        PostHandler spamFilter = new SpamFilterHandler();
+        PostHandler profanityFilter = new ProfanityFilterHandler();
+        PostHandler lengthValidator = new LengthValidatorHandler();
+        
+        spamFilter.setNext(profanityFilter);
+        profanityFilter.setNext(lengthValidator);
+        
+        this.handlerChain = spamFilter;
+    }
+    
+    public void submitPost(Post post) {
+        System.out.println("Submitting post by " + post.getAuthor() + ": " + post.getContent());
+        handlerChain.handlePost(post);
+        System.out.println("Post processed successfully\n");
+    }
+    
+    public static void main(String[] args) {
+        SocialMediaSystem system = new SocialMediaSystem();
+        
+        // Valid post
+        system.submitPost(new Post("Hello everyone! This is a great day.", "Alice"));
+        
+        // Spam post
+        system.submitPost(new Post("Buy now! Click here for amazing deals!", "Bob"));
+        
+        // Profanity post
+        system.submitPost(new Post("This badword is inappropriate content", "Charlie"));
+        
+        // Too long post
+        String longContent = "A".repeat(600);
+        system.submitPost(new Post(longContent, "David"));
+        
+        // Empty post
+        system.submitPost(new Post("", "Eve"));
+    }
+}
+```

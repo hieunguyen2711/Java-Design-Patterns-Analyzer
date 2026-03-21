@@ -1,0 +1,682 @@
+{
+  "job_id": "65a094a1c13f4c769dc4645f6ee9f364",
+  "status": "completed",
+  "model_used": "qwen3-coder-30b-a3b-instruct",
+  "project_context": "a ticket booking system",
+  "concurrency": 1,
+  "total_patterns": 83,
+  "completed_patterns": 83,
+  "successful_patterns": 83,
+  "failed_patterns": 0,
+  "started_at": 1773760973.435319,
+  "updated_at": 1773762701.7366972,
+  "completed_at": 1773762701.7366972,
+  "output_dir": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend/generated_batches/65a094a1c13f4c769dc4645f6ee9f364",
+  "final_bundle_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/generated_projects_bundle.zip",
+  "results": [
+    {
+      "pattern": "abstract-factory",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 17311,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/abstract-factory/abstract-factory.zip",
+      "error": null
+    },
+    {
+      "pattern": "active-object",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 33560,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/active-object/active-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "actor-model",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 35037,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/actor-model/actor-model.zip",
+      "error": null
+    },
+    {
+      "pattern": "acyclic-visitor",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 12461,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/acyclic-visitor/acyclic-visitor.zip",
+      "error": null
+    },
+    {
+      "pattern": "adapter",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 12135,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/adapter/adapter.zip",
+      "error": null
+    },
+    {
+      "pattern": "ambassador",
+      "status": "success",
+      "files_count": 8,
+      "duration_ms": 20269,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/ambassador/ambassador.zip",
+      "error": null
+    },
+    {
+      "pattern": "balking",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 15169,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/balking/balking.zip",
+      "error": null
+    },
+    {
+      "pattern": "bridge",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 12478,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/bridge/bridge.zip",
+      "error": null
+    },
+    {
+      "pattern": "builder",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 24427,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/builder/builder.zip",
+      "error": null
+    },
+    {
+      "pattern": "business-delegate",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 12224,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/business-delegate/business-delegate.zip",
+      "error": null
+    },
+    {
+      "pattern": "chain-of-responsibility",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 22539,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/chain-of-responsibility/chain-of-responsibility.zip",
+      "error": null
+    },
+    {
+      "pattern": "collection-pipeline",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 37036,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/collection-pipeline/collection-pipeline.zip",
+      "error": null
+    },
+    {
+      "pattern": "combinator",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 21446,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/combinator/combinator.zip",
+      "error": null
+    },
+    {
+      "pattern": "command",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 15618,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/command/command.zip",
+      "error": null
+    },
+    {
+      "pattern": "composite",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 18519,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/composite/composite.zip",
+      "error": null
+    },
+    {
+      "pattern": "converter",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 21054,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/converter/converter.zip",
+      "error": null
+    },
+    {
+      "pattern": "curiously-recurring-template-pattern",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 13394,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/curiously-recurring-template-pattern/curiously-recurring-template-pattern.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-access-object",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 30134,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/data-access-object/data-access-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-mapper",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 55285,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/data-mapper/data-mapper.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-transfer-object",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 26134,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/data-transfer-object/data-transfer-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "decorator",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 17589,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/decorator/decorator.zip",
+      "error": null
+    },
+    {
+      "pattern": "dependency-injection",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 12891,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/dependency-injection/dependency-injection.zip",
+      "error": null
+    },
+    {
+      "pattern": "dirty-flag",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 17821,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/dirty-flag/dirty-flag.zip",
+      "error": null
+    },
+    {
+      "pattern": "double-buffer",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 9596,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/double-buffer/double-buffer.zip",
+      "error": null
+    },
+    {
+      "pattern": "double-checked-locking",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 9723,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/double-checked-locking/double-checked-locking.zip",
+      "error": null
+    },
+    {
+      "pattern": "dynamic-proxy",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 16449,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/dynamic-proxy/dynamic-proxy.zip",
+      "error": null
+    },
+    {
+      "pattern": "event-sourcing",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 17008,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/event-sourcing/event-sourcing.zip",
+      "error": null
+    },
+    {
+      "pattern": "execute-around",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 14246,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/execute-around/execute-around.zip",
+      "error": null
+    },
+    {
+      "pattern": "facade",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 21505,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/facade/facade.zip",
+      "error": null
+    },
+    {
+      "pattern": "factory-kit",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 21894,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/factory-kit/factory-kit.zip",
+      "error": null
+    },
+    {
+      "pattern": "factory-method",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 22527,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/factory-method/factory-method.zip",
+      "error": null
+    },
+    {
+      "pattern": "factory",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 20777,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/factory/factory.zip",
+      "error": null
+    },
+    {
+      "pattern": "fluent-interface",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 9890,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/fluent-interface/fluent-interface.zip",
+      "error": null
+    },
+    {
+      "pattern": "flyweight",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 26584,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/flyweight/flyweight.zip",
+      "error": null
+    },
+    {
+      "pattern": "function-composition",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 19305,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/function-composition/function-composition.zip",
+      "error": null
+    },
+    {
+      "pattern": "guarded-suspension",
+      "status": "success",
+      "files_count": 1,
+      "duration_ms": 13865,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/guarded-suspension/guarded-suspension.zip",
+      "error": null
+    },
+    {
+      "pattern": "identity-map",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 19198,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/identity-map/identity-map.zip",
+      "error": null
+    },
+    {
+      "pattern": "interpreter",
+      "status": "success",
+      "files_count": 8,
+      "duration_ms": 24310,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/interpreter/interpreter.zip",
+      "error": null
+    },
+    {
+      "pattern": "iterator",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 13343,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/iterator/iterator.zip",
+      "error": null
+    },
+    {
+      "pattern": "marker-interface",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 17258,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/marker-interface/marker-interface.zip",
+      "error": null
+    },
+    {
+      "pattern": "mediator",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 24197,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/mediator/mediator.zip",
+      "error": null
+    },
+    {
+      "pattern": "memento",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 18730,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/memento/memento.zip",
+      "error": null
+    },
+    {
+      "pattern": "model-view-controller",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 18250,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/model-view-controller/model-view-controller.zip",
+      "error": null
+    },
+    {
+      "pattern": "model-view-presenter",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 22936,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/model-view-presenter/model-view-presenter.zip",
+      "error": null
+    },
+    {
+      "pattern": "monad",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 20859,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/monad/monad.zip",
+      "error": null
+    },
+    {
+      "pattern": "monitor",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 25527,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/monitor/monitor.zip",
+      "error": null
+    },
+    {
+      "pattern": "monostate",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 20523,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/monostate/monostate.zip",
+      "error": null
+    },
+    {
+      "pattern": "multiton",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 15639,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/multiton/multiton.zip",
+      "error": null
+    },
+    {
+      "pattern": "null-object",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 15722,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/null-object/null-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "object-pool",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 39800,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/object-pool/object-pool.zip",
+      "error": null
+    },
+    {
+      "pattern": "observer",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 13664,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/observer/observer.zip",
+      "error": null
+    },
+    {
+      "pattern": "page-controller",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 6845,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/page-controller/page-controller.zip",
+      "error": null
+    },
+    {
+      "pattern": "page-object",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 11831,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/page-object/page-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "private-class-data",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 25344,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/private-class-data/private-class-data.zip",
+      "error": null
+    },
+    {
+      "pattern": "promise",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 30154,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/promise/promise.zip",
+      "error": null
+    },
+    {
+      "pattern": "prototype",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 18691,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/prototype/prototype.zip",
+      "error": null
+    },
+    {
+      "pattern": "proxy",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 13778,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/proxy/proxy.zip",
+      "error": null
+    },
+    {
+      "pattern": "reactor",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 44313,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/reactor/reactor.zip",
+      "error": null
+    },
+    {
+      "pattern": "repository",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 37404,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/repository/repository.zip",
+      "error": null
+    },
+    {
+      "pattern": "resource-acquisition-is-initialization",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 13635,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/resource-acquisition-is-initialization/resource-acquisition-is-initialization.zip",
+      "error": null
+    },
+    {
+      "pattern": "role-object",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 48180,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/role-object/role-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "servant",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 15628,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/servant/servant.zip",
+      "error": null
+    },
+    {
+      "pattern": "service-layer",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 37696,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/service-layer/service-layer.zip",
+      "error": null
+    },
+    {
+      "pattern": "service-locator",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 14509,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/service-locator/service-locator.zip",
+      "error": null
+    },
+    {
+      "pattern": "service-stub",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 20873,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/service-stub/service-stub.zip",
+      "error": null
+    },
+    {
+      "pattern": "single-table-inheritance",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 30400,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/single-table-inheritance/single-table-inheritance.zip",
+      "error": null
+    },
+    {
+      "pattern": "singleton",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 8483,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/singleton/singleton.zip",
+      "error": null
+    },
+    {
+      "pattern": "special-case",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 31394,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/special-case/special-case.zip",
+      "error": null
+    },
+    {
+      "pattern": "specification",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 27564,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/specification/specification.zip",
+      "error": null
+    },
+    {
+      "pattern": "state",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 28270,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/state/state.zip",
+      "error": null
+    },
+    {
+      "pattern": "strategy",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 10883,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/strategy/strategy.zip",
+      "error": null
+    },
+    {
+      "pattern": "table-inheritance",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 29066,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/table-inheritance/table-inheritance.zip",
+      "error": null
+    },
+    {
+      "pattern": "table-module",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 11503,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/table-module/table-module.zip",
+      "error": null
+    },
+    {
+      "pattern": "template-method",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 11668,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/template-method/template-method.zip",
+      "error": null
+    },
+    {
+      "pattern": "thread-pool-executor",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 14476,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/thread-pool-executor/thread-pool-executor.zip",
+      "error": null
+    },
+    {
+      "pattern": "trampoline",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 16688,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/trampoline/trampoline.zip",
+      "error": null
+    },
+    {
+      "pattern": "transaction-script",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 24288,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/transaction-script/transaction-script.zip",
+      "error": null
+    },
+    {
+      "pattern": "twin",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 19673,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/twin/twin.zip",
+      "error": null
+    },
+    {
+      "pattern": "unit-of-work",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 18122,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/unit-of-work/unit-of-work.zip",
+      "error": null
+    },
+    {
+      "pattern": "update-method",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 19223,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/update-method/update-method.zip",
+      "error": null
+    },
+    {
+      "pattern": "value-object",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 24653,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/value-object/value-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "view-helper",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 12378,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/view-helper/view-helper.zip",
+      "error": null
+    },
+    {
+      "pattern": "virtual-proxy",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 12630,
+      "output_zip_relative_path": "65a094a1c13f4c769dc4645f6ee9f364/virtual-proxy/virtual-proxy.zip",
+      "error": null
+    }
+  ]
+}

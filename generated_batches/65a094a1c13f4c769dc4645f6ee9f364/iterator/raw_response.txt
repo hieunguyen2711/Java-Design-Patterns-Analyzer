@@ -1,0 +1,69 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private String eventId;
+    private String seatNumber;
+    private double price;
+
+    public Ticket(String eventId, String seatNumber, double price) {
+        this.eventId = eventId;
+        this.seatNumber = seatNumber;
+        this.price = price;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+import java.util.*;
+
+public class TicketBookingSystem {
+    private List<Ticket> tickets;
+
+    public TicketBookingSystem() {
+        this.tickets = new ArrayList<>();
+    }
+
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
+
+    public Iterator<Ticket> getTicketsIterator() {
+        return tickets.iterator();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        TicketBookingSystem bookingSystem = new TicketBookingSystem();
+        
+        bookingSystem.addTicket(new Ticket("E001", "A1", 50.0));
+        bookingSystem.addTicket(new Ticket("E001", "A2", 50.0));
+        bookingSystem.addTicket(new Ticket("E002", "B1", 75.0));
+        
+        System.out.println("Iterating through tickets:");
+        Iterator<Ticket> iterator = bookingSystem.getTicketsIterator();
+        while (iterator.hasNext()) {
+            Ticket ticket = iterator.next();
+            System.out.println("Event: " + ticket.getEventId() + 
+                             ", Seat: " + ticket.getSeatNumber() + 
+                             ", Price: $" + ticket.getPrice());
+        }
+    }
+}
+```

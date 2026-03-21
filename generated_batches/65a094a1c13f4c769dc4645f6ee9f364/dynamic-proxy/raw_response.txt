@@ -1,0 +1,73 @@
+### FILE: TicketBookingService.java
+```java
+public interface TicketBookingService {
+    void bookTicket(String eventId, String userId);
+    void cancelTicket(String eventId, String userId);
+}
+```
+
+### FILE: RealTicketBookingService.java
+```java
+public class RealTicketBookingService implements TicketBookingService {
+    @Override
+    public void bookTicket(String eventId, String userId) {
+        System.out.println("Booking ticket for event: " + eventId + " for user: " + userId);
+    }
+    
+    @Override
+    public void cancelTicket(String eventId, String userId) {
+        System.out.println("Canceling ticket for event: " + eventId + " for user: " + userId);
+    }
+}
+```
+
+### FILE: LoggingHandler.java
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class LoggingHandler implements InvocationHandler {
+    private final Object target;
+    
+    public LoggingHandler(Object target) {
+        this.target = target;
+    }
+    
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Before method: " + method.getName());
+        Object result = method.invoke(target, args);
+        System.out.println("After method: " + method.getName());
+        return result;
+    }
+}
+```
+
+### FILE: TicketBookingProxyFactory.java
+```java
+import java.lang.reflect.Proxy;
+
+public class TicketBookingProxyFactory {
+    public static TicketBookingService createProxy(TicketBookingService target) {
+        return (TicketBookingService) Proxy.newProxyInstance(
+            target.getClass().getClassLoader(),
+            new Class[]{TicketBookingService.class},
+            new LoggingHandler(target)
+        );
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        TicketBookingService realService = new RealTicketBookingService();
+        TicketBookingService proxyService = TicketBookingProxyFactory.createProxy(realService);
+        
+        proxyService.bookTicket("EVENT001", "USER123");
+        System.out.println("---");
+        proxyService.cancelTicket("EVENT001", "USER123");
+    }
+}
+```

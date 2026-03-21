@@ -1,0 +1,106 @@
+### FILE: SocialMediaUser.java
+```java
+package com.socialmedia.model;
+
+public abstract class SocialMediaUser<T extends SocialMediaUser<T>> {
+    protected String username;
+    protected String email;
+    
+    public SocialMediaUser(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+    
+    public T withUsername(String username) {
+        this.username = username;
+        return (T) this;
+    }
+    
+    public T withEmail(String email) {
+        this.email = email;
+        return (T) this;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: RegularUser.java
+```java
+package com.socialmedia.model;
+
+public class RegularUser extends SocialMediaUser<RegularUser> {
+    private boolean isVerified;
+    
+    public RegularUser(String username, String email) {
+        super(username, email);
+        this.isVerified = false;
+    }
+    
+    public RegularUser verify() {
+        this.isVerified = true;
+        return this;
+    }
+    
+    public boolean isVerified() {
+        return isVerified;
+    }
+}
+```
+
+### FILE: PremiumUser.java
+```java
+package com.socialmedia.model;
+
+public class PremiumUser extends SocialMediaUser<PremiumUser> {
+    private int subscriptionLevel;
+    
+    public PremiumUser(String username, String email) {
+        super(username, email);
+        this.subscriptionLevel = 1;
+    }
+    
+    public PremiumUser setSubscriptionLevel(int level) {
+        this.subscriptionLevel = level;
+        return this;
+    }
+    
+    public int getSubscriptionLevel() {
+        return subscriptionLevel;
+    }
+}
+```
+
+### FILE: SocialMediaSystem.java
+```java
+package com.socialmedia.system;
+
+import com.socialmedia.model.RegularUser;
+import com.socialmedia.model.PremiumUser;
+
+public class SocialMediaSystem {
+    public static void main(String[] args) {
+        // Using RegularUser with CRTP
+        RegularUser regular = new RegularUser("john_doe", "john@example.com")
+            .withUsername("john_updated")
+            .verify();
+        
+        System.out.println("Regular User: " + regular.getUsername() + 
+                          ", Verified: " + regular.isVerified());
+        
+        // Using PremiumUser with CRTP
+        PremiumUser premium = new PremiumUser("jane_smith", "jane@example.com")
+            .withEmail("jane.smith@premium.com")
+            .setSubscriptionLevel(3);
+        
+        System.out.println("Premium User: " + premium.getUsername() + 
+                          ", Level: " + premium.getSubscriptionLevel());
+    }
+}
+```

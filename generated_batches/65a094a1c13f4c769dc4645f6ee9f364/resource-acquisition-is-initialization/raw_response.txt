@@ -1,0 +1,45 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        try (TicketProcessor processor = new TicketProcessor()) {
+            processor.processTicket("VIP-123");
+            processor.processTicket("Regular-456");
+        } catch (Exception e) {
+            System.err.println("Error processing tickets: " + e.getMessage());
+        }
+    }
+}
+```
+
+### FILE: TicketProcessor.java
+```java
+public class TicketProcessor implements AutoCloseable {
+    private boolean isInitialized = false;
+    
+    public TicketProcessor() {
+        initialize();
+    }
+    
+    private void initialize() {
+        System.out.println("Initializing ticket processor...");
+        // Simulate resource acquisition
+        isInitialized = true;
+    }
+    
+    public void processTicket(String ticketId) throws Exception {
+        if (!isInitialized) {
+            throw new IllegalStateException("Ticket processor not initialized");
+        }
+        System.out.println("Processing ticket: " + ticketId);
+        // Simulate processing logic
+        Thread.sleep(100);
+    }
+    
+    @Override
+    public void close() {
+        System.out.println("Cleaning up ticket processor resources...");
+        isInitialized = false;
+    }
+}
+```

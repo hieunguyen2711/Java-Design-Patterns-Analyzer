@@ -1,0 +1,70 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Book concert tickets using concert factory
+        TicketFactory concertFactory = new ConcertTicketFactory();
+        Ticket ticket1 = concertFactory.createTicket();
+        ticket1.book();
+        
+        // Book movie tickets using movie factory
+        TicketFactory movieFactory = new MovieTicketFactory();
+        Ticket ticket2 = movieFactory.createTicket();
+        ticket2.book();
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+public interface Ticket {
+    void book();
+}
+```
+
+### FILE: ConcertTicket.java
+```java
+public class ConcertTicket implements Ticket {
+    @Override
+    public void book() {
+        System.out.println("Concert ticket booked successfully");
+    }
+}
+```
+
+### FILE: MovieTicket.java
+```java
+public class MovieTicket implements Ticket {
+    @Override
+    public void book() {
+        System.out.println("Movie ticket booked successfully");
+    }
+}
+```
+
+### FILE: TicketFactory.java
+```java
+public abstract class TicketFactory {
+    public abstract Ticket createTicket();
+}
+```
+
+### FILE: ConcertTicketFactory.java
+```java
+public class ConcertTicketFactory extends TicketFactory {
+    @Override
+    public Ticket createTicket() {
+        return new ConcertTicket();
+    }
+}
+```
+
+### FILE: MovieTicketFactory.java
+```java
+public class MovieTicketFactory extends TicketFactory {
+    @Override
+    public Ticket createTicket() {
+        return new MovieTicket();
+    }
+}
+```

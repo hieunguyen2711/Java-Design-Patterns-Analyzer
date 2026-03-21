@@ -1,0 +1,106 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.booking;
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        BookingManager manager = new BookingManager();
+        
+        // Create a booking
+        Booking booking = manager.createBooking("John Doe", "Movie123");
+        
+        // Modify booking details (dirty flag will be set)
+        booking.setSeatNumber("A15");
+        booking.setPrice(15.50);
+        
+        // Check if booking is dirty before saving
+        System.out.println("Is booking dirty? " + booking.isDirty());
+        
+        // Save the booking (clears dirty flag)
+        manager.saveBooking(booking);
+        
+        // Check if booking is dirty after save
+        System.out.println("Is booking dirty after save? " + booking.isDirty());
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package com.example.booking;
+
+public class Booking {
+    private String customerName;
+    private String eventId;
+    private String seatNumber;
+    private double price;
+    private boolean isDirty = false;
+    
+    public Booking(String customerName, String eventId) {
+        this.customerName = customerName;
+        this.eventId = eventId;
+    }
+    
+    public String getCustomerName() {
+        return customerName;
+    }
+    
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+        markDirty();
+    }
+    
+    public String getEventId() {
+        return eventId;
+    }
+    
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+    
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
+        markDirty();
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    
+    public void setPrice(double price) {
+        this.price = price;
+        markDirty();
+    }
+    
+    public boolean isDirty() {
+        return isDirty;
+    }
+    
+    private void markDirty() {
+        this.isDirty = true;
+    }
+    
+    public void clearDirtyFlag() {
+        this.isDirty = false;
+    }
+}
+```
+
+### FILE: BookingManager.java
+```java
+package com.example.booking;
+
+public class BookingManager {
+    public Booking createBooking(String customerName, String eventId) {
+        return new Booking(customerName, eventId);
+    }
+    
+    public void saveBooking(Booking booking) {
+        // In a real system, this would persist to database
+        System.out.println("Saving booking for " + booking.getCustomerName());
+        
+        // Clear the dirty flag after saving
+        booking.clearDirtyFlag();
+    }
+}
+```

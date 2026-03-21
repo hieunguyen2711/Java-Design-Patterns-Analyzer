@@ -1,0 +1,62 @@
+### FILE: SocialMediaSystem.java
+```java
+public class SocialMediaSystem {
+    private static volatile SocialMediaSystem instance;
+    
+    private SocialMediaSystem() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static SocialMediaSystem getInstance() {
+        if (instance == null) {
+            synchronized (SocialMediaSystem.class) {
+                if (instance == null) {
+                    instance = new SocialMediaSystem();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void postUpdate(String message) {
+        System.out.println("Posting update: " + message);
+    }
+}
+```
+
+### FILE: User.java
+```java
+public class User {
+    private String username;
+    private String email;
+    
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: SocialMediaApplication.java
+```java
+public class SocialMediaApplication {
+    public static void main(String[] args) {
+        // Demonstrating double-checked locking pattern
+        SocialMediaSystem system1 = SocialMediaSystem.getInstance();
+        SocialMediaSystem system2 = SocialMediaSystem.getInstance();
+        
+        System.out.println("Same instance: " + (system1 == system2));
+        
+        User user = new User("john_doe", "john@example.com");
+        system1.postUpdate("Hello, world! This is my first post.");
+    }
+}
+```

@@ -1,0 +1,121 @@
+### FILE: SocialMediaService.java
+```java
+package com.socialmedia.service;
+
+public interface SocialMediaService {
+    void post(String content);
+    String getFeed();
+}
+```
+
+### FILE: BasicSocialMediaService.java
+```java
+package com.socialmedia.service;
+
+public class BasicSocialMediaService implements SocialMediaService {
+    private StringBuilder feed = new StringBuilder();
+    
+    @Override
+    public void post(String content) {
+        feed.append("Post: ").append(content).append("\n");
+    }
+    
+    @Override
+    public String getFeed() {
+        return feed.toString();
+    }
+}
+```
+
+### FILE: SocialMediaDecorator.java
+```java
+package com.socialmedia.service;
+
+public abstract class SocialMediaDecorator implements SocialMediaService {
+    protected SocialMediaService service;
+    
+    public SocialMediaDecorator(SocialMediaService service) {
+        this.service = service;
+    }
+    
+    @Override
+    public void post(String content) {
+        service.post(content);
+    }
+    
+    @Override
+    public String getFeed() {
+        return service.getFeed();
+    }
+}
+```
+
+### FILE: HashtagDecorator.java
+```java
+package com.socialmedia.service;
+
+public class HashtagDecorator extends SocialMediaDecorator {
+    public HashtagDecorator(SocialMediaService service) {
+        super(service);
+    }
+    
+    @Override
+    public void post(String content) {
+        String taggedContent = "#" + content;
+        service.post(taggedContent);
+    }
+}
+```
+
+### FILE: TimestampDecorator.java
+```java
+package com.socialmedia.service;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class TimestampDecorator extends SocialMediaDecorator {
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    public TimestampDecorator(SocialMediaService service) {
+        super(service);
+    }
+    
+    @Override
+    public void post(String content) {
+        String timestampedContent = "[" + LocalDateTime.now().format(formatter) + "] " + content;
+        service.post(timestampedContent);
+    }
+}
+```
+
+### FILE: SocialMediaApp.java
+```java
+package com.socialmedia.service;
+
+public class SocialMediaApp {
+    public static void main(String[] args) {
+        // Basic service
+        SocialMediaService basicService = new BasicSocialMediaService();
+        basicService.post("Hello World!");
+        System.out.println(basicService.getFeed());
+        
+        // Decorated service with hashtag
+        SocialMediaService taggedService = new HashtagDecorator(new BasicSocialMediaService());
+        taggedService.post("Java is awesome");
+        System.out.println(taggedService.getFeed());
+        
+        // Decorated service with timestamp
+        SocialMediaService timestampedService = new TimestampDecorator(new BasicSocialMediaService());
+        timestampedService.post("Learning design patterns");
+        System.out.println(timestampedService.getFeed());
+        
+        // Chain of decorators
+        SocialMediaService decoratedService = new HashtagDecorator(
+            new TimestampDecorator(new BasicSocialMediaService())
+        );
+        decoratedService.post("Decorator pattern rocks!");
+        System.out.println(decoratedService.getFeed());
+    }
+}
+```

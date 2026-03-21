@@ -1,0 +1,43 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    private static volatile TicketBookingSystem instance;
+    
+    private TicketBookingSystem() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static TicketBookingSystem getInstance() {
+        if (instance == null) {
+            synchronized (TicketBookingSystem.class) {
+                if (instance == null) {
+                    instance = new TicketBookingSystem();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public boolean bookTicket(String ticketId, String customerName) {
+        // Simulate booking logic
+        System.out.println("Booking ticket " + ticketId + " for " + customerName);
+        return true;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Test double-checked locking pattern
+        TicketBookingSystem system1 = TicketBookingSystem.getInstance();
+        TicketBookingSystem system2 = TicketBookingSystem.getInstance();
+        
+        System.out.println("Same instance: " + (system1 == system2));
+        
+        system1.bookTicket("T001", "John Doe");
+        system2.bookTicket("T002", "Jane Smith");
+    }
+}
+```

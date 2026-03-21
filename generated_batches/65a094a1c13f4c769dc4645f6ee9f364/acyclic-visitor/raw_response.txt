@@ -1,0 +1,83 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        Ticket ticket = new StandardTicket(100.0);
+        Visitor visitor = new BookingVisitor();
+        
+        double total = ticket.accept(visitor);
+        System.out.println("Total booking cost: " + total);
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+public interface Ticket {
+    double accept(Visitor visitor);
+}
+```
+
+### FILE: StandardTicket.java
+```java
+public class StandardTicket implements Ticket {
+    private final double basePrice;
+    
+    public StandardTicket(double basePrice) {
+        this.basePrice = basePrice;
+    }
+    
+    @Override
+    public double accept(Visitor visitor) {
+        return visitor.visit(this);
+    }
+    
+    public double getBasePrice() {
+        return basePrice;
+    }
+}
+```
+
+### FILE: PremiumTicket.java
+```java
+public class PremiumTicket implements Ticket {
+    private final double basePrice;
+    
+    public PremiumTicket(double basePrice) {
+        this.basePrice = basePrice;
+    }
+    
+    @Override
+    public double accept(Visitor visitor) {
+        return visitor.visit(this);
+    }
+    
+    public double getBasePrice() {
+        return basePrice;
+    }
+}
+```
+
+### FILE: Visitor.java
+```java
+public interface Visitor {
+    double visit(StandardTicket ticket);
+    double visit(PremiumTicket ticket);
+}
+```
+
+### FILE: BookingVisitor.java
+```java
+public class BookingVisitor implements Visitor {
+    
+    @Override
+    public double visit(StandardTicket ticket) {
+        return ticket.getBasePrice() * 1.1; // 10% service fee
+    }
+    
+    @Override
+    public double visit(PremiumTicket ticket) {
+        return ticket.getBasePrice() * 1.2; // 20% service fee
+    }
+}
+```

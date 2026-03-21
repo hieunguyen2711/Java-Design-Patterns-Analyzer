@@ -1,0 +1,162 @@
+### FILE: SocialMediaComponent.java
+```java
+package com.socialmedia;
+
+import java.util.List;
+
+public interface SocialMediaComponent {
+    void display();
+    List<SocialMediaComponent> getChildren();
+    void addChild(SocialMediaComponent component);
+    void removeChild(SocialMediaComponent component);
+}
+```
+
+### FILE: Post.java
+```java
+package com.socialmedia;
+
+public class Post implements SocialMediaComponent {
+    private String content;
+    
+    public Post(String content) {
+        this.content = content;
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("Post: " + content);
+    }
+    
+    @Override
+    public List<SocialMediaComponent> getChildren() {
+        return null;
+    }
+    
+    @Override
+    public void addChild(SocialMediaComponent component) {
+        // Posts cannot have children
+    }
+    
+    @Override
+    public void removeChild(SocialMediaComponent component) {
+        // Posts cannot have children
+    }
+}
+```
+
+### FILE: User.java
+```java
+package com.socialmedia;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class User implements SocialMediaComponent {
+    private String username;
+    private List<SocialMediaComponent> posts;
+    
+    public User(String username) {
+        this.username = username;
+        this.posts = new ArrayList<>();
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("User: " + username);
+        for (SocialMediaComponent post : posts) {
+            post.display();
+        }
+    }
+    
+    @Override
+    public List<SocialMediaComponent> getChildren() {
+        return posts;
+    }
+    
+    @Override
+    public void addChild(SocialMediaComponent component) {
+        if (component instanceof Post) {
+            posts.add(component);
+        }
+    }
+    
+    @Override
+    public void removeChild(SocialMediaComponent component) {
+        posts.remove(component);
+    }
+}
+```
+
+### FILE: SocialMediaGroup.java
+```java
+package com.socialmedia;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SocialMediaGroup implements SocialMediaComponent {
+    private String groupName;
+    private List<SocialMediaComponent> components;
+    
+    public SocialMediaGroup(String groupName) {
+        this.groupName = groupName;
+        this.components = new ArrayList<>();
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("Group: " + groupName);
+        for (SocialMediaComponent component : components) {
+            component.display();
+        }
+    }
+    
+    @Override
+    public List<SocialMediaComponent> getChildren() {
+        return components;
+    }
+    
+    @Override
+    public void addChild(SocialMediaComponent component) {
+        components.add(component);
+    }
+    
+    @Override
+    public void removeChild(SocialMediaComponent component) {
+        components.remove(component);
+    }
+}
+```
+
+### FILE: SocialMediaSystem.java
+```java
+package com.socialmedia;
+
+public class SocialMediaSystem {
+    public static void main(String[] args) {
+        // Create a group
+        SocialMediaGroup group = new SocialMediaGroup("Java Developers");
+        
+        // Create users
+        User user1 = new User("Alice");
+        User user2 = new User("Bob");
+        
+        // Create posts
+        Post post1 = new Post("Hello everyone!");
+        Post post2 = new Post("How to use composite pattern?");
+        Post post3 = new Post("Great example!");
+        
+        // Build the structure
+        user1.addChild(post1);
+        user1.addChild(post2);
+        user2.addChild(post3);
+        
+        group.addChild(user1);
+        group.addChild(user2);
+        
+        // Display the entire structure
+        group.display();
+    }
+}
+```

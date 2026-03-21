@@ -1,0 +1,113 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class TicketBookingSystem {
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
+    
+    public CompletableFuture<Ticket> bookTicket(String eventId, String userId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                // Simulate booking process
+                Thread.sleep(1000);
+                return new Ticket(eventId, userId, "CONFIRMED");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }, executor);
+    }
+    
+    public void shutdown() {
+        executor.shutdown();
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private final String eventId;
+    private final String userId;
+    private final String status;
+    
+    public Ticket(String eventId, String userId, String status) {
+        this.eventId = eventId;
+        this.userId = userId;
+        this.status = status;
+    }
+    
+    public String getEventId() {
+        return eventId;
+    }
+    
+    public String getUserId() {
+        return userId;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+}
+```
+
+### FILE: TicketBookingService.java
+```java
+package com.example.ticketbooking;
+
+import java.util.concurrent.CompletableFuture;
+
+public class TicketBookingService {
+    private final TicketBookingSystem bookingSystem = new TicketBookingSystem();
+    
+    public CompletableFuture<Ticket> bookTicketAsync(String eventId, String userId) {
+        return bookingSystem.bookTicket(eventId, userId)
+                .thenApply(ticket -> {
+                    System.out.println("Processing ticket: " + ticket.getEventId());
+                    return ticket;
+                })
+                .exceptionally(throwable -> {
+                    System.err.println("Booking failed: " + throwable.getMessage());
+                    return null;
+                });
+    }
+    
+    public void shutdown() {
+        bookingSystem.shutdown();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.ticketbooking;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+public class Main {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        TicketBookingService service = new TicketBookingService();
+        
+        CompletableFuture<Ticket> ticket1 = service.bookTicketAsync("EVENT001", "USER001");
+        CompletableFuture<Ticket> ticket2 = service.bookTicketAsync("EVENT002", "USER002");
+        
+        // Wait for both bookings to complete
+        CompletableFuture.allOf(ticket1, ticket2).join();
+        
+        Ticket result1 = ticket1.get();
+        Ticket result2 = ticket2.get();
+        
+        System.out.println("Booking 1: " + result1.getStatus());
+        System.out.println("Booking 2: " + result2.getStatus());
+        
+        service.shutdown();
+    }
+}
+```

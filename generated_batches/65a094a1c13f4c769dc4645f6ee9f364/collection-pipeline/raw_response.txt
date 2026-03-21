@@ -1,0 +1,149 @@
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private String eventId;
+    private String customerId;
+    private int quantity;
+    private double price;
+    
+    public Ticket(String eventId, String customerId, int quantity, double price) {
+        this.eventId = eventId;
+        this.customerId = customerId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    // Getters
+    public String getEventId() { return eventId; }
+    public String getCustomerId() { return customerId; }
+    public int getQuantity() { return quantity; }
+    public double getPrice() { return price; }
+    
+    // Setters
+    public void setEventId(String eventId) { this.eventId = eventId; }
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setPrice(double price) { this.price = price; }
+}
+```
+
+### FILE: TicketRepository.java
+```java
+package com.example.ticketbooking;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class TicketRepository {
+    private List<Ticket> tickets;
+    
+    public TicketRepository() {
+        this.tickets = new ArrayList<>();
+    }
+    
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
+    
+    public Collection<Ticket> findByEvent(String eventId) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getEventId().equals(eventId))
+                .collect(Collectors.toList());
+    }
+    
+    public Collection<Ticket> findByCustomer(String customerId) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getCustomerId().equals(customerId))
+                .collect(Collectors.toList());
+    }
+    
+    public double getTotalRevenue() {
+        return tickets.stream()
+                .mapToDouble(ticket -> ticket.getPrice() * ticket.getQuantity())
+                .sum();
+    }
+    
+    public Collection<Ticket> getTicketsByEventAndCustomer(String eventId, String customerId) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getEventId().equals(eventId))
+                .filter(ticket -> ticket.getCustomerId().equals(customerId))
+                .collect(Collectors.toList());
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+public class TicketBookingSystem {
+    private TicketRepository repository;
+    
+    public TicketBookingSystem() {
+        this.repository = new TicketRepository();
+    }
+    
+    public void bookTicket(String eventId, String customerId, int quantity, double price) {
+        Ticket ticket = new Ticket(eventId, customerId, quantity, price);
+        repository.addTicket(ticket);
+    }
+    
+    public Collection<Ticket> getTicketsForEvent(String eventId) {
+        return repository.findByEvent(eventId);
+    }
+    
+    public Collection<Ticket> getCustomerBookings(String customerId) {
+        return repository.findByCustomer(customerId);
+    }
+    
+    public double calculateTotalRevenue() {
+        return repository.getTotalRevenue();
+    }
+    
+    public Collection<Ticket> findHighValueBookings(double minAmount) {
+        return repository.getTicketsByEventAndCustomer("event1", "customer1")
+                .stream()
+                .filter(ticket -> ticket.getPrice() * ticket.getQuantity() >= minAmount)
+                .collect(Collectors.toList());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.ticketbooking;
+
+import java.util.Collection;
+
+public class Main {
+    public static void main(String[] args) {
+        TicketBookingSystem system = new TicketBookingSystem();
+        
+        // Book some tickets
+        system.bookTicket("event1", "customer1", 2, 50.0);
+        system.bookTicket("event1", "customer2", 1, 75.0);
+        system.bookTicket("event2", "customer1", 3, 40.0);
+        system.bookTicket("event1", "customer1", 1, 60.0);
+        
+        // Use collection-pipeline pattern to process data
+        Collection<Ticket> customerTickets = system.getCustomerBookings("customer1");
+        double totalSpent = customerTickets.stream()
+                .mapToDouble(ticket -> ticket.getPrice() * ticket.getQuantity())
+                .sum();
+        
+        System.out.println("Total spent by customer1: $" + totalSpent);
+        
+        Collection<Ticket> eventTickets = system.getTicketsForEvent("event1");
+        double revenue = eventTickets.stream()
+                .mapToDouble(ticket -> ticket.getPrice() * ticket.getQuantity())
+                .sum();
+                
+        System.out.println("Revenue from event1: $" + revenue);
+    }
+}
+```

@@ -1,0 +1,55 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Demonstrating CRTP with different ticket types
+        ConcertTicket concert = new ConcertTicket();
+        MovieTicket movie = new MovieTicket();
+        
+        concert.bookTicket("VIP Section", 10);
+        movie.bookTicket("Premium Seat", 5);
+        
+        System.out.println("Concert Ticket ID: " + concert.getTicketId());
+        System.out.println("Movie Ticket ID: " + movie.getTicketId());
+    }
+}
+```
+
+### FILE: BaseTicket.java
+```java
+public abstract class BaseTicket<T extends BaseTicket<T>> {
+    protected String ticketId;
+    
+    public T bookTicket(String seat, int quantity) {
+        this.ticketId = generateTicketId(seat, quantity);
+        System.out.println("Booking " + quantity + " tickets for " + seat);
+        return (T) this;
+    }
+    
+    protected abstract String generateTicketId(String seat, int quantity);
+    
+    public String getTicketId() {
+        return ticketId;
+    }
+}
+```
+
+### FILE: ConcertTicket.java
+```java
+public class ConcertTicket extends BaseTicket<ConcertTicket> {
+    @Override
+    protected String generateTicketId(String seat, int quantity) {
+        return "CON-" + seat.replace(" ", "-").toUpperCase() + "-" + System.currentTimeMillis();
+    }
+}
+```
+
+### FILE: MovieTicket.java
+```java
+public class MovieTicket extends BaseTicket<MovieTicket> {
+    @Override
+    protected String generateTicketId(String seat, int quantity) {
+        return "MOV-" + seat.replace(" ", "-").toUpperCase() + "-" + System.currentTimeMillis();
+    }
+}
+```

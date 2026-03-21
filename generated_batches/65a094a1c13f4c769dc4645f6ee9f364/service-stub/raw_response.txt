@@ -1,0 +1,96 @@
+### FILE: TicketBookingService.java
+```java
+package com.ticketbooking.service;
+
+public interface TicketBookingService {
+    boolean bookTicket(String eventId, String userId);
+    boolean cancelTicket(String eventId, String userId);
+}
+```
+
+### FILE: RealTicketBookingService.java
+```java
+package com.ticketbooking.service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RealTicketBookingService implements TicketBookingService {
+    private Map<String, Integer> eventSeats = new HashMap<>();
+    
+    public RealTicketBookingService() {
+        eventSeats.put("EVENT001", 100);
+        eventSeats.put("EVENT002", 50);
+    }
+    
+    @Override
+    public boolean bookTicket(String eventId, String userId) {
+        if (eventSeats.containsKey(eventId) && eventSeats.get(eventId) > 0) {
+            eventSeats.put(eventId, eventSeats.get(eventId) - 1);
+            System.out.println("Ticket booked for user " + userId + " at event " + eventId);
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean cancelTicket(String eventId, String userId) {
+        if (eventSeats.containsKey(eventId)) {
+            eventSeats.put(eventId, eventSeats.get(eventId) + 1);
+            System.out.println("Ticket cancelled for user " + userId + " at event " + eventId);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### FILE: StubTicketBookingService.java
+```java
+package com.ticketbooking.service;
+
+public class StubTicketBookingService implements TicketBookingService {
+    
+    @Override
+    public boolean bookTicket(String eventId, String userId) {
+        System.out.println("Stub booking ticket for user " + userId + " at event " + eventId);
+        return true;
+    }
+    
+    @Override
+    public boolean cancelTicket(String eventId, String userId) {
+        System.out.println("Stub cancelling ticket for user " + userId + " at event " + eventId);
+        return true;
+    }
+}
+```
+
+### FILE: TicketBookingClient.java
+```java
+package com.ticketbooking.service;
+
+public class TicketBookingClient {
+    private TicketBookingService service;
+    
+    public TicketBookingClient(TicketBookingService service) {
+        this.service = service;
+    }
+    
+    public void performBooking(String eventId, String userId) {
+        boolean result = service.bookTicket(eventId, userId);
+        System.out.println("Booking result: " + result);
+    }
+    
+    public static void main(String[] args) {
+        // Using real service
+        TicketBookingService realService = new RealTicketBookingService();
+        TicketBookingClient client1 = new TicketBookingClient(realService);
+        client1.performBooking("EVENT001", "USER001");
+        
+        // Using stub service for testing
+        TicketBookingService stubService = new StubTicketBookingService();
+        TicketBookingClient client2 = new TicketBookingClient(stubService);
+        client2.performBooking("EVENT002", "USER002");
+    }
+}
+```

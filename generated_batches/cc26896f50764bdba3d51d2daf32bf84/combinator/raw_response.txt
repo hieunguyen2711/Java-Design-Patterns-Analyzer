@@ -1,0 +1,104 @@
+### FILE: Post.java
+```java
+package com.socialmedia.post;
+
+public class Post {
+    private final String content;
+    private final String author;
+    
+    public Post(String content, String author) {
+        this.content = content;
+        this.author = author;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+}
+```
+
+### FILE: PostCombinator.java
+```java
+package com.socialmedia.combinator;
+
+import com.socialmedia.post.Post;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class PostCombinator {
+    
+    public static List<Post> combinePosts(List<Post> posts1, List<Post> posts2) {
+        return Stream.concat(posts1.stream(), posts2.stream())
+                     .collect(Collectors.toList());
+    }
+    
+    public static List<Post> filterByAuthor(List<Post> posts, String author) {
+        return posts.stream()
+                   .filter(post -> post.getAuthor().equals(author))
+                   .collect(Collectors.toList());
+    }
+    
+    public static Post combineLatestPosts(List<Post> posts1, List<Post> posts2) {
+        Post latest1 = posts1.stream()
+                            .max((p1, p2) -> p1.getContent().length() - p2.getContent().length())
+                            .orElse(null);
+        
+        Post latest2 = posts2.stream()
+                            .max((p1, p2) -> p1.getContent().length() - p2.getContent().length())
+                            .orElse(null);
+        
+        if (latest1 == null && latest2 == null) return null;
+        if (latest1 == null) return latest2;
+        if (latest2 == null) return latest1;
+        
+        return latest1.getContent().length() >= latest2.getContent().length() ? latest1 : latest2;
+    }
+}
+```
+
+### FILE: SocialMediaSystem.java
+```java
+package com.socialmedia.system;
+
+import com.socialmedia.post.Post;
+import com.socialmedia.combinator.PostCombinator;
+import java.util.Arrays;
+import java.util.List;
+
+public class SocialMediaSystem {
+    
+    public static void main(String[] args) {
+        Post post1 = new Post("Hello world!", "Alice");
+        Post post2 = new Post("Java is awesome", "Bob");
+        Post post3 = new Post("Design patterns are useful", "Charlie");
+        Post post4 = new Post("Learning combinator pattern", "Alice");
+        
+        List<Post> alicePosts = Arrays.asList(post1, post4);
+        List<Post> bobPosts = Arrays.asList(post2);
+        List<Post> charliePosts = Arrays.asList(post3);
+        
+        // Combine all posts
+        List<Post> combinedAll = PostCombinator.combinePosts(
+            PostCombinator.combinePosts(alicePosts, bobPosts), 
+            charliePosts
+        );
+        
+        System.out.println("Combined posts count: " + combinedAll.size());
+        
+        // Filter by author
+        List<Post> aliceCombined = PostCombinator.filterByAuthor(combinedAll, "Alice");
+        System.out.println("Alice's posts count: " + aliceCombined.size());
+        
+        // Get latest post from each user
+        Post latestPost = PostCombinator.combineLatestPosts(alicePosts, bobPosts);
+        if (latestPost != null) {
+            System.out.println("Latest post: " + latestPost.getContent() 
+                             + " by " + latestPost.getAuthor());
+        }
+    }
+}
+```

@@ -1,0 +1,102 @@
+### FILE: Ticket.java
+```java
+public interface Ticket {
+    double getPrice();
+    String getDescription();
+}
+```
+
+### FILE: StandardTicket.java
+```java
+public class StandardTicket implements Ticket {
+    private final double basePrice = 100.0;
+    
+    @Override
+    public double getPrice() {
+        return basePrice;
+    }
+    
+    @Override
+    public String getDescription() {
+        return "Standard ticket";
+    }
+}
+```
+
+### FILE: TicketDecorator.java
+```java
+public abstract class TicketDecorator implements Ticket {
+    protected Ticket ticket;
+    
+    public TicketDecorator(Ticket ticket) {
+        this.ticket = ticket;
+    }
+    
+    @Override
+    public double getPrice() {
+        return ticket.getPrice();
+    }
+    
+    @Override
+    public String getDescription() {
+        return ticket.getDescription();
+    }
+}
+```
+
+### FILE: PremiumSeating.java
+```java
+public class PremiumSeating extends TicketDecorator {
+    public PremiumSeating(Ticket ticket) {
+        super(ticket);
+    }
+    
+    @Override
+    public double getPrice() {
+        return ticket.getPrice() + 50.0;
+    }
+    
+    @Override
+    public String getDescription() {
+        return ticket.getDescription() + " with premium seating";
+    }
+}
+```
+
+### FILE: FoodBundle.java
+```java
+public class FoodBundle extends TicketDecorator {
+    public FoodBundle(Ticket ticket) {
+        super(ticket);
+    }
+    
+    @Override
+    public double getPrice() {
+        return ticket.getPrice() + 30.0;
+    }
+    
+    @Override
+    public String getDescription() {
+        return ticket.getDescription() + " with food bundle";
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Create a standard ticket
+        Ticket ticket = new StandardTicket();
+        System.out.println(ticket.getDescription() + ": $" + ticket.getPrice());
+        
+        // Add premium seating to the ticket
+        ticket = new PremiumSeating(ticket);
+        System.out.println(ticket.getDescription() + ": $" + ticket.getPrice());
+        
+        // Add food bundle to the ticket
+        ticket = new FoodBundle(ticket);
+        System.out.println(ticket.getDescription() + ": $" + ticket.getPrice());
+    }
+}
+```

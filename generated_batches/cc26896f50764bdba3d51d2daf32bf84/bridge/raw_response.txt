@@ -1,0 +1,92 @@
+### FILE: SocialMediaPlatform.java
+```java
+public interface SocialMediaPlatform {
+    void post(String content);
+}
+```
+
+### FILE: Facebook.java
+```java
+public class Facebook implements SocialMediaPlatform {
+    @Override
+    public void post(String content) {
+        System.out.println("Posting on Facebook: " + content);
+    }
+}
+```
+
+### FILE: Twitter.java
+```java
+public class Twitter implements SocialMediaPlatform {
+    @Override
+    public void post(String content) {
+        System.out.println("Tweeting on Twitter: " + content);
+    }
+}
+```
+
+### FILE: MessagingService.java
+```java
+public interface MessagingService {
+    void sendMessage(String message);
+}
+```
+
+### FILE: EmailMessaging.java
+```java
+public class EmailMessaging implements MessagingService {
+    @Override
+    public void sendMessage(String message) {
+        System.out.println("Sending email: " + message);
+    }
+}
+```
+
+### FILE: SMSMessaging.java
+```java
+public class SMSMessaging implements MessagingService {
+    @Override
+    public void sendMessage(String message) {
+        System.out.println("Sending SMS: " + message);
+    }
+}
+```
+
+### FILE: User.java
+```java
+public class User {
+    private String name;
+    private SocialMediaPlatform platform;
+    private MessagingService messagingService;
+
+    public User(String name, SocialMediaPlatform platform, MessagingService messagingService) {
+        this.name = name;
+        this.platform = platform;
+        this.messagingService = messagingService;
+    }
+
+    public void postToSocialMedia(String content) {
+        platform.post(content);
+    }
+
+    public void sendNotification(String message) {
+        messagingService.sendMessage(message);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        User user1 = new User("Alice", new Facebook(), new EmailMessaging());
+        User user2 = new User("Bob", new Twitter(), new SMSMessaging());
+
+        user1.postToSocialMedia("Hello World!");
+        user1.sendNotification("You have a new message");
+
+        user2.postToSocialMedia("Java is awesome");
+        user2.sendNotification("Your tweet was liked");
+    }
+}
+```

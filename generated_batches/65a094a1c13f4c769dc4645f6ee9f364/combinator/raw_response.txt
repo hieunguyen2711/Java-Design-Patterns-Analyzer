@@ -1,0 +1,92 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.function.Function;
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Create a combinator that combines different ticket types with discounts
+        Function<Ticket, List<String>> bookingCombinator = 
+            ticket -> List.of(
+                "Standard: " + ticket.getBasePrice(),
+                "Premium: " + (ticket.getBasePrice() * 1.5),
+                "VIP: " + (ticket.getBasePrice() * 2.0)
+            );
+        
+        Ticket ticket = new Ticket("Concert", 100.0);
+        List<String> bookingOptions = bookingCombinator.apply(ticket);
+        
+        for (String option : bookingOptions) {
+            System.out.println(option);
+        }
+    }
+}
+
+class Ticket {
+    private String event;
+    private double basePrice;
+    
+    public Ticket(String event, double basePrice) {
+        this.event = event;
+        this.basePrice = basePrice;
+    }
+    
+    public String getEvent() {
+        return event;
+    }
+    
+    public double getBasePrice() {
+        return basePrice;
+    }
+}
+```
+
+### FILE: BookingCombinator.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+import java.util.function.Function;
+
+public class BookingCombinator {
+    // Combinator that creates a function to combine different booking options
+    public static Function<Ticket, List<String>> createBookingOptions() {
+        return ticket -> List.of(
+            "Standard: $" + ticket.getBasePrice(),
+            "Premium: $" + (ticket.getBasePrice() * 1.5),
+            "VIP: $" + (ticket.getBasePrice() * 2.0)
+        );
+    }
+    
+    // Another combinator that applies different discounts
+    public static Function<Ticket, List<String>> createDiscountedOptions(double discount) {
+        return ticket -> List.of(
+            "Standard with " + (discount * 100) + "%: $" + (ticket.getBasePrice() * (1 - discount)),
+            "Premium with " + (discount * 100) + "%: $" + (ticket.getBasePrice() * 1.5 * (1 - discount))
+        );
+    }
+}
+```
+
+### FILE: TicketBookingService.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+import java.util.function.Function;
+
+public class TicketBookingService {
+    private Function<Ticket, List<String>> bookingCombinator;
+    
+    public TicketBookingService(Function<Ticket, List<String>> combinator) {
+        this.bookingCombinator = combinator;
+    }
+    
+    public List<String> getBookingOptions(Ticket ticket) {
+        return bookingCombinator.apply(ticket);
+    }
+}
+```

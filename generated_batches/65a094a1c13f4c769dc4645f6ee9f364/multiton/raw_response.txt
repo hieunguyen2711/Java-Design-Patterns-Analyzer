@@ -1,0 +1,68 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Demonstrating Multiton pattern with different ticket types
+        TicketManager standardTicketManager = TicketManager.getInstance("STANDARD");
+        TicketManager premiumTicketManager = TicketManager.getInstance("PREMIUM");
+        TicketManager vipTicketManager = TicketManager.getInstance("VIP");
+        
+        // Same instance returned for same key
+        TicketManager standardTicketManager2 = TicketManager.getInstance("STANDARD");
+        System.out.println(standardTicketManager == standardTicketManager2); // true
+        
+        // Different instances for different keys
+        System.out.println(standardTicketManager == premiumTicketManager); // false
+        
+        // Using the managers to book tickets
+        standardTicketManager.bookTicket("A1");
+        premiumTicketManager.bookTicket("B2");
+        vipTicketManager.bookTicket("C3");
+        
+        // Display current bookings
+        System.out.println("Standard tickets booked: " + standardTicketManager.getBookedTickets());
+        System.out.println("Premium tickets booked: " + premiumTicketManager.getBookedTickets());
+        System.out.println("VIP tickets booked: " + vipTicketManager.getBookedTickets());
+    }
+}
+```
+
+### FILE: TicketManager.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class TicketManager {
+    private static final Map<String, TicketManager> instances = new HashMap<>();
+    
+    private final String ticketType;
+    private final Map<String, Boolean> bookedTickets;
+    
+    // Private constructor to prevent instantiation
+    private TicketManager(String ticketType) {
+        this.ticketType = ticketType;
+        this.bookedTickets = new HashMap<>();
+    }
+    
+    /**
+     * Returns the singleton instance for the given ticket type.
+     * This is the core of the Multiton pattern - multiple instances 
+     * but controlled by a key (ticket type).
+     */
+    public static TicketManager getInstance(String ticketType) {
+        if (!instances.containsKey(ticketType)) {
+            instances.put(ticketType, new TicketManager(ticketType));
+        }
+        return instances.get(ticketType);
+    }
+    
+    public void bookTicket(String seatNumber) {
+        bookedTickets.put(seatNumber, true);
+        System.out.println("Booked " + ticketType + " ticket for seat " + seatNumber);
+    }
+    
+    public int getBookedTickets() {
+        return bookedTickets.size();
+    }
+}
+```

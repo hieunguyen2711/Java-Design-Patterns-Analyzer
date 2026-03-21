@@ -1,0 +1,231 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Create booking system with different roles
+        BookingSystem system = new BookingSystem();
+        
+        // Customer role - can view tickets and book
+        Customer customer = new Customer("John Doe");
+        system.setRole(customer);
+        system.viewAvailableTickets();
+        system.bookTicket("Concert A", 2);
+        
+        // Admin role - can manage inventory
+        Admin admin = new Admin("Jane Smith");
+        system.setRole(admin);
+        system.viewAvailableTickets();
+        system.addNewTicket("Concert B", 100, 50.0);
+        system.bookTicket("Concert B", 1);
+    }
+}
+```
+
+### FILE: BookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.*;
+
+public class BookingSystem {
+    private List<Ticket> tickets;
+    private Role role;
+    
+    public BookingSystem() {
+        this.tickets = new ArrayList<>();
+        this.tickets.add(new Ticket("Concert A", 50, 30.0));
+        this.tickets.add(new Ticket("Movie X", 100, 15.0));
+    }
+    
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    
+    public void viewAvailableTickets() {
+        if (role != null) {
+            role.viewTickets(tickets);
+        }
+    }
+    
+    public void bookTicket(String eventName, int quantity) {
+        if (role != null) {
+            role.bookTicket(this, eventName, quantity);
+        }
+    }
+    
+    public void addNewTicket(String eventName, int available, double price) {
+        if (role != null) {
+            role.addTicket(this, eventName, available, price);
+        }
+    }
+    
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+}
+```
+
+### FILE: Role.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+
+public interface Role {
+    void viewTickets(List<Ticket> tickets);
+    void bookTicket(BookingSystem system, String eventName, int quantity);
+    void addTicket(BookingSystem system, String eventName, int available, double price);
+}
+```
+
+### FILE: Customer.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+import java.util.Optional;
+
+public class Customer implements Role {
+    private String name;
+    
+    public Customer(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void viewTickets(List<Ticket> tickets) {
+        System.out.println("Customer " + name + " viewing available tickets:");
+        for (Ticket ticket : tickets) {
+            System.out.println("- " + ticket.getName() + ": " + 
+                             ticket.getAvailable() + " seats at $" + 
+                             ticket.getPrice());
+        }
+    }
+    
+    @Override
+    public void bookTicket(BookingSystem system, String eventName, int quantity) {
+        Optional<Ticket> ticketOpt = system.getTickets().stream()
+            .filter(t -> t.getName().equals(eventName))
+            .findFirst();
+            
+        if (ticketOpt.isPresent()) {
+            Ticket ticket = ticketOpt.get();
+            if (ticket.getAvailable() >= quantity) {
+                ticket.setAvailable(ticket.getAvailable() - quantity);
+                System.out.println("Customer " + name + 
+                                 " booked " + quantity + " tickets for " + eventName);
+            } else {
+                System.out.println("Not enough seats available for " + eventName);
+            }
+        } else {
+            System.out.println("Ticket event not found: " + eventName);
+        }
+    }
+    
+    @Override
+    public void addTicket(BookingSystem system, String eventName, int available, double price) {
+        // Customers cannot add tickets - this method is intentionally left empty or throws exception
+        System.out.println("Customer " + name + " does not have permission to add tickets");
+    }
+}
+```
+
+### FILE: Admin.java
+```java
+package com.example.ticketbooking;
+
+import java.util.List;
+import java.util.Optional;
+
+public class Admin implements Role {
+    private String name;
+    
+    public Admin(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void viewTickets(List<Ticket> tickets) {
+        System.out.println("Admin " + name + " viewing all tickets:");
+        for (Ticket ticket : tickets) {
+            System.out.println("- " + ticket.getName() + ": " + 
+                             ticket.getAvailable() + " seats at $" + 
+                             ticket.getPrice());
+        }
+    }
+    
+    @Override
+    public void bookTicket(BookingSystem system, String eventName, int quantity) {
+        // Admins can also book tickets like customers
+        Optional<Ticket> ticketOpt = system.getTickets().stream()
+            .filter(t -> t.getName().equals(eventName))
+            .findFirst();
+            
+        if (ticketOpt.isPresent()) {
+            Ticket ticket = ticketOpt.get();
+            if (ticket.getAvailable() >= quantity) {
+                ticket.setAvailable(ticket.getAvailable() - quantity);
+                System.out.println("Admin " + name + 
+                                 " booked " + quantity + " tickets for " + eventName);
+            } else {
+                System.out.println("Not enough seats available for " + eventName);
+            }
+        } else {
+            System.out.println("Ticket event not found: " + eventName);
+        }
+    }
+    
+    @Override
+    public void addTicket(BookingSystem system, String eventName, int available, double price) {
+        Optional<Ticket> ticketOpt = system.getTickets().stream()
+            .filter(t -> t.getName().equals(eventName))
+            .findFirst();
+            
+        if (ticketOpt.isPresent()) {
+            Ticket existingTicket = ticketOpt.get();
+            existingTicket.setAvailable(existingTicket.getAvailable() + available);
+            System.out.println("Admin " + name + 
+                             " added " + available + " more seats for " + eventName);
+        } else {
+            system.getTickets().add(new Ticket(eventName, available, price));
+            System.out.println("Admin " + name + 
+                             " created new ticket event: " + eventName);
+        }
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private String name;
+    private int available;
+    private double price;
+    
+    public Ticket(String name, int available, double price) {
+        this.name = name;
+        this.available = available;
+        this.price = price;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAvailable() {
+        return available;
+    }
+    
+    public void setAvailable(int available) {
+        this.available = available;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```

@@ -1,0 +1,194 @@
+### FILE: User.java
+```java
+package com.socialmedia.model;
+
+public class User {
+    private int id;
+    private String username;
+    private String email;
+    
+    public User() {}
+    
+    public User(int id, String username, String email) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: UserMapper.java
+```java
+package com.socialmedia.mapper;
+
+import com.socialmedia.model.User;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserMapper {
+    
+    public User findById(int id, Connection connection) throws SQLException {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapRowToUser(rs);
+            }
+        }
+        return null;
+    }
+    
+    public List<User> findAll(Connection connection) throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                users.add(mapRowToUser(rs));
+            }
+        }
+        return users;
+    }
+    
+    public void save(User user, Connection connection) throws SQLException {
+        if (user.getId() > 0) {
+            update(user, connection);
+        } else {
+            insert(user, connection);
+        }
+    }
+    
+    private void insert(User user, Connection connection) throws SQLException {
+        String sql = "INSERT INTO users (username, email) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getEmail());
+            stmt.executeUpdate();
+            
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                user.setId(generatedKeys.getInt(1));
+            }
+        }
+    }
+    
+    private void update(User user, Connection connection) throws SQLException {
+        String sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getEmail());
+            stmt.setInt(3, user.getId());
+            stmt.executeUpdate();
+        }
+    }
+    
+    public void delete(int id, Connection connection) throws SQLException {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+    
+    private User mapRowToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setUsername(rs.getString("username"));
+        user.setEmail(rs.getString("email"));
+        return user;
+    }
+}
+```
+
+### FILE: DatabaseConnection.java
+```java
+package com.socialmedia.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseConnection {
+    private static final String URL = "jdbc:h2:mem:testdb";
+    private static final String USERNAME = "sa";
+    private static final String PASSWORD = "";
+    
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+    }
+}
+```
+
+### FILE: SocialMediaApplication.java
+```java
+package com.socialmedia;
+
+import com.socialmedia.mapper.UserMapper;
+import com.socialmedia.model.User;
+import com.socialmedia.util.DatabaseConnection;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+public class SocialMediaApplication {
+    public static void main(String[] args) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            // Setup database
+            setupDatabase(connection);
+            
+            UserMapper userMapper = new UserMapper();
+            
+            // Create users
+            User user1 = new User(0, "john_doe", "john@example.com");
+            User user2 = new User(0, "jane_smith", "jane@example.com");
+            
+            userMapper.save(user1, connection);
+            userMapper.save(user2, connection);
+            
+            // Find all users
+            List<User> users = userMapper.findAll(connection);
+            System.out.println("All users:");
+            for (User user : users) {
+                System.out.println("- " + user.getUsername() + " (" + user.getEmail() + ")");
+            }
+            
+            // Find specific user
+            User foundUser = userMapper.findById(1, connection);
+            if (foundUser != null) {
+                System.out.println("\nFound user: " + foundUser.getUsername());
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static void setupDatabase(Connection connection) throws SQLException {
+        String sql = """
+            CREATE TABLE IF NOT EXISTS users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL
+            )
+            """;
+        
+        try (var stmt = connection.createStatement()) {
+            stmt.execute(sql);
+        }
+    }
+}
+```

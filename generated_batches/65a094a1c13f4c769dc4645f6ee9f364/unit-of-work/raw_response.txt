@@ -1,0 +1,107 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.ticketbooking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        
+        // Create tickets within the unit of work
+        Ticket ticket1 = new Ticket("T001", "Concert A");
+        Ticket ticket2 = new Ticket("T002", "Movie B");
+        
+        unitOfWork.registerNew(ticket1);
+        unitOfWork.registerNew(ticket2);
+        
+        // Commit changes to database
+        unitOfWork.commit();
+        
+        // Create another unit of work for updates
+        UnitOfWork updateUnitOfWork = new UnitOfWork();
+        ticket1.setEventName("Concert A - Updated");
+        updateUnitOfWork.registerDirty(ticket1);
+        updateUnitOfWork.commit();
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+package com.ticketbooking;
+
+public class Ticket {
+    private String id;
+    private String eventName;
+    
+    public Ticket(String id, String eventName) {
+        this.id = id;
+        this.eventName = eventName;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getEventName() { return eventName; }
+    public void setEventName(String eventName) { this.eventName = eventName; }
+}
+```
+
+### FILE: UnitOfWork.java
+```java
+package com.ticketbooking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class UnitOfWork {
+    private List<Ticket> newTickets;
+    private List<Ticket> dirtyTickets;
+    private List<Ticket> deletedTickets;
+    
+    public UnitOfWork() {
+        this.newTickets = new ArrayList<>();
+        this.dirtyTickets = new ArrayList<>();
+        this.deletedTickets = new ArrayList<>();
+    }
+    
+    public void registerNew(Ticket ticket) {
+        if (!newTickets.contains(ticket)) {
+            newTickets.add(ticket);
+        }
+    }
+    
+    public void registerDirty(Ticket ticket) {
+        if (!dirtyTickets.contains(ticket)) {
+            dirtyTickets.add(ticket);
+        }
+    }
+    
+    public void registerDeleted(Ticket ticket) {
+        deletedTickets.add(ticket);
+    }
+    
+    public void commit() {
+        // Simulate database operations
+        for (Ticket ticket : newTickets) {
+            System.out.println("Saving new ticket: " + ticket.getId());
+        }
+        
+        for (Ticket ticket : dirtyTickets) {
+            System.out.println("Updating ticket: " + ticket.getId());
+        }
+        
+        for (Ticket ticket : deletedTickets) {
+            System.out.println("Deleting ticket: " + ticket.getId());
+        }
+        
+        // Clear the unit of work after commit
+        newTickets.clear();
+        dirtyTickets.clear();
+        deletedTickets.clear();
+    }
+}
+```

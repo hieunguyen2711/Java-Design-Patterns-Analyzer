@@ -178,7 +178,7 @@ def download_generate_pass_projects(job_id: str):
 
 
 @router.get(
-    "/generate-pass-projects/{job_id}/analyze-metrics",
+    "/api/v1/generate-pass-projects/{job_id}/analyze-metrics",
     response_model=BatchMetricsResponse,
     tags=["batch-generation"],
 )

@@ -1,0 +1,76 @@
+### FILE: SocialMediaService.java
+```java
+public interface SocialMediaService {
+    void postMessage(String message);
+    String getFeed();
+}
+```
+
+### FILE: TwitterService.java
+```java
+public class TwitterService implements SocialMediaService {
+    @Override
+    public void postMessage(String message) {
+        System.out.println("Posting to Twitter: " + message);
+    }
+    
+    @Override
+    public String getFeed() {
+        return "Twitter feed content";
+    }
+}
+```
+
+### FILE: FacebookService.java
+```java
+public class FacebookService implements SocialMediaService {
+    @Override
+    public void postMessage(String message) {
+        System.out.println("Posting to Facebook: " + message);
+    }
+    
+    @Override
+    public String getFeed() {
+        return "Facebook feed content";
+    }
+}
+```
+
+### FILE: UserService.java
+```java
+public class UserService {
+    private final SocialMediaService socialMediaService;
+    
+    public UserService(SocialMediaService socialMediaService) {
+        this.socialMediaService = socialMediaService;
+    }
+    
+    public void shareUpdate(String message) {
+        socialMediaService.postMessage(message);
+    }
+    
+    public String getSocialFeed() {
+        return socialMediaService.getFeed();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Dependency injection via constructor
+        SocialMediaService twitter = new TwitterService();
+        UserService userService1 = new UserService(twitter);
+        
+        SocialMediaService facebook = new FacebookService();
+        UserService userService2 = new UserService(facebook);
+        
+        userService1.shareUpdate("Hello Twitter!");
+        System.out.println(userService1.getSocialFeed());
+        
+        userService2.shareUpdate("Hello Facebook!");
+        System.out.println(userService2.getSocialFeed());
+    }
+}
+```

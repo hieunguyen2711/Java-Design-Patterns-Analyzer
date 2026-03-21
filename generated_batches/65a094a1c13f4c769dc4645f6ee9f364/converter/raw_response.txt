@@ -1,0 +1,104 @@
+### FILE: Ticket.java
+```java
+package com.ticketbooking;
+
+public class Ticket {
+    private String eventId;
+    private String seatNumber;
+    private double price;
+    
+    public Ticket(String eventId, String seatNumber, double price) {
+        this.eventId = eventId;
+        this.seatNumber = seatNumber;
+        this.price = price;
+    }
+    
+    // Getters and setters
+    public String getEventId() { return eventId; }
+    public void setEventId(String eventId) { this.eventId = eventId; }
+    public String getSeatNumber() { return seatNumber; }
+    public void setSeatNumber(String seatNumber) { this.seatNumber = seatNumber; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+}
+```
+
+### FILE: TicketConverter.java
+```java
+package com.ticketbooking;
+
+public interface TicketConverter {
+    String convert(Ticket ticket);
+}
+```
+
+### FILE: JsonTicketConverter.java
+```java
+package com.ticketbooking;
+
+public class JsonTicketConverter implements TicketConverter {
+    @Override
+    public String convert(Ticket ticket) {
+        return "{\n" +
+                "  \"eventId\": \"" + ticket.getEventId() + "\",\n" +
+                "  \"seatNumber\": \"" + ticket.getSeatNumber() + "\",\n" +
+                "  \"price\": " + ticket.getPrice() + "\n" +
+                "}";
+    }
+}
+```
+
+### FILE: XmlTicketConverter.java
+```java
+package com.ticketbooking;
+
+public class XmlTicketConverter implements TicketConverter {
+    @Override
+    public String convert(Ticket ticket) {
+        return "<ticket>\n" +
+                "  <eventId>" + ticket.getEventId() + "</eventId>\n" +
+                "  <seatNumber>" + ticket.getSeatNumber() + "</seatNumber>\n" +
+                "  <price>" + ticket.getPrice() + "</price>\n" +
+                "</ticket>";
+    }
+}
+```
+
+### FILE: TicketConverterFactory.java
+```java
+package com.ticketbooking;
+
+public class TicketConverterFactory {
+    public static TicketConverter createConverter(String format) {
+        switch (format.toLowerCase()) {
+            case "json":
+                return new JsonTicketConverter();
+            case "xml":
+                return new XmlTicketConverter();
+            default:
+                throw new IllegalArgumentException("Unsupported format: " + format);
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.ticketbooking;
+
+public class Main {
+    public static void main(String[] args) {
+        Ticket ticket = new Ticket("EVENT001", "A12", 85.50);
+        
+        // Convert to JSON
+        TicketConverter jsonConverter = TicketConverterFactory.createConverter("json");
+        System.out.println("JSON Format:");
+        System.out.println(jsonConverter.convert(ticket));
+        
+        // Convert to XML
+        TicketConverter xmlConverter = TicketConverterFactory.createConverter("xml");
+        System.out.println("\nXML Format:");
+        System.out.println(xmlConverter.convert(ticket));
+    }
+}
+```

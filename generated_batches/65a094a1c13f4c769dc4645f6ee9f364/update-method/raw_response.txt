@@ -1,0 +1,104 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        BookingService bookingService = new BookingService();
+        
+        // Create tickets using different strategies
+        Ticket ticket1 = new StandardTicket("VIP-001", 150.0);
+        Ticket ticket2 = new PremiumTicket("PREM-001", 300.0);
+        
+        // Book tickets with different update methods
+        bookingService.bookTicket(ticket1);
+        bookingService.bookTicket(ticket2);
+        
+        System.out.println("Booking completed successfully!");
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+public abstract class Ticket {
+    protected String ticketId;
+    protected double basePrice;
+    
+    public Ticket(String ticketId, double basePrice) {
+        this.ticketId = ticketId;
+        this.basePrice = basePrice;
+    }
+    
+    public abstract void updatePrice(double newPrice);
+    
+    public abstract double calculateFinalPrice();
+    
+    public String getTicketId() {
+        return ticketId;
+    }
+}
+```
+
+### FILE: StandardTicket.java
+```java
+public class StandardTicket extends Ticket {
+    private double discount;
+    
+    public StandardTicket(String ticketId, double basePrice) {
+        super(ticketId, basePrice);
+        this.discount = 0.1; // 10% discount
+    }
+    
+    @Override
+    public void updatePrice(double newPrice) {
+        this.basePrice = newPrice;
+        System.out.println("Standard ticket price updated to: $" + newPrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice() {
+        return basePrice * (1 - discount);
+    }
+}
+```
+
+### FILE: PremiumTicket.java
+```java
+public class PremiumTicket extends Ticket {
+    private double premiumSurcharge;
+    
+    public PremiumTicket(String ticketId, double basePrice) {
+        super(ticketId, basePrice);
+        this.premiumSurcharge = 0.25; // 25% surcharge
+    }
+    
+    @Override
+    public void updatePrice(double newPrice) {
+        this.basePrice = newPrice;
+        System.out.println("Premium ticket price updated to: $" + newPrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice() {
+        return basePrice * (1 + premiumSurcharge);
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+public class BookingService {
+    public void bookTicket(Ticket ticket) {
+        System.out.println("Booking ticket ID: " + ticket.getTicketId());
+        
+        // Using update method to modify price before booking
+        if (ticket instanceof StandardTicket) {
+            ((StandardTicket) ticket).updatePrice(140.0);
+        } else if (ticket instanceof PremiumTicket) {
+            ((PremiumTicket) ticket).updatePrice(320.0);
+        }
+        
+        double finalPrice = ticket.calculateFinalPrice();
+        System.out.println("Final price: $" + finalPrice);
+    }
+}
+```

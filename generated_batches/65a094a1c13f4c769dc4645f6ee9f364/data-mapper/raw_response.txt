@@ -1,0 +1,223 @@
+### FILE: Ticket.java
+```java
+package com.example.ticketbooking;
+
+public class Ticket {
+    private int id;
+    private String eventName;
+    private String seatNumber;
+    private double price;
+    private boolean isBooked;
+
+    public Ticket() {}
+
+    public Ticket(int id, String eventName, String seatNumber, double price) {
+        this.id = id;
+        this.eventName = eventName;
+        this.seatNumber = seatNumber;
+        this.price = price;
+        this.isBooked = false;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getEventName() { return eventName; }
+    public void setEventName(String eventName) { this.eventName = eventName; }
+
+    public String getSeatNumber() { return seatNumber; }
+    public void setSeatNumber(String seatNumber) { this.seatNumber = seatNumber; }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+
+    public boolean isBooked() { return isBooked; }
+    public void setBooked(boolean booked) { isBooked = booked; }
+}
+```
+
+### FILE: TicketMapper.java
+```java
+package com.example.ticketbooking;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TicketMapper {
+    private final Connection connection;
+
+    public TicketMapper(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Ticket findById(int id) throws SQLException {
+        String sql = "SELECT * FROM tickets WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapRowToTicket(rs);
+            }
+        }
+        return null;
+    }
+
+    public List<Ticket> findAll() throws SQLException {
+        List<Ticket> tickets = new ArrayList<>();
+        String sql = "SELECT * FROM tickets";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                tickets.add(mapRowToTicket(rs));
+            }
+        }
+        return tickets;
+    }
+
+    public void save(Ticket ticket) throws SQLException {
+        if (ticket.getId() > 0) {
+            update(ticket);
+        } else {
+            insert(ticket);
+        }
+    }
+
+    private void insert(Ticket ticket) throws SQLException {
+        String sql = "INSERT INTO tickets (event_name, seat_number, price, is_booked) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, ticket.getEventName());
+            stmt.setString(2, ticket.getSeatNumber());
+            stmt.setDouble(3, ticket.getPrice());
+            stmt.setBoolean(4, ticket.isBooked());
+            stmt.executeUpdate();
+            
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                ticket.setId(generatedKeys.getInt(1));
+            }
+        }
+    }
+
+    private void update(Ticket ticket) throws SQLException {
+        String sql = "UPDATE tickets SET event_name = ?, seat_number = ?, price = ?, is_booked = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, ticket.getEventName());
+            stmt.setString(2, ticket.getSeatNumber());
+            stmt.setDouble(3, ticket.getPrice());
+            stmt.setBoolean(4, ticket.isBooked());
+            stmt.setInt(5, ticket.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM tickets WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    private Ticket mapRowToTicket(ResultSet rs) throws SQLException {
+        Ticket ticket = new Ticket();
+        ticket.setId(rs.getInt("id"));
+        ticket.setEventName(rs.getString("event_name"));
+        ticket.setSeatNumber(rs.getString("seat_number"));
+        ticket.setPrice(rs.getDouble("price"));
+        ticket.setBooked(rs.getBoolean("is_booked"));
+        return ticket;
+    }
+}
+```
+
+### FILE: DatabaseConnection.java
+```java
+package com.example.ticketbooking;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseConnection {
+    private static final String URL = "jdbc:h2:mem:testdb";
+    private static final String USERNAME = "sa";
+    private static final String PASSWORD = "";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+    }
+}
+```
+
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+public class TicketBookingSystem {
+    private final TicketMapper ticketMapper;
+
+    public TicketBookingSystem() throws SQLException {
+        Connection connection = DatabaseConnection.getConnection();
+        createTableIfNotExists(connection);
+        this.ticketMapper = new TicketMapper(connection);
+    }
+
+    private void createTableIfNotExists(Connection connection) throws SQLException {
+        String sql = """
+            CREATE TABLE IF NOT EXISTS tickets (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                event_name VARCHAR(255),
+                seat_number VARCHAR(10),
+                price DOUBLE,
+                is_booked BOOLEAN
+            )
+            """;
+        try (var stmt = connection.createStatement()) {
+            stmt.execute(sql);
+        }
+    }
+
+    public void bookTicket(int ticketId) throws SQLException {
+        Ticket ticket = ticketMapper.findById(ticketId);
+        if (ticket != null && !ticket.isBooked()) {
+            ticket.setBooked(true);
+            ticketMapper.save(ticket);
+        }
+    }
+
+    public List<Ticket> getAllTickets() throws SQLException {
+        return ticketMapper.findAll();
+    }
+
+    public void addTicket(Ticket ticket) throws SQLException {
+        ticketMapper.save(ticket);
+    }
+
+    public static void main(String[] args) {
+        try {
+            TicketBookingSystem system = new TicketBookingSystem();
+            
+            // Add some tickets
+            system.addTicket(new Ticket(0, "Concert", "A1", 50.0));
+            system.addTicket(new Ticket(0, "Movie", "B2", 25.0));
+            
+            // Display all tickets
+            System.out.println("All Tickets:");
+            for (Ticket ticket : system.getAllTickets()) {
+                System.out.printf("ID: %d, Event: %s, Seat: %s, Price: %.2f, Booked: %s%n",
+                        ticket.getId(), ticket.getEventName(), ticket.getSeatNumber(),
+                        ticket.getPrice(), ticket.isBooked() ? "Yes" : "No");
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```

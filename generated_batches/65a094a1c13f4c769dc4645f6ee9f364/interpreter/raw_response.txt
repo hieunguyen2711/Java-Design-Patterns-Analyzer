@@ -1,0 +1,157 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Create expression for booking premium tickets
+        Expression premiumExpression = new AndExpression(
+            new TypeExpression("premium"),
+            new QuantityExpression(2)
+        );
+        
+        // Create expression for booking regular tickets with discount
+        Expression discountExpression = new OrExpression(
+            new TypeExpression("regular"),
+            new DiscountExpression(10)
+        );
+        
+        BookingContext context = new BookingContext();
+        context.setTicketType("premium");
+        context.setQuantity(2);
+        context.setDiscount(0);
+        
+        // Evaluate expressions
+        System.out.println("Premium booking valid: " + premiumExpression.interpret(context));
+        
+        context.setTicketType("regular");
+        context.setQuantity(1);
+        context.setDiscount(5);
+        
+        System.out.println("Regular booking with discount valid: " + discountExpression.interpret(context));
+    }
+}
+```
+
+### FILE: Expression.java
+```java
+public interface Expression {
+    boolean interpret(BookingContext context);
+}
+```
+
+### FILE: TypeExpression.java
+```java
+public class TypeExpression implements Expression {
+    private String type;
+    
+    public TypeExpression(String type) {
+        this.type = type;
+    }
+    
+    @Override
+    public boolean interpret(BookingContext context) {
+        return type.equals(context.getTicketType());
+    }
+}
+```
+
+### FILE: QuantityExpression.java
+```java
+public class QuantityExpression implements Expression {
+    private int quantity;
+    
+    public QuantityExpression(int quantity) {
+        this.quantity = quantity;
+    }
+    
+    @Override
+    public boolean interpret(BookingContext context) {
+        return context.getQuantity() >= quantity;
+    }
+}
+```
+
+### FILE: DiscountExpression.java
+```java
+public class DiscountExpression implements Expression {
+    private int discountThreshold;
+    
+    public DiscountExpression(int discountThreshold) {
+        this.discountThreshold = discountThreshold;
+    }
+    
+    @Override
+    public boolean interpret(BookingContext context) {
+        return context.getDiscount() >= discountThreshold;
+    }
+}
+```
+
+### FILE: AndExpression.java
+```java
+public class AndExpression implements Expression {
+    private Expression expr1;
+    private Expression expr2;
+    
+    public AndExpression(Expression expr1, Expression expr2) {
+        this.expr1 = expr1;
+        this.expr2 = expr2;
+    }
+    
+    @Override
+    public boolean interpret(BookingContext context) {
+        return expr1.interpret(context) && expr2.interpret(context);
+    }
+}
+```
+
+### FILE: OrExpression.java
+```java
+public class OrExpression implements Expression {
+    private Expression expr1;
+    private Expression expr2;
+    
+    public OrExpression(Expression expr1, Expression expr2) {
+        this.expr1 = expr1;
+        this.expr2 = expr2;
+    }
+    
+    @Override
+    public boolean interpret(BookingContext context) {
+        return expr1.interpret(context) || expr2.interpret(context);
+    }
+}
+```
+
+### FILE: BookingContext.java
+```java
+public class BookingContext {
+    private String ticketType;
+    private int quantity;
+    private int discount;
+    
+    // Getters and setters
+    public String getTicketType() {
+        return ticketType;
+    }
+    
+    public void setTicketType(String ticketType) {
+        this.ticketType = ticketType;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
+    public int getDiscount() {
+        return discount;
+    }
+    
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+}
+```

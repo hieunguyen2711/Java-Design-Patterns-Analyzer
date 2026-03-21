@@ -1,0 +1,111 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        // Create handlers
+        Handler premiumHandler = new PremiumTicketHandler();
+        Handler standardHandler = new StandardTicketHandler();
+        Handler economyHandler = new EconomyTicketHandler();
+        
+        // Chain the handlers
+        premiumHandler.setNext(standardHandler);
+        standardHandler.setNext(economyHandler);
+        
+        // Test booking requests
+        BookingRequest request1 = new BookingRequest("Premium", 2);
+        BookingRequest request2 = new BookingRequest("Standard", 1);
+        BookingRequest request3 = new BookingRequest("Economy", 5);
+        BookingRequest request4 = new BookingRequest("VIP", 1);
+        
+        premiumHandler.handle(request1);
+        premiumHandler.handle(request2);
+        premiumHandler.handle(request3);
+        premiumHandler.handle(request4);
+    }
+}
+```
+
+### FILE: Handler.java
+```java
+public abstract class Handler {
+    protected Handler next;
+    
+    public void setNext(Handler next) {
+        this.next = next;
+    }
+    
+    public abstract void handle(BookingRequest request);
+}
+```
+
+### FILE: BookingRequest.java
+```java
+public class BookingRequest {
+    private String ticketType;
+    private int quantity;
+    
+    public BookingRequest(String ticketType, int quantity) {
+        this.ticketType = ticketType;
+        this.quantity = quantity;
+    }
+    
+    public String getTicketType() {
+        return ticketType;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+}
+```
+
+### FILE: PremiumTicketHandler.java
+```java
+public class PremiumTicketHandler extends Handler {
+    @Override
+    public void handle(BookingRequest request) {
+        if ("Premium".equalsIgnoreCase(request.getTicketType())) {
+            System.out.println("Processing " + request.getQuantity() + 
+                              " premium ticket(s)");
+        } else if (next != null) {
+            next.handle(request);
+        } else {
+            System.out.println("No handler found for " + request.getTicketType() + " tickets");
+        }
+    }
+}
+```
+
+### FILE: StandardTicketHandler.java
+```java
+public class StandardTicketHandler extends Handler {
+    @Override
+    public void handle(BookingRequest request) {
+        if ("Standard".equalsIgnoreCase(request.getTicketType())) {
+            System.out.println("Processing " + request.getQuantity() + 
+                              " standard ticket(s)");
+        } else if (next != null) {
+            next.handle(request);
+        } else {
+            System.out.println("No handler found for " + request.getTicketType() + " tickets");
+        }
+    }
+}
+```
+
+### FILE: EconomyTicketHandler.java
+```java
+public class EconomyTicketHandler extends Handler {
+    @Override
+    public void handle(BookingRequest request) {
+        if ("Economy".equalsIgnoreCase(request.getTicketType())) {
+            System.out.println("Processing " + request.getQuantity() + 
+                              " economy ticket(s)");
+        } else if (next != null) {
+            next.handle(request);
+        } else {
+            System.out.println("No handler found for " + request.getTicketType() + " tickets");
+        }
+    }
+}
+```

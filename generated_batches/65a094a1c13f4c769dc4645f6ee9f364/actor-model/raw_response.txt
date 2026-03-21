@@ -1,0 +1,142 @@
+### FILE: TicketBookingSystem.java
+```java
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        ActorSystem actorSystem = new ActorSystem();
+        
+        // Create actors
+        Actor<TicketRequest> bookingActor = actorSystem.createActor(BookingActor.class);
+        Actor<NotificationRequest> notificationActor = actorSystem.createActor(NotificationActor.class);
+        
+        // Send messages to actors
+        bookingActor.tell(new TicketRequest("John", "Concert", 2));
+        bookingActor.tell(new TicketRequest("Jane", "Concert", 1));
+        notificationActor.tell(new NotificationRequest("john@email.com", "Booking confirmed for Concert"));
+        
+        // Shutdown system after processing
+        try {
+            Thread.sleep(1000);
+            actorSystem.shutdown();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+### FILE: Actor.java
+```java
+public interface Actor<T> {
+    void tell(T message);
+    void processMessage(T message);
+}
+```
+
+### FILE: ActorSystem.java
+```java
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ActorSystem {
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final ConcurrentHashMap<Class<?>, Actor<?>> actors = new ConcurrentHashMap<>();
+    
+    public <T> Actor<T> createActor(Class<? extends Actor<T>> actorClass) {
+        try {
+            Actor<T> actor = actorClass.getDeclaredConstructor().newInstance();
+            actors.put(actorClass, actor);
+            return actor;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create actor", e);
+        }
+    }
+    
+    public void shutdown() {
+        executor.shutdown();
+    }
+}
+```
+
+### FILE: BookingActor.java
+```java
+import java.util.concurrent.CompletableFuture;
+
+public class BookingActor implements Actor<TicketRequest> {
+    private int availableTickets = 10;
+    
+    @Override
+    public void tell(TicketRequest message) {
+        CompletableFuture.runAsync(() -> processMessage(message), 
+                                  java.util.concurrent.Executors.newCachedThreadPool());
+    }
+    
+    @Override
+    public void processMessage(TicketRequest request) {
+        if (availableTickets >= request.quantity) {
+            availableTickets -= request.quantity;
+            System.out.println("Booking confirmed for " + request.customerName + 
+                             " for " + request.event + " (" + request.quantity + " tickets)");
+            
+            // Send notification
+            ActorSystem system = new ActorSystem();
+            Actor<NotificationRequest> notificationActor = system.createActor(NotificationActor.class);
+            notificationActor.tell(new NotificationRequest(request.customerName + "@email.com", 
+                                                          "Booking confirmed for " + request.event));
+        } else {
+            System.out.println("Not enough tickets available for " + request.customerName);
+        }
+    }
+}
+```
+
+### FILE: NotificationActor.java
+```java
+import java.util.concurrent.CompletableFuture;
+
+public class NotificationActor implements Actor<NotificationRequest> {
+    
+    @Override
+    public void tell(NotificationRequest message) {
+        CompletableFuture.runAsync(() -> processMessage(message), 
+                                  java.util.concurrent.Executors.newCachedThreadPool());
+    }
+    
+    @Override
+    public void processMessage(NotificationRequest request) {
+        System.out.println("Sending notification to " + request.email + ": " + request.message);
+    }
+}
+```
+
+### FILE: TicketRequest.java
+```java
+public class TicketRequest {
+    public final String customerName;
+    public final String event;
+    public final int quantity;
+    
+    public TicketRequest(String customerName, String event, int quantity) {
+        this.customerName = customerName;
+        this.event = event;
+        this.quantity = quantity;
+    }
+}
+```
+
+### FILE: NotificationRequest.java
+```java
+public class NotificationRequest {
+    public final String email;
+    public final String message;
+    
+    public NotificationRequest(String email, String message) {
+        this.email = email;
+        this.message = message;
+    }
+}
+```

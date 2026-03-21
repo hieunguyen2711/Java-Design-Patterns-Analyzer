@@ -1,0 +1,134 @@
+### FILE: TicketBookingSystem.java
+```java
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        BookingService service = new BookingService();
+        
+        try {
+            // Book a ticket using transaction script pattern
+            service.bookTicket("John Doe", "Movie123", 4);
+            System.out.println("Ticket booked successfully!");
+            
+            // Attempt to book invalid number of tickets
+            service.bookTicket("Jane Smith", "Movie456", -1);
+        } catch (Exception e) {
+            System.err.println("Booking failed: " + e.getMessage());
+        }
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+public class BookingService {
+    
+    public void bookTicket(String customerName, String movieId, int numberOfTickets) throws Exception {
+        // Transaction script - all steps in one method
+        if (customerName == null || customerName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer name cannot be empty");
+        }
+        
+        if (movieId == null || movieId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Movie ID cannot be empty");
+        }
+        
+        if (numberOfTickets <= 0) {
+            throw new IllegalArgumentException("Number of tickets must be positive");
+        }
+        
+        // Validate movie exists
+        Movie movie = findMovie(movieId);
+        if (movie == null) {
+            throw new Exception("Movie not found: " + movieId);
+        }
+        
+        // Check availability
+        if (!isAvailable(movieId, numberOfTickets)) {
+            throw new Exception("Not enough tickets available for " + movieId);
+        }
+        
+        // Reserve seats
+        reserveSeats(movieId, numberOfTickets);
+        
+        // Calculate total price
+        double totalPrice = calculatePrice(movie, numberOfTickets);
+        
+        // Process payment (mock implementation)
+        processPayment(customerName, totalPrice);
+        
+        // Create booking record
+        createBookingRecord(customerName, movieId, numberOfTickets, totalPrice);
+        
+        // Update inventory
+        updateInventory(movieId, numberOfTickets);
+        
+        System.out.println("Booking completed for " + customerName + 
+                          " - Movie: " + movieId + 
+                          ", Tickets: " + numberOfTickets);
+    }
+    
+    private Movie findMovie(String movieId) {
+        // Mock implementation
+        return new Movie(movieId, "Sample Movie", 10.0);
+    }
+    
+    private boolean isAvailable(String movieId, int numberOfTickets) {
+        // Mock implementation - assume we have enough tickets
+        return true;
+    }
+    
+    private void reserveSeats(String movieId, int numberOfTickets) throws Exception {
+        // Mock reservation logic
+        System.out.println("Reserving " + numberOfTickets + " seats for " + movieId);
+    }
+    
+    private double calculatePrice(Movie movie, int numberOfTickets) {
+        return movie.getPrice() * numberOfTickets;
+    }
+    
+    private void processPayment(String customerName, double amount) throws Exception {
+        // Mock payment processing
+        System.out.println("Processing payment of $" + amount + " for " + customerName);
+    }
+    
+    private void createBookingRecord(String customerName, String movieId, int numberOfTickets, double totalPrice) {
+        // Mock booking record creation
+        System.out.println("Creating booking record: " + customerName + 
+                          " - " + movieId + " - " + numberOfTickets + 
+                          " tickets - $" + totalPrice);
+    }
+    
+    private void updateInventory(String movieId, int numberOfTickets) throws Exception {
+        // Mock inventory update
+        System.out.println("Updating inventory for " + movieId + 
+                          " by reducing " + numberOfTickets + " seats");
+    }
+}
+```
+
+### FILE: Movie.java
+```java
+public class Movie {
+    private String id;
+    private String title;
+    private double price;
+    
+    public Movie(String id, String title, double price) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```

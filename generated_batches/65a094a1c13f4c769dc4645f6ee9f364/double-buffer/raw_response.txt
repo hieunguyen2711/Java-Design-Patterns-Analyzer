@@ -1,0 +1,50 @@
+### FILE: TicketBookingSystem.java
+```java
+package com.example.ticketbooking;
+
+import java.util.concurrent.atomic.AtomicReference;
+
+public class TicketBookingSystem {
+    private final AtomicReference<TicketBuffer> currentBuffer = new AtomicReference<>(new TicketBuffer());
+    
+    public void bookTicket(String ticketId) {
+        // Double buffering - create new buffer with updated state
+        TicketBuffer newBuffer = new TicketBuffer(currentBuffer.get());
+        newBuffer.addTicket(ticketId);
+        
+        // Atomically swap buffers
+        currentBuffer.set(newBuffer);
+    }
+    
+    public boolean isTicketAvailable(String ticketId) {
+        // Read from current buffer without modification
+        return currentBuffer.get().isTicketAvailable(ticketId);
+    }
+}
+```
+
+### FILE: TicketBuffer.java
+```java
+package com.example.ticketbooking;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class TicketBuffer {
+    private final Set<String> tickets = new HashSet<>();
+    
+    public TicketBuffer() {}
+    
+    public TicketBuffer(TicketBuffer other) {
+        this.tickets.addAll(other.tickets);
+    }
+    
+    public void addTicket(String ticketId) {
+        tickets.add(ticketId);
+    }
+    
+    public boolean isTicketAvailable(String ticketId) {
+        return tickets.contains(ticketId);
+    }
+}
+```

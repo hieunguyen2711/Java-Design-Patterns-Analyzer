@@ -1,0 +1,110 @@
+### FILE: SocialMediaAdapter.java
+```java
+package socialmedia;
+
+public interface SocialMediaAdapter {
+    void postToSocialMedia(String message);
+}
+```
+
+### FILE: TwitterAPI.java
+```java
+package socialmedia;
+
+public class TwitterAPI {
+    public void tweet(String message) {
+        System.out.println("Tweeting: " + message);
+    }
+}
+```
+
+### FILE: FacebookAPI.java
+```java
+package socialmedia;
+
+public class FacebookAPI {
+    public void postToFacebook(String message) {
+        System.out.println("Posting to Facebook: " + message);
+    }
+}
+```
+
+### FILE: TwitterAdapter.java
+```java
+package socialmedia;
+
+public class TwitterAdapter implements SocialMediaAdapter {
+    private TwitterAPI twitterAPI;
+    
+    public TwitterAdapter(TwitterAPI twitterAPI) {
+        this.twitterAPI = twitterAPI;
+    }
+    
+    @Override
+    public void postToSocialMedia(String message) {
+        twitterAPI.tweet(message);
+    }
+}
+```
+
+### FILE: FacebookAdapter.java
+```java
+package socialmedia;
+
+public class FacebookAdapter implements SocialMediaAdapter {
+    private FacebookAPI facebookAPI;
+    
+    public FacebookAdapter(FacebookAPI facebookAPI) {
+        this.facebookAPI = facebookAPI;
+    }
+    
+    @Override
+    public void postToSocialMedia(String message) {
+        facebookAPI.postToFacebook(message);
+    }
+}
+```
+
+### FILE: SocialMediaManager.java
+```java
+package socialmedia;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SocialMediaManager {
+    private List<SocialMediaAdapter> adapters;
+    
+    public SocialMediaManager() {
+        this.adapters = new ArrayList<>();
+    }
+    
+    public void addAdapter(SocialMediaAdapter adapter) {
+        adapters.add(adapter);
+    }
+    
+    public void postToAll(String message) {
+        for (SocialMediaAdapter adapter : adapters) {
+            adapter.postToSocialMedia(message);
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package socialmedia;
+
+public class Main {
+    public static void main(String[] args) {
+        SocialMediaManager manager = new SocialMediaManager();
+        
+        // Adapting different social media APIs
+        manager.addAdapter(new TwitterAdapter(new TwitterAPI()));
+        manager.addAdapter(new FacebookAdapter(new FacebookAPI()));
+        
+        // Posting to all platforms through unified interface
+        manager.postToAll("Hello World!");
+    }
+}
+```
