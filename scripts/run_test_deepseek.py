@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import time
 from pathlib import Path
@@ -9,8 +10,9 @@ import requests
 API_URL = "http://localhost:8000/analyze"
 ROOT_DIR = Path(__file__).resolve().parent.parent
 ZIPPED_DIR = ROOT_DIR / "datasets_zipped"
-OUTPUT_FILE = ROOT_DIR / "results_code_deepseek.json"
-MODEL = "deepseek/deepseek-r1-0528-qwen3-8b"
+OUTPUT_FILE = ROOT_DIR / os.getenv("RESULTS_FILE", "results_code_deepseek.json")
+MODEL = os.getenv("MODEL_NAME", "deepseek/deepseek-r1-0528-qwen3-8b")
+REQUEST_TIMEOUT_SECONDS = int(os.getenv("REQUEST_TIMEOUT_SECONDS", "1800"))
 
 
 PATTERN_ALIASES: dict[str, list[str]] = {
@@ -141,15 +143,42 @@ def format_raw_response(raw_analysis: str) -> str:
 
     return raw_analysis.strip()
 
+
+def load_existing_results() -> list[dict]:
+    """Load previous results so interrupted runs can resume."""
+    if not OUTPUT_FILE.exists():
+        return []
+    try:
+        data = json.loads(OUTPUT_FILE.read_text())
+        if isinstance(data, list):
+            return data
+    except Exception:
+        pass
+    return []
+
+
+def save_results(results: list[dict]) -> None:
+    """Persist results after each processed pattern."""
+    OUTPUT_FILE.write_text(json.dumps(results, indent=2, ensure_ascii=False))
+
 def main():
     zip_files = sorted(ZIPPED_DIR.glob("*.zip"))
     if not zip_files:
         print("No zip files found in", ZIPPED_DIR)
         return
-    
-    results = [] 
+
+    results = load_existing_results()
+    done_patterns = {str(r.get("pattern", "")) for r in results}
+    if done_patterns:
+        print(f"Resuming from existing file: {len(done_patterns)} patterns already processed")
+
     for idx, zip_path in enumerate(zip_files, start=1):
         stem = zip_path.stem # Get the names of the file without the extension
+
+        if stem in done_patterns:
+            print(f"[{idx}/{len(zip_files)}] {stem} ... SKIP (already processed)")
+            continue
+
         print(f"[{idx}/{len(zip_files)}] {stem} ...", end=" ", flush=True)
 
         try:
@@ -158,14 +187,15 @@ def main():
                     API_URL, 
                     files={"file": (zip_path.name, f, "application/zip")},
                     data={"model": MODEL},
-                    timeout=600,
+                    timeout=REQUEST_TIMEOUT_SECONDS,
                 )
 
             if not response.ok:
                 print(f"HTTP {response.status_code}")
                 results.append({"pattern": stem, 
                                 "llm_answer": f"ERROR: HTTP {response.status_code}", 
-                                "status" : "Not Pass!"})
+                                "Status" : "Not Pass"})
+                save_results(results)
                 continue
             raw_analysis = response.json().get("raw_analysis", "")
             formatted_repsonse = format_raw_response(raw_analysis)
@@ -173,17 +203,19 @@ def main():
             label = "Pass" if passed else "Not Pass"
             print(label)
             results.append({"pattern": stem, "llm_answer":formatted_repsonse, "Status": label})
+            save_results(results)
 
                 
         except requests.exceptions.Timeout:
             print("TIMEOUT, TRY AGAIN LATER!")
             results.append({"pattern": stem, "llm_answer": "ERROR: Request timed out", "Status": "Not Pass"})
+            save_results(results)
         except Exception as e:
             print("Error:", e)
             results.append({"pattern": stem, "llm_answer": f"Error: {e}", "Status": "Not Passed"})
+            save_results(results)
         
-        time.sleep(1)
-    OUTPUT_FILE.write_text(json.dumps(results, indent=2, ensure_ascii=False))
+        time.sleep(0.2)
     passed = sum(1 for r in results if r["Status"] == "Pass")
     print(f"\nDone. {passed}/{len(results)} passed. Results -> {OUTPUT_FILE}")
 

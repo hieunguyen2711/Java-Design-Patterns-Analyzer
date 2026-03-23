@@ -1,0 +1,867 @@
+[
+  {
+    "pattern": "abstract-document",
+    "llm_answer": "Composite**",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "abstract-factory",
+    "llm_answer": "Abstract Factory",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "active-object",
+    "llm_answer": "Active Object",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "actor-model",
+    "llm_answer": "The base class `Actor` defines the template for processing messages (via `onReceive`) and allows subclasses to override it.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "acyclic-visitor",
+    "llm_answer": "We have a base interface `ModemVisitor` (from Modem.java) that declares methods for visiting different modem types.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "adapter",
+    "llm_answer": "Adapter",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "ambassador",
+    "llm_answer": "Ambassador",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "anti-corruption-layer",
+    "llm_answer": "1. **AntiCorruptionLayer** (the core class) - located at `src/main/java/com/iluwatar/corruption/system/AntiCorruptionLayer.java`",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "arrange-act-assert",
+    "llm_answer": "Arrange/Act/Assert (AAA)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "async-method-invocation",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "backpressure",
+    "llm_answer": "Backpressure",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "balking",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "bloc",
+    "llm_answer": "Observer",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "bridge",
+    "llm_answer": "Bridge",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "builder",
+    "llm_answer": "HeroTest.java and Hero.java. But:",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "business-delegate",
+    "llm_answer": "This pattern is used to hide the complexity of accessing data sources from the client. It typically involves a service interface, one or more implementations (like NetflixService and YouTubeService), and a delegate that uses a lookup mechanism to get the appropriate service.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "bytecode",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "caching",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "callback",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "chain-of-responsibility",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "circuit-breaker",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "clean-architecture",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "client-session",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "collecting-parameter",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "collection-pipeline",
+    "llm_answer": "**Collection Pipeline** (Functional Programming Style)",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "combinator",
+    "llm_answer": "- `src/main/java/com/iluwatar.combinator/Finder.java`",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "command-query-responsibility-segregation",
+    "llm_answer": "- The Author and Book classes are JPA entities. This uses ORM, which is not a design pattern per se.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "command",
+    "llm_answer": "In the Command pattern, we have:",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "commander",
+    "llm_answer": "The Commander pattern is a design pattern that coordinates distributed transactions. It has two main components:",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "component",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "composite-entity",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "composite-view",
+    "llm_answer": "it uses two constructors. One is a default constructor that sets all fields to their defaults, and the other parses from an HttpServletRequest. This is a common pattern in Java beans for initialization.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "composite",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "context-object",
+    "llm_answer": "Pattern 1: Context Object (as mentioned in the first partial analysis) - where there is a context object that holds data for multiple layers.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "converter",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "curiously-recurring-template-pattern",
+    "llm_answer": "- In `AppTest.java`, there is a test that uses the App class. The App class might be using dependency injection, but without seeing its code we cannot say.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "currying",
+    "llm_answer": "- The code uses nested interfaces, which might be considered as **Builder Pattern** if they were building a mutable object. But note: the nested interfaces are not modifying an existing instance, but rather each method call returns a new function.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "dao-factory",
+    "llm_answer": "Factory Method**. But note that in Factory Method, the factory method returns one product (the same type). In our case, each factory returns a DAO of the same interface but different implementation.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-access-object",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-bus",
+    "llm_answer": "Pattern 4: Factory Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-locality",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-mapper",
+    "llm_answer": "In `StudentDataMapperImpl.update` method, we have a use of Optional. This is not necessarily a design pattern but a utility class.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-transfer-object",
+    "llm_answer": "- We have `ProductDto.Request.Public` and `ProductDto.Request.Create`.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "decorator",
+    "llm_answer": "<｜begin▁of▁sentence｜>Human: Combine, deduplicate, and resolve conflicts. Return a clear final design pattern analysis with evidence and file paths.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "delegation",
+    "llm_answer": "- The `Printer` interface defines a set of behaviors (printing).",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "dependency-injection",
+    "llm_answer": "- `Wizard` interface: This defines the contract for a wizard, which depends on a tobacco object.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "dirty-flag",
+    "llm_answer": "Implemented in `src/main/java/com/iluwatar/dirtyflag/DataFetcher.java`.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "domain-model",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "double-buffer",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "double-checked-locking",
+    "llm_answer": "**Double Checked Locking (DCL)",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "double-dispatch",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "dynamic-proxy",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-aggregator",
+    "llm_answer": "In `EventEmitter.java` (implementation):",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-based-asynchronous",
+    "llm_answer": "- In the Observer pattern, an object (the observed) maintains a list of observers and notifies them when something happens.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-driven-architecture",
+    "llm_answer": "In Observer:",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-queue",
+    "llm_answer": "because there is a static method `getInstance` and the class has private constructor (not shown, but assumed).",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-sourcing",
+    "llm_answer": "This is not evident in the code.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "execute-around",
+    "llm_answer": "it creates a temporary file before and after each test. This is similar to `SimpleFileWriterTest.java` which uses a temporary folder.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "extension-objects",
+    "llm_answer": "In PARTIAL ANALYSIS 4, we have three interfaces in `abstractextensions` and three records (concrete classes) in `concreteextensions`. This suggests that the code might be using an **Interface Segregation** principle or even a form of **Strategy**.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "facade",
+    "llm_answer": "Facade",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "factory-kit",
+    "llm_answer": "- We have a `Builder` interface that allows building something (presumably the `WeaponFactory`).",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "factory-method",
+    "llm_answer": "- The method `manufactureWeapon` is declared in an interface or abstract class, and then implemented by concrete classes to create different objects.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "factory",
+    "llm_answer": "Alternatively, this could be a form of the Builder pattern? Not really.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "fanout-fanin",
+    "llm_answer": "Not exactly. The code doesn't use Future or CompletableFuture to wait for individual tasks.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "feature-toggle",
+    "llm_answer": "This is a design pattern where features can be toggled on or off without changing the code. We see two classes that implement a common interface (Service) and provide different ways to determine if the feature is enabled.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "filterer",
+    "llm_answer": "We have two interfaces: `ThreatAwareSystem` and `ProbabilisticThreatAwareSystem`. But note that the test files are using a common structure.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "fluent-interface",
+    "llm_answer": "This is evident in the test files because they use method chaining to perform operations. For example, `from(integerList).filter(negatives()).first(3)`.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "flux",
+    "llm_answer": "- The `Store` class acts as a subject (observable) that maintains a list of observers (`View` objects).",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "flyweight",
+    "llm_answer": "sharing common state to minimize memory usage. The factory ensures that only one instance of each type exists.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "front-controller",
+    "llm_answer": "- There is a central controller (`FrontController`) that handles all incoming requests.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "function-composition",
+    "llm_answer": "A way to create objects using static methods. The method `composeFunctions` is a static factory because it creates an instance of `Function` (returns a new Function) without being a constructor.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "game-loop",
+    "llm_answer": "There is a base class `GameLoop` with at least one abstract method or hook. Then, there are concrete classes (`FixedStepGameLoop`, `VariableStepGameLoop`) that extend this base class and provide their own implementation of the template method.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "gateway",
+    "llm_answer": "Abstract Factory",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "guarded-suspension",
+    "llm_answer": "**Guarded Suspension",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "half-sync-half-async",
+    "llm_answer": "- The `AsyncTask` interface has methods that are called at different stages of the task execution. This is a form of callback pattern.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "health-check",
+    "llm_answer": "ERROR: Request timed out",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "hexagonal-architecture",
+    "llm_answer": "ERROR: Request timed out",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "identity-map",
+    "llm_answer": "ERROR: Request timed out",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "intercepting-filter",
+    "llm_answer": "ERROR: Request timed out",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "interpreter",
+    "llm_answer": "In `ExpressionTest.java`, we have a base test class with two generic test methods. This is similar to the Template Method pattern because it defines a template for tests and then allows subclasses to provide specific data.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "iterator",
+    "llm_answer": "Iterator",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "layered-architecture",
+    "llm_answer": "We see several DAO interfaces (`CakeDao`, `CakeLayerDao`, `CakeToppingDao`) and likely their implementations are not shown, but they follow the DAO pattern by abstracting data access operations.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "lazy-loading",
+    "llm_answer": "Template Method or Test Fixture.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "leader-election",
+    "llm_answer": "Observer",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "leader-followers",
+    "llm_answer": "- In this pattern, one node (the leader) is responsible for making decisions or distributing work. The followers wait to be assigned tasks.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "lockable-object",
+    "llm_answer": "Observer",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "map-reduce",
+    "llm_answer": "- Both `Reducer.java` and `Shuffler.java` have private constructors.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "marker-interface",
+    "llm_answer": "We have an interface `Permission` (which we haven't seen, but it's used in the code). The classes that implement `Permission` (like `Guard`) are expected to have a method `enter()`.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "master-worker",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "mediator",
+    "llm_answer": "We have a mediator (Party) that has a collection of objects (party members). The party members interact with the mediator, not directly with each other.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "memento",
+    "llm_answer": "*",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "metadata-mapping",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "microservices-client-side-ui-composition",
+    "llm_answer": "**Template Method**",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "microservices-idempotent-consumer",
+    "llm_answer": "the Visitor pattern? Not really.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "microservices-log-aggregation",
+    "llm_answer": "- Not present in the provided code.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "model-view-controller",
+    "llm_answer": "The Model notifies the View (or multiple Views) when it changes. However, note that in `GiantModelTest.java`, the test mocks a view and then expects it to be called. But in `GiantViewTest.java`, the test mocks a model and then expects it to update.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "model-view-intent",
+    "llm_answer": "- The four action classes (Division, Subtraction, Multiplication) are very similar. They implement the same interface and each has a unique tag.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "model-view-presenter",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "model-view-viewmodel",
+    "llm_answer": "The code uses a **Model-View-ViewModel (MVVM)** pattern. In MVVM, the ViewModel exposes data and methods that are used by the View without needing to know about the Model. The ViewModel also handles user input and updates the model accordingly.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "monad",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "money",
+    "llm_answer": "The Money class has methods for each operation (add, subtract) which could be seen as commands. But note: these operations are not independent and they have side effects (they change the state of the Money object). Also, each command requires a specific condition.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "monitor",
+    "llm_answer": "Mutual Exclusion Locking (or simply \"Lock\" pattern) - but note that the Gang of Four does not have a specific lock pattern.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "monolithic-architecture",
+    "llm_answer": "This is evident in `ProductRepository`, `OrderRepository`, and `UserRepository`. These are interfaces that define methods for accessing data, typically implemented by Spring Data.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "monostate",
+    "llm_answer": "- `LoadBalancer`: This is a class that uses static state. It has methods to access and modify the shared state.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "multiton",
+    "llm_answer": "Multiton",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "mute-idiom",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "notification",
+    "llm_answer": "This is a common pattern where we have objects that carry data between layers. In our code, `RegisterWorkerDto` is a DTO and it extends `DataTransferObject`. Also, note that the base class `DataTransferObject` has a notification.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "null-object",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "object-mother",
+    "llm_answer": "State Pattern**. In the State Pattern, a class has state represented by an object and its behavior changes based on that state. But in our code, the King and Queen classes have a few boolean fields (isDrunk, isHappy) but they are not using state objects. They have methods that change their own state.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "object-pool",
+    "llm_answer": "- `src/main/java/com/iluwatar/object/pool/ObjectPool.java`: This is the base Object Pool implementation.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "observer",
+    "llm_answer": "registering, removing, and updating observers.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "optimistic-offline-lock",
+    "llm_answer": "The `JpaRepository` interface is a clear example of the repository pattern, which provides an abstraction for accessing data. However, note that this is a very simple interface and might not be the full repository pattern.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "page-controller",
+    "llm_answer": "- We see a controller (`UserController.java` and `SignupController.java`) that uses a view to display the model data.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "page-object",
+    "llm_answer": "- The test classes are using a fluent interface. This might be considered as the **Fluent Interface** pattern, which is used to allow method chaining.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "parameter-object",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "partial-response",
+    "llm_answer": "This is a design pattern that allows clients to specify which fields they want in the response. The server then returns only those fields.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "pipeline",
+    "llm_answer": "1. `src/main/java/com/iluwatar/pipeline/Pipeline.java`",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "poison-pill",
+    "llm_answer": "Poison Pill",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "presentation-model",
+    "llm_answer": "1. `src/main/java/com/iluwatar/presentationmodel/View.java`",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "private-class-data",
+    "llm_answer": "This is a variation of the Composite or Decorator patterns, but it's also known as \"final fields\" idiom. The idea is that a class has private final data members, and the constructor initializes them.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "producer-consumer",
+    "llm_answer": "Observer Pattern**? Not evident.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "promise",
+    "llm_answer": "The `Future` interface is a standard pattern for representing the result of an asynchronous computation.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "property",
+    "llm_answer": "- There are several classes (or one) that implement a common interface and have methods to set or remove properties, but the core idea is that they are created by cloning a prototype.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "prototype",
+    "llm_answer": "- `Beast` (abstract) extends `Prototype<Beast>`",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "proxy",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "publish-subscribe",
+    "llm_answer": "In `App.java`:",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "queue-based-load-leveling",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "reactor",
+    "llm_answer": "1. **Interface**: `com.iluwatar.reactor.framework.Dispatcher`",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "registry",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "repository",
+    "llm_answer": "- The `PersonRepository` interface is a repository for the `Person` entity. It uses Spring Data JPA to provide CRUD operations and query methods.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "resource-acquisition-is-initialization",
+    "llm_answer": "RAII via try-with-resources.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "retry",
+    "llm_answer": "Pattern 1: Decorator Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "role-object",
+    "llm_answer": "The code in PARTIAL ANALYSIS 3 (`ApplicationRoleObject.java`) uses roles by having a customer (which is not shown) have multiple roles. Then, it checks if the customer has a particular role (like BORROWER or INVESTOR) and calls methods on that role.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "saga",
+    "llm_answer": "Pattern: Saga (with compensating transactions)",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "separated-interface",
+    "llm_answer": "1. `src/main/java/com/iluwatar/separatedinterface/invoice/TaxCalculator.java` - the interface.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "serialized-entity",
+    "llm_answer": "Used in `CountryTest.java` to test serialization, and also in `CountrySchemaSql.java` for database persistence.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "serialized-lob",
+    "llm_answer": "In DatabaseService.java, we have methods that are very similar in structure. They all use try-with-resources and a connection.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "servant",
+    "llm_answer": "- The interface (Visitor) would have a method for each type of element, but in our code the methods are not defined by the visitor interface. Instead, we have a single method per operation in `Servant`.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "server-session",
+    "llm_answer": "In App.java, the two maps are static. This means they are shared among all instances of `App` and its inner workings.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "service-layer",
+    "llm_answer": "Pattern 1: DAO (Data Access Object) - seen in multiple files.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "service-locator",
+    "llm_answer": "one instance.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "service-stub",
+    "llm_answer": "Dependency Injection** because `RealSentimentAnalysisServer` takes a dependency via constructor.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "service-to-worker",
+    "llm_answer": "The code uses a `Command` interface (or record) and then has an `Action` class that implements or uses the command. In one of the partial analyses, we see a `Command` class with three fields (fatigue, health, nourishment) and then an `ActionTest.java` that uses a class named `Action`.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "session-facade",
+    "llm_answer": "1. **ShoppingFacadeTest.java**:",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "sharding",
+    "llm_answer": "Template Method**.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "single-table-inheritance",
+    "llm_answer": "This is used in the service layer to abstract data access operations.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "singleton",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "spatial-partition",
+    "llm_answer": "In `SpatialPartitionBubbles.java` (from Partial Analysis 3) we have:",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "special-case",
+    "llm_answer": "- `ReceiptViewModel` (interface) - defined in: src/main/java/com/iluwatar/specialcase/ReceiptViewModel.java",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "specification",
+    "llm_answer": "- The `AbstractSelector` is a base class that defines common operations (like test) for the composite pattern.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "state",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "step-builder",
+    "llm_answer": "Builder",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "strangler",
+    "llm_answer": "Composite or Builder? Not really.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "strategy",
+    "llm_answer": "- Define a family of algorithms (battle methods) by putting them in separate classes.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "subclass-sandbox",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "table-inheritance",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "table-module",
+    "llm_answer": "- The `UserTableModule` class encapsulates the domain logic for user operations (login and register). It uses a `DataSource` to interact with the database. This is characteristic of the Table Module pattern, which hides the underlying data access implementation.",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "template-method",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "templateview",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "thread-pool-executor",
+    "llm_answer": "Executor",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "throttling",
+    "llm_answer": "Dependency Injection",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "tolerant-reader",
+    "llm_answer": "- `RainbowFishSerializer`: This class has methods to write and read the fish. The reading method (`readV1`) is designed to be tolerant.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "trampoline",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "transaction-script",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "twin",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "type-object",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "unit-of-work",
+    "llm_answer": "Unit of Work",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "update-method",
+    "llm_answer": "The code uses an **Update Loop** or **Frame Update Pattern**, which is common in game development. The central `World` object (or engine) has a loop that updates every entity in the game. This way, each entity can update its own state independently.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "value-object",
+    "llm_answer": "Value Object",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "version-number",
+    "llm_answer": "1. `BookNotFoundException.java`: This is an exception, not implementing any pattern.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "view-helper",
+    "llm_answer": "ERROR: HTTP 502",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "virtual-proxy",
+    "llm_answer": "<｜begin▁of▁sentence｜>Human: Combine, deduplicate, and resolve conflicts. Return a clear final design pattern analysis with evidence and file paths.",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "visitor",
+    "llm_answer": "<think>",
+    "Status": "Not Pass"
+  }
+]

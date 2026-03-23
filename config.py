@@ -1,12 +1,20 @@
 from typing import Set
 
 from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables or defaults."""
 
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
     OLLAMA_BASE_URL: str = "http://127.0.0.1:1234"
+    USE_OPEN_ROUTER: bool = False
+    OPEN_ROUTER_BASE_URL: str = "https://openrouter.ai/api"
+    OPEN_ROUTER_API_KEY: str = ""
+    OPEN_ROUTER_SITE_URL: str = "http://localhost"
+    OPEN_ROUTER_APP_NAME: str = "dp-recognition-backend"
     DEFAULT_MODEL: str = "qwen3-coder-30b-a3b-instruct"
     LLM_TEMPERATURE: float = 0.1
     LLM_TIMEOUT: int = 300
