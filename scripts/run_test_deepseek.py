@@ -7,7 +7,7 @@ from pathlib import Path
 
 import requests
 
-API_URL = "http://localhost:8000/analyze"
+API_URL = os.getenv("API_URL", "http://localhost:8000/analyze")
 ROOT_DIR = Path(__file__).resolve().parent.parent
 ZIPPED_DIR = ROOT_DIR / "datasets_zipped"
 OUTPUT_FILE = ROOT_DIR / os.getenv("RESULTS_FILE", "results_code_deepseek.json")
@@ -135,6 +135,27 @@ def format_raw_response(raw_analysis: str) -> str:
     if match:
         return match.group(1).strip()
 
+    # Common markdown heading style, e.g. "#### Bridge Pattern"
+    heading_match = re.search(
+        r"^\s{0,3}#{1,6}\s+([A-Za-z][A-Za-z\-\s]{1,80}?)\s+Pattern\b",
+        raw_analysis,
+        re.IGNORECASE | re.MULTILINE,
+    )
+    if heading_match:
+        return heading_match.group(1).strip()
+
+    # Fallback: infer from any known aliases mentioned in the analysis body.
+    raw_lower = raw_analysis.lower()
+    alias_hits: list[tuple[int, str]] = []
+    for canonical, aliases in PATTERN_ALIASES.items():
+        for alias in aliases:
+            idx = raw_lower.find(alias.lower())
+            if idx != -1:
+                alias_hits.append((idx, canonical))
+    if alias_hits:
+        alias_hits.sort(key=lambda x: x[0])
+        return alias_hits[0][1]
+
     # Fallback: return the first non-empty line
     for line in raw_analysis.splitlines():
         stripped = line.strip("*# ").strip()
@@ -174,12 +195,13 @@ def main():
 
     for idx, zip_path in enumerate(zip_files, start=1):
         stem = zip_path.stem # Get the names of the file without the extension
+        progress = f"{idx}/{len(zip_files)}..."
 
         if stem in done_patterns:
-            print(f"[{idx}/{len(zip_files)}] {stem} ... SKIP (already processed)")
+            print(f"{progress} SKIP")
             continue
 
-        print(f"[{idx}/{len(zip_files)}] {stem} ...", end=" ", flush=True)
+        print(progress, end=" ", flush=True)
 
         try:
             with open(zip_path, "rb") as f: #Try to open the path in the "read binary" mode
@@ -191,7 +213,7 @@ def main():
                 )
 
             if not response.ok:
-                print(f"HTTP {response.status_code}")
+                print("Not Pass")
                 results.append({"pattern": stem, 
                                 "llm_answer": f"ERROR: HTTP {response.status_code}", 
                                 "Status" : "Not Pass"})
@@ -207,11 +229,11 @@ def main():
 
                 
         except requests.exceptions.Timeout:
-            print("TIMEOUT, TRY AGAIN LATER!")
+            print("Not Pass")
             results.append({"pattern": stem, "llm_answer": "ERROR: Request timed out", "Status": "Not Pass"})
             save_results(results)
         except Exception as e:
-            print("Error:", e)
+            print("Not Pass")
             results.append({"pattern": stem, "llm_answer": f"Error: {e}", "Status": "Not Passed"})
             save_results(results)
         

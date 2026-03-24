@@ -26,6 +26,11 @@ class PromptService:
         else:
             lines.append("Analyze the full project and provide the complete report.")
 
+        lines.append(
+            "Output format requirement: first non-empty line MUST be exactly "
+            "'Pattern Identified: <pattern name>'."
+        )
+
         for path, content in java_files.items():
             lines.append(f"### FILE: {path}")
             lines.append(content)
@@ -105,6 +110,10 @@ class PromptService:
         """Construct a prompt to merge partial analyses into a final report."""
         lines: List[str] = [self.SYSTEM_PROMPT]
         lines.append("Merge the following partial analyses into a single cohesive report.")
+        lines.append(
+            "Output format requirement: first non-empty line MUST be exactly "
+            "'Pattern Identified: <pattern name>'."
+        )
 
         budget = settings.MAX_MERGE_CHARS
         per_analysis = max(500, budget // max(len(partial_analyses), 1))

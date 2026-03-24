@@ -1,0 +1,867 @@
+[
+  {
+    "pattern": "abstract-document",
+    "llm_answer": "Factory Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "abstract-factory",
+    "llm_answer": "Abstract Factory",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "active-object",
+    "llm_answer": "Active Object",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "actor-model",
+    "llm_answer": "Actor Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "acyclic-visitor",
+    "llm_answer": "Visitor Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "adapter",
+    "llm_answer": "Adapter Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "ambassador",
+    "llm_answer": "Ambassador Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "anti-corruption-layer",
+    "llm_answer": "Anti-Corruption Layer",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "arrange-act-assert",
+    "llm_answer": "Arrange-Act-Assert (AAA)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "async-method-invocation",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "backpressure",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "balking",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "bloc",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "bridge",
+    "llm_answer": "Bridge Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "builder",
+    "llm_answer": "Builder",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "business-delegate",
+    "llm_answer": "Business Delegate Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "bytecode",
+    "llm_answer": "Interpreter Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "caching",
+    "llm_answer": "Strategy Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "callback",
+    "llm_answer": "Callback Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "chain-of-responsibility",
+    "llm_answer": "Chain of Responsibility",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "circuit-breaker",
+    "llm_answer": "State Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "clean-architecture",
+    "llm_answer": "Repository Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "client-session",
+    "llm_answer": "Data Transfer Object (DTO)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "collecting-parameter",
+    "llm_answer": "Singleton",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "collection-pipeline",
+    "llm_answer": "Factory Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "combinator",
+    "llm_answer": "Combinator Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "command-query-responsibility-segregation",
+    "llm_answer": "Data Transfer Object (DTO)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "command",
+    "llm_answer": "Command Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "commander",
+    "llm_answer": "Template Method Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "component",
+    "llm_answer": "Composite Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "composite-entity",
+    "llm_answer": "Composite Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "composite-view",
+    "llm_answer": "Mock Object Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "composite",
+    "llm_answer": "Composite Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "context-object",
+    "llm_answer": "Context Object Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "converter",
+    "llm_answer": "Immutable Object",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "curiously-recurring-template-pattern",
+    "llm_answer": "Curiously Recurring Template Pattern (CRTP)",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "currying",
+    "llm_answer": "Builder Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "dao-factory",
+    "llm_answer": "Factory Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-access-object",
+    "llm_answer": "Repository Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-bus",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-locality",
+    "llm_answer": "Component Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "data-mapper",
+    "llm_answer": "Data Mapper",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "data-transfer-object",
+    "llm_answer": "Data Transfer Object (DTO)",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "decorator",
+    "llm_answer": "Decorator",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "delegation",
+    "llm_answer": "Delegate Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "dependency-injection",
+    "llm_answer": "Dependency Injection",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "dirty-flag",
+    "llm_answer": "Dirty Flag",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "domain-model",
+    "llm_answer": "Builder Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "double-buffer",
+    "llm_answer": "Double Buffer Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "double-checked-locking",
+    "llm_answer": "Double-Checked Locking",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "double-dispatch",
+    "llm_answer": "Double Dispatch",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "dynamic-proxy",
+    "llm_answer": "Proxy Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "event-aggregator",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-based-asynchronous",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-driven-architecture",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-queue",
+    "llm_answer": "Singleton",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "event-sourcing",
+    "llm_answer": "Event Sourcing",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "execute-around",
+    "llm_answer": "Execute Around",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "extension-objects",
+    "llm_answer": "Singleton",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "facade",
+    "llm_answer": "Facade",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "factory-kit",
+    "llm_answer": "Factory Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "factory-method",
+    "llm_answer": "Factory Method",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "factory",
+    "llm_answer": "Factory Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "fanout-fanin",
+    "llm_answer": "Fan-Out/Fan-In Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "feature-toggle",
+    "llm_answer": "Strategy Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "filterer",
+    "llm_answer": "Fluent Interface",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "fluent-interface",
+    "llm_answer": "Fluent Interface",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "flux",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "flyweight",
+    "llm_answer": "Flyweight",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "front-controller",
+    "llm_answer": "Command Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "function-composition",
+    "llm_answer": "Function Composition",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "game-loop",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "gateway",
+    "llm_answer": "Factory Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "guarded-suspension",
+    "llm_answer": "Guarded Suspension",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "half-sync-half-async",
+    "llm_answer": "Command Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "health-check",
+    "llm_answer": "Mock Object Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "hexagonal-architecture",
+    "llm_answer": "Dependency Injection",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "identity-map",
+    "llm_answer": "Identity Map",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "intercepting-filter",
+    "llm_answer": "Chain of Responsibility",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "interpreter",
+    "llm_answer": "Interpreter Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "iterator",
+    "llm_answer": "Iterator",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "layered-architecture",
+    "llm_answer": "Dependency Injection",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "lazy-loading",
+    "llm_answer": "Lazy Loading",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "leader-election",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "leader-followers",
+    "llm_answer": "Leader-Follower Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "lockable-object",
+    "llm_answer": "Lock Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "map-reduce",
+    "llm_answer": "MapReduce",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "marker-interface",
+    "llm_answer": "Marker Interface",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "master-worker",
+    "llm_answer": "Master-Worker Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "mediator",
+    "llm_answer": "Mediator",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "memento",
+    "llm_answer": "Memento",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "metadata-mapping",
+    "llm_answer": "Singleton Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "microservices-client-side-ui-composition",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "microservices-idempotent-consumer",
+    "llm_answer": "State Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "microservices-log-aggregation",
+    "llm_answer": "Observer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "model-view-controller",
+    "llm_answer": "Model-View-Controller (MVC)",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "model-view-intent",
+    "llm_answer": "Command Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "model-view-presenter",
+    "llm_answer": "Model-View-Presenter (MVP)",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "model-view-viewmodel",
+    "llm_answer": "Model-View-ViewModel (MVVM)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "monad",
+    "llm_answer": "Monad Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "money",
+    "llm_answer": "Exception Handling Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "monitor",
+    "llm_answer": "Monitor Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "monolithic-architecture",
+    "llm_answer": "Repository Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "monostate",
+    "llm_answer": "Monostate Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "multiton",
+    "llm_answer": "Multiton",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "mute-idiom",
+    "llm_answer": "Functional Interface Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "notification",
+    "llm_answer": "Data Transfer Object (DTO)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "null-object",
+    "llm_answer": "Singleton",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "object-mother",
+    "llm_answer": "Object Mother Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "object-pool",
+    "llm_answer": "Object Pool",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "observer",
+    "llm_answer": "Observer Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "optimistic-offline-lock",
+    "llm_answer": "Mock Object Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "page-controller",
+    "llm_answer": "Model-View-Controller (MVC)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "page-object",
+    "llm_answer": "Page Object Model",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "parameter-object",
+    "llm_answer": "Builder Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "partial-response",
+    "llm_answer": "Mocking Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "pipeline",
+    "llm_answer": "Chain of Responsibility",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "poison-pill",
+    "llm_answer": "Singleton",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "presentation-model",
+    "llm_answer": "Model-View-Presenter (MVP)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "private-class-data",
+    "llm_answer": "Private Class Data",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "producer-consumer",
+    "llm_answer": "Producer-Consumer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "promise",
+    "llm_answer": "Promise Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "property",
+    "llm_answer": "Prototype Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "prototype",
+    "llm_answer": "Prototype Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "proxy",
+    "llm_answer": "Proxy Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "publish-subscribe",
+    "llm_answer": "Publish-Subscribe Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "queue-based-load-leveling",
+    "llm_answer": "Producer-Consumer Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "reactor",
+    "llm_answer": "Reactor Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "registry",
+    "llm_answer": "Singleton",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "repository",
+    "llm_answer": "Repository Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "resource-acquisition-is-initialization",
+    "llm_answer": "Try-with-Resources",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "retry",
+    "llm_answer": "Decorator",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "role-object",
+    "llm_answer": "Role Object Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "saga",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "separated-interface",
+    "llm_answer": "Strategy Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "serialized-entity",
+    "llm_answer": "Data Access Object (DAO)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "serialized-lob",
+    "llm_answer": "Factory Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "servant",
+    "llm_answer": "Servant Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "server-session",
+    "llm_answer": "Strategy Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "service-layer",
+    "llm_answer": "Dependency Injection",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "service-locator",
+    "llm_answer": "Service Locator",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "service-stub",
+    "llm_answer": "Strategy Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "service-to-worker",
+    "llm_answer": "Model-View-Controller (MVC)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "session-facade",
+    "llm_answer": "Facade",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "sharding",
+    "llm_answer": "Template Method Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "single-table-inheritance",
+    "llm_answer": "Inheritance",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "singleton",
+    "llm_answer": "Singleton",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "spatial-partition",
+    "llm_answer": "Composite Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "special-case",
+    "llm_answer": "Singleton",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "specification",
+    "llm_answer": "Specification Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "state",
+    "llm_answer": "State Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "step-builder",
+    "llm_answer": "Builder Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "strangler",
+    "llm_answer": "Adapter Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "strategy",
+    "llm_answer": "Strategy Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "subclass-sandbox",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "table-inheritance",
+    "llm_answer": "Inheritance",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "table-module",
+    "llm_answer": "Repository Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "template-method",
+    "llm_answer": "Template Method",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "templateview",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "thread-pool-executor",
+    "llm_answer": "Executor Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "throttling",
+    "llm_answer": "Strategy Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "tolerant-reader",
+    "llm_answer": "Tolerant Reader",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "trampoline",
+    "llm_answer": "Trampoline Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "transaction-script",
+    "llm_answer": "Repository Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "twin",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "type-object",
+    "llm_answer": "Object Pool",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "unit-of-work",
+    "llm_answer": "Unit of Work",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "update-method",
+    "llm_answer": "Template Method",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "value-object",
+    "llm_answer": "Value Object",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "version-number",
+    "llm_answer": "Repository Pattern",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "view-helper",
+    "llm_answer": "Model-View-ViewModel (MVVM)",
+    "Status": "Not Pass"
+  },
+  {
+    "pattern": "virtual-proxy",
+    "llm_answer": "Proxy Pattern",
+    "Status": "Pass"
+  },
+  {
+    "pattern": "visitor",
+    "llm_answer": "Visitor Pattern",
+    "Status": "Pass"
+  }
+]
