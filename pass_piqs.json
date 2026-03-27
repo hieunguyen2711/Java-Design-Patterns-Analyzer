@@ -1,0 +1,7 @@
+[
+  {"pattern": "factory-method", "Status": "Pass"},
+  {"pattern": "strategy", "Status": "Pass"},
+  {"pattern": "composite", "Status": "Pass"},
+  {"pattern": "observer", "Status": "Pass"},
+  {"pattern": "singleton", "Status": "Pass"}
+]

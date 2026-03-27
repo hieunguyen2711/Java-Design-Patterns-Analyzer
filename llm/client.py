@@ -43,7 +43,7 @@ class OllamaClient:
             "messages": [{"role": "user", "content": prompt}],
             "stream": False,
             "temperature": settings.LLM_TEMPERATURE,
-            "max_tokens": settings.NUM_CTX,
+            "max_tokens": settings.MAX_OUTPUT_TOKENS,
         }
         logger.info("Sending request to %s: model=%s, prompt_chars=%d", provider, model, len(prompt))
         try:
@@ -57,7 +57,10 @@ class OllamaClient:
             logger.error("%s request timed out after %ds (model=%s, prompt_chars=%d)", provider, settings.LLM_TIMEOUT, model, len(prompt))
             raise HTTPException(
                 status_code=502,
-                detail=f"{provider} timed out after {settings.LLM_TIMEOUT}s. Try a smaller file set or increase LLM_TIMEOUT.",
+                detail=(
+                    f"{provider} timed out after {settings.LLM_TIMEOUT}s. "
+                    "Try a smaller file set, lower MAX_OUTPUT_TOKENS, or increase LLM_TIMEOUT."
+                ),
             ) from exc
         except requests.exceptions.RequestException as exc:
             logger.error("%s connection error: %s", provider, exc)
