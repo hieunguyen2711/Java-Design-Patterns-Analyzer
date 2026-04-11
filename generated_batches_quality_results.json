@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-04-11T12:11:31.198202+00:00",
+  "generated_at_utc": "2026-04-11T12:19:01.901676+00:00",
   "workspace": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend",
   "overall_summary": {
     "total_patterns": 166,
@@ -17,6 +17,7 @@
   },
   "jobs": [
     {
+      "batch_name": "an-e-commerce-order-management-system-in-java",
       "job_id": "62228803bce3467485110b20965a5d30",
       "project_context": "An e-commerce order management system in Java",
       "model_used": "qwen3-coder-30b-a3b-instruct",
@@ -3186,6 +3187,7 @@
       ]
     },
     {
+      "batch_name": "a-ticket-booking-system",
       "job_id": "65a094a1c13f4c769dc4645f6ee9f364",
       "project_context": "a ticket booking system",
       "model_used": "qwen3-coder-30b-a3b-instruct",

@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import re
 import sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -86,6 +87,15 @@ def summarize_overall(items: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def make_batch_name(project_context: str, fallback_job_id: str) -> str:
+    """Create a readable and stable batch label from project context."""
+    text = (project_context or "").strip().lower()
+    if not text:
+        return f"batch-{fallback_job_id[:8]}"
+    text = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+    return text or f"batch-{fallback_job_id[:8]}"
+
+
 def run() -> None:
     file_service = FileService()
     piqs_service = PIQSService()
@@ -99,7 +109,9 @@ def run() -> None:
     all_pattern_rows: list[dict[str, Any]] = []
 
     for job_id, manifest in jobs:
-        print(f"\nBatch {job_id}")
+        project_context = manifest.get("project_context", "")
+        batch_name = make_batch_name(project_context, job_id)
+        print(f"\nBatch {batch_name} ({job_id})")
 
         rows: list[dict[str, Any]] = []
         results = manifest.get("results", [])
@@ -181,8 +193,9 @@ def run() -> None:
         job_summary = summarize_overall(rows)
         all_job_results.append(
             {
+                "batch_name": batch_name,
                 "job_id": job_id,
-                "project_context": manifest.get("project_context", ""),
+                "project_context": project_context,
                 "model_used": manifest.get("model_used", ""),
                 "summary": job_summary,
                 "results": rows,
