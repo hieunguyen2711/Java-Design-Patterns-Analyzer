@@ -1,0 +1,56 @@
+### FILE: StudentEnrollmentSystem.java
+```java
+public class StudentEnrollmentSystem {
+    private static volatile StudentEnrollmentSystem instance;
+    
+    private StudentEnrollmentSystem() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static StudentEnrollmentSystem getInstance() {
+        if (instance == null) {
+            synchronized (StudentEnrollmentSystem.class) {
+                if (instance == null) {
+                    instance = new StudentEnrollmentSystem();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void enrollStudent(String studentId, String courseId) {
+        System.out.println("Enrolling student " + studentId + " in course " + courseId);
+    }
+}
+```
+
+### FILE: EnrollmentService.java
+```java
+public class EnrollmentService {
+    private StudentEnrollmentSystem enrollmentSystem;
+    
+    public EnrollmentService() {
+        this.enrollmentSystem = StudentEnrollmentSystem.getInstance();
+    }
+    
+    public void registerStudent(String studentId, String courseId) {
+        enrollmentSystem.enrollStudent(studentId, courseId);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        EnrollmentService service1 = new EnrollmentService();
+        EnrollmentService service2 = new EnrollmentService();
+        
+        service1.registerStudent("S001", "CSC101");
+        service2.registerStudent("S002", "MATH201");
+        
+        System.out.println("Both services reference the same instance: " + 
+                          (service1 == service2));
+    }
+}
+```

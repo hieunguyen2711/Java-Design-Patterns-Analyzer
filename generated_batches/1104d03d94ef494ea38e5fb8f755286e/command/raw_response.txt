@@ -1,0 +1,110 @@
+### FILE: Command.java
+```java
+package edu.platform.command;
+
+public interface Command {
+    void execute();
+    void undo();
+}
+```
+
+### FILE: EnrollStudentCommand.java
+```java
+package edu.platform.command;
+
+import edu.platform.Student;
+import edu.platform.Course;
+
+public class EnrollStudentCommand implements Command {
+    private Student student;
+    private Course course;
+    
+    public EnrollStudentCommand(Student student, Course course) {
+        this.student = student;
+        this.course = course;
+    }
+    
+    @Override
+    public void execute() {
+        student.enrollInCourse(course);
+    }
+    
+    @Override
+    public void undo() {
+        student.unenrollFromCourse(course);
+    }
+}
+```
+
+### FILE: Course.java
+```java
+package edu.platform;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course {
+    private String courseId;
+    private String courseName;
+    private List<Student> enrolledStudents;
+    
+    public Course(String courseId, String courseName) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.enrolledStudents = new ArrayList<>();
+    }
+    
+    public void enrollStudent(Student student) {
+        enrolledStudents.add(student);
+    }
+    
+    public void unenrollStudent(Student student) {
+        enrolledStudents.remove(student);
+    }
+    
+    // Getters and setters
+    public String getCourseId() { return courseId; }
+    public String getCourseName() { return courseName; }
+}
+```
+
+### FILE: Student.java
+```java
+package edu.platform;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Student {
+    private String studentId;
+    private String studentName;
+    private List<Course> enrolledCourses;
+    
+    public Student(String studentId, String studentName) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.enrolledCourses = new ArrayList<>();
+    }
+    
+    public void enrollInCourse(Course course) {
+        enrolledCourses.add(course);
+        course.enrollStudent(this);
+    }
+    
+    public void unenrollFromCourse(Course course) {
+        enrolledCourses.remove(course);
+        course.unenrollStudent(this);
+    }
+    
+    // Getters and setters
+    public String getStudentId() { return studentId; }
+    public String getStudentName() { return studentName; }
+}
+```
+
+### FILE: CommandInvoker.java
+```java
+package edu.platform.command;
+
+import java.util.ArrayList;
+import java.util

@@ -1,0 +1,71 @@
+### FILE: MembershipService.java
+```java
+package com.gym.membership;
+
+public class MembershipService {
+    private PaymentProcessor paymentProcessor;
+    
+    public MembershipService(PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+    
+    public boolean processMembershipPayment(double amount) {
+        return paymentProcessor.processPayment(amount);
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package com.gym.membership;
+
+public interface PaymentProcessor {
+    boolean processPayment(double amount);
+}
+```
+
+### FILE: CreditCardProcessor.java
+```java
+package com.gym.membership;
+
+public class CreditCardProcessor implements PaymentProcessor {
+    @Override
+    public boolean processPayment(double amount) {
+        System.out.println("Processing credit card payment of $" + amount);
+        return true;
+    }
+}
+```
+
+### FILE: PayPalProcessor.java
+```java
+package com.gym.membership;
+
+public class PayPalProcessor implements PaymentProcessor {
+    @Override
+    public boolean processPayment(double amount) {
+        System.out.println("Processing PayPal payment of $" + amount);
+        return true;
+    }
+}
+```
+
+### FILE: MainApplication.java
+```java
+package com.gym.membership;
+
+public class MainApplication {
+    public static void main(String[] args) {
+        // Dependency injection - injecting different implementations at runtime
+        PaymentProcessor creditCardProcessor = new CreditCardProcessor();
+        MembershipService membershipService1 = new MembershipService(creditCardProcessor);
+        
+        PaymentProcessor payPalProcessor = new PayPalProcessor();
+        MembershipService membershipService2 = new MembershipService(payPalProcessor);
+        
+        // Using the services with different payment processors
+        membershipService1.processMembershipPayment(99.99);
+        membershipService2.processMembershipPayment(149.99);
+    }
+}
+```

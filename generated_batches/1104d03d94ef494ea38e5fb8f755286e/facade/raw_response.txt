@@ -1,0 +1,84 @@
+### FILE: StudentEnrollmentSystem.java
+```java
+public class StudentEnrollmentSystem {
+    public static void main(String[] args) {
+        // Using the Facade to simplify complex operations
+        EnrollmentFacade facade = new EnrollmentFacade();
+        
+        // Enroll student in course with all necessary steps
+        facade.enrollStudent("John Doe", "CS101");
+        
+        // Check grades for a student
+        facade.checkGrades("John Doe");
+    }
+}
+```
+
+### FILE: EnrollmentFacade.java
+```java
+public class EnrollmentFacade {
+    private StudentRegistry studentRegistry;
+    private CourseScheduler courseScheduler;
+    private GradeManager gradeManager;
+    private AttendanceTracker attendanceTracker;
+    
+    public EnrollmentFacade() {
+        this.studentRegistry = new StudentRegistry();
+        this.courseScheduler = new CourseScheduler();
+        this.gradeManager = new GradeManager();
+        this.attendanceTracker = new AttendanceTracker();
+    }
+    
+    public void enrollStudent(String studentName, String courseCode) {
+        // Complex process hidden behind simple facade interface
+        studentRegistry.registerStudent(studentName);
+        courseScheduler.assignCourse(courseCode);
+        gradeManager.initializeGrades(studentName, courseCode);
+        attendanceTracker.startTracking(studentName, courseCode);
+        
+        System.out.println("Student " + studentName + " enrolled in " + courseCode);
+    }
+    
+    public void checkGrades(String studentName) {
+        double average = gradeManager.getAverageGrade(studentName);
+        System.out.println("Student " + studentName + " has average grade: " + average);
+    }
+}
+```
+
+### FILE: StudentRegistry.java
+```java
+public class StudentRegistry {
+    public void registerStudent(String name) {
+        System.out.println("Registering student: " + name);
+    }
+}
+```
+
+### FILE: CourseScheduler.java
+```java
+public class CourseScheduler {
+    public void assignCourse(String courseCode) {
+        System.out.println("Assigning course: " + courseCode);
+    }
+}
+```
+
+### FILE: GradeManager.java
+```java
+public class GradeManager {
+    public void initializeGrades(String studentName, String courseCode) {
+        System.out.println("Initializing grades for " + studentName + " in " + courseCode);
+    }
+    
+    public double getAverageGrade(String studentName) {
+        // Simulate grade calculation
+        return 85.5;
+    }
+}
+```
+
+### FILE: AttendanceTracker.java
+```java
+public class AttendanceTracker {
+    public

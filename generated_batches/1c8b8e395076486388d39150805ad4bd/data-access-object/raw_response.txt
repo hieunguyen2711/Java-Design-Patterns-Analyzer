@@ -1,0 +1,86 @@
+### FILE: Membership.java
+```java
+package com.example.membership;
+
+public class Membership {
+    private int id;
+    private String memberName;
+    private String email;
+    private String membershipType;
+    
+    public Membership(int id, String memberName, String email, String membershipType) {
+        this.id = id;
+        this.memberName = memberName;
+        this.email = email;
+        this.membershipType = membershipType;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getMemberName() { return memberName; }
+    public void setMemberName(String memberName) { this.memberName = memberName; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public String getMembershipType() { return membershipType; }
+    public void setMembershipType(String membershipType) { this.membershipType = membershipType; }
+}
+```
+
+### FILE: MembershipDAO.java
+```java
+package com.example.membership;
+
+import java.util.List;
+
+public interface MembershipDAO {
+    Membership getMembershipById(int id);
+    List<Membership> getAllMemberships();
+    void saveMembership(Membership membership);
+    void updateMembership(Membership membership);
+    void deleteMembership(int id);
+}
+```
+
+### FILE: MembershipDAOImpl.java
+```java
+package com.example.membership;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MembershipDAOImpl implements MembershipDAO {
+    private List<Membership> memberships;
+    
+    public MembershipDAOImpl() {
+        this.memberships = new ArrayList<>();
+        // Initialize with some sample data
+        memberships.add(new Membership(1, "John Doe", "john@example.com", "Premium"));
+        memberships.add(new Membership(2, "Jane Smith", "jane@example.com", "Basic"));
+    }
+    
+    @Override
+    public Membership getMembershipById(int id) {
+        for (Membership membership : memberships) {
+            if (membership.getId() == id) {
+                return membership;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Membership> getAllMemberships() {
+        return new ArrayList<>(memberships);
+    }
+    
+    @Override
+    public void saveMembership(Membership membership) {
+        memberships.add(membership);
+    }
+    
+    @Override
+    public void updateMembership(Members

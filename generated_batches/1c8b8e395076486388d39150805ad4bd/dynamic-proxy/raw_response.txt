@@ -1,0 +1,82 @@
+### FILE: MembershipService.java
+```java
+public interface MembershipService {
+    void registerMember(String memberName);
+    void cancelMembership(String memberName);
+    boolean isMemberActive(String memberName);
+}
+```
+
+### FILE: MembershipServiceImpl.java
+```java
+public class MembershipServiceImpl implements MembershipService {
+    
+    @Override
+    public void registerMember(String memberName) {
+        System.out.println("Registering member: " + memberName);
+    }
+    
+    @Override
+    public void cancelMembership(String memberName) {
+        System.out.println("Canceling membership for: " + memberName);
+    }
+    
+    @Override
+    public boolean isMemberActive(String memberName) {
+        System.out.println("Checking if " + memberName + " is active");
+        return true;
+    }
+}
+```
+
+### FILE: LoggingHandler.java
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class LoggingHandler implements InvocationHandler {
+    private final Object target;
+    
+    public LoggingHandler(Object target) {
+        this.target = target;
+    }
+    
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Before calling: " + method.getName());
+        Object result = method.invoke(target, args);
+        System.out.println("After calling: " + method.getName());
+        return result;
+    }
+}
+```
+
+### FILE: MembershipServiceProxy.java
+```java
+import java.lang.reflect.Proxy;
+
+public class MembershipServiceProxy {
+    
+    public static MembershipService createMembershipService() {
+        MembershipService target = new MembershipServiceImpl();
+        return (MembershipService) Proxy.newProxyInstance(
+            MembershipService.class.getClassLoader(),
+            new Class[]{MembershipService.class},
+            new LoggingHandler(target)
+        );
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        MembershipService membershipService = MembershipServiceProxy.createMembershipService();
+        
+        membershipService.registerMember("John Doe");
+        membershipService.isMemberActive("John Doe");
+        membershipService.cancelMembership("John Doe");
+    }
+}
+```

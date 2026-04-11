@@ -1,0 +1,79 @@
+### FILE: StudentEnrollmentSystem.java
+```java
+public class StudentEnrollmentSystem {
+    private static StudentEnrollmentSystem instance;
+    
+    // Private constructor to prevent instantiation
+    private StudentEnrollmentSystem() {}
+    
+    // Static method to get the single instance
+    public static synchronized StudentEnrollmentSystem getInstance() {
+        if (instance == null) {
+            instance = new StudentEnrollmentSystem();
+        }
+        return instance;
+    }
+    
+    // Monostate pattern - all instances share the same state
+    private int totalStudents = 0;
+    private int enrolledStudents = 0;
+    
+    public void registerStudent() {
+        totalStudents++;
+        enrolledStudents++;
+        System.out.println("Student registered. Total: " + totalStudents + ", Enrolled: " + enrolledStudents);
+    }
+    
+    public void unregisterStudent() {
+        if (enrolledStudents > 0) {
+            enrolledStudents--;
+            System.out.println("Student unregistered. Enrolled: " + enrolledStudents);
+        }
+    }
+    
+    public int getTotalStudents() {
+        return totalStudents;
+    }
+    
+    public int getEnrolledStudents() {
+        return enrolledStudents;
+    }
+}
+```
+
+### FILE: EnrollmentManager.java
+```java
+public class EnrollmentManager {
+    private StudentEnrollmentSystem system = StudentEnrollmentSystem.getInstance();
+    
+    public void enrollStudent() {
+        system.registerStudent();
+    }
+    
+    public void dropStudent() {
+        system.unregisterStudent();
+    }
+    
+    public void printStatus() {
+        System.out.println("Total students: " + system.getTotalStudents());
+        System.out.println("Enrolled students: " + system.getEnrolledStudents());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Using the monostate pattern - multiple instances share same state
+        EnrollmentManager manager1 = new EnrollmentManager();
+        EnrollmentManager manager2 = new EnrollmentManager();
+        
+        manager1.enrollStudent();  // Student registered. Total: 1, Enrolled: 1
+        manager1.enrollStudent();  // Student registered. Total: 2, Enrolled: 2
+        
+        manager2.printStatus();    // Total students: 2, Enrolled students: 2
+        
+        manager1.dropStudent();    // Student unregistered. Enrolled: 1
+        
+        manager2.printStatus();    // Total students: 2, Enrolled students:

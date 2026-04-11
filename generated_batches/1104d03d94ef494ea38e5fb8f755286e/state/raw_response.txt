@@ -1,0 +1,108 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student {
+    private String name;
+    private StudentState state;
+    
+    public Student(String name) {
+        this.name = name;
+        this.state = new EnrolledState();
+    }
+    
+    public void enroll() {
+        state.enroll(this);
+    }
+    
+    public void withdraw() {
+        state.withdraw(this);
+    }
+    
+    public void completeCourse() {
+        state.completeCourse(this);
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public StudentState getState() {
+        return state;
+    }
+    
+    public void setState(StudentState state) {
+        this.state = state;
+    }
+}
+```
+
+### FILE: StudentState.java
+```java
+package edu.platform.student;
+
+public interface StudentState {
+    void enroll(Student student);
+    void withdraw(Student student);
+    void completeCourse(Student student);
+}
+```
+
+### FILE: EnrolledState.java
+```java
+package edu.platform.student;
+
+public class EnrolledState implements StudentState {
+    
+    @Override
+    public void enroll(Student student) {
+        System.out.println("Student " + student.getName() + " is already enrolled.");
+    }
+    
+    @Override
+    public void withdraw(Student student) {
+        System.out.println("Student " + student.getName() + " has withdrawn from the course.");
+        student.setState(new WithdrawnState());
+    }
+    
+    @Override
+    public void completeCourse(Student student) {
+        System.out.println("Student " + student.getName() + " has completed the course.");
+        student.setState(new CompletedState());
+    }
+}
+```
+
+### FILE: WithdrawnState.java
+```java
+package edu.platform.student;
+
+public class WithdrawnState implements StudentState {
+    
+    @Override
+    public void enroll(Student student) {
+        System.out.println("Student " + student.getName() + " has re-enrolled.");
+        student.setState(new EnrolledState());
+    }
+    
+    @Override
+    public void withdraw(Student student) {
+        System.out.println("Student " + student.getName() + " is already withdrawn.");
+    }
+    
+    @Override
+    public void completeCourse(Student student) {
+        System.out.println("Cannot complete course - student has withdrawn.");
+    }
+}
+```
+
+### FILE: CompletedState.java
+```java
+package edu.platform.student;
+
+public class CompletedState implements StudentState {
+    
+    @Override
+    public void enroll(Student student) {
+        System.out.println("Student " + student.getName() +

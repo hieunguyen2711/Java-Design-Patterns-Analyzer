@@ -1,0 +1,94 @@
+### FILE: StudentEnrollmentModel.java
+```java
+package edu.university.studentenrollment.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentEnrollmentModel {
+    private List<Student> students;
+    private List<Course> courses;
+    
+    public StudentEnrollmentModel() {
+        this.students = new ArrayList<>();
+        this.courses = new ArrayList<>();
+    }
+    
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+    
+    public void addCourse(Course course) {
+        courses.add(course);
+    }
+    
+    public List<Student> getStudents() {
+        return students;
+    }
+    
+    public List<Course> getCourses() {
+        return courses;
+    }
+}
+```
+
+### FILE: StudentEnrollmentView.java
+```java
+package edu.university.studentenrollment.view;
+
+import java.util.List;
+
+import edu.university.studentenrollment.model.Course;
+import edu.university.studentenrollment.model.Student;
+
+public interface StudentEnrollmentView {
+    void displayStudents(List<Student> students);
+    void displayCourses(List<Course> courses);
+    void showErrorMessage(String message);
+    String getStudentName();
+    String getCourseCode();
+}
+```
+
+### FILE: StudentEnrollmentPresenter.java
+```java
+package edu.university.studentenrollment.presenter;
+
+import java.util.List;
+
+import edu.university.studentenrollment.model.Course;
+import edu.university.studentenrollment.model.Student;
+import edu.university.studentenrollment.model.StudentEnrollmentModel;
+import edu.university.studentenrollment.view.StudentEnrollmentView;
+
+public class StudentEnrollmentPresenter {
+    private StudentEnrollmentModel model;
+    private StudentEnrollmentView view;
+    
+    public StudentEnrollmentPresenter(StudentEnrollmentModel model, 
+                                    StudentEnrollmentView view) {
+        this.model = model;
+        this.view = view;
+    }
+    
+    public void loadStudents() {
+        List<Student> students = model.getStudents();
+        view.displayStudents(students);
+    }
+    
+    public void loadCourses() {
+        List<Course> courses = model.getCourses();
+        view.displayCourses(courses);
+    }
+    
+    public void addStudentToCourse() {
+        String studentName = view.getStudentName();
+        String courseCode = view.getCourseCode();
+        
+        if (studentName == null || courseCode == null) {
+            view.showErrorMessage("Please enter both student name and course code");
+            return;
+        }
+        
+        // In a real implementation, this would find the actual objects
+        // and update relationships between

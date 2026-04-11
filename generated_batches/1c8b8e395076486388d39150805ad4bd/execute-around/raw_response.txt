@@ -1,0 +1,104 @@
+### FILE: MembershipService.java
+```java
+package com.membership;
+
+import java.util.concurrent.Callable;
+
+public class MembershipService {
+    public <T> T executeWithMembershipValidation(Callable<T> operation) throws Exception {
+        // Simulate membership validation
+        if (!isMemberValid()) {
+            throw new IllegalStateException("Membership is not valid");
+        }
+        
+        return operation.call();
+    }
+    
+    private boolean isMemberValid() {
+        // Simulate validation logic
+        return true;
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package com.membership;
+
+import java.util.concurrent.Callable;
+
+public class PaymentProcessor {
+    public <T> T executeWithPaymentProcessing(Callable<T> operation) throws Exception {
+        // Simulate payment processing setup
+        beginPaymentProcess();
+        
+        try {
+            return operation.call();
+        } finally {
+            // Always clean up payment resources
+            cleanupPaymentProcess();
+        }
+    }
+    
+    private void beginPaymentProcess() {
+        System.out.println("Starting payment process...");
+    }
+    
+    private void cleanupPaymentProcess() {
+        System.out.println("Cleaning up payment process...");
+    }
+}
+```
+
+### FILE: AttendanceTracker.java
+```java
+package com.membership;
+
+import java.util.concurrent.Callable;
+
+public class AttendanceTracker {
+    public <T> T executeWithAttendanceTracking(Callable<T> operation) throws Exception {
+        // Simulate attendance tracking setup
+        startTracking();
+        
+        try {
+            return operation.call();
+        } finally {
+            // Always finalize attendance record
+            endTracking();
+        }
+    }
+    
+    private void startTracking() {
+        System.out.println("Starting attendance tracking...");
+    }
+    
+    private void endTracking() {
+        System.out.println("Ending attendance tracking...");
+    }
+}
+```
+
+### FILE: MembershipSystem.java
+```java
+package com.membership;
+
+import java.util.concurrent.Callable;
+
+public class MembershipSystem {
+    private final MembershipService membershipService = new MembershipService();
+    private final PaymentProcessor paymentProcessor = new PaymentProcessor();
+    private final AttendanceTracker attendanceTracker = new AttendanceTracker();
+    
+    public void enrollMember(String memberName) {
+        try {
+            membershipService.executeWithMembershipValidation(() -> {
+                System.out.println("Enrolling member: " + memberName);
+                return null;
+            });
+        } catch (Exception e) {
+            System.err.println("Enrollment failed: " + e.getMessage());
+        }
+    }
+    
+    public void processPayment(String memberId, double amount)

@@ -1,0 +1,102 @@
+### FILE: Trampoline.java
+```java
+package edu.platform.enrollment;
+
+@FunctionalInterface
+public interface Trampoline<T> {
+    Result<T> apply();
+    
+    static <T> Trampoline<T> done(T value) {
+        return () -> Result.done(value);
+    }
+    
+    static <T> Trampoline<T> suspend(Trampoline<T> trampoline) {
+        return () -> Result.suspend(trampoline);
+    }
+}
+```
+
+### FILE: Result.java
+```java
+package edu.platform.enrollment;
+
+public sealed interface Result<T> permits Result.Done, Result.Suspend {
+    record Done<T>(T value) implements Result<T> {}
+    record Suspend<T>(Trampoline<T> trampoline) implements Result<T> {}
+    
+    static <T> Result<T> done(T value) {
+        return new Done<>(value);
+    }
+    
+    static <T> Result<T> suspend(Trampoline<T> trampoline) {
+        return new Suspend<>(trampoline);
+    }
+}
+```
+
+### FILE: EnrollmentService.java
+```java
+package edu.platform.enrollment;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class EnrollmentService {
+    private final List<Student> students = new ArrayList<>();
+    
+    public Trampoline<Boolean> enrollStudent(Student student) {
+        return () -> {
+            if (student == null) {
+                return Result.done(false);
+            }
+            
+            // Simulate some processing that might need to be trampolined
+            if (students.size() >= 100) {
+                return Result.suspend(enrollStudent(student));
+            }
+            
+            students.add(student);
+            return Result.done(true);
+        };
+    }
+    
+    public Trampoline<List<Student>> getStudents() {
+        return () -> Result.done(students);
+    }
+}
+```
+
+### FILE: Student.java
+```java
+package edu.platform.enrollment;
+
+public class Student {
+    private final String name;
+    private final int id;
+    
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: EnrollmentProcessor.java
+```java
+package edu.platform.enrollment;
+
+public class EnrollmentProcessor {
+    
+    public static <T> T evaluate(Trampoline<T> trampoline) {
+        Result<T> result = trampoline.apply();
+        
+        while (true) {
+           

@@ -1,0 +1,89 @@
+### FILE: Student.java
+```java
+package edu.enrollment.model;
+
+public class Student {
+    private String id;
+    private String name;
+    private String email;
+    
+    public Student(String id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: StudentView.java
+```java
+package edu.enrollment.view;
+
+import edu.enrollment.model.Student;
+import java.util.List;
+
+public class StudentView {
+    public void displayStudentList(List<Student> students) {
+        System.out.println("=== Student List ===");
+        for (Student student : students) {
+            System.out.println("ID: " + student.getId() + 
+                             ", Name: " + student.getName() + 
+                             ", Email: " + student.getEmail());
+        }
+    }
+    
+    public void displayStudentDetails(Student student) {
+        System.out.println("=== Student Details ===");
+        System.out.println("ID: " + student.getId());
+        System.out.println("Name: " + student.getName());
+        System.out.println("Email: " + student.getEmail());
+    }
+}
+```
+
+### FILE: StudentController.java
+```java
+package edu.enrollment.controller;
+
+import edu.enrollment.model.Student;
+import edu.enrollment.view.StudentView;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentController {
+    private List<Student> students;
+    private StudentView view;
+    
+    public StudentController() {
+        this.students = new ArrayList<>();
+        this.view = new StudentView();
+    }
+    
+    public void addStudent(String id, String name, String email) {
+        Student student = new Student(id, name, email);
+        students.add(student);
+    }
+    
+    public void updateStudent(String id, String name, String email) {
+        for (Student student : students) {
+            if (student.getId().equals(id)) {
+                student.setName(name);
+                student.setEmail(email);
+                break;
+            }
+        }
+    }
+    
+    public Student getStudentById(String id) {
+        for (Student student : students) {
+            if

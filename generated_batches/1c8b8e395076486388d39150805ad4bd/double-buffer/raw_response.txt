@@ -1,0 +1,86 @@
+### FILE: Membership.java
+```java
+package com.gym.membership;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private MembershipType type;
+    
+    public Membership(String memberId, String name, MembershipType type) {
+        this.memberId = memberId;
+        this.name = name;
+        this.type = type;
+    }
+    
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public MembershipType getType() { return type; }
+    public void setType(MembershipType type) { this.type = type; }
+}
+```
+
+### FILE: MembershipType.java
+```java
+package com.gym.membership;
+
+public enum MembershipType {
+    BASIC, PREMIUM, VIP
+}
+```
+
+### FILE: ScheduleManager.java
+```java
+package com.gym.schedule;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import com.gym.membership.Membership;
+
+public class ScheduleManager {
+    private final Map<String, List<TrainingSession>> scheduleBuffer = new ConcurrentHashMap<>();
+    private final Map<String, List<TrainingSession>> activeSchedule = new ConcurrentHashMap<>();
+    
+    public void addSession(String day, TrainingSession session) {
+        // Double buffering: write to buffer first
+        scheduleBuffer.computeIfAbsent(day, k -> new ArrayList<>()).add(session);
+    }
+    
+    public void commitChanges() {
+        // Atomic switch of buffers
+        activeSchedule.clear();
+        activeSchedule.putAll(scheduleBuffer);
+        scheduleBuffer.clear();
+    }
+    
+    public List<TrainingSession> getSessionsForDay(String day) {
+        return activeSchedule.getOrDefault(day, Collections.emptyList());
+    }
+    
+    public Map<String, List<TrainingSession>> getAllSchedules() {
+        return new HashMap<>(activeSchedule);
+    }
+}
+```
+
+### FILE: TrainingSession.java
+```java
+package com.gym.schedule;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import com.gym.membership.Membership;
+
+public class TrainingSession {
+    private String sessionId;
+    private String sessionName;
+    private LocalDateTime dateTime;
+    private List<Membership> enrolledMembers;
+    
+    public TrainingSession(String sessionId, String sessionName, LocalDateTime dateTime) {
+        this.sessionId = sessionId;
+        this.sessionName = sessionName;
+        this.dateTime = dateTime;

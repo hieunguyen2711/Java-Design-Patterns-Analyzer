@@ -1,0 +1,69 @@
+### FILE: CourseManager.java
+```java
+public class CourseManager {
+    private static final String[] COURSE_NAMES = {"Mathematics", "Physics", "Chemistry", "Biology", "Computer Science"};
+    private static CourseManager[] instances = new CourseManager[COURSE_NAMES.length];
+    
+    private final String courseName;
+    private int studentCount;
+    
+    private CourseManager(String courseName) {
+        this.courseName = courseName;
+        this.studentCount = 0;
+    }
+    
+    public static CourseManager getInstance(int courseId) {
+        if (courseId < 0 || courseId >= COURSE_NAMES.length) {
+            throw new IllegalArgumentException("Invalid course ID: " + courseId);
+        }
+        
+        if (instances[courseId] == null) {
+            instances[courseId] = new CourseManager(COURSE_NAMES[courseId]);
+        }
+        
+        return instances[courseId];
+    }
+    
+    public void enrollStudent() {
+        studentCount++;
+        System.out.println("Enrolled student in " + courseName + ". Total students: " + studentCount);
+    }
+    
+    public int getStudentCount() {
+        return studentCount;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+}
+```
+
+### FILE: StudentEnrollmentSystem.java
+```java
+public class StudentEnrollmentSystem {
+    public static void main(String[] args) {
+        // Demonstrating multiton pattern with CourseManager instances
+        CourseManager math = CourseManager.getInstance(0);
+        CourseManager physics = CourseManager.getInstance(1);
+        CourseManager chemistry = CourseManager.getInstance(2);
+        
+        // Enroll students in different courses
+        math.enrollStudent();
+        math.enrollStudent();
+        physics.enrollStudent();
+        chemistry.enrollStudent();
+        chemistry.enrollStudent();
+        chemistry.enrollStudent();
+        
+        // Verify that same instances are returned for same IDs
+        CourseManager math2 = CourseManager.getInstance(0);
+        System.out.println("Same instance for Math: " + (math == math2));
+        
+        // Show student counts
+        System.out.println("Math students: " + math.getStudentCount());
+        System.out.println("Physics students: " + physics.getStudentCount());
+        System.out.println("Chemistry students: " + chemistry.getStudentCount());
+    }
+}
+```

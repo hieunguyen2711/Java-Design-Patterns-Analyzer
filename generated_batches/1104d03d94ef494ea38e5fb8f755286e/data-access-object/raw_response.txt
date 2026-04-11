@@ -1,0 +1,109 @@
+### FILE: Student.java
+```java
+package edu.university.student;
+
+public class Student {
+    private int id;
+    private String name;
+    private String email;
+    
+    public Student(int id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+```
+
+### FILE: StudentDAO.java
+```java
+package edu.university.student;
+
+import java.util.List;
+
+public interface StudentDAO {
+    void save(Student student);
+    Student findById(int id);
+    List<Student> findAll();
+    void update(Student student);
+    void delete(int id);
+}
+```
+
+### FILE: StudentDAOImpl.java
+```java
+package edu.university.student;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentDAOImpl implements StudentDAO {
+    private Connection connection;
+    
+    public StudentDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
+    
+    @Override
+    public void save(Student student) {
+        try {
+            String sql = "INSERT INTO students (id, name, email) VALUES (?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, student.getId());
+            statement.setString(2, student.getName());
+            statement.setString(3, student.getEmail());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error saving student", e);
+        }
+    }
+    
+    @Override
+    public Student findById(int id) {
+        try {
+            String sql = "SELECT * FROM students WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                return new Student(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding student by ID", e);
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Student> findAll() {
+       

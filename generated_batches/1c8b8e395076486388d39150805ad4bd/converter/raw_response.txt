@@ -1,0 +1,91 @@
+### FILE: Membership.java
+```java
+package com.membership;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private String email;
+    
+    public Membership(String memberId, String name, String email) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: MembershipConverter.java
+```java
+package com.membership;
+
+public interface MembershipConverter {
+    Membership convertToMembership(Object source);
+    Object convertFromMembership(Membership membership);
+}
+```
+
+### FILE: JsonMembershipConverter.java
+```java
+package com.membership;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+
+public class JsonMembershipConverter implements MembershipConverter {
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    
+    @Override
+    public Membership convertToMembership(Object source) {
+        if (source instanceof String) {
+            try {
+                return objectMapper.readValue((String) source, Membership.class);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to convert JSON to Membership", e);
+            }
+        }
+        throw new IllegalArgumentException("Unsupported source type for conversion");
+    }
+    
+    @Override
+    public Object convertFromMembership(Membership membership) {
+        try {
+            return objectMapper.writeValueAsString(membership);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to convert Membership to JSON", e);
+        }
+    }
+}
+```
+
+### FILE: XmlMembershipConverter.java
+```java
+package com.membership;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+public class XmlMembershipConverter implements MembershipConverter {
+    private final JAXBContext jaxbContext;
+    
+    public XmlMembershipConverter() throws JAXBException {
+        this.jaxbContext = JAXBContext.newInstance(Membership.class);
+    }
+    
+    @Override
+    public Membership convertToMembership(Object source) {
+        if (source instanceof String) {
+            try {
+               

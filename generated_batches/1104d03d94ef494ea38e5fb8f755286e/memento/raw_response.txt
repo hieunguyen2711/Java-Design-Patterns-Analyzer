@@ -1,0 +1,108 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Student {
+    private String name;
+    private List<String> enrolledCourses;
+    
+    public Student(String name) {
+        this.name = name;
+        this.enrolledCourses = new ArrayList<>();
+    }
+    
+    public void enrollCourse(String course) {
+        enrolledCourses.add(course);
+    }
+    
+    public void dropCourse(String course) {
+        enrolledCourses.remove(course);
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public List<String> getEnrolledCourses() {
+        return new ArrayList<>(enrolledCourses);
+    }
+    
+    public Memento saveState() {
+        return new Memento(new ArrayList<>(enrolledCourses));
+    }
+    
+    public void restoreState(Memento memento) {
+        this.enrolledCourses = new ArrayList<>(memento.getCourses());
+    }
+    
+    public static class Memento {
+        private final List<String> courses;
+        
+        public Memento(List<String> courses) {
+            this.courses = new ArrayList<>(courses);
+        }
+        
+        public List<String> getCourses() {
+            return new ArrayList<>(courses);
+        }
+    }
+}
+```
+
+### FILE: StudentRegistry.java
+```java
+package edu.platform.student;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentRegistry {
+    private final List<Student> students;
+    private final List<Student.Memento> mementos;
+    
+    public StudentRegistry() {
+        this.students = new ArrayList<>();
+        this.mementos = new ArrayList<>();
+    }
+    
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+    
+    public void saveState() {
+        for (Student student : students) {
+            mementos.add(student.saveState());
+        }
+    }
+    
+    public void restoreState() {
+        if (mementos.isEmpty()) return;
+        
+        int index = 0;
+        for (Student student : students) {
+            if (index < mementos.size()) {
+                student.restoreState(mementos.get(index));
+                index++;
+            }
+        }
+    }
+    
+    public List<Student> getStudents() {
+        return new ArrayList<>(students);
+    }
+}
+```
+
+### FILE: EnrollmentSystem.java
+```java
+package edu.platform.student;
+
+public class EnrollmentSystem {
+    public static void main(String[] args) {
+        StudentRegistry registry = new StudentRegistry();
+        
+        Student alice = new Student("Alice");
+       

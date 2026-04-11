@@ -1,0 +1,125 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student {
+    private String id;
+    private String name;
+    
+    public Student(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Course.java
+```java
+package edu.platform.course;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Course {
+    private String courseId;
+    private String courseName;
+    private List<Student> students;
+    
+    public Course(String courseId, String courseName) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.students = new ArrayList<>();
+    }
+    
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+    
+    public Iterator<Student> getStudentsIterator() {
+        return students.iterator();
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+}
+```
+
+### FILE: StudentIterator.java
+```java
+package edu.platform.iterator;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class StudentIterator implements Iterator<Student> {
+    private Course course;
+    private int currentIndex = 0;
+    
+    public StudentIterator(Course course) {
+        this.course = course;
+    }
+    
+    @Override
+    public boolean hasNext() {
+        return currentIndex < course.getStudentsIterator().nextIndex();
+    }
+    
+    @Override
+    public Student next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return course.getStudentsIterator().next();
+    }
+}
+```
+
+### FILE: CourseIterator.java
+```java
+package edu.platform.iterator;
+
+import java.util.Iterator;
+import java.util.List;
+
+public class CourseIterator implements Iterator<Course> {
+    private List<Course> courses;
+    private int currentIndex = 0;
+    
+    public CourseIterator(List<Course> courses) {
+        this.courses = courses;
+    }
+    
+    @Override
+    public boolean hasNext() {
+        return currentIndex < courses.size();
+    }
+    
+    @Override
+    public Course next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return courses.get(currentIndex++);
+    }
+}
+```
+
+### FILE: EnrollmentSystem.java
+```java
+package edu.platform.system;
+
+import java

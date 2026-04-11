@@ -1,0 +1,104 @@
+### FILE: CourseComponent.java
+```java
+package edu.platform.course;
+
+public interface CourseComponent {
+    void add(CourseComponent component);
+    void remove(CourseComponent component);
+    String getName();
+    double getCreditHours();
+    void printCourseInfo();
+}
+```
+
+### FILE: Course.java
+```java
+package edu.platform.course;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course implements CourseComponent {
+    private String name;
+    private double creditHours;
+    private List<CourseComponent> components;
+
+    public Course(String name, double creditHours) {
+        this.name = name;
+        this.creditHours = creditHours;
+        this.components = new ArrayList<>();
+    }
+
+    @Override
+    public void add(CourseComponent component) {
+        components.add(component);
+    }
+
+    @Override
+    public void remove(CourseComponent component) {
+        components.remove(component);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getCreditHours() {
+        return creditHours;
+    }
+
+    @Override
+    public void printCourseInfo() {
+        System.out.println("Course: " + name + " (" + creditHours + " credits)");
+        for (CourseComponent component : components) {
+            component.printCourseInfo();
+        }
+    }
+}
+```
+
+### FILE: CourseSection.java
+```java
+package edu.platform.course;
+
+public class CourseSection implements CourseComponent {
+    private String name;
+    private double creditHours;
+    private String schedule;
+    private String instructor;
+
+    public CourseSection(String name, double creditHours, String schedule, String instructor) {
+        this.name = name;
+        this.creditHours = creditHours;
+        this.schedule = schedule;
+        this.instructor = instructor;
+    }
+
+    @Override
+    public void add(CourseComponent component) {
+        throw new UnsupportedOperationException("Cannot add components to a section");
+    }
+
+    @Override
+    public void remove(CourseComponent component) {
+        throw new UnsupportedOperationException("Cannot remove components from a section");
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getCreditHours() {
+        return creditHours;
+    }
+
+    @Override
+    public void printCourseInfo() {
+        System.out.println("  Section: " + name + " (" + creditHours + " credits)");
+        System.out.println("    Schedule: " + schedule);
+        System.out.println("    Instructor: " + instructor);
+   

@@ -1,0 +1,98 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student {
+    private String name;
+    private int id;
+    
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: NullStudent.java
+```java
+package edu.platform.student;
+
+public class NullStudent extends Student {
+    
+    public NullStudent() {
+        super("Unknown", -1);
+    }
+    
+    @Override
+    public String getName() {
+        return "Unknown";
+    }
+    
+    @Override
+    public int getId() {
+        return -1;
+    }
+}
+```
+
+### FILE: StudentRepository.java
+```java
+package edu.platform.student;
+
+public class StudentRepository {
+    private static final Student[] students = {
+        new Student("Alice Johnson", 1001),
+        new Student("Bob Smith", 1002),
+        new Student("Charlie Brown", 1003)
+    };
+    
+    public static Student findStudentById(int id) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                return student;
+            }
+        }
+        return new NullStudent();
+    }
+}
+```
+
+### FILE: EnrollmentService.java
+```java
+package edu.platform.student;
+
+public class EnrollmentService {
+    
+    public void enrollStudent(int studentId) {
+        Student student = StudentRepository.findStudentById(studentId);
+        
+        if (student instanceof NullStudent) {
+            System.out.println("Cannot enroll invalid student");
+        } else {
+            System.out.println("Enrolling student: " + student.getName());
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package edu.platform.student;
+
+public class Main {
+    public static void main(String[] args) {
+        EnrollmentService service = new EnrollmentService();
+        
+        service.enrollStudent(1001); // Valid student
+        service.enrollStudent(9999); // Invalid student - returns null object
+    }
+}
+```

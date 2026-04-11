@@ -1,0 +1,82 @@
+### FILE: StudentEnrollmentService.java
+```java
+package edu.platform.enrollment;
+
+public class StudentEnrollmentService {
+    private final GradeRepository gradeRepository;
+    private final AttendanceTracker attendanceTracker;
+    
+    public StudentEnrollmentService(GradeRepository gradeRepository, 
+                                   AttendanceTracker attendanceTracker) {
+        this.gradeRepository = gradeRepository;
+        this.attendanceTracker = attendanceTracker;
+    }
+    
+    public void enrollStudent(String studentId, String courseId) {
+        System.out.println("Enrolling student " + studentId + " in course " + courseId);
+        gradeRepository.saveGrade(studentId, courseId, "ENROLLED");
+        attendanceTracker.recordAttendance(studentId, courseId, true);
+    }
+}
+```
+
+### FILE: GradeRepository.java
+```java
+package edu.platform.enrollment;
+
+public interface GradeRepository {
+    void saveGrade(String studentId, String courseId, String status);
+}
+```
+
+### FILE: DatabaseGradeRepository.java
+```java
+package edu.platform.enrollment;
+
+public class DatabaseGradeRepository implements GradeRepository {
+    @Override
+    public void saveGrade(String studentId, String courseId, String status) {
+        System.out.println("Saving grade for student " + studentId + 
+                          " in course " + courseId + " with status: " + status);
+    }
+}
+```
+
+### FILE: AttendanceTracker.java
+```java
+package edu.platform.enrollment;
+
+public interface AttendanceTracker {
+    void recordAttendance(String studentId, String courseId, boolean present);
+}
+```
+
+### FILE: SqlAttendanceTracker.java
+```java
+package edu.platform.enrollment;
+
+public class SqlAttendanceTracker implements AttendanceTracker {
+    @Override
+    public void recordAttendance(String studentId, String courseId, boolean present) {
+        System.out.println("Recording attendance for student " + studentId + 
+                          " in course " + courseId + " - Present: " + present);
+    }
+}
+```
+
+### FILE: EnrollmentApplication.java
+```java
+package edu.platform.enrollment;
+
+public class EnrollmentApplication {
+    public static void main(String[] args) {
+        GradeRepository gradeRepo = new DatabaseGradeRepository();
+        AttendanceTracker attendanceTracker = new SqlAttendanceTracker();
+        
+        StudentEnrollmentService enrollmentService = 
+            new StudentEnrollmentService(gradeRepo, attendanceTracker);
+            
+        enrollmentService.enrollStudent("S001", "CSC101");
+    }
+}
+```

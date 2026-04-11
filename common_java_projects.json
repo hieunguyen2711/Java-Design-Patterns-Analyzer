@@ -1,0 +1,50 @@
+[
+  {
+    "project_title": "Library Management System",
+    "project_context": "A Java system for managing books, members, borrowing/returns, due dates, and late fees in a public library."
+  },
+  {
+    "project_title": "Hospital Appointment Scheduler",
+    "project_context": "A Java application to manage doctors, patients, appointment slots, check-ins, and visit history for a clinic."
+  },
+  {
+    "project_title": "School Management Platform",
+    "project_context": "A Java platform for student enrollment, class scheduling, grades, attendance, and teacher-course assignments."
+  },
+  {
+    "project_title": "Food Delivery Management",
+    "project_context": "A Java backend for restaurants, menus, customer orders, delivery assignment, and order status tracking."
+  },
+  {
+    "project_title": "Hotel Reservation System",
+    "project_context": "A Java system for room inventory, bookings, check-in/check-out, pricing plans, and guest billing."
+  },
+  {
+    "project_title": "Warehouse Inventory Tracker",
+    "project_context": "A Java solution for stock intake, item locations, reorder thresholds, supplier restocking, and movement logs."
+  },
+  {
+    "project_title": "Banking Account Management",
+    "project_context": "A Java application for customer accounts, deposits, withdrawals, transfers, statement generation, and audit history."
+  },
+  {
+    "project_title": "Learning Management System",
+    "project_context": "A Java LMS for courses, lesson modules, assignments, submissions, grading, and progress tracking."
+  },
+  {
+    "project_title": "Issue Tracking System",
+    "project_context": "A Java project tracker for ticket creation, assignment, status workflow, comments, and priority handling."
+  },
+  {
+    "project_title": "Gym Membership Platform",
+    "project_context": "A Java system for memberships, class schedules, trainer booking, attendance check-ins, and payment tracking."
+  },
+  {
+    "project_title": "Car Rental Management",
+    "project_context": "A Java application to manage fleet inventory, reservations, vehicle pickup/return, pricing, and maintenance status."
+  },
+  {
+    "project_title": "Payroll and HR System",
+    "project_context": "A Java HR/payroll system for employee records, leave requests, salary calculation, payslips, and tax deductions."
+  }
+]

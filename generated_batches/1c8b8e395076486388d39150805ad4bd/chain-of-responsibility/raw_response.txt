@@ -1,0 +1,96 @@
+### FILE: PaymentProcessor.java
+```java
+public abstract class PaymentProcessor {
+    protected PaymentProcessor next;
+    
+    public void setNext(PaymentProcessor processor) {
+        this.next = processor;
+    }
+    
+    public void processPayment(double amount) {
+        if (canProcess(amount)) {
+            doProcess(amount);
+        } else if (next != null) {
+            next.processPayment(amount);
+        } else {
+            System.out.println("No payment processor available for amount: $" + amount);
+        }
+    }
+    
+    protected abstract boolean canProcess(double amount);
+    protected abstract void doProcess(double amount);
+}
+```
+
+### FILE: CreditCardProcessor.java
+```java
+public class CreditCardProcessor extends PaymentProcessor {
+    private static final double MAX_AMOUNT = 1000.0;
+    
+    @Override
+    protected boolean canProcess(double amount) {
+        return amount <= MAX_AMOUNT;
+    }
+    
+    @Override
+    protected void doProcess(double amount) {
+        System.out.println("Processing $" + amount + " via Credit Card");
+    }
+}
+```
+
+### FILE: PayPalProcessor.java
+```java
+public class PayPalProcessor extends PaymentProcessor {
+    private static final double MAX_AMOUNT = 5000.0;
+    
+    @Override
+    protected boolean canProcess(double amount) {
+        return amount <= MAX_AMOUNT;
+    }
+    
+    @Override
+    protected void doProcess(double amount) {
+        System.out.println("Processing $" + amount + " via PayPal");
+    }
+}
+```
+
+### FILE: BankTransferProcessor.java
+```java
+public class BankTransferProcessor extends PaymentProcessor {
+    private static final double MIN_AMOUNT = 5000.0;
+    
+    @Override
+    protected boolean canProcess(double amount) {
+        return amount >= MIN_AMOUNT;
+    }
+    
+    @Override
+    protected void doProcess(double amount) {
+        System.out.println("Processing $" + amount + " via Bank Transfer");
+    }
+}
+```
+
+### FILE: PaymentSystem.java
+```java
+public class PaymentSystem {
+    private PaymentProcessor processorChain;
+    
+    public PaymentSystem() {
+        initializeChain();
+    }
+    
+    private void initializeChain() {
+        PaymentProcessor creditCard = new CreditCardProcessor();
+        PaymentProcessor payPal = new PayPalProcessor();
+        PaymentProcessor bankTransfer = new BankTransferProcessor();
+        
+        creditCard.setNext(payPal);
+        payPal.setNext(bankTransfer);
+        
+        processorChain = creditCard;
+    }
+    
+    public void

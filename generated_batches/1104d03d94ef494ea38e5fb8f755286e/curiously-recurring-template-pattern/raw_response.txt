@@ -1,0 +1,98 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Student extends Person<Student> {
+    private List<String> enrolledCourses;
+    
+    public Student(String name) {
+        super(name);
+        this.enrolledCourses = new ArrayList<>();
+    }
+    
+    public void enrollCourse(String course) {
+        enrolledCourses.add(course);
+    }
+    
+    public List<String> getEnrolledCourses() {
+        return enrolledCourses;
+    }
+}
+```
+
+### FILE: Person.java
+```java
+package edu.platform.student;
+
+public abstract class Person<T extends Person<T>> {
+    private String name;
+    
+    protected Person(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public T withName(String name) {
+        this.name = name;
+        return (T) this;
+    }
+}
+```
+
+### FILE: Teacher.java
+```java
+package edu.platform.student;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Teacher extends Person<Teacher> {
+    private List<String> assignedCourses;
+    
+    public Teacher(String name) {
+        super(name);
+        this.assignedCourses = new ArrayList<>();
+    }
+    
+    public void assignCourse(String course) {
+        assignedCourses.add(course);
+    }
+    
+    public List<String> getAssignedCourses() {
+        return assignedCourses;
+    }
+}
+```
+
+### FILE: EnrollmentSystem.java
+```java
+package edu.platform.student;
+
+public class EnrollmentSystem {
+    public static void main(String[] args) {
+        Student student = new Student("John Doe")
+            .withName("Jane Smith");
+        
+        Teacher teacher = new Teacher("Dr. Smith")
+            .withName("Prof. Johnson");
+        
+        student.enrollCourse("Mathematics");
+        student.enrollCourse("Physics");
+        
+        teacher.assignCourse("Mathematics");
+        teacher.assignCourse("Calculus");
+        
+        System.out.println("Student: " + student.getName());
+        System.out.println("Enrolled courses: " + student.getEnrolledCourses());
+        System.out.println("Teacher: " + teacher.getName());
+        System.out.println("Assigned courses: " + teacher.getAssignedCourses());
+    }
+}
+```

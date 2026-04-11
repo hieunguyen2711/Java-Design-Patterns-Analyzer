@@ -1,0 +1,110 @@
+### FILE: Membership.java
+```java
+public interface Membership {
+    String getMembershipType();
+    double getMonthlyFee();
+}
+```
+
+### FILE: BasicMembership.java
+```java
+public class BasicMembership implements Membership {
+    @Override
+    public String getMembershipType() {
+        return "Basic";
+    }
+    
+    @Override
+    public double getMonthlyFee() {
+        return 29.99;
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+public class PremiumMembership implements Membership {
+    @Override
+    public String getMembershipType() {
+        return "Premium";
+    }
+    
+    @Override
+    public double getMonthlyFee() {
+        return 59.99;
+    }
+}
+```
+
+### FILE: MembershipFactory.java
+```java
+public interface MembershipFactory {
+    Membership createMembership();
+    String getFactoryName();
+}
+```
+
+### FILE: BasicMembershipFactory.java
+```java
+public class BasicMembershipFactory implements MembershipFactory {
+    @Override
+    public Membership createMembership() {
+        return new BasicMembership();
+    }
+    
+    @Override
+    public String getFactoryName() {
+        return "Basic Membership Factory";
+    }
+}
+```
+
+### FILE: PremiumMembershipFactory.java
+```java
+public class PremiumMembershipFactory implements MembershipFactory {
+    @Override
+    public Membership createMembership() {
+        return new PremiumMembership();
+    }
+    
+    @Override
+    public String getFactoryName() {
+        return "Premium Membership Factory";
+    }
+}
+```
+
+### FILE: MembershipService.java
+```java
+public class MembershipService {
+    private MembershipFactory factory;
+    
+    public MembershipService(MembershipFactory factory) {
+        this.factory = factory;
+    }
+    
+    public void displayMembershipInfo() {
+        Membership membership = factory.createMembership();
+        System.out.println("Membership Type: " + membership.getMembershipType());
+        System.out.println("Monthly Fee: $" + membership.getMonthlyFee());
+        System.out.println("Factory Used: " + factory.getFactoryName());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Using Basic Membership Factory
+        MembershipService basicService = new MembershipService(new BasicMembershipFactory());
+        basicService.displayMembershipInfo();
+        
+        System.out.println();
+        
+        // Using Premium Membership Factory
+        MembershipService premiumService = new MembershipService(new PremiumMembershipFactory());
+        premiumService.displayMembershipInfo();
+    }
+}
+```

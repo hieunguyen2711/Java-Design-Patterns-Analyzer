@@ -1,0 +1,91 @@
+### FILE: MembershipDTO.java
+```java
+package com.example.membership.dto;
+
+public class MembershipDTO {
+    private String memberId;
+    private String memberName;
+    private String membershipType;
+    private String startDate;
+    private String endDate;
+    private double monthlyFee;
+    
+    public MembershipDTO() {}
+    
+    public MembershipDTO(String memberId, String memberName, String membershipType, 
+                        String startDate, String endDate, double monthlyFee) {
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.membershipType = membershipType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.monthlyFee = monthlyFee;
+    }
+    
+    // Getters and setters
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+    
+    public String getMemberName() {
+        return memberName;
+    }
+    
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+    
+    public String getMembershipType() {
+        return membershipType;
+    }
+    
+    public void setMembershipType(String membershipType) {
+        this.membershipType = membershipType;
+    }
+    
+    public String getStartDate() {
+        return startDate;
+    }
+    
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+    
+    public String getEndDate() {
+        return endDate;
+    }
+    
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+    
+    public double getMonthlyFee() {
+        return monthlyFee;
+    }
+    
+    public void setMonthlyFee(double monthlyFee) {
+        this.monthlyFee = monthlyFee;
+    }
+}
+```
+
+### FILE: MembershipService.java
+```java
+package com.example.membership.service;
+
+import com.example.membership.dto.MembershipDTO;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MembershipService {
+    
+    public List<MembershipDTO> getActiveMemberships() {
+        // Simulate fetching data from database
+        List<MembershipDTO> memberships = new ArrayList<>();
+        
+        memberships.add(new MembershipDTO("M001", "John Smith", "Premium", "2023-01-15", "2024-01-15", 99.99));
+        memberships.add(new MembershipDTO("M002", "Jane Doe", "Basic", "2

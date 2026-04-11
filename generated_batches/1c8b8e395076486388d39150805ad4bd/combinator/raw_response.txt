@@ -1,0 +1,93 @@
+### FILE: Membership.java
+```java
+public interface Membership {
+    String getMembershipType();
+    double getMonthlyFee();
+}
+```
+
+### FILE: BasicMembership.java
+```java
+public class BasicMembership implements Membership {
+    @Override
+    public String getMembershipType() {
+        return "Basic";
+    }
+    
+    @Override
+    public double getMonthlyFee() {
+        return 29.99;
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+public class PremiumMembership implements Membership {
+    @Override
+    public String getMembershipType() {
+        return "Premium";
+    }
+    
+    @Override
+    public double getMonthlyFee() {
+        return 59.99;
+    }
+}
+```
+
+### FILE: MembershipCombinator.java
+```java
+import java.util.*;
+
+public class MembershipCombinator {
+    public static Membership combine(Membership m1, Membership m2) {
+        return new Membership() {
+            @Override
+            public String getMembershipType() {
+                return m1.getMembershipType() + "+" + m2.getMembershipType();
+            }
+            
+            @Override
+            public double getMonthlyFee() {
+                return m1.getMonthlyFee() + m2.getMonthlyFee();
+            }
+        };
+    }
+    
+    public static Membership combine(List<Membership> memberships) {
+        if (memberships == null || memberships.isEmpty()) {
+            throw new IllegalArgumentException("Memberships list cannot be null or empty");
+        }
+        
+        return memberships.stream()
+                .reduce((m1, m2) -> combine(m1, m2))
+                .orElseThrow();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Membership basic = new BasicMembership();
+        Membership premium = new PremiumMembership();
+        
+        // Combine two memberships
+        Membership combined = MembershipCombinator.combine(basic, premium);
+        System.out.println("Combined membership: " + combined.getMembershipType() 
+                          + " - Fee: $" + combined.getMonthlyFee());
+        
+        // Combine multiple memberships
+        List<Membership> memberships = Arrays.asList(
+            new BasicMembership(),
+            new PremiumMembership()
+        );
+        
+        Membership multiCombined = MembershipCombinator.combine(memberships);
+        System.out.println("Multi-combined membership: " + multiCombined.getMembershipType() 
+                          + " - Fee: $" + multiCombined.getMonthlyFee());
+   

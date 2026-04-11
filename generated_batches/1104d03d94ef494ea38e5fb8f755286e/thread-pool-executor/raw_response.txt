@@ -1,0 +1,90 @@
+### FILE: EnrollmentService.java
+```java
+package edu.platform.enrollment;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class EnrollmentService {
+    private final ExecutorService executorService;
+    
+    public EnrollmentService() {
+        this.executorService = Executors.newFixedThreadPool(3);
+    }
+    
+    public void processEnrollment(String studentId, String courseId) {
+        executorService.submit(() -> {
+            try {
+                // Simulate enrollment processing
+                System.out.println("Processing enrollment for student " + studentId + 
+                                 " in course " + courseId);
+                Thread.sleep(1000); // Simulate work
+                System.out.println("Completed enrollment for student " + studentId + 
+                                 " in course " + courseId);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+    }
+}
+```
+
+### FILE: StudentEnrollmentSystem.java
+```java
+package edu.platform.enrollment;
+
+public class StudentEnrollmentSystem {
+    private final EnrollmentService enrollmentService;
+    
+    public StudentEnrollmentSystem() {
+        this.enrollmentService = new EnrollmentService();
+    }
+    
+    public void enrollStudent(String studentId, String courseId) {
+        enrollmentService.processEnrollment(studentId, courseId);
+    }
+    
+    public static void main(String[] args) {
+        StudentEnrollmentSystem system = new StudentEnrollmentSystem();
+        
+        // Simulate multiple concurrent enrollments
+        for (int i = 1; i <= 5; i++) {
+            system.enrollStudent("STU" + i, "CS101");
+        }
+        
+        // Shutdown the service after processing
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutting down enrollment system...");
+            system.shutdown();
+        }));
+    }
+    
+    private void shutdown() {
+        enrollmentService.shutdown();
+    }
+}
+```
+
+### FILE: EnrollmentTask.java
+```java
+package edu.platform.enrollment;
+
+public class EnrollmentTask implements Runnable {
+    private final String studentId;
+    private final String courseId;
+    
+    public EnrollmentTask(String studentId, String courseId) {
+        this.studentId = studentId;
+        this.course

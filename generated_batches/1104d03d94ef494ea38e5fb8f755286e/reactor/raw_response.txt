@@ -1,0 +1,116 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student {
+    private String id;
+    private String name;
+    
+    public Student(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Course.java
+```java
+package edu.platform.course;
+
+public class Course {
+    private String courseId;
+    private String courseName;
+    private int credits;
+    
+    public Course(String courseId, String courseName, int credits) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.credits = credits;
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+    
+    public int getCredits() {
+        return credits;
+    }
+}
+```
+
+### FILE: EnrollmentEvent.java
+```java
+package edu.platform.event;
+
+import edu.platform.student.Student;
+import edu.platform.course.Course;
+
+public class EnrollmentEvent {
+    private Student student;
+    private Course course;
+    private String eventType;
+    
+    public EnrollmentEvent(Student student, Course course, String eventType) {
+        this.student = student;
+        this.course = course;
+        this.eventType = eventType;
+    }
+    
+    public Student getStudent() {
+        return student;
+    }
+    
+    public Course getCourse() {
+        return course;
+    }
+    
+    public String getEventType() {
+        return eventType;
+    }
+}
+```
+
+### FILE: EnrollmentHandler.java
+```java
+package edu.platform.handler;
+
+import edu.platform.event.EnrollmentEvent;
+
+public interface EnrollmentHandler {
+    void handle(EnrollmentEvent event);
+}
+```
+
+### FILE: StudentEnrollmentHandler.java
+```java
+package edu.platform.handler;
+
+import edu.platform.event.EnrollmentEvent;
+import java.util.logging.Logger;
+
+public class StudentEnrollmentHandler implements EnrollmentHandler {
+    private static final Logger logger = Logger.getLogger(StudentEnrollmentHandler.class.getName());
+    
+    @Override
+    public void handle(EnrollmentEvent event) {
+        logger.info("Processing enrollment for student: " + 
+                   event.getStudent().getName() + 
+                   " in course: " + 
+                   event.getCourse().getCourseName());
+        
+        // Simulate processing logic
+        if ("ENROLL".equals(event.getEventType())) {
+            logger.info("Student enrolled successfully");
+       

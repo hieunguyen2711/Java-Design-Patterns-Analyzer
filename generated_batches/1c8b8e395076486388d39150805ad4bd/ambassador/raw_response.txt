@@ -1,0 +1,119 @@
+### FILE: Membership.java
+```java
+package com.example.membership;
+
+public interface Membership {
+    String getMembershipType();
+    double getMonthlyFee();
+    boolean isEligibleForDiscount();
+}
+```
+
+### FILE: BasicMembership.java
+```java
+package com.example.membership;
+
+public class BasicMembership implements Membership {
+    @Override
+    public String getMembershipType() {
+        return "Basic";
+    }
+
+    @Override
+    public double getMonthlyFee() {
+        return 29.99;
+    }
+
+    @Override
+    public boolean isEligibleForDiscount() {
+        return false;
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+package com.example.membership;
+
+public class PremiumMembership implements Membership {
+    @Override
+    public String getMembershipType() {
+        return "Premium";
+    }
+
+    @Override
+    public double getMonthlyFee() {
+        return 79.99;
+    }
+
+    @Override
+    public boolean isEligibleForDiscount() {
+        return true;
+    }
+}
+```
+
+### FILE: MembershipFactory.java
+```java
+package com.example.membership;
+
+public class MembershipFactory {
+    public static Membership createMembership(String type) {
+        switch (type.toLowerCase()) {
+            case "basic":
+                return new BasicMembership();
+            case "premium":
+                return new PremiumMembership();
+            default:
+                throw new IllegalArgumentException("Unknown membership type: " + type);
+        }
+    }
+}
+```
+
+### FILE: Member.java
+```java
+package com.example.membership;
+
+public class Member {
+    private String name;
+    private Membership membership;
+    
+    public Member(String name, Membership membership) {
+        this.name = name;
+        this.membership = membership;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public Membership getMembership() {
+        return membership;
+    }
+    
+    public void setMembership(Membership membership) {
+        this.membership = membership;
+    }
+}
+```
+
+### FILE: MembershipService.java
+```java
+package com.example.membership;
+
+public class MembershipService {
+    private static MembershipService instance;
+    
+    private MembershipService() {}
+    
+    public static synchronized MembershipService getInstance() {
+        if (instance == null) {
+            instance = new MembershipService();
+        }
+        return instance;
+    }
+    
+    public Member createMember(String name, String membershipType) {
+        Membership membership = MembershipFactory.createMembership(membershipType);
+        return new Member(name,

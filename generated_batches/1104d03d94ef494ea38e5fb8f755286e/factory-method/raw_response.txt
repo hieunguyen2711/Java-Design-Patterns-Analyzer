@@ -1,0 +1,88 @@
+### FILE: Course.java
+```java
+public abstract class Course {
+    protected String courseName;
+    protected int credits;
+    
+    public Course(String courseName, int credits) {
+        this.courseName = courseName;
+        this.credits = credits;
+    }
+    
+    public abstract void displayCourseInfo();
+    
+    public String getCourseName() {
+        return courseName;
+    }
+    
+    public int getCredits() {
+        return credits;
+    }
+}
+```
+
+### FILE: MathCourse.java
+```java
+public class MathCourse extends Course {
+    private String level;
+    
+    public MathCourse(String courseName, int credits, String level) {
+        super(courseName, credits);
+        this.level = level;
+    }
+    
+    @Override
+    public void displayCourseInfo() {
+        System.out.println("Math Course: " + courseName + ", Level: " + level + ", Credits: " + credits);
+    }
+}
+```
+
+### FILE: ScienceCourse.java
+```java
+public class ScienceCourse extends Course {
+    private String labRequirement;
+    
+    public ScienceCourse(String courseName, int credits, String labRequirement) {
+        super(courseName, credits);
+        this.labRequirement = labRequirement;
+    }
+    
+    @Override
+    public void displayCourseInfo() {
+        System.out.println("Science Course: " + courseName + ", Lab Required: " + labRequirement + ", Credits: " + credits);
+    }
+}
+```
+
+### FILE: CourseFactory.java
+```java
+public abstract class CourseFactory {
+    public abstract Course createCourse(String courseName, int credits);
+    
+    public Course createMathCourse(String courseName, int credits, String level) {
+        return new MathCourse(courseName, credits, level);
+    }
+    
+    public Course createScienceCourse(String courseName, int credits, String labRequirement) {
+        return new ScienceCourse(courseName, credits, labRequirement);
+    }
+}
+```
+
+### FILE: ConcreteCourseFactory.java
+```java
+public class ConcreteCourseFactory extends CourseFactory {
+    @Override
+    public Course createCourse(String courseName, int credits) {
+        if (courseName.toLowerCase().contains("math")) {
+            return new MathCourse(courseName, credits, "Intermediate");
+        } else if (courseName.toLowerCase().contains("science")) {
+            return new ScienceCourse(courseName, credits, "Yes");
+        }
+        throw new IllegalArgumentException("Unknown course type: " + courseName);
+    }
+}
+```
+
+### FILE: StudentEn

@@ -1,0 +1,109 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Student {
+    private String name;
+    private String studentId;
+    private List<Observer> observers;
+    
+    public Student(String name, String studentId) {
+        this.name = name;
+        this.studentId = studentId;
+        this.observers = new ArrayList<>();
+    }
+    
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+    
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+    
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getStudentId() {
+        return studentId;
+    }
+}
+```
+
+### FILE: Observer.java
+```java
+package edu.platform.student;
+
+public interface Observer {
+    void update(String message);
+}
+```
+
+### FILE: EnrollmentSystem.java
+```java
+package edu.platform.student;
+
+public class EnrollmentSystem implements Observer {
+    private String systemName;
+    
+    public EnrollmentSystem(String systemName) {
+        this.systemName = systemName;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("Enrollment System [" + systemName + "] received notification: " + message);
+    }
+}
+```
+
+### FILE: GradeTracker.java
+```java
+package edu.platform.student;
+
+public class GradeTracker implements Observer {
+    private String trackerName;
+    
+    public GradeTracker(String trackerName) {
+        this.trackerName = trackerName;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("Grade Tracker [" + trackerName + "] received notification: " + message);
+    }
+}
+```
+
+### FILE: StudentEnrollmentService.java
+```java
+package edu.platform.student;
+
+public class StudentEnrollmentService {
+    private Student student;
+    
+    public StudentEnrollmentService(Student student) {
+        this.student = student;
+    }
+    
+    public void enrollStudent() {
+        // Simulate enrollment process
+        System.out.println("Enrolling student: " + student.getName());
+        
+        // Notify observers about enrollment
+        student.notifyObservers("Student " + student.getName() + " has been enrolled");
+    }
+    
+    public void updateGrade(String grade) {
+        // Simulate grade update
+        System.out.println("Updating grade for student: "

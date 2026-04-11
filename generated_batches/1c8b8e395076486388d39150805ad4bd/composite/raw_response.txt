@@ -1,0 +1,113 @@
+### FILE: Membership.java
+```java
+public abstract class Membership {
+    protected String name;
+    
+    public Membership(String name) {
+        this.name = name;
+    }
+    
+    public abstract double calculateCost();
+    public abstract void display();
+}
+```
+
+### FILE: IndividualMembership.java
+```java
+public class IndividualMembership extends Membership {
+    
+    public IndividualMembership(String name) {
+        super(name);
+    }
+    
+    @Override
+    public double calculateCost() {
+        return 50.0;
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("Individual Membership: " + name);
+    }
+}
+```
+
+### FILE: FamilyMembership.java
+```java
+public class FamilyMembership extends Membership {
+    
+    private java.util.List<Membership> members;
+    
+    public FamilyMembership(String name) {
+        super(name);
+        this.members = new java.util.ArrayList<>();
+    }
+    
+    public void addMember(Membership member) {
+        members.add(member);
+    }
+    
+    public void removeMember(Membership member) {
+        members.remove(member);
+    }
+    
+    @Override
+    public double calculateCost() {
+        double total = 0;
+        for (Membership member : members) {
+            total += member.calculateCost();
+        }
+        return total * 0.8; // 20% discount for family plan
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("Family Membership: " + name);
+        for (Membership member : members) {
+            member.display();
+        }
+    }
+}
+```
+
+### FILE: MembershipComposite.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class MembershipComposite extends Membership {
+    private List<Membership> memberships;
+    
+    public MembershipComposite(String name) {
+        super(name);
+        this.memberships = new ArrayList<>();
+    }
+    
+    public void add(Membership membership) {
+        memberships.add(membership);
+    }
+    
+    public void remove(Membership membership) {
+        memberships.remove(membership);
+    }
+    
+    @Override
+    public double calculateCost() {
+        double total = 0;
+        for (Membership membership : memberships) {
+            total += membership.calculateCost();
+        }
+        return total;
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("Composite: " + name);
+        for (Membership membership : memberships) {
+            membership.display();
+        }
+    }
+}
+```
+
+### FILE:

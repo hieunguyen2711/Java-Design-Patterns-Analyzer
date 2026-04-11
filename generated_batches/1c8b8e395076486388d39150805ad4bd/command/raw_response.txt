@@ -1,0 +1,87 @@
+### FILE: Command.java
+```java
+public interface Command {
+    void execute();
+}
+```
+
+### FILE: MembershipManager.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class MembershipManager {
+    private List<Command> commandHistory = new ArrayList<>();
+    
+    public void executeCommand(Command command) {
+        command.execute();
+        commandHistory.add(command);
+    }
+    
+    public void undoLastCommand() {
+        if (!commandHistory.isEmpty()) {
+            Command lastCommand = commandHistory.remove(commandHistory.size() - 1);
+            // In a real implementation, we would need to track undo operations
+            System.out.println("Command undone: " + lastCommand.getClass().getSimpleName());
+        }
+    }
+}
+```
+
+### FILE: RegisterMemberCommand.java
+```java
+public class RegisterMemberCommand implements Command {
+    private String memberName;
+    private MembershipManager manager;
+    
+    public RegisterMemberCommand(String memberName, MembershipManager manager) {
+        this.memberName = memberName;
+        this.manager = manager;
+    }
+    
+    @Override
+    public void execute() {
+        System.out.println("Registering new member: " + memberName);
+        // In a real implementation, this would interact with a database
+    }
+}
+```
+
+### FILE: ScheduleClassCommand.java
+```java
+public class ScheduleClassCommand implements Command {
+    private String className;
+    private String timeSlot;
+    private MembershipManager manager;
+    
+    public ScheduleClassCommand(String className, String timeSlot, MembershipManager manager) {
+        this.className = className;
+        this.timeSlot = timeSlot;
+        this.manager = manager;
+    }
+    
+    @Override
+    public void execute() {
+        System.out.println("Scheduling class: " + className + " at " + timeSlot);
+        // In a real implementation, this would update the schedule system
+    }
+}
+```
+
+### FILE: BookTrainerCommand.java
+```java
+public class BookTrainerCommand implements Command {
+    private String trainerName;
+    private String memberName;
+    private MembershipManager manager;
+    
+    public BookTrainerCommand(String trainerName, String memberName, MembershipManager manager) {
+        this.trainerName = trainerName;
+        this.memberName = memberName;
+        this.manager = manager;
+    }
+    
+    @Override
+    public void execute() {
+        System.out.println("Booking trainer " + trainerName + " for member " + memberName);
+        // In a real implementation, this would handle booking logic

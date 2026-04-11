@@ -29,6 +29,7 @@ from services.file_service import FileService
 from services.piqs_service import PIQSService
 
 BATCHES_DIR = ROOT_DIR / "generated_batches"
+GENERATED_PIQS_DIR = ROOT_DIR / "generated_batches_piqs"
 OUTPUT_FILE = ROOT_DIR / "generated_batches_quality_results.json"
 
 PIQS_SUPPORTED_PATTERNS = {
@@ -85,6 +86,43 @@ def summarize_overall(items: list[dict[str, Any]]) -> dict[str, Any]:
         "avg_ck_overall_score": round(sum(ck_values) / len(ck_values), 2) if ck_values else None,
         "avg_piqs_score": round(sum(piqs_values) / len(piqs_values), 2) if piqs_values else None,
     }
+
+
+def is_hex_job_id(name: str) -> bool:
+    return len(name) == 32 and all(ch in "0123456789abcdef" for ch in name.lower())
+
+
+def load_custom_piqs_projects() -> list[tuple[str, str, list[tuple[str, Path]]]]:
+    """Load custom project groups from generated_batches_piqs/<project>/<pattern>/.
+
+    Excludes UUID-like folders that mirror generated batch job IDs.
+    """
+    groups: list[tuple[str, str, list[tuple[str, Path]]]] = []
+    if not GENERATED_PIQS_DIR.exists():
+        return groups
+
+    for project_dir in sorted(GENERATED_PIQS_DIR.iterdir()):
+        if not project_dir.is_dir():
+            continue
+        if project_dir.name.startswith("."):
+            continue
+        if is_hex_job_id(project_dir.name):
+            continue
+
+        patterns: list[tuple[str, Path]] = []
+        for pattern_dir in sorted(project_dir.iterdir()):
+            if not pattern_dir.is_dir() or pattern_dir.name.startswith("."):
+                continue
+            patterns.append((pattern_dir.name, pattern_dir))
+
+        if patterns:
+            groups.append((project_dir.name, project_dir.name, patterns))
+
+    return groups
+
+
+def has_java_files(path: Path) -> bool:
+    return any(path.rglob("*.java"))
 
 
 def make_batch_name(project_context: str, fallback_job_id: str) -> str:
@@ -193,11 +231,76 @@ def run() -> None:
         job_summary = summarize_overall(rows)
         all_job_results.append(
             {
+                "source_type": "generated_batch",
                 "batch_name": batch_name,
                 "job_id": job_id,
                 "project_context": project_context,
                 "model_used": manifest.get("model_used", ""),
                 "summary": job_summary,
+                "results": rows,
+            }
+        )
+
+    custom_groups = load_custom_piqs_projects()
+    for group_id, project_context, patterns in custom_groups:
+        print(f"\nCustom project {group_id}")
+        rows: list[dict[str, Any]] = []
+
+        for pattern, project_path in patterns:
+            if not has_java_files(project_path):
+                row = {
+                    "pattern": pattern,
+                    "status": "skipped",
+                    "error": f"No Java files found under {project_path}",
+                    "metrics": None,
+                    "piqs": None,
+                    "piqs_status": "not_applicable",
+                }
+                rows.append(row)
+                all_pattern_rows.append(row)
+                print(f"- {pattern}: skipped (no Java files)")
+                continue
+
+            try:
+                metrics = analyze_project(str(project_path), pattern_name=pattern)
+                java_files = file_service.walk_java_files(str(project_path))
+
+                piqs_status = "unsupported_pattern"
+                piqs = None
+                if pattern in PIQS_SUPPORTED_PATTERNS:
+                    piqs = piqs_service.evaluate(pattern_name=pattern, java_files=java_files)
+                    piqs_status = "success"
+
+                row = {
+                    "pattern": pattern,
+                    "status": "success",
+                    "error": None,
+                    "metrics": {"summary": metrics.get("summary", {})},
+                    "piqs": piqs,
+                    "piqs_status": piqs_status,
+                }
+            except Exception as exc:
+                row = {
+                    "pattern": pattern,
+                    "status": "error",
+                    "error": str(exc),
+                    "metrics": None,
+                    "piqs": None,
+                    "piqs_status": "error",
+                }
+
+            rows.append(row)
+            all_pattern_rows.append(row)
+            print(f"- {pattern}: {row['status']} (PIQS: {row['piqs_status']})")
+
+        all_job_results.append(
+            {
+                "source_type": "custom_project",
+                "batch_name": make_batch_name(project_context, group_id),
+                "job_id": group_id,
+                "project_context": project_context,
+                "model_used": "",
+                "summary": summarize_overall(rows),
                 "results": rows,
             }
         )

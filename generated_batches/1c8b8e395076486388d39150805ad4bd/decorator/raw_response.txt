@@ -1,0 +1,109 @@
+### FILE: Membership.java
+```java
+public interface Membership {
+    double getCost();
+    String getDescription();
+}
+```
+
+### FILE: BasicMembership.java
+```java
+public class BasicMembership implements Membership {
+    @Override
+    public double getCost() {
+        return 50.0;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Basic Membership";
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+public class PremiumMembership implements Membership {
+    @Override
+    public double getCost() {
+        return 100.0;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Premium Membership";
+    }
+}
+```
+
+### FILE: MembershipDecorator.java
+```java
+public abstract class MembershipDecorator implements Membership {
+    protected Membership membership;
+
+    public MembershipDecorator(Membership membership) {
+        this.membership = membership;
+    }
+
+    @Override
+    public double getCost() {
+        return membership.getCost();
+    }
+
+    @Override
+    public String getDescription() {
+        return membership.getDescription();
+    }
+}
+```
+
+### FILE: PersonalTrainingDecorator.java
+```java
+public class PersonalTrainingDecorator extends MembershipDecorator {
+    public PersonalTrainingDecorator(Membership membership) {
+        super(membership);
+    }
+
+    @Override
+    public double getCost() {
+        return membership.getCost() + 30.0;
+    }
+
+    @Override
+    public String getDescription() {
+        return membership.getDescription() + " with Personal Training";
+    }
+}
+```
+
+### FILE: ClassPassDecorator.java
+```java
+public class ClassPassDecorator extends MembershipDecorator {
+    public ClassPassDecorator(Membership membership) {
+        super(membership);
+    }
+
+    @Override
+    public double getCost() {
+        return membership.getCost() + 20.0;
+    }
+
+    @Override
+    public String getDescription() {
+        return membership.getDescription() + " with Class Passes";
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        Membership basicMembership = new BasicMembership();
+        System.out.println(basicMembership.getDescription() + " - $" + basicMembership.getCost());
+
+        Membership premiumWithTraining = new PersonalTrainingDecorator(new PremiumMembership());
+        System.out.println(premiumWithTraining.getDescription() + " - $" + premiumWithTraining.getCost());
+
+        Membership basicWithClasses = new ClassPassDecorator(new BasicMembership());
+        System.out

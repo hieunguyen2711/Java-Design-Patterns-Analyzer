@@ -1,0 +1,87 @@
+### FILE: BusinessDelegate.java
+```java
+public class BusinessDelegate {
+    private MembershipService membershipService;
+    private TrainerService trainerService;
+    private PaymentService paymentService;
+    
+    public void handleMembershipRequest(String memberId) {
+        membershipService = new MembershipServiceImpl();
+        membershipService.processMembership(memberId);
+    }
+    
+    public void handleTrainerBookingRequest(String trainerId, String classTime) {
+        trainerService = new TrainerServiceImpl();
+        trainerService.bookTrainer(trainerId, classTime);
+    }
+    
+    public void handlePaymentRequest(String memberId, double amount) {
+        paymentService = new PaymentServiceImpl();
+        paymentService.processPayment(memberId, amount);
+    }
+}
+```
+
+### FILE: MembershipService.java
+```java
+public interface MembershipService {
+    void processMembership(String memberId);
+}
+```
+
+### FILE: TrainerService.java
+```java
+public interface TrainerService {
+    void bookTrainer(String trainerId, String classTime);
+}
+```
+
+### FILE: PaymentService.java
+```java
+public interface PaymentService {
+    void processPayment(String memberId, double amount);
+}
+```
+
+### FILE: MembershipServiceImpl.java
+```java
+public class MembershipServiceImpl implements MembershipService {
+    @Override
+    public void processMembership(String memberId) {
+        System.out.println("Processing membership for member: " + memberId);
+    }
+}
+```
+
+### FILE: TrainerServiceImpl.java
+```java
+public class TrainerServiceImpl implements TrainerService {
+    @Override
+    public void bookTrainer(String trainerId, String classTime) {
+        System.out.println("Booking trainer: " + trainerId + " for class at: " + classTime);
+    }
+}
+```
+
+### FILE: PaymentServiceImpl.java
+```java
+public class PaymentServiceImpl implements PaymentService {
+    @Override
+    public void processPayment(String memberId, double amount) {
+        System.out.println("Processing payment of $" + amount + " for member: " + memberId);
+    }
+}
+```
+
+### FILE: Client.java
+```java
+public class Client {
+    public static void main(String[] args) {
+        BusinessDelegate delegate = new BusinessDelegate();
+        
+        delegate.handleMembershipRequest("MEM001");
+        delegate.handleTrainerBookingRequest("TRN001", "2023-12-01 18:00");
+        delegate.handlePaymentRequest("MEM001", 99.99);
+    }
+}
+```

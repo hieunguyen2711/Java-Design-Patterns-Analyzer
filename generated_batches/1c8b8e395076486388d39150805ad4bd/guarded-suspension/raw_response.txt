@@ -1,0 +1,102 @@
+### FILE: Membership.java
+```java
+package com.membership;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private boolean isActive;
+    
+    public Membership(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+        this.isActive = false;
+    }
+    
+    public void activate() {
+        this.isActive = true;
+    }
+    
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: ClassSchedule.java
+```java
+package com.membership;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ClassSchedule {
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition classAvailable = lock.newCondition();
+    private boolean isClassFull = false;
+    private int currentEnrollment = 0;
+    private int maxCapacity;
+    
+    public ClassSchedule(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+    
+    public boolean enrollMember(Membership member) throws InterruptedException {
+        lock.lock();
+        try {
+            // Guard condition: wait until class is not full
+            while (isClassFull) {
+                System.out.println("Class is full, waiting for space...");
+                classAvailable.await(); // Suspended until notified
+            }
+            
+            if (!member.isActive()) {
+                return false;
+            }
+            
+            currentEnrollment++;
+            System.out.println("Member " + member.getName() + " enrolled. Current enrollment: " + currentEnrollment);
+            
+            if (currentEnrollment >= maxCapacity) {
+                isClassFull = true;
+            }
+            
+            return true;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void releaseSpot(Membership member) {
+        lock.lock();
+        try {
+            currentEnrollment--;
+            System.out.println("Member " + member.getName() + " released spot. Current enrollment: " + currentEnrollment);
+            
+            if (isClassFull && currentEnrollment < maxCapacity) {
+                isClassFull = false;
+                classAvailable.signalAll(); // Notify waiting members
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public int getCurrentEnrollment() {
+        return currentEnrollment;
+    }
+}
+```
+
+### FILE: Trainer.java
+```java
+package com.membership;
+

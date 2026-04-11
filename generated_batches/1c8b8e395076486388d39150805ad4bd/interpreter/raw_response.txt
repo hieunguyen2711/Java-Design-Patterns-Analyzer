@@ -1,0 +1,60 @@
+### FILE: Membership.java
+```java
+public interface Membership {
+    boolean isEligible(String memberType);
+}
+```
+
+### FILE: BasicMembership.java
+```java
+public class BasicMembership implements Membership {
+    @Override
+    public boolean isEligible(String memberType) {
+        return "basic".equalsIgnoreCase(memberType);
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+public class PremiumMembership implements Membership {
+    @Override
+    public boolean isEligible(String memberType) {
+        return "premium".equalsIgnoreCase(memberType);
+    }
+}
+```
+
+### FILE: MembershipContext.java
+```java
+public class MembershipContext {
+    private Membership membership;
+    
+    public void setMembership(Membership membership) {
+        this.membership = membership;
+    }
+    
+    public boolean checkEligibility(String memberType) {
+        return membership.isEligible(memberType);
+    }
+}
+```
+
+### FILE: MembershipInterpreter.java
+```java
+public class MembershipInterpreter {
+    public static void main(String[] args) {
+        MembershipContext context = new MembershipContext();
+        
+        // Basic membership interpretation
+        context.setMembership(new BasicMembership());
+        System.out.println("Basic member eligible: " + context.checkEligibility("basic"));
+        System.out.println("Premium member eligible: " + context.checkEligibility("premium"));
+        
+        // Premium membership interpretation
+        context.setMembership(new PremiumMembership());
+        System.out.println("Basic member eligible: " + context.checkEligibility("basic"));
+        System.out.println("Premium member eligible: " + context.checkEligibility("premium"));
+    }
+}
+```

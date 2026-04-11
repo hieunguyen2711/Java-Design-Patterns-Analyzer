@@ -1,0 +1,122 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private String memberId;
+    private String name;
+    private String email;
+    
+    public Membership(String memberId, String name, String email) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: ClassSchedule.java
+```java
+import java.time.LocalDateTime;
+
+public class ClassSchedule {
+    private String className;
+    private LocalDateTime dateTime;
+    private int maxCapacity;
+    
+    public ClassSchedule(String className, LocalDateTime dateTime, int maxCapacity) {
+        this.className = className;
+        this.dateTime = dateTime;
+        this.maxCapacity = maxCapacity;
+    }
+    
+    public String getClassName() {
+        return className;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
+}
+```
+
+### FILE: Trainer.java
+```java
+public class Trainer {
+    private String trainerId;
+    private String name;
+    private String specialty;
+    
+    public Trainer(String trainerId, String name, String specialty) {
+        this.trainerId = trainerId;
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getTrainerId() {
+        return trainerId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Attendance.java
+```java
+import java.time.LocalDateTime;
+
+public class Attendance {
+    private String memberId;
+    private String className;
+    private LocalDateTime checkInTime;
+    
+    public Attendance(String memberId, String className, LocalDateTime checkInTime) {
+        this.memberId = memberId;
+        this.className = className;
+        this.checkInTime = checkInTime;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getClassName() {
+        return className;
+    }
+    
+    public LocalDateTime getCheckInTime() {
+        return checkInTime;
+    }
+}
+```
+
+### FILE: Payment.java
+```java
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public class Payment {
+    private String memberId;
+    private BigDecimal amount;
+    private LocalDateTime paymentDate;
+    private String

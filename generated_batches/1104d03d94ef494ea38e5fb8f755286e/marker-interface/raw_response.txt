@@ -1,0 +1,115 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+import edu.platform.enrollment.Enrollable;
+import edu.platform.grades.GradeReportable;
+
+public class Student implements Enrollable, GradeReportable {
+    private String studentId;
+    private String name;
+    
+    public Student(String studentId, String name) {
+        this.studentId = studentId;
+        this.name = name;
+    }
+    
+    // Implementation of Enrollable interface methods
+    @Override
+    public String getEnrollmentId() {
+        return studentId;
+    }
+    
+    @Override
+    public String getStudentName() {
+        return name;
+    }
+    
+    // Implementation of GradeReportable interface methods
+    @Override
+    public String getGradeReportId() {
+        return studentId + "-grades";
+    }
+    
+    @Override
+    public String getStudentId() {
+        return studentId;
+    }
+}
+```
+
+### FILE: Teacher.java
+```java
+package edu.platform.teacher;
+
+import edu.platform.enrollment.Enrollable;
+import edu.platform.course.CourseAssignee;
+
+public class Teacher implements Enrollable, CourseAssignee {
+    private String teacherId;
+    private String name;
+    
+    public Teacher(String teacherId, String name) {
+        this.teacherId = teacherId;
+        this.name = name;
+    }
+    
+    // Implementation of Enrollable interface methods
+    @Override
+    public String getEnrollmentId() {
+        return teacherId;
+    }
+    
+    @Override
+    public String getStudentName() {
+        return name;
+    }
+    
+    // Implementation of CourseAssignee interface methods
+    @Override
+    public String getCourseAssignmentId() {
+        return teacherId + "-courses";
+    }
+    
+    @Override
+    public String getTeacherId() {
+        return teacherId;
+    }
+}
+```
+
+### FILE: Enrollable.java
+```java
+package edu.platform.enrollment;
+
+public interface Enrollable {
+    String getEnrollmentId();
+    String getStudentName();
+}
+```
+
+### FILE: GradeReportable.java
+```java
+package edu.platform.grades;
+
+public interface GradeReportable {
+    String getGradeReportId();
+    String getStudentId();
+}
+```
+
+### FILE: CourseAssignee.java
+```java
+package edu.platform.course;
+
+public interface CourseAssignee {
+    String getCourseAssignmentId();
+    String getTeacherId();
+}
+```
+
+### FILE: StudentEnrollmentSystem.java
+```java
+package edu.platform.system;
+
+import edu.platform.student.Student;

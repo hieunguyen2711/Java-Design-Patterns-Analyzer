@@ -1,0 +1,122 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student {
+    private String id;
+    private String name;
+    
+    public Student(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Course.java
+```java
+package edu.platform.course;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Course {
+    private String courseId;
+    private String courseName;
+    private List<Student> students;
+    
+    public Course(String courseId, String courseName) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.students = new ArrayList<>();
+    }
+    
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+    
+    public List<Student> getStudents() {
+        return students;
+    }
+}
+```
+
+### FILE: Teacher.java
+```java
+package edu.platform.teacher;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Teacher {
+    private String teacherId;
+    private String name;
+    private List<Course> courses;
+    
+    public Teacher(String teacherId, String name) {
+        this.teacherId = teacherId;
+        this.name = name;
+        this.courses = new ArrayList<>();
+    }
+    
+    public void assignCourse(Course course) {
+        courses.add(course);
+    }
+    
+    public String getTeacherId() {
+        return teacherId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public List<Course> getCourses() {
+        return courses;
+    }
+}
+```
+
+### FILE: EnrollmentSystem.java
+```java
+package edu.platform.system;
+
+import edu.platform.student.Student;
+import edu.platform.course.Course;
+import edu.platform.teacher.Teacher;
+
+public class EnrollmentSystem {
+    private static EnrollmentSystem instance;
+    
+    private EnrollmentSystem() {}
+    
+    public static synchronized EnrollmentSystem getInstance() {
+        if (instance == null) {
+            instance = new EnrollmentSystem();
+        }
+        return instance;
+    }
+    
+    public void enrollStudentInCourse(Student student, Course course) {
+        course.addStudent(student);
+    }
+    
+    public void assignTeacherToCourse(Teacher teacher, Course course) {
+        teacher.assignCourse(course);
+   

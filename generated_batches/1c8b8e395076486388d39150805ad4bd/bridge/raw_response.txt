@@ -1,0 +1,92 @@
+### FILE: Membership.java
+```java
+public abstract class Membership {
+    protected PaymentProcessor paymentProcessor;
+    
+    public Membership(PaymentProcessor paymentProcessor) {
+        this.paymentProcessor = paymentProcessor;
+    }
+    
+    public abstract void joinMembership();
+    
+    public void processPayment(double amount) {
+        paymentProcessor.processPayment(amount);
+    }
+}
+```
+
+### FILE: BasicMembership.java
+```java
+public class BasicMembership extends Membership {
+    
+    public BasicMembership(PaymentProcessor paymentProcessor) {
+        super(paymentProcessor);
+    }
+    
+    @Override
+    public void joinMembership() {
+        System.out.println("Joined Basic Membership");
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+public class PremiumMembership extends Membership {
+    
+    public PremiumMembership(PaymentProcessor paymentProcessor) {
+        super(paymentProcessor);
+    }
+    
+    @Override
+    public void joinMembership() {
+        System.out.println("Joined Premium Membership");
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+public abstract class PaymentProcessor {
+    public abstract void processPayment(double amount);
+}
+```
+
+### FILE: CreditCardProcessor.java
+```java
+public class CreditCardProcessor extends PaymentProcessor {
+    
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing $" + amount + " via Credit Card");
+    }
+}
+```
+
+### FILE: PayPalProcessor.java
+```java
+public class PayPalProcessor extends PaymentProcessor {
+    
+    @Override
+    public void processPayment(double amount) {
+        System.out.println("Processing $" + amount + " via PayPal");
+    }
+}
+```
+
+### FILE: MembershipSystem.java
+```java
+public class MembershipSystem {
+    public static void main(String[] args) {
+        // Using bridge pattern to separate membership types from payment methods
+        Membership basicWithCredit = new BasicMembership(new CreditCardProcessor());
+        Membership premiumWithPayPal = new PremiumMembership(new PayPalProcessor());
+        
+        basicWithCredit.joinMembership();
+        basicWithCredit.processPayment(29.99);
+        
+        premiumWithPayPal.joinMembership();
+        premiumWithPayPal.processPayment(79.99);
+    }
+}
+```

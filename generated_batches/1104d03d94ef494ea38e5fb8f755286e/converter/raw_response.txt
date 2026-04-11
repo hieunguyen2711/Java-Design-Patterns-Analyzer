@@ -1,0 +1,89 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student {
+    private String id;
+    private String name;
+    private int age;
+    
+    public Student(String id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+}
+```
+
+### FILE: StudentDTO.java
+```java
+package edu.platform.dto;
+
+public class StudentDTO {
+    private String id;
+    private String name;
+    private int age;
+    
+    public StudentDTO(String id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+}
+```
+
+### FILE: StudentConverter.java
+```java
+package edu.platform.converter;
+
+import edu.platform.student.Student;
+import edu.platform.dto.StudentDTO;
+
+public class StudentConverter {
+    
+    public static StudentDTO toDTO(Student student) {
+        if (student == null) {
+            return null;
+        }
+        return new StudentDTO(student.getId(), student.getName(), student.getAge());
+    }
+    
+    public static Student fromDTO(StudentDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        return new Student(dto.getId(), dto.getName(), dto.getAge());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package edu.platform;
+
+import edu.platform.student.Student;
+import edu.platform.dto.StudentDTO;
+import edu.platform.converter.StudentConverter;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a student object
+        Student student = new Student("S001", "John Doe", 20);
+        
+        // Convert to DTO using converter pattern

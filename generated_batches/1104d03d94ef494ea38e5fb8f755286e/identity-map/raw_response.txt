@@ -1,0 +1,96 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+import java.util.Objects;
+
+public class Student {
+    private final String id;
+    private final String name;
+    
+    public Student(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
+```
+
+### FILE: StudentRepository.java
+```java
+package edu.platform.student;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class StudentRepository {
+    private static final Map<String, Student> studentCache = new HashMap<>();
+    
+    public static Student findStudentById(String id) {
+        return studentCache.computeIfAbsent(id, StudentRepository::createStudent);
+    }
+    
+    private static Student createStudent(String id) {
+        // In a real system, this would query a database
+        return new Student(id, "Student-" + id);
+    }
+    
+    public static void clearCache() {
+        studentCache.clear();
+    }
+}
+```
+
+### FILE: EnrollmentService.java
+```java
+package edu.platform.student;
+
+public class EnrollmentService {
+    
+    public void enrollStudent(String studentId) {
+        Student student1 = StudentRepository.findStudentById(studentId);
+        Student student2 = StudentRepository.findStudentById(studentId);
+        
+        // Demonstrating identity map - both references point to the same object
+        System.out.println("Same instance: " + (student1 == student2));
+        System.out.println("Student name: " + student1.getName());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package edu.platform.student;
+
+public class Main {
+    public static void main(String[] args) {
+        EnrollmentService service = new EnrollmentService();
+        
+        // First access - creates and caches the student
+        service.enrollStudent("S001");
+        
+        // Second access - retrieves from cache, same instance
+        service.enrollStudent("S001");
+        
+        // Different student ID - creates new instance
+        service.enrollStudent("S00

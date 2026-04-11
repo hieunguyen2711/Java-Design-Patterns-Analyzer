@@ -1,0 +1,94 @@
+### FILE: StudentEnrollmentService.java
+```java
+package com.school.service;
+
+public interface StudentEnrollmentService {
+    void enrollStudent(String studentId, String courseId);
+    void dropCourse(String studentId, String courseId);
+    boolean isEnrolled(String studentId, String courseId);
+}
+```
+
+### FILE: CourseScheduleService.java
+```java
+package com.school.service;
+
+import java.util.List;
+import java.util.Map;
+
+public interface CourseScheduleService {
+    Map<String, List<String>> getCourseSchedule(String courseId);
+    void updateSchedule(String courseId, Map<String, List<String>> schedule);
+    List<String> getAvailableSlots(String courseId);
+}
+```
+
+### FILE: GradeManagementService.java
+```java
+package com.school.service;
+
+import java.util.Map;
+
+public interface GradeManagementService {
+    void submitGrade(String studentId, String courseId, double grade);
+    double getGrade(String studentId, String courseId);
+    Map<String, Double> getAllGradesForStudent(String studentId);
+}
+```
+
+### FILE: AttendanceTrackingService.java
+```java
+package com.school.service;
+
+import java.util.Map;
+import java.util.Set;
+
+public interface AttendanceTrackingService {
+    void markAttendance(String studentId, String courseId, boolean present);
+    boolean isPresent(String studentId, String courseId);
+    Map<String, Set<String>> getAttendanceReport(String courseId);
+}
+```
+
+### FILE: TeacherAssignmentService.java
+```java
+package com.school.service;
+
+import java.util.List;
+import java.util.Map;
+
+public interface TeacherAssignmentService {
+    void assignTeacherToCourse(String teacherId, String courseId);
+    List<String> getCoursesForTeacher(String teacherId);
+    Map<String, String> getTeacherAssignments();
+}
+```
+
+### FILE: EnrollmentServiceImpl.java
+```java
+package com.school.service.impl;
+
+import com.school.service.StudentEnrollmentService;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class EnrollmentServiceImpl implements StudentEnrollmentService {
+    private final Map<String, Set<String>> studentCourses = new HashMap<>();
+    
+    @Override
+    public void enrollStudent(String studentId, String courseId) {
+        studentCourses.computeIfAbsent(studentId, k -> new HashSet<>()).add(courseId);
+    }
+    
+    @Override
+    public void dropCourse(String studentId, String courseId) {
+        Set<String> courses = studentCourses.get(studentId);
+        if (courses != null) {
+            courses.remove(courseId);
+        }
+    }
+    
+    @Override
+   

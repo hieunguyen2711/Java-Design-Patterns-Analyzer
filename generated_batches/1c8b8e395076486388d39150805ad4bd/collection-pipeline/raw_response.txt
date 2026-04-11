@@ -1,0 +1,87 @@
+### FILE: Membership.java
+```java
+package com.example.membership;
+
+public class Membership {
+    private String id;
+    private String name;
+    private double monthlyFee;
+    
+    public Membership(String id, String name, double monthlyFee) {
+        this.id = id;
+        this.name = name;
+        this.monthlyFee = monthlyFee;
+    }
+    
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public double getMonthlyFee() { return monthlyFee; }
+}
+```
+
+### FILE: MembershipRepository.java
+```java
+package com.example.membership;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class MembershipRepository {
+    private List<Membership> memberships;
+    
+    public MembershipRepository() {
+        this.memberships = new ArrayList<>();
+    }
+    
+    public void addMembership(Membership membership) {
+        memberships.add(membership);
+    }
+    
+    public Collection<Membership> findPremiumMemberships() {
+        return memberships.stream()
+                .filter(m -> m.getMonthlyFee() > 100)
+                .collect(Collectors.toList());
+    }
+    
+    public List<String> getMembershipNames() {
+        return memberships.stream()
+                .map(Membership::getName)
+                .collect(Collectors.toList());
+    }
+    
+    public Optional<Membership> findMembershipById(String id) {
+        return memberships.stream()
+                .filter(m -> m.getId().equals(id))
+                .findFirst();
+    }
+    
+    public double getTotalRevenue() {
+        return memberships.stream()
+                .mapToDouble(Membership::getMonthlyFee)
+                .sum();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.membership;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+public class Main {
+    public static void main(String[] args) {
+        MembershipRepository repository = new MembershipRepository();
+        
+        // Add sample memberships
+        repository.addMembership(new Membership("1", "Basic Plan", 50.0));
+        repository.addMembership(new Membership("2", "Premium Plan", 150.0));
+        repository.addMembership(new Membership("3", "VIP Plan", 200.0));
+        
+        // Collection-pipeline pattern demonstration
+        Collection<Membership> premiumMemberships = repository.findPremiumMemberships();
+        List<String> membershipNames = repository.getMembershipNames();
+        Optional<Membership> foundMembership = repository.findMembershipById("2");
+        double totalRevenue = repository.getTotalRevenue

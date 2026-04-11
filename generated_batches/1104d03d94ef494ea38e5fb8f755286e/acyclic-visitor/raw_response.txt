@@ -1,0 +1,114 @@
+### FILE: Student.java
+```java
+public class Student {
+    private String name;
+    private int id;
+    
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: Course.java
+```java
+public class Course {
+    private String courseName;
+    private String courseId;
+    
+    public Course(String courseName, String courseId) {
+        this.courseName = courseName;
+        this.courseId = courseId;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+}
+```
+
+### FILE: Teacher.java
+```java
+public class Teacher {
+    private String name;
+    private String teacherId;
+    
+    public Teacher(String name, String teacherId) {
+        this.name = name;
+        this.teacherId = teacherId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getTeacherId() {
+        return teacherId;
+    }
+}
+```
+
+### FILE: Element.java
+```java
+public interface Element {
+    void accept(Visitor visitor);
+}
+```
+
+### FILE: Visitor.java
+```java
+public interface Visitor {
+    void visit(Student student);
+    void visit(Course course);
+    void visit(Teacher teacher);
+}
+```
+
+### FILE: EnrollmentVisitor.java
+```java
+public class EnrollmentVisitor implements Visitor {
+    @Override
+    public void visit(Student student) {
+        System.out.println("Processing enrollment for student: " + student.getName());
+    }
+    
+    @Override
+    public void visit(Course course) {
+        System.out.println("Processing enrollment for course: " + course.getCourseName());
+    }
+    
+    @Override
+    public void visit(Teacher teacher) {
+        System.out.println("Processing enrollment for teacher: " + teacher.getName());
+    }
+}
+```
+
+### FILE: ScheduleVisitor.java
+```java
+public class ScheduleVisitor implements Visitor {
+    @Override
+    public void visit(Student student) {
+        System.out.println("Scheduling student: " + student.getName());
+    }
+    
+    @Override
+    public void visit(Course course) {
+        System.out.println("Scheduling course: " + course.getCourseName());
+    }
+    
+    @Override
+    public void visit(Teacher teacher) {

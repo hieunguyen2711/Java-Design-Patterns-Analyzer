@@ -1,0 +1,87 @@
+### FILE: StudentEnrollmentController.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class StudentEnrollmentController {
+    private static StudentEnrollmentController instance;
+    private Map<String, String> pageMappings;
+    
+    private StudentEnrollmentController() {
+        pageMappings = new HashMap<>();
+        pageMappings.put("enroll", "EnrollmentPage");
+        pageMappings.put("schedule", "SchedulePage");
+        pageMappings.put("grades", "GradesPage");
+        pageMappings.put("attendance", "AttendancePage");
+        pageMappings.put("assignments", "AssignmentsPage");
+    }
+    
+    public static StudentEnrollmentController getInstance() {
+        if (instance == null) {
+            instance = new StudentEnrollmentController();
+        }
+        return instance;
+    }
+    
+    public String getPage(String action) {
+        return pageMappings.getOrDefault(action, "HomePage");
+    }
+}
+```
+
+### FILE: Page.java
+```java
+public abstract class Page {
+    protected String pageTitle;
+    
+    public Page(String pageTitle) {
+        this.pageTitle = pageTitle;
+    }
+    
+    public abstract void display();
+    
+    public String getPageTitle() {
+        return pageTitle;
+    }
+}
+```
+
+### FILE: EnrollmentPage.java
+```java
+public class EnrollmentPage extends Page {
+    public EnrollmentPage() {
+        super("Student Enrollment");
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("=== " + pageTitle + " ===");
+        System.out.println("Select course to enroll:");
+        System.out.println("1. Mathematics");
+        System.out.println("2. Physics");
+        System.out.println("3. Chemistry");
+        System.out.println("4. Biology");
+    }
+}
+```
+
+### FILE: SchedulePage.java
+```java
+public class SchedulePage extends Page {
+    public SchedulePage() {
+        super("Class Schedule");
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("=== " + pageTitle + " ===");
+        System.out.println("Current semester schedule:");
+        System.out.println("Monday: Mathematics 9:00-10:30");
+        System.out.println("Tuesday: Physics 14:00-15:30");
+        System.out.println("Wednesday: Chemistry 10:00-11:30");
+        System.out.println("Thursday: Biology 13:00-14:30");
+    }
+}
+```
+
+### FILE: GradesPage.java

@@ -1,0 +1,99 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private final String memberId;
+    private final String name;
+    private final String email;
+    private final String membershipType;
+    private final boolean isActive;
+    
+    private Membership(Builder builder) {
+        this.memberId = builder.memberId;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.membershipType = builder.membershipType;
+        this.isActive = builder.isActive;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public String getMembershipType() {
+        return membershipType;
+    }
+    
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    public static class Builder {
+        private String memberId;
+        private String name;
+        private String email;
+        private String membershipType;
+        private boolean isActive = true;
+        
+        public Builder setMemberId(String memberId) {
+            this.memberId = memberId;
+            return this;
+        }
+        
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+        
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+        
+        public Builder setMembershipType(String membershipType) {
+            this.membershipType = membershipType;
+            return this;
+        }
+        
+        public Builder setActive(boolean active) {
+            isActive = active;
+            return this;
+        }
+        
+        public Membership build() {
+            return new Membership(this);
+        }
+    }
+}
+```
+
+### FILE: MembershipService.java
+```java
+public class MembershipService {
+    public static void main(String[] args) {
+        // Using the builder pattern to create membership objects
+        Membership premiumMember = new Membership.Builder()
+                .setMemberId("MEM-001")
+                .setName("John Doe")
+                .setEmail("john.doe@example.com")
+                .setMembershipType("Premium")
+                .setActive(true)
+                .build();
+        
+        Membership basicMember = new Membership.Builder()
+                .setMemberId("MEM-002")
+                .setName("Jane Smith")
+                .setEmail("jane.smith@example.com")
+                .setMembershipType("Basic")
+                .build();
+        
+        System.out.println("Created membership: " + premiumMember.getName() + 
+                          " with type: " + premiumMember.getMembershipType());
+       

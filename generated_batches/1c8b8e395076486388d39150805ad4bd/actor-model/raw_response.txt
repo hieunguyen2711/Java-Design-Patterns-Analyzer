@@ -1,0 +1,101 @@
+### FILE: Actor.java
+```java
+public abstract class Actor {
+    protected String id;
+    protected String name;
+    
+    public Actor(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public abstract void handleMessage(Object message);
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Message.java
+```java
+public class Message {
+    private Object content;
+    private Actor sender;
+    private String type;
+    
+    public Message(Object content, Actor sender, String type) {
+        this.content = content;
+        this.sender = sender;
+        this.type = type;
+    }
+    
+    public Object getContent() {
+        return content;
+    }
+    
+    public Actor getSender() {
+        return sender;
+    }
+    
+    public String getType() {
+        return type;
+    }
+}
+```
+
+### FILE: MembershipActor.java
+```java
+public class MembershipActor extends Actor {
+    private int membershipId;
+    private String status;
+    
+    public MembershipActor(String id, String name) {
+        super(id, name);
+        this.membershipId = Integer.parseInt(id);
+        this.status = "active";
+    }
+    
+    @Override
+    public void handleMessage(Object message) {
+        if (message instanceof String) {
+            String msg = (String) message;
+            System.out.println("MembershipActor " + id + " received: " + msg);
+            
+            if ("cancel".equals(msg)) {
+                status = "cancelled";
+                System.out.println("Membership " + membershipId + " cancelled");
+            } else if ("renew".equals(msg)) {
+                status = "active";
+                System.out.println("Membership " + membershipId + " renewed");
+            }
+        }
+    }
+}
+```
+
+### FILE: SchedulerActor.java
+```java
+public class SchedulerActor extends Actor {
+    private String schedule;
+    
+    public SchedulerActor(String id, String name) {
+        super(id, name);
+        this.schedule = "default";
+    }
+    
+    @Override
+    public void handleMessage(Object message) {
+        if (message instanceof String) {
+            String msg = (String) message;
+            System.out.println("SchedulerActor " + id + " received: " + msg);
+            
+            if ("update".equals(msg)) {
+                schedule = "updated";
+                System.out.println("Schedule updated for class");
+            } else if ("view".equals(msg)) {
+               

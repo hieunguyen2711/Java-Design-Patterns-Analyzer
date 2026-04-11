@@ -1,0 +1,100 @@
+### FILE: Person.java
+```java
+package edu.platform.student;
+
+public abstract class Person {
+    protected String name;
+    protected int id;
+    
+    public Person(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student extends Person {
+    private double gpa;
+    
+    public Student(String name, int id, double gpa) {
+        super(name, id);
+        this.gpa = gpa;
+    }
+    
+    public double getGpa() {
+        return gpa;
+    }
+}
+```
+
+### FILE: Teacher.java
+```java
+package edu.platform.student;
+
+public class Teacher extends Person {
+    private String department;
+    
+    public Teacher(String name, int id, String department) {
+        super(name, id);
+        this.department = department;
+    }
+    
+    public String getDepartment() {
+        return department;
+    }
+}
+```
+
+### FILE: StudentEnrollmentSystem.java
+```java
+package edu.platform.student;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentEnrollmentSystem {
+    private List<Person> people;
+    
+    public StudentEnrollmentSystem() {
+        this.people = new ArrayList<>();
+    }
+    
+    public void addPerson(Person person) {
+        people.add(person);
+    }
+    
+    public static void main(String[] args) {
+        StudentEnrollmentSystem system = new StudentEnrollmentSystem();
+        
+        Student student = new Student("Alice Johnson", 1001, 3.75);
+        Teacher teacher = new Teacher("Dr. Smith", 2001, "Computer Science");
+        
+        system.addPerson(student);
+        system.addPerson(teacher);
+        
+        for (Person person : system.people) {
+            System.out.println("Name: " + person.getName() + ", ID: " + person.getId());
+            
+            if (person instanceof Student) {
+                Student s = (Student) person;
+                System.out.println("GPA: " + s.getGpa());
+            } else if (person instanceof Teacher) {
+                Teacher t = (Teacher) person;
+                System.out.println("Department: " + t.getDepartment());
+            }
+        }
+    }
+}
+```

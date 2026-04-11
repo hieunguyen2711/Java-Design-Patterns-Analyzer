@@ -1,0 +1,95 @@
+### FILE: Membership.java
+```java
+public abstract class Membership {
+    protected String membershipType;
+    protected double price;
+    
+    public Membership(String membershipType, double price) {
+        this.membershipType = membershipType;
+        this.price = price;
+    }
+    
+    public abstract void showBenefits();
+    
+    public String getMembershipType() {
+        return membershipType;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: BasicMembership.java
+```java
+public class BasicMembership extends Membership {
+    
+    public BasicMembership() {
+        super("Basic", 29.99);
+    }
+    
+    @Override
+    public void showBenefits() {
+        System.out.println("Basic Membership Benefits:");
+        System.out.println("- Access to gym facilities");
+        System.out.println("- Basic workout equipment");
+        System.out.println("- 1 free personal training session per month");
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+public class PremiumMembership extends Membership {
+    
+    public PremiumMembership() {
+        super("Premium", 79.99);
+    }
+    
+    @Override
+    public void showBenefits() {
+        System.out.println("Premium Membership Benefits:");
+        System.out.println("- Full gym access 24/7");
+        System.out.println("- All workout equipment");
+        System.out.println("- Unlimited personal training sessions");
+        System.out.println("- Access to exclusive classes");
+        System.out.println("- Nutrition consultation");
+    }
+}
+```
+
+### FILE: VIPMembership.java
+```java
+public class VIPMembership extends Membership {
+    
+    public VIPMembership() {
+        super("VIP", 149.99);
+    }
+    
+    @Override
+    public void showBenefits() {
+        System.out.println("VIP Membership Benefits:");
+        System.out.println("- All Premium benefits");
+        System.out.println("- Personal trainer for every workout session");
+        System.out.println("- Private locker room access");
+        System.out.println("- Priority booking for classes and trainers");
+        System.out.println("- Monthly wellness consultation");
+        System.out.println("- Complimentary spa access");
+    }
+}
+```
+
+### FILE: MembershipFactory.java
+```java
+public abstract class MembershipFactory {
+    
+    public abstract Membership createMembership();
+    
+    public Membership getMembership(String membershipType) {
+        Membership membership = null;
+        
+        if ("basic".equalsIgnoreCase(membershipType)) {
+            membership = new BasicMembership();
+        } else if ("premium".equalsIgnoreCase(membershipType)) {
+            membership

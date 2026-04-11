@@ -1,0 +1,100 @@
+### FILE: Student.java
+```java
+public class Student {
+    private String name;
+    private int id;
+    
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: Course.java
+```java
+public class Course {
+    private String courseName;
+    private String courseId;
+    private int credits;
+    
+    public Course(String courseName, String courseId, int credits) {
+        this.courseName = courseName;
+        this.courseId = courseId;
+        this.credits = credits;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+    
+    public int getCredits() {
+        return credits;
+    }
+}
+```
+
+### FILE: EnrollmentService.java
+```java
+public interface EnrollmentService {
+    void enrollStudent(Student student, Course course);
+    boolean isEnrolled(Student student, Course course);
+}
+```
+
+### FILE: RealEnrollmentService.java
+```java
+import java.util.*;
+
+public class RealEnrollmentService implements EnrollmentService {
+    private Map<Student, List<Course>> enrollmentRecords;
+    
+    public RealEnrollmentService() {
+        this.enrollmentRecords = new HashMap<>();
+    }
+    
+    @Override
+    public void enrollStudent(Student student, Course course) {
+        System.out.println("Performing actual enrollment for " + student.getName() + 
+                          " in " + course.getCourseName());
+        
+        enrollmentRecords.putIfAbsent(student, new ArrayList<>());
+        enrollmentRecords.get(student).add(course);
+    }
+    
+    @Override
+    public boolean isEnrolled(Student student, Course course) {
+        System.out.println("Checking actual enrollment status for " + student.getName() + 
+                          " in " + course.getCourseName());
+        
+        List<Course> enrolledCourses = enrollmentRecords.get(student);
+        return enrolledCourses != null && enrolledCourses.contains(course);
+    }
+}
+```
+
+### FILE: EnrollmentServiceProxy.java
+```java
+public class EnrollmentServiceProxy implements EnrollmentService {
+    private RealEnrollmentService realService;
+    private Student currentStudent;
+    
+    public EnrollmentServiceProxy(Student student) {
+        this.currentStudent = student;
+        this.realService = new RealEnrollmentService();
+    }
+    
+    @Override
+    public void enrollStudent(Student student, Course

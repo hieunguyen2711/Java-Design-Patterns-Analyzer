@@ -1,0 +1,107 @@
+### FILE: StudentEnrollmentPage.java
+```java
+package edu.university.enrollment.page;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class StudentEnrollmentPage {
+    private List<String> enrolledCourses;
+    
+    public StudentEnrollmentPage() {
+        this.enrolledCourses = new ArrayList<>();
+    }
+    
+    public void enrollStudent(String courseName) {
+        enrolledCourses.add(courseName);
+    }
+    
+    public List<String> getEnrolledCourses() {
+        return new ArrayList<>(enrolledCourses);
+    }
+}
+```
+
+### FILE: CourseCatalogPage.java
+```java
+package edu.university.enrollment.page;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class CourseCatalogPage {
+    private List<Course> availableCourses;
+    
+    public CourseCatalogPage() {
+        this.availableCourses = new ArrayList<>();
+    }
+    
+    public void addCourse(Course course) {
+        availableCourses.add(course);
+    }
+    
+    public List<Course> getAvailableCourses() {
+        return new ArrayList<>(availableCourses);
+    }
+}
+```
+
+### FILE: Course.java
+```java
+package edu.university.enrollment.page;
+
+public class Course {
+    private String name;
+    private String code;
+    private int credits;
+    
+    public Course(String name, String code, int credits) {
+        this.name = name;
+        this.code = code;
+        this.credits = credits;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getCode() {
+        return code;
+    }
+    
+    public int getCredits() {
+        return credits;
+    }
+}
+```
+
+### FILE: EnrollmentSystem.java
+```java
+package edu.university.enrollment.page;
+
+public class EnrollmentSystem {
+    private StudentEnrollmentPage studentPage;
+    private CourseCatalogPage catalogPage;
+    
+    public EnrollmentSystem() {
+        this.studentPage = new StudentEnrollmentPage();
+        this.catalogPage = new CourseCatalogPage();
+    }
+    
+    public void addCourseToCatalog(Course course) {
+        catalogPage.addCourse(course);
+    }
+    
+    public void enrollStudentInCourse(String courseName) {
+        studentPage.enrollStudent(courseName);
+    }
+    
+    public StudentEnrollmentPage getStudentPage() {
+        return studentPage;
+    }
+    
+    public CourseCatalogPage getCatalogPage() {
+        return catalogPage;
+    }
+}
+```

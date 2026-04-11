@@ -1,0 +1,118 @@
+### FILE: Student.java
+```java
+package edu.platform.student;
+
+public class Student {
+    private String name;
+    private int id;
+    
+    public Student(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: Course.java
+```java
+package edu.platform.course;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Course {
+    private String courseName;
+    private List<Student> enrolledStudents;
+    
+    public Course(String courseName) {
+        this.courseName = courseName;
+        this.enrolledStudents = new ArrayList<>();
+    }
+    
+    public void enrollStudent(Student student) {
+        enrolledStudents.add(student);
+    }
+    
+    public List<Student> getEnrolledStudents() {
+        return enrolledStudents;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+}
+```
+
+### FILE: EnrollmentStrategy.java
+```java
+package edu.platform.enrollment;
+
+import edu.platform.student.Student;
+import edu.platform.course.Course;
+
+public interface EnrollmentStrategy {
+    boolean enroll(Student student, Course course);
+}
+```
+
+### FILE: StandardEnrollmentStrategy.java
+```java
+package edu.platform.enrollment;
+
+import edu.platform.student.Student;
+import edu.platform.course.Course;
+
+public class StandardEnrollmentStrategy implements EnrollmentStrategy {
+    @Override
+    public boolean enroll(Student student, Course course) {
+        if (course.getEnrolledStudents().size() < 30) {
+            course.enrollStudent(student);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### FILE: PriorityEnrollmentStrategy.java
+```java
+package edu.platform.enrollment;
+
+import edu.platform.student.Student;
+import edu.platform.course.Course;
+
+public class PriorityEnrollmentStrategy implements EnrollmentStrategy {
+    @Override
+    public boolean enroll(Student student, Course course) {
+        if (course.getEnrolledStudents().size() < 10) {
+            course.enrollStudent(student);
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### FILE: EnrollmentContext.java
+```java
+package edu.platform.enrollment;
+
+import edu.platform.student.Student;
+import edu.platform.course.Course;
+
+public class EnrollmentContext {
+    private EnrollmentStrategy strategy;
+    
+    public void setEnrollmentStrategy(EnrollmentStrategy strategy) {
+        this.strategy = strategy;
+    }
+    
+    public boolean enrollStudent(Student student

@@ -1,0 +1,84 @@
+### FILE: Membership.java
+```java
+package com.example.membership;
+
+public class Membership {
+    private int id;
+    private String memberName;
+    private String email;
+    private String membershipType;
+    private boolean isActive;
+    
+    public Membership() {}
+    
+    public Membership(int id, String memberName, String email, String membershipType, boolean isActive) {
+        this.id = id;
+        this.memberName = memberName;
+        this.email = email;
+        this.membershipType = membershipType;
+        this.isActive = isActive;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getMemberName() { return memberName; }
+    public void setMemberName(String memberName) { this.memberName = memberName; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public String getMembershipType() { return membershipType; }
+    public void setMembershipType(String membershipType) { this.membershipType = membershipType; }
+    
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
+}
+```
+
+### FILE: MembershipMapper.java
+```java
+package com.example.membership;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MembershipMapper {
+    private Connection connection;
+    
+    public MembershipMapper(Connection connection) {
+        this.connection = connection;
+    }
+    
+    public Membership findById(int id) throws SQLException {
+        String sql = "SELECT * FROM memberships WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapRowToMembership(rs);
+            }
+        }
+        return null;
+    }
+    
+    public List<Membership> findAll() throws SQLException {
+        List<Membership> memberships = new ArrayList<>();
+        String sql = "SELECT * FROM memberships";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                memberships.add(mapRowToMembership(rs));
+            }
+        }
+        return memberships;
+    }
+    
+    public void save(Membership membership) throws SQLException {
+        if (membership.getId() > 0) {
+            update(membership);
+        } else {
+            insert(membership);

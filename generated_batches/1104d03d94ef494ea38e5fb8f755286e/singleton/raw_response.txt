@@ -1,0 +1,56 @@
+### FILE: DatabaseConnection.java
+```java
+public class DatabaseConnection {
+    private static volatile DatabaseConnection instance;
+    
+    private DatabaseConnection() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static DatabaseConnection getInstance() {
+        if (instance == null) {
+            synchronized (DatabaseConnection.class) {
+                if (instance == null) {
+                    instance = new DatabaseConnection();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void connect() {
+        System.out.println("Connected to database");
+    }
+    
+    public void disconnect() {
+        System.out.println("Disconnected from database");
+    }
+}
+```
+
+### FILE: StudentEnrollmentSystem.java
+```java
+public class StudentEnrollmentSystem {
+    private DatabaseConnection dbConnection;
+    
+    public StudentEnrollmentSystem() {
+        this.dbConnection = DatabaseConnection.getInstance();
+    }
+    
+    public void enrollStudent(String studentName, String course) {
+        dbConnection.connect();
+        System.out.println("Enrolling " + studentName + " in " + course);
+        dbConnection.disconnect();
+    }
+    
+    public static void main(String[] args) {
+        StudentEnrollmentSystem system = new StudentEnrollmentSystem();
+        system.enrollStudent("John Doe", "Advanced Java");
+        
+        // Demonstrating that the same instance is used
+        DatabaseConnection connection1 = DatabaseConnection.getInstance();
+        DatabaseConnection connection2 = DatabaseConnection.getInstance();
+        System.out.println(connection1 == connection2); // Should print true
+    }
+}
+```
