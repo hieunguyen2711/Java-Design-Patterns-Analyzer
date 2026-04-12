@@ -1,0 +1,15 @@
+{
+  "config": {
+    "n_evaluations": 996,
+    "cbo_upper": 14.0,
+    "rfc_upper": 50.0,
+    "dit_target": 2.0,
+    "dit_spread": 3.0
+  },
+  "weights": {
+    "CBO": 0.03,
+    "LCOM*": 0.8674,
+    "RFC": 0.0137,
+    "DIT": 0.0888
+  }
+}
