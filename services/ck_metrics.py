@@ -12,9 +12,14 @@ import os
 import csv
 import math
 import logging
+import json
 from typing import Optional
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+ENTROPY_WEIGHTS_PATH = ROOT_DIR / "entropy_weights.json"
 
 CK_JAR_PATH = os.getenv(
     "CK_JAR_PATH",
@@ -71,6 +76,76 @@ _METHOD_INT_COLS = {
     'assignmentsQty', 'mathOperationsQty', 'anonymousClassesDecl',
     'innerClassesDecl', 'uniqueWordsQty', 'logStatementsQty',
 }
+
+
+def _load_entropy_weights() -> Optional[dict]:
+    """Load entropy weighting config from entropy_weights.json if available."""
+    if not ENTROPY_WEIGHTS_PATH.exists():
+        return None
+
+    try:
+        raw = json.loads(ENTROPY_WEIGHTS_PATH.read_text(encoding="utf-8"))
+        cfg = raw.get("config", {})
+        w = raw.get("weights", {})
+
+        cbo_w = float(w.get("CBO", 0.0))
+        lcom_w = float(w.get("LCOM*", 0.0))
+        rfc_w = float(w.get("RFC", 0.0))
+        dit_w = float(w.get("DIT", 0.0))
+        weight_sum = cbo_w + lcom_w + rfc_w + dit_w
+        if weight_sum <= 0:
+            return None
+
+        # Normalize defensively if file rounding drifts from 1.0.
+        return {
+            "cbo_upper": float(cfg.get("cbo_upper", 14.0)),
+            "rfc_upper": float(cfg.get("rfc_upper", 50.0)),
+            "dit_target": float(cfg.get("dit_target", 2.0)),
+            "dit_spread": float(cfg.get("dit_spread", 3.0)),
+            "weights": {
+                "CBO": cbo_w / weight_sum,
+                "LCOM*": lcom_w / weight_sum,
+                "RFC": rfc_w / weight_sum,
+                "DIT": dit_w / weight_sum,
+            },
+        }
+    except Exception as exc:
+        logger.warning("Failed to load entropy weights from %s: %s", ENTROPY_WEIGHTS_PATH, exc)
+        return None
+
+
+_ENTROPY_WEIGHTS = _load_entropy_weights()
+
+
+def _entropy_ck_overall_score(cbo: float, lcom_star: float, rfc: float, dit: float) -> Optional[float]:
+    """Compute a 0-100 CK score from entropy-weighted desirability metrics."""
+    if not _ENTROPY_WEIGHTS:
+        return None
+
+    cfg = _ENTROPY_WEIGHTS
+    weights = cfg["weights"]
+
+    cbo_upper = cfg["cbo_upper"]
+    rfc_upper = cfg["rfc_upper"]
+    dit_target = cfg["dit_target"]
+    dit_spread = cfg["dit_spread"]
+
+    if cbo_upper <= 0 or rfc_upper <= 0 or dit_spread <= 0:
+        return None
+
+    d_cbo = max(0.001, min(1.0, (cbo_upper - cbo) / cbo_upper))
+    d_lcom = max(0.001, min(1.0, 1.0 - lcom_star))
+    d_rfc = max(0.001, min(1.0, (rfc_upper - rfc) / rfc_upper))
+    d_dit = max(0.001, min(1.0, 1.0 - abs(dit - dit_target) / dit_spread))
+
+    score = (
+        (d_cbo ** weights["CBO"])
+        * (d_lcom ** weights["LCOM*"])
+        * (d_rfc ** weights["RFC"])
+        * (d_dit ** weights["DIT"])
+    ) * 100.0
+
+    return round(score, 2)
 
 
 def _safe_int(val: str) -> int:
@@ -230,18 +305,23 @@ def compute_class_quality(class_metrics: dict, pattern_name: str = "") -> dict:
     scores["lcom*"] = _rate(lcom_star, CK_THRESHOLDS["lcom*"]["good"], CK_THRESHOLDS["lcom*"]["moderate"])
     scores["tcc"] = _rate(tcc, CK_THRESHOLDS["tcc"]["good"], CK_THRESHOLDS["tcc"]["moderate"], higher_is_better=True)
 
-    # ── Overall score (weighted) ───────────────────────────────────────
-    # Weights: WMC 25%, CBO 25%, LCOM* 20%, TCC 15%, RFC 10%, DIT 5%
-    _SCORE_MAP = {"good": 100, "moderate": 60, "concerning": 20}
-    weighted = (
-        0.25 * _SCORE_MAP[scores["wmc"]]
-        + 0.25 * _SCORE_MAP[scores["cbo"]]
-        + 0.20 * _SCORE_MAP[scores["lcom*"]]
-        + 0.15 * _SCORE_MAP[scores["tcc"]]
-        + 0.10 * _SCORE_MAP[scores["rfc"]]
-        + 0.05 * _SCORE_MAP[scores["dit"]]
-    )
-    overall_score = round(weighted, 2)
+    # ── Overall score ───────────────────────────────────────────────────
+    # Prefer entropy-based weights from entropy_weights.json when present,
+    # otherwise fall back to the legacy weighted threshold score.
+    entropy_score = _entropy_ck_overall_score(cbo, lcom_star, rfc, dit)
+    if entropy_score is not None:
+        overall_score = entropy_score
+    else:
+        _SCORE_MAP = {"good": 100, "moderate": 60, "concerning": 20}
+        weighted = (
+            0.25 * _SCORE_MAP[scores["wmc"]]
+            + 0.25 * _SCORE_MAP[scores["cbo"]]
+            + 0.20 * _SCORE_MAP[scores["lcom*"]]
+            + 0.15 * _SCORE_MAP[scores["tcc"]]
+            + 0.10 * _SCORE_MAP[scores["rfc"]]
+            + 0.05 * _SCORE_MAP[scores["dit"]]
+        )
+        overall_score = round(weighted, 2)
 
     # ── Red flags ──────────────────────────────────────────────────────
     if wmc > 20:
