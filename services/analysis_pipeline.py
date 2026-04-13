@@ -29,6 +29,22 @@ def _normalise(path: str) -> str:
     return os.path.realpath(path)
 
 
+def _compute_cqs(mi_score: Optional[float], ck_q_score: Optional[float]) -> Optional[float]:
+    """Compute the Composite Quality Score (CQS).
+
+    CQS is the geometric mean of the normalized MI score and the
+    CK_q score, where CK_q is the CK quality score with WMC dropped.
+    The result is reported on a 0–100 scale.
+    """
+
+    if mi_score is None or ck_q_score is None:
+        return None
+
+    d_mi = max(0.0, min(1.0, mi_score / 100.0))
+    d_ck_q = max(0.0, min(1.0, ck_q_score / 100.0))
+    return round((d_mi ** 0.5) * (d_ck_q ** 0.5) * 100.0, 2)
+
+
 def analyze_project(project_dir: str, pattern_name: str = "") -> dict:
     """Run the full CK + MI analysis pipeline on *project_dir*.
 
@@ -231,6 +247,8 @@ def analyze_project(project_dir: str, pattern_name: str = "") -> dict:
         "avg_rfc": ck_summary.get("avg_rfc"),
         "avg_dit": ck_summary.get("avg_dit"),
         "ck_overall_score": ck_summary.get("ck_overall_score"),
+        "ck_q_score": ck_summary.get("ck_overall_score"),
+        "cqs_score": _compute_cqs(avg_mi, ck_summary.get("ck_overall_score")),
         "avg_halstead_volume": round(_avg(h_volumes), 2),
         "avg_halstead_difficulty": round(_avg(h_diffs), 2),
         "total_estimated_bugs": round(sum(h_bugs), 4) if h_bugs else 0.0,

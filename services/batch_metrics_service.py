@@ -138,6 +138,7 @@ class BatchMetricsService:
             if ck_overall is not None:
                 ck_summary = {
                     "ck_overall_score": ck_overall,
+                    "ck_q_score": summary.get("ck_q_score"),
                     "avg_wmc": summary.get("avg_wmc"),
                     "avg_cbo": summary.get("avg_cbo"),
                     "avg_lcom_star": summary.get("avg_lcom_star"),
@@ -151,6 +152,7 @@ class BatchMetricsService:
                 "status": "success",
                 "mi": mi_summary,
                 "ck": ck_summary,
+                "cqs_score": summary.get("cqs_score"),
                 "error": None,
             }
 

@@ -94,6 +94,7 @@ class CKSummary(BaseModel):
     None when CK is unavailable (no Java / missing JAR)."""
 
     ck_overall_score: Optional[float] = None
+    ck_q_score: Optional[float] = None
     avg_wmc: Optional[float] = None
     avg_cbo: Optional[float] = None
     avg_lcom_star: Optional[float] = None
@@ -109,6 +110,7 @@ class PatternMetricsSummary(BaseModel):
     status: str          # "success" | "skipped" | "error"
     mi: Optional[MISummary] = None
     ck: Optional[CKSummary] = None
+    cqs_score: Optional[float] = None
     error: Optional[str] = None
 
 

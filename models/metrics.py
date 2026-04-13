@@ -114,6 +114,8 @@ class AnalysisSummary(BaseModel):
     avg_rfc: Optional[float] = None
     avg_dit: Optional[float] = None
     ck_overall_score: Optional[float] = None
+    ck_q_score: Optional[float] = None
+    cqs_score: Optional[float] = None
 
     # Halstead aggregates
     avg_halstead_volume: float

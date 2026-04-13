@@ -67,6 +67,11 @@ def summarize_overall(items: list[dict[str, Any]]) -> dict[str, Any]:
         for row in analyzed
         if row.get("metrics") and row["metrics"].get("summary", {}).get("ck_overall_score") is not None
     ]
+    cqs_values = [
+        row["metrics"]["summary"].get("cqs_score")
+        for row in analyzed
+        if row.get("metrics") and row["metrics"].get("summary", {}).get("cqs_score") is not None
+    ]
     piqs_values = [
         row["piqs"].get("final_quality_result_piqs", {}).get("result_percent")
         for row in with_piqs
@@ -84,6 +89,7 @@ def summarize_overall(items: list[dict[str, Any]]) -> dict[str, Any]:
         "piqs_status_breakdown": dict(piqs_status_counts),
         "avg_mi_score": round(sum(mi_values) / len(mi_values), 2) if mi_values else None,
         "avg_ck_overall_score": round(sum(ck_values) / len(ck_values), 2) if ck_values else None,
+        "avg_cqs_score": round(sum(cqs_values) / len(cqs_values), 2) if cqs_values else None,
         "avg_piqs_score": round(sum(piqs_values) / len(piqs_values), 2) if piqs_values else None,
     }
 
