@@ -1,0 +1,105 @@
+### FILE: RoomInventory.java
+```java
+package hotel.inventory;
+
+import java.util.Optional;
+import java.util.function.Function;
+
+public class RoomInventory {
+    private final Optional<Room> room;
+    
+    private RoomInventory(Optional<Room> room) {
+        this.room = room;
+    }
+    
+    public static RoomInventory empty() {
+        return new RoomInventory(Optional.empty());
+    }
+    
+    public static RoomInventory of(Room room) {
+        return new RoomInventory(Optional.ofNullable(room));
+    }
+    
+    public <T> Optional<T> map(Function<Room, T> mapper) {
+        return room.map(mapper);
+    }
+    
+    public Optional<Room> get() {
+        return room;
+    }
+}
+```
+
+### FILE: Room.java
+```java
+package hotel.inventory;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class Room {
+    private final String roomId;
+    private final int capacity;
+    private final List<String> amenities;
+    
+    public Room(String roomId, int capacity, List<String> amenities) {
+        this.roomId = roomId;
+        this.capacity = capacity;
+        this.amenities = amenities;
+    }
+    
+    public String getRoomId() {
+        return roomId;
+    }
+    
+    public int getCapacity() {
+        return capacity;
+    }
+    
+    public List<String> getAmenities() {
+        return amenities;
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+package hotel.booking;
+
+import hotel.inventory.RoomInventory;
+import java.time.LocalDate;
+import java.util.Optional;
+
+public class BookingService {
+    
+    public RoomInventory findAvailableRoom(LocalDate checkIn, LocalDate checkOut) {
+        // Simulate finding a room
+        return RoomInventory.of(new Room("101", 2, List.of("WiFi", "TV")));
+    }
+    
+    public Optional<Booking> createBooking(RoomInventory inventory, 
+                                         LocalDate checkIn, 
+                                         LocalDate checkOut) {
+        return inventory.map(room -> new Booking(room.getRoomId(), checkIn, checkOut));
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package hotel.booking;
+
+import java.time.LocalDate;
+
+public class Booking {
+    private final String roomId;
+    private final LocalDate checkIn;
+    private final LocalDate checkOut;
+    
+    public Booking(String roomId, LocalDate checkIn, LocalDate checkOut) {
+        this.roomId = roomId;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+    }
+    
+    public String getRoomId() {

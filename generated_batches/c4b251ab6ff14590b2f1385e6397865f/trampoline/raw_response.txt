@@ -1,0 +1,91 @@
+### FILE: Trampoline.java
+```java
+package restaurant.order;
+
+@FunctionalInterface
+public interface Trampoline<T> {
+    Result<T> run();
+    
+    static <T> Trampoline<T> done(T value) {
+        return () -> new Result<>(true, value, null);
+    }
+    
+    static <T> Trampoline<T> suspend(Trampoline<T> trampoline) {
+        return () -> new Result<>(false, null, trampoline);
+    }
+    
+    default T getResult() {
+        Trampoline<T> current = this;
+        while (true) {
+            Result<T> result = current.run();
+            if (result.done()) {
+                return result.value();
+            } else {
+                current = result.next();
+            }
+        }
+    }
+    
+    class Result<T> {
+        private final boolean done;
+        private final T value;
+        private final Trampoline<T> next;
+        
+        public Result(boolean done, T value, Trampoline<T> next) {
+            this.done = done;
+            this.value = value;
+            this.next = next;
+        }
+        
+        public boolean done() {
+            return done;
+        }
+        
+        public T value() {
+            return value;
+        }
+        
+        public Trampoline<T> next() {
+            return next;
+        }
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package restaurant.order;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class OrderProcessor {
+    
+    public static Trampoline<OrderStatus> processOrder(Order order) {
+        if (order.getItems().isEmpty()) {
+            return Trampoline.done(new OrderStatus("ORDER_CANCELLED", "No items in order"));
+        }
+        
+        List<Trampoline<OrderStatus>> steps = new ArrayList<>();
+        steps.add(verifyInventory(order));
+        steps.add(prepareFood(order));
+        steps.add(packOrder(order));
+        steps.add(assignDelivery(order));
+        
+        return processSteps(steps, 0);
+    }
+    
+    private static Trampoline<OrderStatus> processSteps(List<Trampoline<OrderStatus>> steps, int index) {
+        if (index >= steps.size()) {
+            return Trampoline.done(new OrderStatus("ORDER_COMPLETED", "Order processed successfully"));
+        }
+        
+        return Trampoline.suspend(() -> 
+            steps.get(index).run().done() ? 
+                processSteps(steps, index + 1) : 
+                steps.get(index)
+        );
+    }
+    
+    private static Trampoline<OrderStatus> verifyInventory(Order order) {
+        // Simulate

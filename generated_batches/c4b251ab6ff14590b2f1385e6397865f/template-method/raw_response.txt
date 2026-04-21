@@ -1,0 +1,103 @@
+### FILE: OrderProcessingTemplate.java
+```java
+package restaurant.order;
+
+public abstract class OrderProcessingTemplate {
+    
+    // Template method - final to prevent overriding
+    public final void processOrder() {
+        validateOrder();
+        calculateTotal();
+        applyDiscounts();
+        updateInventory();
+        notifyCustomer();
+    }
+    
+    protected abstract void validateOrder();
+    protected abstract void calculateTotal();
+    protected abstract void applyDiscounts();
+    protected abstract void updateInventory();
+    protected abstract void notifyCustomer();
+}
+```
+
+### FILE: DeliveryOrder.java
+```java
+package restaurant.order;
+
+public class DeliveryOrder extends OrderProcessingTemplate {
+
+    @Override
+    protected void validateOrder() {
+        System.out.println("Validating delivery order - checking address and time window");
+    }
+
+    @Override
+    protected void calculateTotal() {
+        System.out.println("Calculating total with delivery fee and tax");
+    }
+
+    @Override
+    protected void applyDiscounts() {
+        System.out.println("Applying delivery discounts and promo codes");
+    }
+
+    @Override
+    protected void updateInventory() {
+        System.out.println("Updating inventory for delivery order items");
+    }
+
+    @Override
+    protected void notifyCustomer() {
+        System.out.println("Sending delivery confirmation to customer via SMS");
+    }
+}
+```
+
+### FILE: PickupOrder.java
+```java
+package restaurant.order;
+
+public class PickupOrder extends OrderProcessingTemplate {
+
+    @Override
+    protected void validateOrder() {
+        System.out.println("Validating pickup order - checking order time and availability");
+    }
+
+    @Override
+    protected void calculateTotal() {
+        System.out.println("Calculating total with tax only for pickup");
+    }
+
+    @Override
+    protected void applyDiscounts() {
+        System.out.println("Applying pickup discounts and loyalty points");
+    }
+
+    @Override
+    protected void updateInventory() {
+        System.out.println("Updating inventory for pickup order items");
+    }
+
+    @Override
+    protected void notifyCustomer() {
+        System.out.println("Sending pickup confirmation to customer via email");
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package restaurant.order;
+
+public class OrderProcessor {
+    
+    public static void main(String[] args) {
+        // Process delivery order
+        System.out.println("=== Processing Delivery Order ===");
+        OrderProcessingTemplate deliveryOrder = new DeliveryOrder();
+        deliveryOrder.processOrder();
+        
+        System.out.println("\n=== Processing Pickup Order ===");
+        OrderProcessingTemplate pickupOrder = new PickupOrder

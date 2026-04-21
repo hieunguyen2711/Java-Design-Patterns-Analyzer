@@ -1,0 +1,105 @@
+### FILE: Vehicle.java
+```java
+package com.fleetmanager.model;
+
+import java.util.Objects;
+
+public final class Vehicle {
+    private final String vin;
+    private final String make;
+    private final String model;
+    private final int year;
+    private final String type;
+    
+    public Vehicle(String vin, String make, String model, int year, String type) {
+        this.vin = Objects.requireNonNull(vin);
+        this.make = Objects.requireNonNull(make);
+        this.model = Objects.requireNonNull(model);
+        this.year = year;
+        this.type = Objects.requireNonNull(type);
+    }
+    
+    public String getVin() {
+        return vin;
+    }
+    
+    public String getMake() {
+        return make;
+    }
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public int getYear() {
+        return year;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Vehicle vehicle = (Vehicle) obj;
+        return Objects.equals(vin, vehicle.vin);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(vin);
+    }
+    
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "vin='" + vin + '\'' +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", type='" + type + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: VehicleBuilder.java
+```java
+package com.fleetmanager.model;
+
+public class VehicleBuilder {
+    private String vin;
+    private String make;
+    private String model;
+    private int year;
+    private String type;
+    
+    public VehicleBuilder setVin(String vin) {
+        this.vin = vin;
+        return this;
+    }
+    
+    public VehicleBuilder setMake(String make) {
+        this.make = make;
+        return this;
+    }
+    
+    public VehicleBuilder setModel(String model) {
+        this.model = model;
+        return this;
+    }
+    
+    public VehicleBuilder setYear(int year) {
+        this.year = year;
+        return this;
+    }
+    
+    public VehicleBuilder setType(String type) {
+        this.type = type;
+        return this;
+    }
+    
+    public Vehicle build() {
+        return new Vehicle(vin, make

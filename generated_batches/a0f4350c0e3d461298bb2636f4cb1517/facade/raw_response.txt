@@ -1,0 +1,105 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String name;
+    private String memberId;
+    
+    public Member(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+}
+```
+
+### FILE: LibraryDatabase.java
+```java
+import java.util.*;
+
+public class LibraryDatabase {
+    private Map<String, Book> books;
+    private Map<String, Member> members;
+    
+    public LibraryDatabase() {
+        this.books = new HashMap<>();
+        this.members = new HashMap<>();
+    }
+    
+    public void addBook(Book book) {
+        books.put(book.getIsbn(), book);
+    }
+    
+    public void addMember(Member member) {
+        members.put(member.getMemberId(), member);
+    }
+    
+    public Book findBookByIsbn(String isbn) {
+        return books.get(isbn);
+    }
+    
+    public Member findMemberById(String memberId) {
+        return members.get(memberId);
+    }
+}
+```
+
+### FILE: DueDateCalculator.java
+```java
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+public class DueDateCalculator {
+    private static final int LOAN_PERIOD_DAYS = 14;
+    
+    public LocalDate calculateDueDate() {
+        return LocalDate.now().plusDays(LOAN_PERIOD_DAYS);
+    }
+    
+    public long calculateLateDays(LocalDate dueDate) {
+        return ChronoUnit.DAYS.between(LocalDate.now(), dueDate);
+    }
+}
+```
+
+### FILE: LateFeeCalculator.java
+```java
+public class LateFeeCalculator {
+    private static final double DAILY_LATE_FEE = 0.50;
+    
+    public double calculateLateFee(long lateDays) {
+        if (lateDays <= 0) return 0.0;
+        return lateDays * DAILY_LATE_FEE

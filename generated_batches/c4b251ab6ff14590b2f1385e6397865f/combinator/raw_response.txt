@@ -1,0 +1,104 @@
+### FILE: Order.java
+```java
+package restaurant.order;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.math.BigDecimal;
+
+public class Order {
+    private final List<OrderItem> items;
+    private final String customerId;
+    private final BigDecimal totalAmount;
+    
+    public Order(List<OrderItem> items, String customerId) {
+        this.items = new ArrayList<>(items);
+        this.customerId = customerId;
+        this.totalAmount = calculateTotal();
+    }
+    
+    private BigDecimal calculateTotal() {
+        return items.stream()
+                   .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                   .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    public List<OrderItem> getItems() {
+        return new ArrayList<>(items);
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+}
+```
+
+### FILE: OrderCombinator.java
+```java
+package restaurant.order;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.math.BigDecimal;
+
+public class OrderCombinator {
+    
+    public static Order combineOrders(List<Order> orders) {
+        if (orders == null || orders.isEmpty()) {
+            throw new IllegalArgumentException("Orders list cannot be null or empty");
+        }
+        
+        List<OrderItem> combinedItems = new ArrayList<>();
+        String customerId = orders.get(0).getCustomerId();
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        
+        for (Order order : orders) {
+            if (!order.getCustomerId().equals(customerId)) {
+                throw new IllegalArgumentException("All orders must belong to the same customer");
+            }
+            
+            combinedItems.addAll(order.getItems());
+            totalAmount = totalAmount.add(order.getTotalAmount());
+        }
+        
+        return new Order(combinedItems, customerId);
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package restaurant.order;
+
+import java.math.BigDecimal;
+
+public class OrderItem {
+    private final String menuItemId;
+    private final String name;
+    private final BigDecimal price;
+    private final int quantity;
+    
+    public OrderItem(String menuItemId, String name, BigDecimal price, int quantity) {
+        this.menuItemId = menuItemId;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+    
+    public String getMenuItemId() {
+        return menuItemId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
+    public

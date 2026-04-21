@@ -1,0 +1,111 @@
+### FILE: AppointmentCommand.java
+```java
+public interface AppointmentCommand {
+    void execute();
+    void undo();
+}
+```
+
+### FILE: CheckInCommand.java
+```java
+public class CheckInCommand implements AppointmentCommand {
+    private final Appointment appointment;
+    
+    public CheckInCommand(Appointment appointment) {
+        this.appointment = appointment;
+    }
+    
+    @Override
+    public void execute() {
+        appointment.checkIn();
+    }
+    
+    @Override
+    public void undo() {
+        appointment.undoCheckIn();
+    }
+}
+```
+
+### FILE: CancelAppointmentCommand.java
+```java
+public class CancelAppointmentCommand implements AppointmentCommand {
+    private final Appointment appointment;
+    
+    public CancelAppointmentCommand(Appointment appointment) {
+        this.appointment = appointment;
+    }
+    
+    @Override
+    public void execute() {
+        appointment.cancel();
+    }
+    
+    @Override
+    public void undo() {
+        appointment.restore();
+    }
+}
+```
+
+### FILE: Appointment.java
+```java
+public class Appointment {
+    private final String patientName;
+    private boolean isCheckedIn;
+    private boolean isCancelled;
+    
+    public Appointment(String patientName) {
+        this.patientName = patientName;
+        this.isCheckedIn = false;
+        this.isCancelled = false;
+    }
+    
+    public void checkIn() {
+        if (!isCancelled) {
+            isCheckedIn = true;
+            System.out.println("Patient " + patientName + " checked in.");
+        } else {
+            System.out.println("Cannot check in cancelled appointment for " + patientName);
+        }
+    }
+    
+    public void undoCheckIn() {
+        isCheckedIn = false;
+        System.out.println("Check-in undone for " + patientName);
+    }
+    
+    public void cancel() {
+        isCancelled = true;
+        System.out.println("Appointment for " + patientName + " cancelled.");
+    }
+    
+    public void restore() {
+        isCancelled = false;
+        System.out.println("Appointment for " + patientName + " restored.");
+    }
+    
+    public boolean isCheckedIn() {
+        return isCheckedIn;
+    }
+    
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+}
+```
+
+### FILE: AppointmentCommandExecutor.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class AppointmentCommandExecutor {
+    private final List<AppointmentCommand> commandHistory = new ArrayList<>();
+    
+    public void executeCommand(AppointmentCommand command) {
+        command.execute();
+        commandHistory.add(command);
+    }
+    
+   

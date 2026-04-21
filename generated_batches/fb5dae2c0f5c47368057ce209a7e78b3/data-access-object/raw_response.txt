@@ -1,0 +1,94 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private int id;
+    private String title;
+    private String description;
+    
+    public Course() {}
+    
+    public Course(int id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+}
+```
+
+### FILE: CourseDAO.java
+```java
+package com.lms.dao;
+
+import com.lms.model.Course;
+import java.util.List;
+
+public interface CourseDAO {
+    List<Course> getAllCourses();
+    Course getCourseById(int id);
+    void saveCourse(Course course);
+    void updateCourse(Course course);
+    void deleteCourse(int id);
+}
+```
+
+### FILE: CourseDAOImpl.java
+```java
+package com.lms.dao.impl;
+
+import com.lms.dao.CourseDAO;
+import com.lms.model.Course;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CourseDAOImpl implements CourseDAO {
+    private List<Course> courses;
+    
+    public CourseDAOImpl() {
+        this.courses = new ArrayList<>();
+        // Initialize with sample data
+        courses.add(new Course(1, "Java Programming", "Learn Java fundamentals"));
+        courses.add(new Course(2, "Database Design", "SQL and database concepts"));
+    }
+    
+    @Override
+    public List<Course> getAllCourses() {
+        return new ArrayList<>(courses);
+    }
+    
+    @Override
+    public Course getCourseById(int id) {
+        return courses.stream()
+                .filter(course -> course.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+    
+    @Override
+    public void saveCourse(Course course) {
+        courses.add(course);
+    }
+    
+    @Override
+    public void updateCourse(Course course) {
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getId() == course.getId()) {
+                courses.set(i, course);
+                break;
+            }
+        }
+    }
+    
+    @Override
+    public void deleteCourse

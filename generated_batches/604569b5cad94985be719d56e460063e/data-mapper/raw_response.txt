@@ -1,0 +1,85 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private int id;
+    private String name;
+    private String email;
+    private double baseSalary;
+    
+    public Employee() {}
+    
+    public Employee(int id, String name, String email, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: EmployeeMapper.java
+```java
+package hr.system;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EmployeeMapper {
+    
+    private Connection connection;
+    
+    public EmployeeMapper(Connection connection) {
+        this.connection = connection;
+    }
+    
+    public Employee findById(int id) throws SQLException {
+        String sql = "SELECT id, name, email, base_salary FROM employees WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapRowToEmployee(rs);
+            }
+        }
+        return null;
+    }
+    
+    public List<Employee> findAll() throws SQLException {
+        List<Employee> employees = new ArrayList<>();
+        String sql = "SELECT id, name, email, base_salary FROM employees";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                employees.add(mapRowToEmployee(rs));
+            }
+        }
+        return employees;
+    }
+    
+    public void save(Employee employee) throws SQLException {
+        if (employee.getId() > 0) {
+            update(employee);
+        } else {
+            insert(employee);
+        }
+    }
+    
+    private void insert(Employee employee) throws SQLException {
+        String sql = "INSERT INTO employees (name, email, base_salary) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENER

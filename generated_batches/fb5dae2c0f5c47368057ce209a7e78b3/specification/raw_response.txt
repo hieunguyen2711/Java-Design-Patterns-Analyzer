@@ -1,0 +1,126 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private String title;
+    private String description;
+    
+    public Course(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.model;
+
+public class LessonModule {
+    private String moduleName;
+    private Course course;
+    
+    public LessonModule(String moduleName, Course course) {
+        this.moduleName = moduleName;
+        this.course = course;
+    }
+    
+    public String getModuleName() {
+        return moduleName;
+    }
+    
+    public Course getCourse() {
+        return course;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+public class Assignment {
+    private String title;
+    private LessonModule module;
+    
+    public Assignment(String title, LessonModule module) {
+        this.title = title;
+        this.module = module;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public LessonModule getModule() {
+        return module;
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.model;
+
+public class Submission {
+    private Assignment assignment;
+    private String studentId;
+    private String content;
+    
+    public Submission(Assignment assignment, String studentId, String content) {
+        this.assignment = assignment;
+        this.studentId = studentId;
+        this.content = content;
+    }
+    
+    public Assignment getAssignment() {
+        return assignment;
+    }
+    
+    public String getStudentId() {
+        return studentId;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+### FILE: GradingStrategy.java
+```java
+package com.lms.strategy;
+
+import com.lms.model.Submission;
+
+public interface GradingStrategy {
+    double grade(Submission submission);
+}
+```
+
+### FILE: LetterGradeStrategy.java
+```java
+package com.lms.strategy;
+
+import com.lms.model.Submission;
+
+public class LetterGradeStrategy implements GradingStrategy {
+    
+    @Override
+    public double grade(Submission submission) {
+        String content = submission.getContent();
+        if (content == null || content.isEmpty()) {
+            return 0.0;
+        }
+        
+        int length = content.length();
+        if (length >= 1

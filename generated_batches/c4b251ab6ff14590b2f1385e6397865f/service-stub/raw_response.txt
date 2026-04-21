@@ -1,0 +1,93 @@
+### FILE: OrderService.java
+```java
+package com.restaurant.service;
+
+public interface OrderService {
+    void processOrder(String orderId);
+    String getOrderStatus(String orderId);
+}
+```
+
+### FILE: RealOrderService.java
+```java
+package com.restaurant.service;
+
+public class RealOrderService implements OrderService {
+    @Override
+    public void processOrder(String orderId) {
+        System.out.println("Processing order: " + orderId);
+        // Simulate actual order processing logic
+    }
+    
+    @Override
+    public String getOrderStatus(String orderId) {
+        return "ORDER_CONFIRMED";
+    }
+}
+```
+
+### FILE: OrderServiceStub.java
+```java
+package com.restaurant.service;
+
+public class OrderServiceStub implements OrderService {
+    private final OrderService realService;
+    
+    public OrderServiceStub(OrderService realService) {
+        this.realService = realService;
+    }
+    
+    @Override
+    public void processOrder(String orderId) {
+        // Stub implementation - does not actually process order
+        System.out.println("Stub: Order processing skipped for " + orderId);
+    }
+    
+    @Override
+    public String getOrderStatus(String orderId) {
+        // Return predefined status instead of querying real system
+        return "STUB_STATUS";
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package com.restaurant.service;
+
+public class OrderProcessor {
+    private final OrderService orderService;
+    
+    public OrderProcessor(OrderService orderService) {
+        this.orderService = orderService;
+    }
+    
+    public void handleOrder(String orderId) {
+        System.out.println("Processing order through service stub pattern");
+        orderService.processOrder(orderId);
+        String status = orderService.getOrderStatus(orderId);
+        System.out.println("Order " + orderId + " status: " + status);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.restaurant.service;
+
+public class Main {
+    public static void main(String[] args) {
+        // Using real service in production
+        OrderService realService = new RealOrderService();
+        OrderProcessor processor1 = new OrderProcessor(realService);
+        processor1.handleOrder("ORD-001");
+        
+        System.out.println("---");
+        
+        // Using stub service for testing
+        OrderService stubService = new OrderServiceStub(realService);
+        OrderProcessor processor2 = new OrderProcessor(stubService);
+        processor2.handleOrder("ORD-002");
+    }
+}
+```

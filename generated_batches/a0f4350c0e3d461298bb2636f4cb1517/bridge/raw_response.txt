@@ -1,0 +1,95 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+}
+```
+
+### FILE: LibraryMember.java
+```java
+public class LibraryMember {
+    private String name;
+    private String memberId;
+    
+    public LibraryMember(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+}
+```
+
+### FILE: BorrowingService.java
+```java
+public interface BorrowingService {
+    void borrowBook(Book book, LibraryMember member);
+    void returnBook(Book book, LibraryMember member);
+    boolean isOverdue(Book book, LibraryMember member);
+}
+```
+
+### FILE: StandardBorrowingService.java
+```java
+public class StandardBorrowingService implements BorrowingService {
+    private static final int STANDARD_LOAN_PERIOD_DAYS = 14;
+    
+    @Override
+    public void borrowBook(Book book, LibraryMember member) {
+        System.out.println("Standard borrowing: " + book.getTitle() + 
+                          " borrowed by " + member.getName());
+    }
+    
+    @Override
+    public void returnBook(Book book, LibraryMember member) {
+        System.out.println("Standard returning: " + book.getTitle() + 
+                          " returned by " + member.getName());
+    }
+    
+    @Override
+    public boolean isOverdue(Book book, LibraryMember member) {
+        // Simplified overdue check for demonstration
+        return false;
+    }
+}
+```
+
+### FILE: PremiumBorrowingService.java
+```java
+public class PremiumBorrowingService implements BorrowingService {
+    private static final int PREMIUM_LOAN_PERIOD_DAYS = 28;
+    
+    @Override
+    public void borrowBook(Book book, LibraryMember member) {
+        System.out.println("Premium borrowing: " + book.getTitle() + 
+                          " borrowed by " + member.getName());
+    }
+    
+    @Override
+    public void returnBook(Book book, LibraryMember

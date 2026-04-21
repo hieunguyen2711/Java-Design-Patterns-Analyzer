@@ -1,0 +1,93 @@
+### FILE: Employee.java
+```java
+public class Employee {
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+    
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+public interface PayrollService {
+    double calculateNetSalary(Employee employee);
+    void processLeaveRequest(String employeeName, int days);
+    void generatePayslip(Employee employee);
+}
+```
+
+### FILE: PayrollServiceImpl.java
+```java
+public class PayrollServiceImpl implements PayrollService {
+    
+    @Override
+    public double calculateNetSalary(Employee employee) {
+        // Simulate salary calculation with tax deductions
+        double tax = employee.getBaseSalary() * 0.2;
+        return employee.getBaseSalary() - tax;
+    }
+    
+    @Override
+    public void processLeaveRequest(String employeeName, int days) {
+        System.out.println("Processing leave request for " + employeeName + 
+                          " for " + days + " days");
+    }
+    
+    @Override
+    public void generatePayslip(Employee employee) {
+        System.out.println("Generating payslip for " + employee.getName());
+    }
+}
+```
+
+### FILE: LoggingHandler.java
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class LoggingHandler implements InvocationHandler {
+    private final Object target;
+    
+    public LoggingHandler(Object target) {
+        this.target = target;
+    }
+    
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Before calling " + method.getName());
+        Object result = method.invoke(target, args);
+        System.out.println("After calling " + method.getName());
+        return result;
+    }
+}
+```
+
+### FILE: PayrollServiceProxy.java
+```java
+import java.lang.reflect.Proxy;
+
+public class PayrollServiceProxy {
+    
+    public static PayrollService createPayrollServiceProxy(PayrollService target) {
+        return (PayrollService) Proxy.newProxyInstance(
+            target.getClass().getClassLoader(),
+            new Class[]{PayrollService.class},
+            new LoggingHandler(target)
+        );
+    }

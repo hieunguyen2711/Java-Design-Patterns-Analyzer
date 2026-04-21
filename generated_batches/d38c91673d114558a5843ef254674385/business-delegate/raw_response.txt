@@ -1,0 +1,66 @@
+### FILE: BusinessDelegate.java
+```java
+public class BusinessDelegate {
+    private ProjectService projectService;
+    private TicketService ticketService;
+    
+    public void createProject(String name) {
+        if (projectService == null) {
+            projectService = new ProjectServiceImpl();
+        }
+        projectService.createProject(name);
+    }
+    
+    public void createTicket(String title, String description) {
+        if (ticketService == null) {
+            ticketService = new TicketServiceImpl();
+        }
+        ticketService.createTicket(title, description);
+    }
+}
+```
+
+### FILE: ProjectService.java
+```java
+public interface ProjectService {
+    void createProject(String name);
+}
+```
+
+### FILE: TicketService.java
+```java
+public interface TicketService {
+    void createTicket(String title, String description);
+}
+```
+
+### FILE: ProjectServiceImpl.java
+```java
+public class ProjectServiceImpl implements ProjectService {
+    @Override
+    public void createProject(String name) {
+        System.out.println("Creating project: " + name);
+    }
+}
+```
+
+### FILE: TicketServiceImpl.java
+```java
+public class TicketServiceImpl implements TicketService {
+    @Override
+    public void createTicket(String title, String description) {
+        System.out.println("Creating ticket: " + title);
+    }
+}
+```
+
+### FILE: ProjectTrackerClient.java
+```java
+public class ProjectTrackerClient {
+    public static void main(String[] args) {
+        BusinessDelegate delegate = new BusinessDelegate();
+        delegate.createProject("Website Redesign");
+        delegate.createTicket("Fix login bug", "User cannot log in after password reset");
+    }
+}
+```

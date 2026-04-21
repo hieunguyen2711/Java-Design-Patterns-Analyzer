@@ -1,0 +1,106 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private final int id;
+    private String name;
+    private double salary;
+    
+    public Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public double getSalary() {
+        return salary;
+    }
+    
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private final int employeeId;
+    private final String reason;
+    private LeaveStatus status;
+    
+    public enum LeaveStatus {
+        PENDING, APPROVED, REJECTED
+    }
+    
+    public LeaveRequest(int employeeId, String reason) {
+        this.employeeId = employeeId;
+        this.reason = reason;
+        this.status = LeaveStatus.PENDING;
+    }
+    
+    public int getEmployeeId() {
+        return employeeId;
+    }
+    
+    public String getReason() {
+        return reason;
+    }
+    
+    public LeaveStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(LeaveStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class PayrollSystem {
+    private final Employee employee;
+    private final AtomicBoolean isProcessing = new AtomicBoolean(false);
+    
+    public PayrollSystem(Employee employee) {
+        this.employee = employee;
+    }
+    
+    public void processSalaryUpdate(double newSalary) {
+        // Balking pattern: if already processing, don't start another
+        if (isProcessing.get()) {
+            System.out.println("Balking: Salary update already in progress for employee " + employee.getId());
+            return;
+        }
+        
+        // Only proceed if not currently processing
+        if (isProcessing.compareAndSet(false, true)) {
+            try {
+                System.out.println("Starting salary update for employee " + employee.getId());
+                
+                // Simulate some processing time
+                Thread.sleep(100);
+                
+                // Update the salary
+                employee.setSalary(newSalary);
+                System.out.println("Salary updated

@@ -1,0 +1,119 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String id;
+    private String name;
+    
+    public Doctor(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String id;
+    private String name;
+    
+    public Patient(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private String id;
+    private Doctor doctor;
+    private Patient patient;
+    private long timestamp;
+    
+    public AppointmentSlot(String id, Doctor doctor, Patient patient, long timestamp) {
+        this.id = id;
+        this.doctor = doctor;
+        this.patient = patient;
+        this.timestamp = timestamp;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: CheckIn.java
+```java
+public class CheckIn {
+    private String id;
+    private AppointmentSlot appointment;
+    private long checkInTime;
+    
+    public CheckIn(String id, AppointmentSlot appointment, long checkInTime) {
+        this.id = id;
+        this.appointment = appointment;
+        this.checkInTime = checkInTime;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public AppointmentSlot getAppointment() {
+        return appointment;
+    }
+    
+    public long getCheckInTime() {
+        return checkInTime;
+    }
+}
+```
+
+### FILE: VisitHistory.java
+```java
+public class VisitHistory {
+    private String id;
+    private Patient patient;
+    private Doctor doctor;
+    private long visitDate;
+    
+    public VisitHistory(String id, Patient patient, Doctor doctor, long visitDate) {
+        this.id = id;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.visitDate = visitDate;
+    }
+    
+    public String getId() {
+        return id

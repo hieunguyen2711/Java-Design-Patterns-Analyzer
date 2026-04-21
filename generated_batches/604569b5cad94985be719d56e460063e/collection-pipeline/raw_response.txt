@@ -1,0 +1,82 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    private int yearsOfService;
+    
+    public Employee(String id, String name, double baseSalary, int yearsOfService) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+        this.yearsOfService = yearsOfService;
+    }
+    
+    // Getters
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public double getBaseSalary() { return baseSalary; }
+    public int getYearsOfService() { return yearsOfService; }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private String employeeId;
+    private String type;
+    private int daysRequested;
+    
+    public LeaveRequest(String employeeId, String type, int daysRequested) {
+        this.employeeId = employeeId;
+        this.type = type;
+        this.daysRequested = daysRequested;
+    }
+    
+    // Getters
+    public String getEmployeeId() { return employeeId; }
+    public String getType() { return type; }
+    public int getDaysRequested() { return daysRequested; }
+}
+```
+
+### FILE: PayrollProcessor.java
+```java
+package hr.system;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class PayrollProcessor {
+    
+    public List<Employee> processEmployees(List<Employee> employees) {
+        return employees.stream()
+                .filter(emp -> emp.getBaseSalary() > 0)
+                .sorted(Comparator.comparing(Employee::getName))
+                .collect(Collectors.toList());
+    }
+    
+    public Map<String, Double> calculateBonuses(List<Employee> employees) {
+        return employees.stream()
+                .filter(emp -> emp.getYearsOfService() >= 5)
+                .collect(Collectors.toMap(
+                    Employee::getId,
+                    emp -> emp.getBaseSalary() * 0.1
+                ));
+    }
+    
+    public List<LeaveRequest> processLeaveRequests(List<LeaveRequest> requests) {
+        return requests.stream()
+                .filter(req -> req.getDaysRequested() > 0)
+                .filter(req -> "vacation".equalsIgnoreCase(req.getType()))
+                .sorted(Comparator.comparing(LeaveRequest::getEmployeeId))
+                .collect(Collectors.toList());
+    }
+    
+    public double calculateTotalSalary(List<Employee> employees) {
+        return

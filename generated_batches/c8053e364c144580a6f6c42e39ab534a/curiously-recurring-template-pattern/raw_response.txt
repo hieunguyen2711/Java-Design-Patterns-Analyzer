@@ -1,0 +1,120 @@
+### FILE: Person.java
+```java
+package clinic;
+
+public abstract class Person {
+    protected String name;
+    protected int id;
+    
+    public Person(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor extends Person {
+    private String specialty;
+    
+    public Doctor(String name, int id, String specialty) {
+        super(name, id);
+        this.specialty = specialty;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient extends Person {
+    private String medicalHistory;
+    
+    public Patient(String name, int id, String medicalHistory) {
+        super(name, id);
+        this.medicalHistory = medicalHistory;
+    }
+    
+    public String getMedicalHistory() {
+        return medicalHistory;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class AppointmentSlot<T extends Person> {
+    private LocalDateTime dateTime;
+    private T person;
+    private boolean isAvailable;
+    
+    public AppointmentSlot(LocalDateTime dateTime, T person) {
+        this.dateTime = dateTime;
+        this.person = person;
+        this.isAvailable = false;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public T getPerson() {
+        return person;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: Clinic.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Clinic {
+    private List<AppointmentSlot<? extends Person>> appointmentSlots;
+    
+    public Clinic() {
+        this.appointmentSlots = new ArrayList<>();
+    }
+    
+    public void scheduleAppointment(LocalDateTime dateTime, Doctor doctor) {
+        AppointmentSlot<Doctor> slot = new AppointmentSlot<>(dateTime, doctor);
+        appointmentSlots.add(slot);
+    }
+    
+    public void scheduleAppointment(LocalDateTime dateTime, Patient patient) {
+        AppointmentSlot<Patient> slot = new AppointmentSlot<>(dateTime, patient);
+        appointmentSlots.add(slot);
+    }
+    
+    public List<AppointmentSlot

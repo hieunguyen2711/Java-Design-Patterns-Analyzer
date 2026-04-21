@@ -1,0 +1,67 @@
+### FILE: Course.java
+```java
+package com.lms.course;
+
+public class Course {
+    private String courseId;
+    private String title;
+    private boolean isPublished = false;
+    
+    public Course(String courseId, String title) {
+        this.courseId = courseId;
+        this.title = title;
+    }
+    
+    public void publish() {
+        if (!isPublished) {
+            System.out.println("Publishing course: " + title);
+            isPublished = true;
+        } else {
+            System.out.println("Course already published, balking...");
+        }
+    }
+    
+    public boolean isPublished() {
+        return isPublished;
+    }
+}
+```
+
+### FILE: CourseManager.java
+```java
+package com.lms.course;
+
+public class CourseManager {
+    private Course course;
+    
+    public CourseManager(Course course) {
+        this.course = course;
+    }
+    
+    public void attemptPublish() {
+        System.out.println("Attempting to publish course...");
+        course.publish();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.lms;
+
+import com.lms.course.Course;
+import com.lms.course.CourseManager;
+
+public class Main {
+    public static void main(String[] args) {
+        Course course = new Course("CS101", "Introduction to Computer Science");
+        CourseManager manager = new CourseManager(course);
+        
+        // First publish attempt - should succeed
+        manager.attemptPublish();
+        
+        // Second publish attempt - should balk
+        manager.attemptPublish();
+    }
+}
+```

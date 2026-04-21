@@ -1,0 +1,86 @@
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: FleetInventory.java
+```java
+import java.util.*;
+
+public class FleetInventory {
+    private List<Vehicle> vehicles;
+    
+    public FleetInventory() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public Vehicle findAvailableVehicle(String make, String model) {
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.isAvailable() && 
+                vehicle.getMake().equals(make) && 
+                vehicle.getModel().equals(model)) {
+                return vehicle;
+            }
+        }
+        return null;
+    }
+    
+    public List<Vehicle> getAllVehicles() {
+        return new ArrayList<>(vehicles);
+    }
+}
+```
+
+### FILE: PricingService.java
+```java
+public class PricingService {
+    private static final double BASE_RATE = 50.0;
+    private static final double DAILY_RATE = 25.0;
+    
+    public double calculateRentalCost(int days, String vehicleType) {
+        if ("luxury".equalsIgnoreCase(vehicleType)) {
+            return (BASE_RATE + (DAILY_RATE * days)) * 1.5;
+        }
+        return BASE_RATE + (DAILY_RATE * days);
+    }
+}
+```
+
+### FILE: MaintenanceService.java
+```java
+public class MaintenanceService {
+    public boolean isVehicle

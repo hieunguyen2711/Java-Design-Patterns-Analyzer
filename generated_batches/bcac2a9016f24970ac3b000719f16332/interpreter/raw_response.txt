@@ -1,0 +1,97 @@
+### FILE: RoomInventory.java
+```java
+public class RoomInventory {
+    private final String roomType;
+    private final int capacity;
+    
+    public RoomInventory(String roomType, int capacity) {
+        this.roomType = roomType;
+        this.capacity = capacity;
+    }
+    
+    public String getRoomType() {
+        return roomType;
+    }
+    
+    public int getCapacity() {
+        return capacity;
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+public class Booking {
+    private final RoomInventory room;
+    private final int numberOfNights;
+    private final boolean isCheckIn;
+    
+    public Booking(RoomInventory room, int numberOfNights, boolean isCheckIn) {
+        this.room = room;
+        this.numberOfNights = numberOfNights;
+        this.isCheckIn = isCheckIn;
+    }
+    
+    public RoomInventory getRoom() {
+        return room;
+    }
+    
+    public int getNumberOfNights() {
+        return numberOfNights;
+    }
+    
+    public boolean isCheckIn() {
+        return isCheckIn;
+    }
+}
+```
+
+### FILE: PricingPlan.java
+```java
+public interface PricingPlan {
+    double calculatePrice(Booking booking);
+}
+```
+
+### FILE: StandardPricingPlan.java
+```java
+public class StandardPricingPlan implements PricingPlan {
+    private final double baseRatePerNight;
+    
+    public StandardPricingPlan(double baseRatePerNight) {
+        this.baseRatePerNight = baseRatePerNight;
+    }
+    
+    @Override
+    public double calculatePrice(Booking booking) {
+        return baseRatePerNight * booking.getNumberOfNights();
+    }
+}
+```
+
+### FILE: PremiumPricingPlan.java
+```java
+public class PremiumPricingPlan implements PricingPlan {
+    private final double baseRatePerNight;
+    private final double premiumSurcharge;
+    
+    public PremiumPricingPlan(double baseRatePerNight, double premiumSurcharge) {
+        this.baseRatePerNight = baseRatePerNight;
+        this.premiumSurcharge = premiumSurcharge;
+    }
+    
+    @Override
+    public double calculatePrice(Booking booking) {
+        return (baseRatePerNight + premiumSurcharge) * booking.getNumberOfNights();
+    }
+}
+```
+
+### FILE: BillingCalculator.java
+```java
+public class BillingCalculator {
+    private final PricingPlan pricingPlan;
+    
+    public BillingCalculator(PricingPlan pricingPlan) {
+        this.pricingPlan = pricingPlan;
+   

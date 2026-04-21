@@ -1,0 +1,84 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: PayrollConverter.java
+```java
+package hr.system;
+
+public interface PayrollConverter {
+    double convertToAnnualSalary(double monthlySalary);
+    double convertToMonthlySalary(double annualSalary);
+    double calculateTax(double salary);
+}
+```
+
+### FILE: StandardPayrollConverter.java
+```java
+package hr.system;
+
+public class StandardPayrollConverter implements PayrollConverter {
+    
+    @Override
+    public double convertToAnnualSalary(double monthlySalary) {
+        return monthlySalary * 12;
+    }
+    
+    @Override
+    public double convertToMonthlySalary(double annualSalary) {
+        return annualSalary / 12;
+    }
+    
+    @Override
+    public double calculateTax(double salary) {
+        if (salary <= 50000) {
+            return salary * 0.10;
+        } else if (salary <= 100000) {
+            return 5000 + (salary - 50000) * 0.15;
+        } else {
+            return 12500 + (salary - 100000) * 0.25;
+        }
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package hr.system;
+
+public class PayrollService {
+    private PayrollConverter converter;
+    
+    public PayrollService(PayrollConverter converter) {
+        this.converter = converter;
+    }
+    
+    public double calculateAnnualSalary(double monthlySalary) {
+        return converter.convertToAnnualSalary(monthlySalary);
+    }
+    
+    public double calculateMonthlySalary(double annualSalary) {
+        return converter.convertToMonthlySalary(annualSalary);
+    }
+    

@@ -1,0 +1,105 @@
+### FILE: Person.java
+```java
+package clinic;
+
+public abstract class Person {
+    protected String name;
+    protected String email;
+    
+    public Person(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor extends Person {
+    private String specialty;
+    private int licenseNumber;
+    
+    public Doctor(String name, String email, String specialty, int licenseNumber) {
+        super(name, email);
+        this.specialty = specialty;
+        this.licenseNumber = licenseNumber;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+    
+    public int getLicenseNumber() {
+        return licenseNumber;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient extends Person {
+    private String medicalRecordNumber;
+    private String phoneNumber;
+    
+    public Patient(String name, String email, String medicalRecordNumber, String phoneNumber) {
+        super(name, email);
+        this.medicalRecordNumber = medicalRecordNumber;
+        this.phoneNumber = phoneNumber;
+    }
+    
+    public String getMedicalRecordNumber() {
+        return medicalRecordNumber;
+    }
+    
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+}
+```
+
+### FILE: PersonDAO.java
+```java
+package clinic;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PersonDAO {
+    private Connection connection;
+    
+    public PersonDAO(Connection connection) {
+        this.connection = connection;
+    }
+    
+    public List<Person> getAllPersons() throws SQLException {
+        List<Person> persons = new ArrayList<>();
+        String sql = "SELECT * FROM persons";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String type = rs.getString("type");
+                
+                if ("Doctor".equals(type)) {
+                    String specialty = rs.getString("specialty");
+                    int licenseNumber = rs.getInt("license_number");
+                    persons.add(new Doctor(name, email, specialty, licenseNumber));
+                } else if ("Patient".equals(type)) {
+                    String medicalRecordNumber = rs.getString("medical_record_number

@@ -1,0 +1,76 @@
+### FILE: PaymentStrategy.java
+```java
+public interface PaymentStrategy {
+    void pay(double amount);
+}
+```
+
+### FILE: CreditCardPayment.java
+```java
+public class CreditCardPayment implements PaymentStrategy {
+    private String cardNumber;
+    private String cardHolderName;
+    
+    public CreditCardPayment(String cardNumber, String cardHolderName) {
+        this.cardNumber = cardNumber;
+        this.cardHolderName = cardHolderName;
+    }
+    
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using credit card ending in " + 
+                          cardNumber.substring(cardNumber.length() - 4));
+    }
+}
+```
+
+### FILE: PayPalPayment.java
+```java
+public class PayPalPayment implements PaymentStrategy {
+    private String email;
+    
+    public PayPalPayment(String email) {
+        this.email = email;
+    }
+    
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using PayPal account: " + email);
+    }
+}
+```
+
+### FILE: Membership.java
+```java
+public class Membership {
+    private String memberName;
+    private PaymentStrategy paymentStrategy;
+    
+    public Membership(String memberName, PaymentStrategy paymentStrategy) {
+        this.memberName = memberName;
+        this.paymentStrategy = paymentStrategy;
+    }
+    
+    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+    
+    public void processPayment(double amount) {
+        System.out.println("Processing payment for " + memberName);
+        paymentStrategy.pay(amount);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        Membership goldMember = new Membership("John Doe", new CreditCardPayment("1234567890123456", "John Doe"));
+        goldMember.processPayment(99.99);
+        
+        goldMember.setPaymentStrategy(new PayPalPayment("john.doe@example.com"));
+        goldMember.processPayment(149.99);
+    }
+}
+```

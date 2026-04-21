@@ -1,0 +1,116 @@
+### FILE: OrderProcessor.java
+```java
+package restaurant.backend;
+
+import java.util.function.Function;
+import java.util.List;
+import java.util.ArrayList;
+
+public class OrderProcessor {
+    private final List<Function<Order, Order>> processors;
+    
+    public OrderProcessor() {
+        this.processors = new ArrayList<>();
+    }
+    
+    public void addProcessor(Function<Order, Order> processor) {
+        processors.add(processor);
+    }
+    
+    public Order process(Order order) {
+        Order result = order;
+        for (Function<Order, Order> processor : processors) {
+            result = processor.apply(result);
+        }
+        return result;
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package restaurant.backend;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Order {
+    private final String id;
+    private final List<String> items;
+    private OrderStatus status;
+    
+    public Order(String id) {
+        this.id = id;
+        this.items = new ArrayList<>();
+        this.status = OrderStatus.RECEIVED;
+    }
+    
+    public void addItem(String item) {
+        items.add(item);
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public List<String> getItems() {
+        return items;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package restaurant.backend;
+
+public enum OrderStatus {
+    RECEIVED,
+    PREPARING,
+    READY,
+    DELIVERING,
+    DELIVERED
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package restaurant.backend;
+
+import java.util.function.Function;
+
+public class PaymentProcessor {
+    public static final Function<Order, Order> PROCESS_PAYMENT = 
+        order -> {
+            // Simulate payment processing
+            System.out.println("Processing payment for order " + order.getId());
+            return order;
+        };
+}
+```
+
+### FILE: CookingProcessor.java
+```java
+package restaurant.backend;
+
+import java.util.function.Function;
+
+public class CookingProcessor {
+    public static final Function<Order, Order> START_COOKING = 
+        order -> {
+            // Simulate cooking process
+            System.out.println("Starting to cook order " + order.getId());
+            order.setStatus(OrderStatus.PREPARING);
+            return order;
+        };
+    
+    public static final Function<Order, Order> MARK_READY = 
+        order -> {
+            // Simulate

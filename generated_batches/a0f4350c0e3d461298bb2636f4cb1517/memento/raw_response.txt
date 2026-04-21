@@ -1,0 +1,112 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", isbn='" + isbn + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: LibraryMember.java
+```java
+public class LibraryMember {
+    private String name;
+    private String memberId;
+    
+    public LibraryMember(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    @Override
+    public String toString() {
+        return "LibraryMember{" +
+                "name='" + name + '\'' +
+                ", memberId='" + memberId + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: BorrowingRecord.java
+```java
+import java.time.LocalDate;
+
+public class BorrowingRecord {
+    private Book book;
+    private LibraryMember member;
+    private LocalDate borrowDate;
+    private LocalDate dueDate;
+    private boolean isReturned;
+    
+    public BorrowingRecord(Book book, LibraryMember member, LocalDate borrowDate, LocalDate dueDate) {
+        this.book = book;
+        this.member = member;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+        this.isReturned = false;
+    }
+    
+    public Book getBook() {
+        return book;
+    }
+    
+    public LibraryMember getMember() {
+        return member;
+    }
+    
+    public LocalDate getBorrowDate() {
+        return borrowDate;
+    }
+    
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+    
+    public boolean isReturned() {
+        return isReturned;
+    }
+    
+    public void setReturned(boolean returned) {
+        isReturned = returned;
+    }
+    
+    @Override
+    public String toString() {
+        return "BorrowingRecord{" +
+                "book=" + book

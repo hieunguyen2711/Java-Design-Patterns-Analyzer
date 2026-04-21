@@ -1,0 +1,123 @@
+### FILE: Order.java
+```java
+package restaurant.model;
+
+public class Order {
+    private int id;
+    private String customerId;
+    private String status;
+    
+    public Order(int id, String customerId) {
+        this.id = id;
+        this.customerId = customerId;
+        this.status = "PENDING";
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderRepository.java
+```java
+package restaurant.repository;
+
+import restaurant.model.Order;
+import java.util.HashMap;
+import java.util.Map;
+
+public class OrderRepository {
+    private Map<Integer, Order> orders = new HashMap<>();
+    
+    public void save(Order order) {
+        orders.put(order.getId(), order);
+    }
+    
+    public Order findById(int id) {
+        return orders.get(id);
+    }
+}
+```
+
+### FILE: UnitOfWork.java
+```java
+package restaurant.service;
+
+import restaurant.model.Order;
+import restaurant.repository.OrderRepository;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UnitOfWork {
+    private OrderRepository orderRepository;
+    private List<Order> changedOrders = new ArrayList<>();
+    
+    public UnitOfWork(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+    
+    public void registerOrder(Order order) {
+        changedOrders.add(order);
+    }
+    
+    public void commit() {
+        for (Order order : changedOrders) {
+            orderRepository.save(order);
+        }
+        changedOrders.clear();
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package restaurant.service;
+
+import restaurant.model.Order;
+import restaurant.repository.OrderRepository;
+
+public class OrderService {
+    private OrderRepository orderRepository;
+    private UnitOfWork unitOfWork;
+    
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+        this.unitOfWork = new UnitOfWork(orderRepository);
+    }
+    
+    public void processOrder(int orderId, String status) {
+        Order order = orderRepository.findById(orderId);
+        if (order != null) {
+            order.setStatus(status);
+            unitOfWork.registerOrder(order);
+        }
+    }
+    
+    public void completeTransaction() {
+        unitOfWork.commit();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package restaurant;
+
+import restaurant.model.Order;
+import restaurant.repository.OrderRepository;
+import restaurant.service.OrderService;
+
+public

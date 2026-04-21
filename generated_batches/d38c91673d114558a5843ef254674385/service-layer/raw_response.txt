@@ -1,0 +1,89 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private int id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+
+    public Ticket(int id, String title, String description, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.OPEN;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+public enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH,
+    URGENT
+}
+```
+
+### FILE: Status.java
+```java
+public enum Status {
+    OPEN,
+    IN_PROGRESS,
+    RESOLVED,
+    CLOSED
+}
+```
+
+### FILE: TicketService.java
+```java
+import java.util.*;
+
+public interface TicketService {
+    Ticket createTicket(String title, String description, Priority priority);
+    void assignTicket(int ticketId, String assignee);
+    void updateTicketStatus(int ticketId, Status status);
+    List<Ticket> getTicketsByPriority(Priority priority);
+    List<Ticket> getAllTickets();
+}
+```
+
+### FILE: TicketServiceImpl.java
+```java
+import java.util.*;
+
+public class TicketServiceImpl implements TicketService {
+    private Map<Integer, Ticket> tickets = new HashMap<>();
+    private int nextId = 1;
+
+    @Override
+    public Ticket createTicket(String title, String description, Priority priority) {
+        Ticket ticket = new Ticket(nextId++, title, description, priority);
+        tickets.put(ticket.getId(), ticket);
+        return ticket;
+    }
+
+    @Override
+    public void assignTicket(int ticketId, String assign

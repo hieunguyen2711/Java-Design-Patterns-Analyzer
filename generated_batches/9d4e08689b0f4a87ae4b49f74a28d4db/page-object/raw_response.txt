@@ -1,0 +1,89 @@
+### FILE: Vehicle.java
+```java
+package com.fleetmanager.model;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private double dailyRate;
+    
+    public Vehicle(String id, String make, String model, int year, double dailyRate) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.dailyRate = dailyRate;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+}
+```
+
+### FILE: VehicleRepository.java
+```java
+package com.fleetmanager.repository;
+
+import com.fleetmanager.model.Vehicle;
+import java.util.HashMap;
+import java.util.Map;
+
+public class VehicleRepository {
+    private Map<String, Vehicle> vehicles;
+    
+    public VehicleRepository() {
+        this.vehicles = new HashMap<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public Vehicle findVehicleById(String id) {
+        return vehicles.get(id);
+    }
+    
+    public Map<String, Vehicle> getAllVehicles() {
+        return new HashMap<>(vehicles);
+    }
+}
+```
+
+### FILE: FleetManagerPage.java
+```java
+package com.fleetmanager.page;
+
+import com.fleetmanager.model.Vehicle;
+import com.fleetmanager.repository.VehicleRepository;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class FleetManagerPage {
+    private VehicleRepository vehicleRepository;
+    
+    public FleetManagerPage(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
+    }
+    
+    public List<Vehicle> getAllVehicles() {
+        Map<String, Vehicle> vehicles = vehicleRepository.getAllVehicles();
+        return vehicles.values().stream().collect(Collectors.toList());
+    }
+    
+   

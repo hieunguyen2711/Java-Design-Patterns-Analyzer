@@ -1,0 +1,73 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem implements Cloneable {
+    private String itemId;
+    private String itemName;
+    private int currentStock;
+    private int reorderThreshold;
+    private String location;
+    private String supplier;
+    
+    public StockItem(String itemId, String itemName, int currentStock, 
+                     int reorderThreshold, String location, String supplier) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+        this.location = location;
+        this.supplier = supplier;
+    }
+    
+    @Override
+    public StockItem clone() throws CloneNotSupportedException {
+        return (StockItem) super.clone();
+    }
+    
+    // Getters and setters
+    public String getItemId() { return itemId; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
+    
+    public String getItemName() { return itemName; }
+    public void setItemName(String itemName) { this.itemName = itemName; }
+    
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+    
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+    
+    public String getSupplier() { return supplier; }
+    public void setSupplier(String supplier) { this.supplier = supplier; }
+    
+    @Override
+    public String toString() {
+        return "StockItem{" +
+                "itemId='" + itemId + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", currentStock=" + currentStock +
+                ", reorderThreshold=" + reorderThreshold +
+                ", location='" + location + '\'' +
+                ", supplier='" + supplier + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: StockItemPrototypeRegistry.java
+```java
+package com.example.stock;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class StockItemPrototypeRegistry {
+    private static final Map<String, StockItem> prototypes = new HashMap<>();
+    
+    static {
+        // Register prototype items
+        prototypes.put("LAPTOP", new StockItem("LAPTOP", "Laptop Computer", 0, 10, "A-01", "Tech

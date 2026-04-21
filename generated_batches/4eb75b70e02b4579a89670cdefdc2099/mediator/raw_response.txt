@@ -1,0 +1,84 @@
+### FILE: StockMediator.java
+```java
+public interface StockMediator {
+    void registerItem(StockItem item);
+    void requestRestock(StockItem item);
+    void updateLocation(StockItem item, String newLocation);
+    void logMovement(String message);
+}
+```
+
+### FILE: WarehouseMediator.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class WarehouseMediator implements StockMediator {
+    private List<StockItem> items;
+    
+    public WarehouseMediator() {
+        this.items = new ArrayList<>();
+    }
+    
+    @Override
+    public void registerItem(StockItem item) {
+        items.add(item);
+        System.out.println("Item registered: " + item.getName());
+    }
+    
+    @Override
+    public void requestRestock(StockItem item) {
+        if (item.getQuantity() < item.getReorderThreshold()) {
+            System.out.println("Restocking requested for: " + item.getName());
+            item.setQuantity(item.getReorderThreshold() * 2);
+            logMovement("Restocked " + item.getName() + " to " + item.getQuantity());
+        }
+    }
+    
+    @Override
+    public void updateLocation(StockItem item, String newLocation) {
+        item.setLocation(newLocation);
+        logMovement("Moved " + item.getName() + " to location: " + newLocation);
+    }
+    
+    @Override
+    public void logMovement(String message) {
+        System.out.println("[LOG] " + message);
+    }
+}
+```
+
+### FILE: StockItem.java
+```java
+public class StockItem {
+    private String name;
+    private int quantity;
+    private String location;
+    private int reorderThreshold;
+    private WarehouseMediator mediator;
+    
+    public StockItem(String name, int quantity, String location, int reorderThreshold, 
+                     WarehouseMediator mediator) {
+        this.name = name;
+        this.quantity = quantity;
+        this.location = location;
+        this.reorderThreshold = reorderThreshold;
+        this.mediator = mediator;
+        
+        mediator.registerItem(this);
+    }
+    
+    public void updateQuantity(int newQuantity) {
+        this.quantity = newQuantity;
+        if (newQuantity < reorderThreshold) {
+            mediator.requestRestock(this);
+        }
+    }
+    
+    public void moveItem(String newLocation) {
+        mediator.updateLocation(this, newLocation);
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public int getQuantity

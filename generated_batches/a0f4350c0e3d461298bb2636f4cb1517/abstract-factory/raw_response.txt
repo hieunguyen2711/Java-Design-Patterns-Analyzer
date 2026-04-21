@@ -1,0 +1,91 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String name;
+    private String memberId;
+    
+    public Member(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+}
+```
+
+### FILE: LibraryItem.java
+```java
+public interface LibraryItem {
+    String getId();
+    String getTitle();
+    boolean isAvailable();
+    void setAvailable(boolean available);
+}
+```
+
+### FILE: BookFactory.java
+```java
+public interface BookFactory {
+    Book createBook(String title, String author, String isbn);
+    Member createMember(String name, String memberId);
+}
+```
+
+### FILE: FictionBookFactory.java
+```java
+public class FictionBookFactory implements BookFactory {
+    @Override
+    public Book createBook(String title, String author, String isbn) {
+        return new Book(title, author, isbn);
+    }
+    
+    @Override
+    public Member createMember(String name, String memberId) {
+        return new Member(name, memberId);
+    }
+}
+```
+
+### FILE: NonFictionBookFactory.java
+```java
+public class NonFictionBookFactory implements BookFactory {
+    @Override
+    public Book createBook(String title, String author, String isbn) {
+        return new Book(title, author, isbn);
+    }
+    
+    @Override
+    public Member createMember(String name, String memberId) {
+        return new Member(name, memberId);
+    }
+}
+```
+
+###

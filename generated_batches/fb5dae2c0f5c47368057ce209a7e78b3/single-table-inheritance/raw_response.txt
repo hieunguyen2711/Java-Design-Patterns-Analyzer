@@ -1,0 +1,90 @@
+### FILE: ContentItem.java
+```java
+package com.lms.model;
+
+public abstract class ContentItem {
+    protected String title;
+    protected String description;
+    protected int durationMinutes;
+    
+    public ContentItem(String title, String description, int durationMinutes) {
+        this.title = title;
+        this.description = description;
+        this.durationMinutes = durationMinutes;
+    }
+    
+    public abstract void displayContent();
+    
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public int getDurationMinutes() { return durationMinutes; }
+    public void setDurationMinutes(int durationMinutes) { this.durationMinutes = durationMinutes; }
+}
+```
+
+### FILE: Lesson.java
+```java
+package com.lms.model;
+
+public class Lesson extends ContentItem {
+    
+    public Lesson(String title, String description, int durationMinutes) {
+        super(title, description, durationMinutes);
+    }
+    
+    @Override
+    public void displayContent() {
+        System.out.println("Lesson: " + title + " (" + durationMinutes + " minutes)");
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+public class Assignment extends ContentItem {
+    
+    private int maxPoints;
+    
+    public Assignment(String title, String description, int durationMinutes, int maxPoints) {
+        super(title, description, durationMinutes);
+        this.maxPoints = maxPoints;
+    }
+    
+    @Override
+    public void displayContent() {
+        System.out.println("Assignment: " + title + " (Max points: " + maxPoints + ")");
+    }
+    
+    // Getter and setter for maxPoints
+    public int getMaxPoints() { return maxPoints; }
+    public void setMaxPoints(int maxPoints) { this.maxPoints = maxPoints; }
+}
+```
+
+### FILE: Course.java
+```java
+package com.lms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course {
+    private String courseName;
+    private List<ContentItem> contentItems;
+    
+    public Course(String courseName) {
+        this.courseName = courseName;
+        this.contentItems = new ArrayList<>();
+    }
+    
+    public void addContentItem(ContentItem item) {
+        contentItems.add(item);
+    }
+    
+    public void displayAllContent() {
+        System.out

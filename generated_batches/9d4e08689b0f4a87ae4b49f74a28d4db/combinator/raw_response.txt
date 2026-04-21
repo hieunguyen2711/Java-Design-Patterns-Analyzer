@@ -1,0 +1,87 @@
+### FILE: Vehicle.java
+```java
+package com.fleetmanager.vehicle;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private double dailyRate;
+    
+    public Vehicle(String id, String make, String model, int year, double dailyRate) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.dailyRate = dailyRate;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+}
+```
+
+### FILE: VehicleType.java
+```java
+package com.fleetmanager.vehicle;
+
+public enum VehicleType {
+    SEDAN,
+    SUV,
+    TRUCK,
+    VAN,
+    SPORTS_CAR
+}
+```
+
+### FILE: FleetInventory.java
+```java
+package com.fleetmanager.inventory;
+
+import com.fleetmanager.vehicle.Vehicle;
+import java.util.*;
+
+public class FleetInventory {
+    private Map<String, Vehicle> vehicles;
+    
+    public FleetInventory() {
+        this.vehicles = new HashMap<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public Vehicle getVehicle(String id) {
+        return vehicles.get(id);
+    }
+    
+    public Collection<Vehicle> getAllVehicles() {
+        return vehicles.values();
+    }
+    
+    public List<Vehicle> filterByType(VehicleType type) {
+        return vehicles.values().stream()
+                .filter(v -> isOfType(v, type))
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
+    
+    private boolean isOfType(Vehicle vehicle, VehicleType type) {
+        // Simple implementation for demonstration
+        switch (type) {
+            case SEDAN: return vehicle.getModel().contains("Sedan");
+            case SUV

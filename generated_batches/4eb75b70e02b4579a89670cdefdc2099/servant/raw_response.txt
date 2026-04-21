@@ -1,0 +1,77 @@
+### FILE: StockIntakeService.java
+```java
+package com.example.stock;
+
+public class StockIntakeService {
+    private final InventoryManager inventoryManager;
+    private final ReorderService reorderService;
+    
+    public StockIntakeService(InventoryManager inventoryManager, ReorderService reorderService) {
+        this.inventoryManager = inventoryManager;
+        this.reorderService = reorderService;
+    }
+    
+    public void processStockIntake(Item item, int quantity, String supplierName) {
+        inventoryManager.updateItemQuantity(item, quantity);
+        inventoryManager.logMovement(new MovementLog(item, quantity, "INTAKE", supplierName));
+        
+        if (inventoryManager.shouldReorder(item)) {
+            reorderService.placeOrder(item, inventoryManager.getReorderThreshold(item));
+        }
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+package com.example.stock;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class InventoryManager {
+    private final Map<Item, Integer> itemQuantities = new HashMap<>();
+    private final Map<Item, Integer> reorderThresholds = new HashMap<>();
+    private final MovementLogger movementLogger;
+    
+    public InventoryManager(MovementLogger movementLogger) {
+        this.movementLogger = movementLogger;
+    }
+    
+    public void updateItemQuantity(Item item, int quantity) {
+        itemQuantities.put(item, itemQuantities.getOrDefault(item, 0) + quantity);
+    }
+    
+    public boolean shouldReorder(Item item) {
+        return itemQuantities.getOrDefault(item, 0) <= reorderThresholds.getOrDefault(item, 0);
+    }
+    
+    public int getReorderThreshold(Item item) {
+        return reorderThresholds.getOrDefault(item, 0);
+    }
+    
+    public void logMovement(MovementLog movement) {
+        movementLogger.log(movement);
+    }
+}
+```
+
+### FILE: ReorderService.java
+```java
+package com.example.stock;
+
+public class ReorderService {
+    private final SupplierManager supplierManager;
+    private final MovementLogger movementLogger;
+    
+    public ReorderService(SupplierManager supplierManager, MovementLogger movementLogger) {
+        this.supplierManager = supplierManager;
+        this.movementLogger = movementLogger;
+    }
+    
+    public void placeOrder(Item item, int reorderQuantity) {
+        Supplier supplier = supplierManager.findBestSupplier(item);
+        Order order = new Order(item, reorderQuantity, supplier);
+        
+        supplierManager.processOrder(order);
+        movementLogger.log(new MovementLog(item, reorderQuantity, "ORDER

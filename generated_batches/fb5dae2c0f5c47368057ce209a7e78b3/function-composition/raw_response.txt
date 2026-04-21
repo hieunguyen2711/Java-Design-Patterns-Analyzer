@@ -1,0 +1,104 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+import java.util.List;
+import java.util.function.Function;
+
+public class Course {
+    private String title;
+    private List<Module> modules;
+    
+    public Course(String title, List<Module> modules) {
+        this.title = title;
+        this.modules = modules;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public List<Module> getModules() {
+        return modules;
+    }
+    
+    // Function composition for calculating total course progress
+    public Function<List<Module>, Double> calculateCourseProgress = 
+        modules -> modules.stream()
+            .mapToDouble(Module::calculateProgress)
+            .average()
+            .orElse(0.0);
+}
+```
+
+### FILE: Module.java
+```java
+package com.lms.model;
+
+import java.util.List;
+import java.util.function.Function;
+
+public class Module {
+    private String title;
+    private List<Assignment> assignments;
+    
+    public Module(String title, List<Assignment> assignments) {
+        this.title = title;
+        this.assignments = assignments;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+    
+    // Function composition for calculating module progress
+    public Function<List<Assignment>, Double> calculateModuleProgress = 
+        assignments -> assignments.stream()
+            .mapToDouble(Assignment::calculateProgress)
+            .average()
+            .orElse(0.0);
+    
+    public double calculateProgress() {
+        return calculateModuleProgress.apply(assignments);
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+import java.util.List;
+import java.util.function.Function;
+
+public class Assignment {
+    private String title;
+    private List<Submission> submissions;
+    
+    public Assignment(String title, List<Submission> submissions) {
+        this.title = title;
+        this.submissions = submissions;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+    
+    // Function composition for calculating assignment progress
+    public Function<List<Submission>, Double> calculateAssignmentProgress = 
+        submissions -> submissions.stream()
+            .mapToDouble(Submission::calculateProgress)
+            .average()
+            .orElse(0.0);
+    
+    public double calculateProgress() {
+        return calculateAssignmentProgress.apply(submissions);
+    }

@@ -1,0 +1,99 @@
+### FILE: Account.java
+```java
+package com.example.bank;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Account {
+    private final String accountId;
+    private BigDecimal balance;
+    private final List<Event> events;
+
+    public Account(String accountId, BigDecimal initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+        this.events = new ArrayList<>();
+        events.add(new AccountCreated(accountId, initialBalance));
+    }
+
+    public void deposit(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+        balance = balance.add(amount);
+        events.add(new DepositMade(accountId, amount, balance));
+    }
+
+    public void withdraw(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive");
+        }
+        if (balance.compareTo(amount) < 0) {
+            throw new IllegalStateException("Insufficient funds");
+        }
+        balance = balance.subtract(amount);
+        events.add(new WithdrawalMade(accountId, amount, balance));
+    }
+
+    public void transfer(String targetAccountId, BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Transfer amount must be positive");
+        }
+        if (balance.compareTo(amount) < 0) {
+            throw new IllegalStateException("Insufficient funds for transfer");
+        }
+        balance = balance.subtract(amount);
+        events.add(new TransferMade(accountId, targetAccountId, amount, balance));
+    }
+
+    public List<Event> getEvents() {
+        return new ArrayList<>(events);
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+}
+```
+
+### FILE: Event.java
+```java
+package com.example.bank;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public interface Event {
+    String getAccountId();
+    LocalDateTime getTimestamp();
+    String getType();
+}
+```
+
+### FILE: AccountCreated.java
+```java
+package com.example.bank;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public class AccountCreated implements Event {
+    private final String accountId;
+    private final BigDecimal balance;
+    private final LocalDateTime timestamp;
+
+    public AccountCreated(String accountId, BigDecimal balance) {
+        this.accountId = accountId;
+        this.balance = balance;
+        this.timestamp = LocalDateTime.now();
+    }
+
+    @Override
+    public String getAccountId() {
+        return

@@ -1,0 +1,81 @@
+### FILE: Book.java
+```java
+package library;
+
+public class Book implements Cloneable {
+    private String title;
+    private String author;
+    private String isbn;
+    private boolean isAvailable;
+
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.isAvailable = true;
+    }
+
+    @Override
+    public Book clone() throws CloneNotSupportedException {
+        return (Book) super.clone();
+    }
+
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: LibrarySystem.java
+```java
+package library;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LibrarySystem {
+    private List<Book> catalog;
+    
+    public LibrarySystem() {
+        this.catalog = new ArrayList<>();
+        initializeCatalog();
+    }
+    
+    private void initializeCatalog() {
+        Book originalBook = new Book("1984", "George Orwell", "978-0-452-28423-4");
+        catalog.add(originalBook);
+        
+        try {
+            Book clone1 = originalBook.clone();
+            clone1.setTitle("Animal Farm");
+            clone1.setIsbn("978-0-452-28424-1");
+            catalog.add(clone1);
+            
+            Book clone2 = originalBook.clone();
+            clone2.setTitle("The Great Gatsby");
+            clone2.setIsbn("978-0-7432-7356-5");
+            catalog.add(clone2);
+        } catch (CloneNotSupportedException e) {
+            System.err.println("Cloning failed: " + e.getMessage());
+        }
+    }
+    
+    public Book findBookByTitle(String title) {
+        for (Book book : catalog) {
+            if (book.getTitle().equals(title)) {
+                return book;
+            }
+        }
+        return null;
+    }
+    
+    public List<Book> getCatalog()

@@ -1,0 +1,95 @@
+### FILE: StockIntakeService.java
+```java
+package com.example.stock;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class StockIntakeService {
+    private final BlockingQueue<StockItem> intakeQueue = new LinkedBlockingQueue<>();
+    
+    public void addStock(StockItem item) {
+        try {
+            intakeQueue.put(item);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while adding stock", e);
+        }
+    }
+    
+    public StockItem takeStock() throws InterruptedException {
+        return intakeQueue.take(); // This blocks until an item is available
+    }
+}
+```
+
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private final String itemId;
+    private final int quantity;
+    private final String location;
+    
+    public StockItem(String itemId, int quantity, String location) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.location = location;
+    }
+    
+    public String getItemId() {
+        return itemId;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public String getLocation() {
+        return location;
+    }
+}
+```
+
+### FILE: SupplierRestocker.java
+```java
+package com.example.stock;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class SupplierRestocker {
+    private final StockIntakeService intakeService;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    
+    public SupplierRestocker(StockIntakeService intakeService) {
+        this.intakeService = intakeService;
+    }
+    
+    public void startRestocking() {
+        executor.submit(() -> {
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    // Guarded suspension: wait until there's stock to process
+                    StockItem item = intakeService.takeStock();
+                    
+                    // Process the restock
+                    System.out.println("Processing restock for item " + 
+                        item.getItemId() + " at location " + item.getLocation());
+                    
+                    TimeUnit.SECONDS.sleep(2); // Simulate processing time
+                    
+                    System.out.println("Restock completed for item " + item.getItemId());
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Supplier restocker interrupted");
+            }
+        });
+    }
+    
+    public void shutdown() throws InterruptedException {
+        executor.shutdown();
+        if

@@ -1,0 +1,114 @@
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public class Vehicle {
+    private final String id;
+    private final String make;
+    private final String model;
+    private final int year;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getMake() {
+        return make;
+    }
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public int getYear() {
+        return year;
+    }
+}
+```
+
+### FILE: FleetManager.java
+```java
+package fleet;
+
+import java.util.*;
+
+public class FleetManager {
+    private final Map<String, Vehicle> vehicles = new HashMap<>();
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public Optional<Vehicle> getVehicle(String id) {
+        return Optional.ofNullable(vehicles.get(id));
+    }
+    
+    public Collection<Vehicle> getAllVehicles() {
+        return new ArrayList<>(vehicles.values());
+    }
+}
+```
+
+### FILE: Reservation.java
+```java
+package fleet;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+public class Reservation {
+    private final String id;
+    private final String vehicleId;
+    private final LocalDateTime pickupTime;
+    private final LocalDateTime returnTime;
+    
+    public Reservation(String id, String vehicleId, LocalDateTime pickupTime, LocalDateTime returnTime) {
+        this.id = id;
+        this.vehicleId = vehicleId;
+        this.pickupTime = pickupTime;
+        this.returnTime = returnTime;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getVehicleId() {
+        return vehicleId;
+    }
+    
+    public LocalDateTime getPickupTime() {
+        return pickupTime;
+    }
+    
+    public LocalDateTime getReturnTime() {
+        return returnTime;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(id, that.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
+```
+
+### FILE: ReservationManager.java
+```java
+package fleet;
+
+import java.util

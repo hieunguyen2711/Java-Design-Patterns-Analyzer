@@ -1,0 +1,79 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    private static PayrollSystem instance;
+    
+    private PayrollSystem() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static synchronized PayrollSystem getInstance() {
+        if (instance == null) {
+            instance = new PayrollSystem();
+        }
+        return instance;
+    }
+    
+    public double calculateNetSalary(Employee employee, double taxDeduction, double leaveDeduction) {
+        double grossSalary = employee.getBaseSalary();
+        double netSalary = grossSalary - taxDeduction - leaveDeduction;
+        return Math.max(0, netSalary);
+    }
+    
+    public void processPayslip(Employee employee, double taxDeduction, double leaveDeduction) {
+        double netSalary = calculateNetSalary(employee, taxDeduction, leaveDeduction);
+        System.out.println("Processing payslip for " + employee.getName() + 
+                          ": Net Salary = $" + String.format("%.2f", netSalary));
+    }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private String employeeId;
+    private int daysRequested;
+    private String reason;
+    
+    public LeaveRequest(String employeeId, int daysRequested, String reason) {
+        this.employeeId = employeeId;
+        this.daysRequested = daysRequested;
+        this.reason = reason;
+    }
+    
+    // Getters and setters
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    
+    public int get

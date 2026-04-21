@@ -1,0 +1,92 @@
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    public static void main(String[] args) {
+        // Create model
+        LibraryModel model = new LibraryModel();
+        
+        // Create view
+        LibraryView view = new LibraryView();
+        
+        // Create controller
+        LibraryController controller = new LibraryController(model, view);
+        
+        // Initialize with sample data
+        controller.addBook("1984", "George Orwell");
+        controller.addMember("John Doe");
+        controller.borrowBook("1984", "John Doe");
+        
+        // Display current state
+        controller.displayLibraryStatus();
+    }
+}
+```
+
+### FILE: LibraryModel.java
+```java
+import java.util.*;
+
+public class LibraryModel {
+    private Map<String, Book> books;
+    private Map<String, Member> members;
+    private List<BorrowingRecord> borrowings;
+    
+    public LibraryModel() {
+        this.books = new HashMap<>();
+        this.members = new HashMap<>();
+        this.borrowings = new ArrayList<>();
+    }
+    
+    public void addBook(String title, String author) {
+        books.put(title, new Book(title, author));
+    }
+    
+    public void addMember(String name) {
+        members.put(name, new Member(name));
+    }
+    
+    public boolean borrowBook(String title, String memberName) {
+        if (books.containsKey(title) && members.containsKey(memberName)) {
+            Book book = books.get(title);
+            Member member = members.get(memberName);
+            
+            if (!book.isBorrowed()) {
+                book.setBorrowed(true);
+                borrowings.add(new BorrowingRecord(book, member));
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean returnBook(String title) {
+        Book book = books.get(title);
+        if (book != null && book.isBorrowed()) {
+            book.setBorrowed(false);
+            return true;
+        }
+        return false;
+    }
+    
+    public List<Book> getBooks() {
+        return new ArrayList<>(books.values());
+    }
+    
+    public List<Member> getMembers() {
+        return new ArrayList<>(members.values());
+    }
+    
+    public List<BorrowingRecord> getBorrowings() {
+        return new ArrayList<>(borrowings);
+    }
+}
+```
+
+### FILE: LibraryView.java
+```java
+import java.util.List;
+
+public class LibraryView {
+    
+    public void displayBooks(List<Book> books) {
+        System.out.println("=== Books ===");

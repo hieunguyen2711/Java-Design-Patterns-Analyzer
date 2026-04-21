@@ -1,0 +1,92 @@
+### FILE: Room.java
+```java
+package hotel.inventory;
+
+public class Room {
+    private final int roomId;
+    private final String roomNumber;
+    private final String type;
+    
+    public Room(int roomId, String roomNumber, String type) {
+        this.roomId = roomId;
+        this.roomNumber = roomNumber;
+        this.type = type;
+    }
+    
+    public int getRoomId() {
+        return roomId;
+    }
+    
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Room room = (Room) obj;
+        return roomId == room.roomId;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(roomId);
+    }
+}
+```
+
+### FILE: RoomRepository.java
+```java
+package hotel.inventory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RoomRepository {
+    private static final Map<Integer, Room> roomCache = new HashMap<>();
+    
+    public static Room findRoomById(int roomId) {
+        return roomCache.computeIfAbsent(roomId, RoomRepository::loadRoom);
+    }
+    
+    private static Room loadRoom(int roomId) {
+        // Simulate database lookup
+        System.out.println("Loading room " + roomId + " from database");
+        return new Room(roomId, "R" + roomId, "Standard");
+    }
+    
+    public static void clearCache() {
+        roomCache.clear();
+    }
+}
+```
+
+### FILE: HotelService.java
+```java
+package hotel.inventory;
+
+public class HotelService {
+    
+    public Room getRoom(int roomId) {
+        return RoomRepository.findRoomById(roomId);
+    }
+    
+    public void demonstrateIdentityMap() {
+        System.out.println("=== Identity Map Demonstration ===");
+        
+        Room room1 = getRoom(101);
+        Room room2 = getRoom(101);
+        
+        System.out.println("Same object reference: " + (room1 == room2));
+        System.out.println("Room 1 hash code: " + room1.hashCode());
+        System.out.println("Room 2 hash code: " + room2.hashCode());
+        
+        Room room3 = getRoom(102);
+        Room room4 = getRoom(102);
+        
+        System

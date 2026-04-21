@@ -1,0 +1,83 @@
+### FILE: TicketService.java
+```java
+public interface TicketService {
+    void createTicket(String description);
+    void assignTicket(int ticketId, String assignee);
+    void updateStatus(int ticketId, String status);
+}
+```
+
+### FILE: EmailNotificationService.java
+```java
+public class EmailNotificationService implements NotificationService {
+    @Override
+    public void sendNotification(String message) {
+        System.out.println("Email sent: " + message);
+    }
+}
+```
+
+### FILE: NotificationService.java
+```java
+public interface NotificationService {
+    void sendNotification(String message);
+}
+```
+
+### FILE: TicketServiceImpl.java
+```java
+public class TicketServiceImpl implements TicketService {
+    private NotificationService notificationService;
+    
+    public TicketServiceImpl() {
+        this.notificationService = ServiceLocator.getService(NotificationService.class);
+    }
+    
+    @Override
+    public void createTicket(String description) {
+        System.out.println("Creating ticket: " + description);
+        notificationService.sendNotification("New ticket created: " + description);
+    }
+    
+    @Override
+    public void assignTicket(int ticketId, String assignee) {
+        System.out.println("Assigning ticket " + ticketId + " to " + assignee);
+        notificationService.sendNotification("Ticket " + ticketId + " assigned to " + assignee);
+    }
+    
+    @Override
+    public void updateStatus(int ticketId, String status) {
+        System.out.println("Updating ticket " + ticketId + " status to: " + status);
+        notificationService.sendNotification("Ticket " + ticketId + " status updated to: " + status);
+    }
+}
+```
+
+### FILE: ServiceLocator.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ServiceLocator {
+    private static final Map<Class<?>, Object> services = new HashMap<>();
+    
+    static {
+        services.put(TicketService.class, new TicketServiceImpl());
+        services.put(NotificationService.class, new EmailNotificationService());
+    }
+    
+    public static <T> T getService(Class<T> serviceClass) {
+        return serviceClass.cast(services.get(serviceClass));
+    }
+}
+```
+
+### FILE: ProjectTracker.java
+```java
+public class ProjectTracker {
+    public static void main(String[] args) {
+        TicketService ticketService = ServiceLocator.getService(TicketService.class);
+        
+        ticketService.createTicket("Bug in login page");
+        ticketService.assignTicket(1, "John Doe");
+        ticketService.updateStatus(1, "In

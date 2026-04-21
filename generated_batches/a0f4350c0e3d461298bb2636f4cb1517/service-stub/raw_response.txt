@@ -1,0 +1,88 @@
+### FILE: Book.java
+```java
+package library;
+
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    public String getIsbn() { return isbn; }
+    public String getTitle() { return title; }
+    public String getAuthor() { return author; }
+}
+```
+
+### FILE: Member.java
+```java
+package library;
+
+public class Member {
+    private String memberId;
+    private String name;
+    
+    public Member(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+    }
+    
+    public String getMemberId() { return memberId; }
+    public String getName() { return name; }
+}
+```
+
+### FILE: LibraryService.java
+```java
+package library;
+
+public interface LibraryService {
+    void borrowBook(String memberId, String isbn);
+    void returnBook(String memberId, String isbn);
+    double calculateLateFee(String memberId, String isbn);
+}
+```
+
+### FILE: LibraryServiceImpl.java
+```java
+package library;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class LibraryServiceImpl implements LibraryService {
+    private Map<String, Book> books = new HashMap<>();
+    private Map<String, Member> members = new HashMap<>();
+    
+    public LibraryServiceImpl() {
+        // Initialize with some sample data
+        books.put("978-0134685991", new Book("978-0134685991", "Effective Java", "Joshua Bloch"));
+        members.put("M001", new Member("M001", "John Doe"));
+    }
+    
+    @Override
+    public void borrowBook(String memberId, String isbn) {
+        // Implementation would handle borrowing logic
+        System.out.println("Borrowing book " + isbn + " for member " + memberId);
+    }
+    
+    @Override
+    public void returnBook(String memberId, String isbn) {
+        // Implementation would handle returning logic
+        System.out.println("Returning book " + isbn + " from member " + memberId);
+    }
+    
+    @Override
+    public double calculateLateFee(String memberId, String isbn) {
+        // Implementation would calculate late fees
+        return 0.0;
+    }
+}
+```
+
+### FILE: LibraryServiceStub.java

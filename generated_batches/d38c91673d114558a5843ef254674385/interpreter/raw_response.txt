@@ -1,0 +1,95 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private String id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+
+    public Ticket(String id, String title, String description, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.OPEN;
+    }
+
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+public enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL
+}
+```
+
+### FILE: Status.java
+```java
+public enum Status {
+    OPEN,
+    IN_PROGRESS,
+    RESOLVED,
+    CLOSED
+}
+```
+
+### FILE: TicketInterpreter.java
+```java
+import java.util.*;
+
+public class TicketInterpreter {
+    private Map<String, Expression> expressions;
+    
+    public TicketInterpreter() {
+        expressions = new HashMap<>();
+        initializeExpressions();
+    }
+    
+    private void initializeExpressions() {
+        expressions.put("priority", new PriorityExpression());
+        expressions.put("status", new StatusExpression());
+        expressions.put("assignee", new AssigneeExpression());
+    }
+    
+    public boolean interpret(String context, Ticket ticket) {
+        String[] parts = context.split("\\s+");
+        if (parts.length < 2) return false;
+        
+        String key = parts[0].toLowerCase();
+        String value = parts[1];
+        
+        Expression expression = expressions.get(key);
+        if (expression != null) {
+            return expression.interpret(value, ticket);
+        }
+        return false;
+    }
+}
+```
+
+### FILE: Expression.java
+```java

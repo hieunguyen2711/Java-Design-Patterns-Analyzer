@@ -1,0 +1,87 @@
+### FILE: Ticket.java
+```java
+package com.projecttracker.ticket;
+
+import java.util.Objects;
+
+public class Ticket {
+    private final String id;
+    private String title;
+    private String description;
+    private String status;
+    private String assignee;
+    private int priority;
+
+    public Ticket(String id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = "OPEN";
+        this.priority = 1;
+    }
+
+    // Getters and setters
+    public String getId() { return id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+    public int getPriority() { return priority; }
+    public void setPriority(int priority) { this.priority = priority; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(id, ticket.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
+```
+
+### FILE: TicketRepository.java
+```java
+package com.projecttracker.ticket;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class TicketRepository {
+    private static final Map<String, Ticket> ticketMap = new HashMap<>();
+    
+    public static Ticket findById(String id) {
+        return ticketMap.get(id);
+    }
+    
+    public static void save(Ticket ticket) {
+        ticketMap.put(ticket.getId(), ticket);
+    }
+    
+    public static void delete(String id) {
+        ticketMap.remove(id);
+    }
+    
+    public static boolean exists(String id) {
+        return ticketMap.containsKey(id);
+    }
+}
+```
+
+### FILE: TicketService.java
+```java
+package com.projecttracker.ticket;
+
+public class TicketService {
+    
+    public Ticket createTicket(String id, String title, String description) {
+        // Identity map ensures we don't create duplicate tickets with same ID
+        Ticket existing

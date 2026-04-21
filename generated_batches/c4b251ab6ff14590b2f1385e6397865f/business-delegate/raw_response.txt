@@ -1,0 +1,79 @@
+### FILE: BusinessDelegate.java
+```java
+public class BusinessDelegate {
+    private OrderService orderService;
+    private MenuService menuService;
+    private DeliveryService deliveryService;
+
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    public void setMenuService(MenuService menuService) {
+        this.menuService = menuService;
+    }
+
+    public void setDeliveryService(DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
+    }
+
+    public String processOrder(String customerId, String menuItemId) {
+        return orderService.placeOrder(customerId, menuItemId);
+    }
+
+    public String getMenuDetails(String menuItemId) {
+        return menuService.getMenuItem(menuItemId);
+    }
+
+    public String assignDelivery(String orderId) {
+        return deliveryService.assignDelivery(orderId);
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+public class OrderService {
+    public String placeOrder(String customerId, String menuItemId) {
+        // Simulate order processing
+        return "Order placed for customer " + customerId + " with menu item " + menuItemId;
+    }
+}
+```
+
+### FILE: MenuService.java
+```java
+public class MenuService {
+    public String getMenuItem(String menuItemId) {
+        // Simulate menu retrieval
+        return "Menu item details for ID: " + menuItemId;
+    }
+}
+```
+
+### FILE: DeliveryService.java
+```java
+public class DeliveryService {
+    public String assignDelivery(String orderId) {
+        // Simulate delivery assignment
+        return "Delivery assigned to order: " + orderId;
+    }
+}
+```
+
+### FILE: Client.java
+```java
+public class Client {
+    public static void main(String[] args) {
+        BusinessDelegate businessDelegate = new BusinessDelegate();
+        
+        businessDelegate.setOrderService(new OrderService());
+        businessDelegate.setMenuService(new MenuService());
+        businessDelegate.setDeliveryService(new DeliveryService());
+        
+        System.out.println(businessDelegate.processOrder("CUST001", "ITEM001"));
+        System.out.println(businessDelegate.getMenuDetails("ITEM001"));
+        System.out.println(businessDelegate.assignDelivery("ORDER001"));
+    }
+}
+```

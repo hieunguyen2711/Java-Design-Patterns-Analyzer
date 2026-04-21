@@ -1,0 +1,106 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+    
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private String employeeId;
+    private int daysRequested;
+    private boolean approved;
+    
+    public LeaveRequest(String employeeId, int daysRequested) {
+        this.employeeId = employeeId;
+        this.daysRequested = daysRequested;
+        this.approved = false;
+    }
+    
+    public String getEmployeeId() {
+        return employeeId;
+    }
+    
+    public int getDaysRequested() {
+        return daysRequested;
+    }
+    
+    public boolean isApproved() {
+        return approved;
+    }
+    
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+}
+```
+
+### FILE: PayrollCalculator.java
+```java
+package hr.system;
+
+public class PayrollCalculator {
+    private static final double TAX_RATE = 0.20;
+    private static final double BONUS_MULTIPLIER = 1.10;
+    
+    public double calculateNetSalary(Employee employee, LeaveRequest leaveRequest) {
+        double grossSalary = employee.getBaseSalary();
+        
+        // Apply bonus if no leave requested
+        if (leaveRequest == null || leaveRequest.getDaysRequested() <= 0) {
+            grossSalary *= BONUS_MULTIPLIER;
+        }
+        
+        // Deduct tax
+        double netSalary = grossSalary * (1 - TAX_RATE);
+        
+        return netSalary;
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    private PayrollCalculator calculator;
+    
+    public PayrollSystem() {
+        this.calculator = new PayrollCalculator();
+    }
+    
+    public void processPayroll(Employee employee, LeaveRequest leaveRequest)

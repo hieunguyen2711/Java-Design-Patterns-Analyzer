@@ -1,0 +1,93 @@
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean available;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.available = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public boolean isAvailable() { return available; }
+    public void setAvailable(boolean available) { this.available = available; }
+}
+```
+
+### FILE: VehicleRepository.java
+```java
+import java.util.*;
+import java.util.stream.Collectors;
+
+public interface VehicleRepository {
+    Optional<Vehicle> findById(String id);
+    List<Vehicle> findAll();
+    List<Vehicle> findByMake(String make);
+    void save(Vehicle vehicle);
+    void delete(String id);
+}
+```
+
+### FILE: InMemoryVehicleRepository.java
+```java
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class InMemoryVehicleRepository implements VehicleRepository {
+    private final Map<String, Vehicle> vehicles = new HashMap<>();
+    
+    @Override
+    public Optional<Vehicle> findById(String id) {
+        return Optional.ofNullable(vehicles.get(id));
+    }
+    
+    @Override
+    public List<Vehicle> findAll() {
+        return new ArrayList<>(vehicles.values());
+    }
+    
+    @Override
+    public List<Vehicle> findByMake(String make) {
+        return vehicles.values().stream()
+                .filter(vehicle -> vehicle.getMake().equalsIgnoreCase(make))
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public void save(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    @Override
+    public void delete(String id) {
+        vehicles.remove(id);
+    }
+}
+```
+
+### FILE: FleetManager.java
+```java
+import java.util.List;
+import java.util.Optional;
+
+public class FleetManager {
+    private

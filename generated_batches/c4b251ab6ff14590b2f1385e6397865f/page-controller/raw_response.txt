@@ -1,0 +1,98 @@
+### FILE: OrderController.java
+```java
+public class OrderController {
+    private OrderService orderService;
+    
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+    
+    public void handleOrderCreation(String customerId, String menuItemId) {
+        Order order = new Order(customerId, menuItemId);
+        orderService.createOrder(order);
+    }
+    
+    public void handleOrderStatusUpdate(String orderId, String status) {
+        orderService.updateOrderStatus(orderId, status);
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+public class OrderService {
+    private OrderRepository orderRepository;
+    
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+    
+    public void createOrder(Order order) {
+        orderRepository.save(order);
+    }
+    
+    public void updateOrderStatus(String orderId, String status) {
+        Order order = orderRepository.findById(orderId);
+        if (order != null) {
+            order.setStatus(status);
+            orderRepository.update(order);
+        }
+    }
+}
+```
+
+### FILE: OrderRepository.java
+```java
+public interface OrderRepository {
+    void save(Order order);
+    Order findById(String id);
+    void update(Order order);
+}
+```
+
+### FILE: DatabaseOrderRepository.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class DatabaseOrderRepository implements OrderRepository {
+    private Map<String, Order> orders = new HashMap<>();
+    
+    @Override
+    public void save(Order order) {
+        orders.put(order.getId(), order);
+    }
+    
+    @Override
+    public Order findById(String id) {
+        return orders.get(id);
+    }
+    
+    @Override
+    public void update(Order order) {
+        orders.put(order.getId(), order);
+    }
+}
+```
+
+### FILE: Order.java
+```java
+public class Order {
+    private String id;
+    private String customerId;
+    private String menuItemId;
+    private String status;
+    
+    public Order(String customerId, String menuItemId) {
+        this.id = java.util.UUID.randomUUID().toString();
+        this.customerId = customerId;
+        this.menuItemId = menuItemId;
+        this.status = "CREATED";
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public String getCustomerId() { return customerId; }
+    public String getMenuItemId() { return menuItemId; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) {

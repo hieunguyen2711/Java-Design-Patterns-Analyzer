@@ -1,0 +1,107 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private double baseSalary;
+    private PaymentStrategy paymentStrategy;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public void setPaymentStrategy(PaymentStrategy strategy) {
+        this.paymentStrategy = strategy;
+    }
+    
+    public double calculatePay() {
+        if (paymentStrategy != null) {
+            return paymentStrategy.calculatePayment(baseSalary);
+        }
+        return baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: PaymentStrategy.java
+```java
+package hr.system;
+
+public interface PaymentStrategy {
+    double calculatePayment(double baseSalary);
+}
+```
+
+### FILE: FixedSalaryStrategy.java
+```java
+package hr.system;
+
+public class FixedSalaryStrategy implements PaymentStrategy {
+    @Override
+    public double calculatePayment(double baseSalary) {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: CommissionSalaryStrategy.java
+```java
+package hr.system;
+
+public class CommissionSalaryStrategy implements PaymentStrategy {
+    private double commissionRate;
+    
+    public CommissionSalaryStrategy(double commissionRate) {
+        this.commissionRate = commissionRate;
+    }
+    
+    @Override
+    public double calculatePayment(double baseSalary) {
+        return baseSalary + (baseSalary * commissionRate);
+    }
+}
+```
+
+### FILE: BonusSalaryStrategy.java
+```java
+package hr.system;
+
+public class BonusSalaryStrategy implements PaymentStrategy {
+    private double bonusAmount;
+    
+    public BonusSalaryStrategy(double bonusAmount) {
+        this.bonusAmount = bonusAmount;
+    }
+    
+    @Override
+    public double calculatePayment(double baseSalary) {
+        return baseSalary + bonusAmount;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package hr.system;
+
+public class Main {
+    public static void main(String[] args) {
+        Employee employee1 = new Employee("John Doe", 5000.0);
+        Employee employee2 = new Employee("Jane Smith", 5000.0);
+        Employee employee3 = new Employee("Bob Johnson", 5000.0);
+        
+        // Fixed salary strategy
+        employee1.setPaymentStrategy(new FixedSalaryStrategy());
+        
+        // Commission based strategy
+        employee2.setPaymentStrategy(new Commission

@@ -1,0 +1,131 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class AppointmentSlot {
+    private LocalDateTime dateTime;
+    private Doctor doctor;
+    private Patient patient;
+    
+    public AppointmentSlot(LocalDateTime dateTime, Doctor doctor) {
+        this.dateTime = dateTime;
+        this.doctor = doctor;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+}
+```
+
+### FILE: Visit.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class Visit {
+    private LocalDateTime checkInTime;
+    private LocalDateTime checkOutTime;
+    private AppointmentSlot slot;
+    
+    public Visit(AppointmentSlot slot) {
+        this.slot = slot;
+        this.checkInTime = LocalDateTime.now();
+    }
+    
+    public LocalDateTime getCheckInTime() {
+        return checkInTime;
+    }
+    
+    public LocalDateTime getCheckOutTime() {
+        return checkOutTime;
+    }
+    
+    public void setCheckOutTime(LocalDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+    
+    public AppointmentSlot getSlot() {
+        return slot;
+    }
+}
+```
+
+### FILE: Option.java
+```java
+package clinic;
+
+import java.util.Optional;
+import java.util.function.Function;
+
+public class Option<T> {
+    private final T value;
+    private final boolean isEmpty;
+    
+    private Option(T value, boolean isEmpty) {
+        this.value = value;
+        this.isEmpty = isEmpty;
+    }
+    
+   

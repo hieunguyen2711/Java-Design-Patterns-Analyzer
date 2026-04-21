@@ -1,0 +1,101 @@
+### FILE: Ticket.java
+```java
+public interface Ticket {
+    void assign();
+    void updateStatus(String status);
+    String getStatus();
+}
+```
+
+### FILE: BugTicket.java
+```java
+public class BugTicket implements Ticket {
+    private String status = "Open";
+    
+    @Override
+    public void assign() {
+        System.out.println("Bug ticket assigned to developer");
+    }
+    
+    @Override
+    public void updateStatus(String status) {
+        this.status = status;
+    }
+    
+    @Override
+    public String getStatus() {
+        return status;
+    }
+}
+```
+
+### FILE: FeatureTicket.java
+```java
+public class FeatureTicket implements Ticket {
+    private String status = "Open";
+    
+    @Override
+    public void assign() {
+        System.out.println("Feature ticket assigned to product owner");
+    }
+    
+    @Override
+    public void updateStatus(String status) {
+        this.status = status;
+    }
+    
+    @Override
+    public String getStatus() {
+        return status;
+    }
+}
+```
+
+### FILE: TicketFactory.java
+```java
+public interface TicketFactory {
+    Ticket createTicket();
+}
+```
+
+### FILE: BugTicketFactory.java
+```java
+public class BugTicketFactory implements TicketFactory {
+    @Override
+    public Ticket createTicket() {
+        return new BugTicket();
+    }
+}
+```
+
+### FILE: FeatureTicketFactory.java
+```java
+public class FeatureTicketFactory implements TicketFactory {
+    @Override
+    public Ticket createTicket() {
+        return new FeatureTicket();
+    }
+}
+```
+
+### FILE: ProjectTracker.java
+```java
+public class ProjectTracker {
+    public static void main(String[] args) {
+        TicketFactory bugFactory = new BugTicketFactory();
+        TicketFactory featureFactory = new FeatureTicketFactory();
+        
+        Ticket bug = bugFactory.createTicket();
+        Ticket feature = featureFactory.createTicket();
+        
+        bug.assign();
+        feature.assign();
+        
+        bug.updateStatus("In Progress");
+        feature.updateStatus("Resolved");
+        
+        System.out.println("Bug status: " + bug.getStatus());
+        System.out.println("Feature status: " + feature.getStatus());
+    }
+}
+```

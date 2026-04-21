@@ -1,0 +1,87 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private String title;
+    private String code;
+    
+    public Course(String title, String code) {
+        this.title = title;
+        this.code = code;
+    }
+    
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
+}
+```
+
+### FILE: CourseDTO.java
+```java
+package com.lms.dto;
+
+public class CourseDTO {
+    private String title;
+    private String code;
+    
+    public CourseDTO(String title, String code) {
+        this.title = title;
+        this.code = code;
+    }
+    
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
+}
+```
+
+### FILE: CourseConverter.java
+```java
+package com.lms.converter;
+
+import com.lms.model.Course;
+import com.lms.dto.CourseDTO;
+
+public class CourseConverter {
+    
+    public static CourseDTO toDTO(Course course) {
+        if (course == null) return null;
+        return new CourseDTO(course.getTitle(), course.getCode());
+    }
+    
+    public static Course fromDTO(CourseDTO dto) {
+        if (dto == null) return null;
+        return new Course(dto.getTitle(), dto.getCode());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.lms;
+
+import com.lms.model.Course;
+import com.lms.dto.CourseDTO;
+import com.lms.converter.CourseConverter;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create a course model object
+        Course course = new Course("Java Programming", "CS101");
+        
+        // Convert to DTO using converter
+        CourseDTO dto = CourseConverter.toDTO(course);
+        
+        // Convert back to model
+        Course convertedCourse = CourseConverter.fromDTO(dto);
+        
+        System.out.println("Original: " + course.getTitle() + " - " + course.getCode());
+        System.out.println("Converted: " + convertedCourse.getTitle() + " - " + convertedCourse.getCode());
+    }
+}
+```

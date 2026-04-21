@@ -1,0 +1,85 @@
+### FILE: ResourceManager.java
+```java
+public interface ResourceManager {
+    void acquire();
+    void release();
+}
+```
+
+### FILE: DatabaseConnection.java
+```java
+public class DatabaseConnection implements ResourceManager {
+    private boolean isOpen = false;
+    
+    @Override
+    public void acquire() {
+        if (!isOpen) {
+            System.out.println("Opening database connection...");
+            isOpen = true;
+        }
+    }
+    
+    @Override
+    public void release() {
+        if (isOpen) {
+            System.out.println("Closing database connection...");
+            isOpen = false;
+        }
+    }
+}
+```
+
+### FILE: LMSDatabaseManager.java
+```java
+public class LMSDatabaseManager {
+    
+    public <T> T executeWithResource(ResourceManager resource, ResourceOperation<T> operation) {
+        try {
+            resource.acquire();
+            return operation.execute();
+        } finally {
+            resource.release();
+        }
+    }
+    
+    @FunctionalInterface
+    public interface ResourceOperation<T> {
+        T execute() throws Exception;
+    }
+}
+```
+
+### FILE: CourseService.java
+```java
+public class CourseService {
+    private final LMSDatabaseManager dbManager = new LMSDatabaseManager();
+    
+    public void saveCourse(String courseName) {
+        dbManager.executeWithResource(new DatabaseConnection(), () -> {
+            System.out.println("Saving course: " + courseName);
+            // Simulate database operation
+            return null;
+        });
+    }
+    
+    public String getCourseById(int courseId) {
+        return dbManager.executeWithResource(new DatabaseConnection(), () -> {
+            System.out.println("Retrieving course with ID: " + courseId);
+            return "Course-" + courseId;
+        });
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        CourseService service = new CourseService();
+        
+        service.saveCourse("Java Fundamentals");
+        String course = service.getCourseById(123);
+        System.out.println("Retrieved: " + course);
+    }
+}
+```

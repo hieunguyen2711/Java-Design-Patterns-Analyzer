@@ -1,0 +1,114 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+import java.time.LocalDateTime;
+
+public class AppointmentSlot {
+    private LocalDateTime dateTime;
+    private Doctor doctor;
+    private Patient patient;
+    private boolean isAvailable;
+    
+    public AppointmentSlot(LocalDateTime dateTime, Doctor doctor) {
+        this.dateTime = dateTime;
+        this.doctor = doctor;
+        this.isAvailable = true;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: CheckInService.java
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class CheckInService {
+    private final ExecutorService executorService;
+    
+    public CheckInService() {
+        this.executorService = Executors.newFixedThreadPool(3);
+    }
+    
+    public void processCheckIn(AppointmentSlot slot) {
+        executorService.submit(() -> {
+            try {
+                // Simulate check-in processing
+                Thread.sleep(1000);
+                System.out.println("Checked in patient for appointment with " + 
+                    slot.getDoctor().getName() + " at " + slot.getDateTime());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination

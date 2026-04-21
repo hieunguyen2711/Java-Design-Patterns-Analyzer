@@ -1,0 +1,103 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Objects;
+
+public final class Employee {
+    private final String id;
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate hireDate;
+    private final BigDecimal salary;
+    private final String department;
+    
+    public Employee(String id, String firstName, String lastName, 
+                   LocalDate hireDate, BigDecimal salary, String department) {
+        this.id = Objects.requireNonNull(id);
+        this.firstName = Objects.requireNonNull(firstName);
+        this.lastName = Objects.requireNonNull(lastName);
+        this.hireDate = Objects.requireNonNull(hireDate);
+        this.salary = Objects.requireNonNull(salary);
+        this.department = Objects.requireNonNull(department);
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
+    }
+    
+    public LocalDate getHireDate() {
+        return hireDate;
+    }
+    
+    public BigDecimal getSalary() {
+        return salary;
+    }
+    
+    public String getDepartment() {
+        return department;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee employee = (Employee) obj;
+        return Objects.equals(id, employee.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+    
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", hireDate=" + hireDate +
+                ", salary=" + salary +
+                ", department='" + department + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: EmployeeBuilder.java
+```java
+package hr.system;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+public class EmployeeBuilder {
+    private String id;
+    private String firstName;
+    private String lastName;
+    private LocalDate hireDate;
+    private BigDecimal salary;
+    private String department;
+    
+    public static EmployeeBuilder anEmployee() {
+        return new EmployeeBuilder();
+    }
+    
+    public EmployeeBuilder withId(String id) {
+        this.id = id;
+        return this;
+    }
+    
+    public EmployeeBuilder withFirstName(String firstName) {
+        this.firstName = firstName;

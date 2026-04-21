@@ -1,0 +1,89 @@
+### FILE: Ticket.java
+```java
+package com.projecttracker.ticket;
+
+public class Ticket {
+    private String id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+    
+    public Ticket(String id, String title, String description, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.OPEN;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+package com.projecttracker.ticket;
+
+public enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH,
+    URGENT
+}
+```
+
+### FILE: Status.java
+```java
+package com.projecttracker.ticket;
+
+public enum Status {
+    OPEN,
+    IN_PROGRESS,
+    RESOLVED,
+    CLOSED
+}
+```
+
+### FILE: TicketService.java
+```java
+package com.projecttracker.ticket;
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class TicketService {
+    private final Map<String, Ticket> tickets = new HashMap<>();
+    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+    
+    public CompletableFuture<Ticket> createTicketAsync(String id, String title, 
+                                                     String description, Priority priority) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(100); // Simulate async work
+                Ticket ticket = new Ticket(id, title, description, priority);
+                tickets.put(id, ticket);
+                return ticket;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }

@@ -1,0 +1,110 @@
+### FILE: TicketTrackerPage.java
+```java
+package com.example.tracker.page;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class TicketTrackerPage {
+    private WebDriver driver;
+
+    @FindBy(id = "ticket-title")
+    private WebElement titleInput;
+
+    @FindBy(id = "ticket-description")
+    private WebElement descriptionInput;
+
+    @FindBy(id = "priority-select")
+    private WebElement prioritySelect;
+
+    @FindBy(id = "assignee-input")
+    private WebElement assigneeInput;
+
+    @FindBy(id = "create-ticket-btn")
+    private WebElement createButton;
+
+    @FindBy(className = "ticket-status")
+    private WebElement statusDisplay;
+
+    public TicketTrackerPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public void enterTitle(String title) {
+        titleInput.clear();
+        titleInput.sendKeys(title);
+    }
+
+    public void enterDescription(String description) {
+        descriptionInput.clear();
+        descriptionInput.sendKeys(description);
+    }
+
+    public void selectPriority(String priority) {
+        prioritySelect.sendKeys(priority);
+    }
+
+    public void assignTo(String assignee) {
+        assigneeInput.clear();
+        assigneeInput.sendKeys(assignee);
+    }
+
+    public TicketCreatedPage createTicket() {
+        createButton.click();
+        return new TicketCreatedPage(driver);
+    }
+
+    public String getTicketStatus() {
+        return statusDisplay.getText();
+    }
+}
+```
+
+### FILE: TicketCreatedPage.java
+```java
+package com.example.tracker.page;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class TicketCreatedPage {
+    private WebDriver driver;
+
+    @FindBy(className = "ticket-id")
+    private WebElement ticketIdDisplay;
+
+    @FindBy(className = "status-assigned")
+    private WebElement statusDisplay;
+
+    public TicketCreatedPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public String getTicketId() {
+        return ticketIdDisplay.getText();
+    }
+
+    public String getStatus() {
+        return statusDisplay.getText();
+    }
+}
+```
+
+### FILE: WebDriverManager.java
+```java
+package com.example.tracker.page;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class WebDriverManager {
+    private static WebDriver driver;
+
+    public static WebDriver getDriver() {
+        if (driver == null

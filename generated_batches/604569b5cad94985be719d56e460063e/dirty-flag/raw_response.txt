@@ -1,0 +1,91 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private double baseSalary;
+    private boolean dirtyFlag = false;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+        setDirty(true);
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+    
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+        setDirty(true);
+    }
+    
+    public boolean isDirty() {
+        return dirtyFlag;
+    }
+    
+    private void setDirty(boolean dirty) {
+        this.dirtyFlag = dirty;
+    }
+    
+    public void clearDirtyFlag() {
+        this.dirtyFlag = false;
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package hr.system;
+
+public class PayrollService {
+    private Employee employee;
+    
+    public PayrollService(Employee employee) {
+        this.employee = employee;
+    }
+    
+    public double calculateNetSalary() {
+        if (employee.isDirty()) {
+            System.out.println("Employee data has changed, recalculating...");
+            // In a real system, this would trigger expensive calculations
+            employee.clearDirtyFlag();
+        }
+        
+        // Simulate complex salary calculation
+        double tax = employee.getBaseSalary() * 0.2;
+        return employee.getBaseSalary() - tax;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package hr.system;
+
+public class Main {
+    public static void main(String[] args) {
+        Employee emp = new Employee("John Doe", 50000);
+        PayrollService payroll = new PayrollService(emp);
+        
+        // First calculation - should trigger recalculation
+        System.out.println("Net Salary: " + payroll.calculateNetSalary());
+        
+        // Modify employee data
+        emp.setBaseSalary(55000);
+        
+        // Second calculation - should detect dirty flag and recalculate
+        System.out.println("Net Salary: " + payroll.calculateNetSalary());
+    }
+}
+```

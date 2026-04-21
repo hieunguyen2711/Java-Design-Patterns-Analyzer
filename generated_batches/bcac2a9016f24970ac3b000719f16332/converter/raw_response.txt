@@ -1,0 +1,101 @@
+### FILE: RoomInventory.java
+```java
+package hotel.system;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class RoomInventory {
+    private List<Room> rooms = new ArrayList<>();
+    
+    public void addRoom(Room room) {
+        rooms.add(room);
+    }
+    
+    public List<Room> getRooms() {
+        return rooms;
+    }
+}
+```
+
+### FILE: Room.java
+```java
+package hotel.system;
+
+public class Room {
+    private String roomId;
+    private String type;
+    private double basePrice;
+    
+    public Room(String roomId, String type, double basePrice) {
+        this.roomId = roomId;
+        this.type = type;
+        this.basePrice = basePrice;
+    }
+    
+    // Getters and setters
+    public String getRoomId() { return roomId; }
+    public void setRoomId(String roomId) { this.roomId = roomId; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    public double getBasePrice() { return basePrice; }
+    public void setBasePrice(double basePrice) { this.basePrice = basePrice; }
+}
+```
+
+### FILE: PricingPlan.java
+```java
+package hotel.system;
+
+public interface PricingPlan {
+    double calculatePrice(Room room, int numberOfNights);
+}
+```
+
+### FILE: StandardPricingPlan.java
+```java
+package hotel.system;
+
+public class StandardPricingPlan implements PricingPlan {
+    @Override
+    public double calculatePrice(Room room, int numberOfNights) {
+        return room.getBasePrice() * numberOfNights;
+    }
+}
+```
+
+### FILE: PremiumPricingPlan.java
+```java
+package hotel.system;
+
+public class PremiumPricingPlan implements PricingPlan {
+    @Override
+    public double calculatePrice(Room room, int numberOfNights) {
+        return (room.getBasePrice() * 1.5) * numberOfNights;
+    }
+}
+```
+
+### FILE: BillingService.java
+```java
+package hotel.system;
+
+public class BillingService {
+    private PricingPlan pricingPlan;
+    
+    public BillingService(PricingPlan pricingPlan) {
+        this.pricingPlan = pricingPlan;
+    }
+    
+    public double calculateTotal(Room room, int numberOfNights) {
+        return pricingPlan.calculatePrice(room, numberOfNights);
+    }
+}
+```
+
+### FILE: RoomConverter.java
+```java
+package hotel.system;
+
+import java.util.List;
+import java.util.ArrayList

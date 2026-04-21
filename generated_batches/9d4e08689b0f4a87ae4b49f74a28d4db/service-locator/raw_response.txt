@@ -1,0 +1,111 @@
+### FILE: ServiceLocator.java
+```java
+public class ServiceLocator {
+    private static ServiceLocator instance;
+    private Map<String, Object> services;
+
+    private ServiceLocator() {
+        services = new HashMap<>();
+        loadServices();
+    }
+
+    public static synchronized ServiceLocator getInstance() {
+        if (instance == null) {
+            instance = new ServiceLocator();
+        }
+        return instance;
+    }
+
+    private void loadServices() {
+        services.put("VehicleService", new VehicleServiceImpl());
+        services.put("ReservationService", new ReservationServiceImpl());
+        services.put("MaintenanceService", new MaintenanceServiceImpl());
+    }
+
+    public Object getService(String serviceName) {
+        return services.get(serviceName);
+    }
+}
+```
+
+### FILE: Service.java
+```java
+public interface Service {
+    String getName();
+}
+```
+
+### FILE: VehicleService.java
+```java
+public interface VehicleService extends Service {
+    void addVehicle(Vehicle vehicle);
+    void removeVehicle(String vin);
+    Vehicle findVehicleByVin(String vin);
+}
+```
+
+### FILE: ReservationService.java
+```java
+public interface ReservationService extends Service {
+    void createReservation(Reservation reservation);
+    void cancelReservation(String reservationId);
+    Reservation findReservationById(String id);
+}
+```
+
+### FILE: MaintenanceService.java
+```java
+public interface MaintenanceService extends Service {
+    void scheduleMaintenance(MaintenanceRecord record);
+    void completeMaintenance(String recordId);
+    MaintenanceRecord findMaintenanceByVin(String vin);
+}
+```
+
+### FILE: VehicleServiceImpl.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class VehicleServiceImpl implements VehicleService {
+    private Map<String, Vehicle> vehicles = new HashMap<>();
+
+    @Override
+    public String getName() {
+        return "VehicleService";
+    }
+
+    @Override
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getVin(), vehicle);
+    }
+
+    @Override
+    public void removeVehicle(String vin) {
+        vehicles.remove(vin);
+    }
+
+    @Override
+    public Vehicle findVehicleByVin(String vin) {
+        return vehicles.get(vin);
+    }
+}
+```
+
+### FILE: ReservationServiceImpl.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ReservationServiceImpl implements ReservationService {
+    private Map<String, Reservation> reservations = new HashMap<>();
+
+    @Override
+    public String getName() {
+        return "ReservationService";
+    }
+
+    @Override
+    public void createReservation(Reservation reservation) {
+        reservations.put(reservation.getId(), reservation);
+   

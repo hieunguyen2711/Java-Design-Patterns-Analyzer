@@ -1,0 +1,80 @@
+### FILE: OrderService.java
+```java
+public interface OrderService {
+    void placeOrder(String customerId, String menuItem);
+    void updateOrderStatus(String orderId, String status);
+    String getOrderStatus(String orderId);
+}
+```
+
+### FILE: RealOrderService.java
+```java
+public class RealOrderService implements OrderService {
+    @Override
+    public void placeOrder(String customerId, String menuItem) {
+        System.out.println("Placing order for customer " + customerId + 
+                          " with menu item: " + menuItem);
+    }
+    
+    @Override
+    public void updateOrderStatus(String orderId, String status) {
+        System.out.println("Updating order " + orderId + " status to: " + status);
+    }
+    
+    @Override
+    public String getOrderStatus(String orderId) {
+        return "Order " + orderId + " is being processed";
+    }
+}
+```
+
+### FILE: OrderServiceInvocationHandler.java
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class OrderServiceInvocationHandler implements InvocationHandler {
+    private final OrderService realService;
+    
+    public OrderServiceInvocationHandler(OrderService realService) {
+        this.realService = realService;
+    }
+    
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Before method: " + method.getName());
+        
+        Object result = method.invoke(realService, args);
+        
+        System.out.println("After method: " + method.getName());
+        return result;
+    }
+}
+```
+
+### FILE: OrderServiceProxyFactory.java
+```java
+import java.lang.reflect.Proxy;
+
+public class OrderServiceProxyFactory {
+    public static OrderService createOrderServiceProxy(OrderService realService) {
+        return (OrderService) Proxy.newProxyInstance(
+            OrderService.class.getClassLoader(),
+            new Class[]{OrderService.class},
+            new OrderServiceInvocationHandler(realService)
+        );
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        OrderService realService = new RealOrderService();
+        OrderService proxyService = OrderServiceProxyFactory.createOrderServiceProxy(realService);
+        
+        System.out.println("=== Using Proxy Service ===");
+        proxyService.placeOrder("CUST001", "Margherita Pizza");
+        proxyService.updateOrderStatus("ORD001", "PREPARING");
+        String status = proxyService.getOrderStatus("ORD001");

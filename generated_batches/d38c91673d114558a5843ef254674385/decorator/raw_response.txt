@@ -1,0 +1,107 @@
+### FILE: Ticket.java
+```java
+public abstract class Ticket {
+    protected String title;
+    protected String description;
+    protected String assignee;
+    protected TicketStatus status;
+
+    public Ticket(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.status = TicketStatus.NEW;
+    }
+
+    public abstract int getPriority();
+
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+    public TicketStatus getStatus() { return status; }
+    public void setStatus(TicketStatus status) { this.status = status; }
+}
+```
+
+### FILE: BugTicket.java
+```java
+public class BugTicket extends Ticket {
+    private int severity;
+
+    public BugTicket(String title, String description, int severity) {
+        super(title, description);
+        this.severity = severity;
+    }
+
+    @Override
+    public int getPriority() {
+        return severity * 10;
+    }
+}
+```
+
+### FILE: FeatureTicket.java
+```java
+public class FeatureTicket extends Ticket {
+    private boolean isComplex;
+
+    public FeatureTicket(String title, String description, boolean isComplex) {
+        super(title, description);
+        this.isComplex = isComplex;
+    }
+
+    @Override
+    public int getPriority() {
+        return isComplex ? 50 : 30;
+    }
+}
+```
+
+### FILE: TicketDecorator.java
+```java
+public abstract class TicketDecorator extends Ticket {
+    protected Ticket ticket;
+
+    public TicketDecorator(Ticket ticket) {
+        super(ticket.getTitle(), ticket.getDescription());
+        this.ticket = ticket;
+    }
+
+    @Override
+    public int getPriority() {
+        return ticket.getPriority();
+    }
+}
+```
+
+### FILE: HighPriorityTicket.java
+```java
+public class HighPriorityTicket extends TicketDecorator {
+    
+    public HighPriorityTicket(Ticket ticket) {
+        super(ticket);
+    }
+
+    @Override
+    public int getPriority() {
+        return ticket.getPriority() + 20;
+    }
+}
+```
+
+### FILE: AssignedTicket.java
+```java
+public class AssignedTicket extends TicketDecorator {
+    
+    public AssignedTicket(Ticket ticket) {
+        super(ticket);
+    }
+
+    @Override
+    public int getPriority() {
+        return ticket.getPriority() + 5;
+    }
+}
+```
+
+### FILE

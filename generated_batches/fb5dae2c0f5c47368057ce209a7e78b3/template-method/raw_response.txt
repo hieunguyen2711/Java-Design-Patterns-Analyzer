@@ -1,0 +1,101 @@
+### FILE: Course.java
+```java
+package com.lms.course;
+
+public abstract class Course {
+    protected String courseName;
+    
+    public Course(String courseName) {
+        this.courseName = courseName;
+    }
+    
+    // Template method
+    public final void runCourse() {
+        enrollStudents();
+        deliverContent();
+        conductAssessments();
+        provideFeedback();
+    }
+    
+    protected abstract void enrollStudents();
+    protected abstract void deliverContent();
+    protected abstract void conductAssessments();
+    
+    // Common implementation
+    protected void provideFeedback() {
+        System.out.println(courseName + ": Providing feedback to students");
+    }
+}
+```
+
+### FILE: ProgrammingCourse.java
+```java
+package com.lms.course;
+
+public class ProgrammingCourse extends Course {
+    
+    public ProgrammingCourse(String courseName) {
+        super(courseName);
+    }
+    
+    @Override
+    protected void enrollStudents() {
+        System.out.println(courseName + ": Enrolling students with programming background");
+    }
+    
+    @Override
+    protected void deliverContent() {
+        System.out.println(courseName + ": Delivering coding tutorials and exercises");
+    }
+    
+    @Override
+    protected void conductAssessments() {
+        System.out.println(courseName + ": Conducting code reviews and project submissions");
+    }
+}
+```
+
+### FILE: ArtCourse.java
+```java
+package com.lms.course;
+
+public class ArtCourse extends Course {
+    
+    public ArtCourse(String courseName) {
+        super(courseName);
+    }
+    
+    @Override
+    protected void enrollStudents() {
+        System.out.println(courseName + ": Enrolling art enthusiasts and beginners");
+    }
+    
+    @Override
+    protected void deliverContent() {
+        System.out.println(courseName + ": Delivering drawing techniques and artistic theory");
+    }
+    
+    @Override
+    protected void conductAssessments() {
+        System.out.println(courseName + ": Conducting portfolio reviews and creative projects");
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+package com.lms;
+
+import com.lms.course.Course;
+import com.lms.course.ProgrammingCourse;
+import com.lms.course.ArtCourse;
+
+public class LMSApplication {
+    public static void main(String[] args) {
+        Course programmingCourse = new ProgrammingCourse("Advanced Java Programming");
+        Course artCourse = new ArtCourse("Digital Art Fundamentals");
+        
+        System.out.println("=== Running Programming Course ===");
+        programmingCourse.runCourse();
+        
+        System.out.println("\n=== Running

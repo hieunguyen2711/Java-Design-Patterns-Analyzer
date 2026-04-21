@@ -1,0 +1,88 @@
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public abstract class Vehicle {
+    protected String make;
+    protected String model;
+    protected int year;
+    protected double basePrice;
+    
+    public Vehicle(String make, String model, int year, double basePrice) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.basePrice = basePrice;
+    }
+    
+    // Template method
+    public final double calculateTotalPrice() {
+        double price = basePrice;
+        price = applyBaseDiscount(price);
+        price = applySeasonalAdjustment(price);
+        price = applySpecialOffers(price);
+        return price;
+    }
+    
+    protected abstract double applyBaseDiscount(double price);
+    protected abstract double applySeasonalAdjustment(double price);
+    protected abstract double applySpecialOffers(double price);
+    
+    public String getVehicleInfo() {
+        return year + " " + make + " " + model;
+    }
+}
+```
+
+### FILE: Car.java
+```java
+package fleet;
+
+public class Car extends Vehicle {
+    private boolean isElectric;
+    
+    public Car(String make, String model, int year, double basePrice, boolean isElectric) {
+        super(make, model, year, basePrice);
+        this.isElectric = isElectric;
+    }
+    
+    @Override
+    protected double applyBaseDiscount(double price) {
+        if (isElectric) {
+            return price * 0.9; // 10% discount for electric cars
+        }
+        return price;
+    }
+    
+    @Override
+    protected double applySeasonalAdjustment(double price) {
+        // No seasonal adjustment for cars
+        return price;
+    }
+    
+    @Override
+    protected double applySpecialOffers(double price) {
+        if (year > 2020) {
+            return price * 0.95; // Additional 5% off for newer models
+        }
+        return price;
+    }
+}
+```
+
+### FILE: Truck.java
+```java
+package fleet;
+
+public class Truck extends Vehicle {
+    private double cargoCapacity;
+    
+    public Truck(String make, String model, int year, double basePrice, double cargoCapacity) {
+        super(make, model, year, basePrice);
+        this.cargoCapacity = cargoCapacity;
+    }
+    
+    @Override
+    protected double applyBaseDiscount(double price) {
+        if (cargoCapacity > 2000) {
+            return price * 0.85; //

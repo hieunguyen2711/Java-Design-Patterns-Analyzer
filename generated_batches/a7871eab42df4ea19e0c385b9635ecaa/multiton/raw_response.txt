@@ -1,0 +1,107 @@
+### FILE: Account.java
+```java
+public class Account {
+    private final String accountNumber;
+    private double balance;
+    
+    public Account(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+}
+```
+
+### FILE: AccountManager.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class AccountManager {
+    private static final Map<String, Account> accounts = new HashMap<>();
+    private static final int MAX_ACCOUNTS = 5;
+    
+    private AccountManager() {}
+    
+    public static Account getAccount(String accountNumber) {
+        if (!accounts.containsKey(accountNumber)) {
+            if (accounts.size() >= MAX_ACCOUNTS) {
+                throw new IllegalStateException("Maximum number of accounts reached");
+            }
+            accounts.put(accountNumber, new Account(accountNumber, 0.0));
+        }
+        return accounts.get(accountNumber);
+    }
+    
+    public static int getAccountCount() {
+        return accounts.size();
+    }
+}
+```
+
+### FILE: Transaction.java
+```java
+public class Transaction {
+    private final String transactionId;
+    private final String fromAccount;
+    private final String toAccount;
+    private final double amount;
+    private final String type;
+    
+    public Transaction(String transactionId, String fromAccount, String toAccount, double amount, String type) {
+        this.transactionId = transactionId;
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+        this.amount = amount;
+        this.type = type;
+    }
+    
+    public String getTransactionId() {
+        return transactionId;
+    }
+    
+    public String getFromAccount() {
+        return fromAccount;
+    }
+    
+    public String getToAccount() {
+        return toAccount;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public String getType() {
+        return type;
+    }
+}
+```
+
+### FILE: TransactionManager.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public

@@ -1,0 +1,99 @@
+### FILE: StockIntakePage.java
+```java
+package com.example.stock;
+
+public class StockIntakePage {
+    private final String pageUrl;
+    
+    public StockIntakePage(String url) {
+        this.pageUrl = url;
+    }
+    
+    public void navigateTo() {
+        System.out.println("Navigating to " + pageUrl);
+    }
+    
+    public void enterItemCode(String code) {
+        System.out.println("Entering item code: " + code);
+    }
+    
+    public void enterQuantity(int quantity) {
+        System.out.println("Entering quantity: " + quantity);
+    }
+    
+    public void clickSave() {
+        System.out.println("Clicking save button");
+    }
+}
+```
+
+### FILE: ItemLocationPage.java
+```java
+package com.example.stock;
+
+public class ItemLocationPage {
+    private final String pageUrl;
+    
+    public ItemLocationPage(String url) {
+        this.pageUrl = url;
+    }
+    
+    public void navigateTo() {
+        System.out.println("Navigating to " + pageUrl);
+    }
+    
+    public void searchItem(String itemCode) {
+        System.out.println("Searching for item: " + itemCode);
+    }
+    
+    public void updateLocation(String location) {
+        System.out.println("Updating location to: " + location);
+    }
+    
+    public void clickUpdate() {
+        System.out.println("Clicking update button");
+    }
+}
+```
+
+### FILE: ReorderThresholdPage.java
+```java
+package com.example.stock;
+
+public class ReorderThresholdPage {
+    private final String pageUrl;
+    
+    public ReorderThresholdPage(String url) {
+        this.pageUrl = url;
+    }
+    
+    public void navigateTo() {
+        System.out.println("Navigating to " + pageUrl);
+    }
+    
+    public void setReorderLevel(String itemCode, int level) {
+        System.out.println("Setting reorder level for " + itemCode + " to: " + level);
+    }
+    
+    public void clickSave() {
+        System.out.println("Clicking save button");
+    }
+}
+```
+
+### FILE: SupplierRestockPage.java
+```java
+package com.example.stock;
+
+public class SupplierRestockPage {
+    private final String pageUrl;
+    
+    public SupplierRestockPage(String url) {
+        this.pageUrl = url;
+    }
+    
+    public void navigateTo() {
+        System.out.println("Navigating to " + pageUrl);
+    }
+    
+    public void selectSupplier(String supplier

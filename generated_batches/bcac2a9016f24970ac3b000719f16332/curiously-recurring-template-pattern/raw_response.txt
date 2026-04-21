@@ -1,0 +1,103 @@
+### FILE: Room.java
+```java
+package com.hotel.inventory;
+
+public abstract class Room<T extends Room<T>> {
+    protected String roomId;
+    protected double basePrice;
+    
+    public Room(String roomId, double basePrice) {
+        this.roomId = roomId;
+        this.basePrice = basePrice;
+    }
+    
+    public abstract T withFacilities(String... facilities);
+    
+    public String getRoomId() {
+        return roomId;
+    }
+    
+    public double getBasePrice() {
+        return basePrice;
+    }
+}
+```
+
+### FILE: StandardRoom.java
+```java
+package com.hotel.inventory;
+
+public class StandardRoom extends Room<StandardRoom> {
+    private String[] facilities;
+    
+    public StandardRoom(String roomId, double basePrice) {
+        super(roomId, basePrice);
+    }
+    
+    @Override
+    public StandardRoom withFacilities(String... facilities) {
+        this.facilities = facilities;
+        return this;
+    }
+    
+    public String[] getFacilities() {
+        return facilities;
+    }
+}
+```
+
+### FILE: DeluxeRoom.java
+```java
+package com.hotel.inventory;
+
+public class DeluxeRoom extends Room<DeluxeRoom> {
+    private String[] facilities;
+    private boolean hasBalcony;
+    
+    public DeluxeRoom(String roomId, double basePrice) {
+        super(roomId, basePrice);
+    }
+    
+    @Override
+    public DeluxeRoom withFacilities(String... facilities) {
+        this.facilities = facilities;
+        return this;
+    }
+    
+    public String[] getFacilities() {
+        return facilities;
+    }
+    
+    public boolean hasBalcony() {
+        return hasBalcony;
+    }
+    
+    public void setHasBalcony(boolean hasBalcony) {
+        this.hasBalcony = hasBalcony;
+    }
+}
+```
+
+### FILE: RoomBuilder.java
+```java
+package com.hotel.inventory;
+
+public class RoomBuilder {
+    private String roomId;
+    private double basePrice;
+    
+    public static <T extends Room<T>> T buildRoom(Class<T> roomClass, String roomId, double basePrice) {
+        try {
+            T room = roomClass.getDeclaredConstructor(String.class, double.class)
+                             .newInstance(roomId, basePrice);
+            return room;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create room", e);
+        }
+    }
+}
+```
+
+### FILE: HotelInventorySystem.java
+```java
+package com.hotel.inventory

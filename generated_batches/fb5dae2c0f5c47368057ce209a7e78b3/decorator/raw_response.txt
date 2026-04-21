@@ -1,0 +1,111 @@
+### FILE: Course.java
+```java
+package com.lms.course;
+
+public class Course {
+    private String title;
+    private String description;
+    
+    public Course(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+}
+```
+
+### FILE: CourseDecorator.java
+```java
+package com.lms.course;
+
+public abstract class CourseDecorator implements Course {
+    protected Course course;
+    
+    public CourseDecorator(Course course) {
+        this.course = course;
+    }
+    
+    @Override
+    public String getTitle() {
+        return course.getTitle();
+    }
+    
+    @Override
+    public String getDescription() {
+        return course.getDescription();
+    }
+}
+```
+
+### FILE: AdvancedCourseDecorator.java
+```java
+package com.lms.course;
+
+public class AdvancedCourseDecorator extends CourseDecorator {
+    private String level;
+    
+    public AdvancedCourseDecorator(Course course) {
+        super(course);
+        this.level = "Advanced";
+    }
+    
+    @Override
+    public String getTitle() {
+        return "[ADVANCED] " + course.getTitle();
+    }
+    
+    @Override
+    public String getDescription() {
+        return course.getDescription() + " - This is an advanced level course.";
+    }
+}
+```
+
+### FILE: CertificateCourseDecorator.java
+```java
+package com.lms.course;
+
+public class CertificateCourseDecorator extends CourseDecorator {
+    private boolean hasCertificate;
+    
+    public CertificateCourseDecorator(Course course) {
+        super(course);
+        this.hasCertificate = true;
+    }
+    
+    @Override
+    public String getTitle() {
+        return course.getTitle() + " [CERTIFICATE]";
+    }
+    
+    @Override
+    public String getDescription() {
+        return course.getDescription() + " - Earn a certificate upon completion.";
+    }
+}
+```
+
+### FILE: CourseService.java
+```java
+package com.lms.course;
+
+public class CourseService {
+    public static void main(String[] args) {
+        // Create base course
+        Course basicCourse = new Course("Java Fundamentals", 
+            "Learn the basics of Java programming");
+        
+        System.out.println("Base Course:");
+        System.out.println("Title: " + basicCourse.getTitle());
+        System.out.println("Description: " + basicCourse.getDescription());
+        
+        // Decorate with advanced level
+        Course advancedCourse = new AdvancedCourseDecorator(basicCourse);
+        System.out.println("\n

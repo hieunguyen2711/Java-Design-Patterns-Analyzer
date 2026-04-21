@@ -1,0 +1,95 @@
+### FILE: FleetInventory.java
+```java
+package fleet;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class FleetInventory {
+    private List<Vehicle> vehicles;
+    
+    public FleetInventory() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public class Vehicle {
+    private String id;
+    private String model;
+    private double dailyRate;
+    private boolean isAvailable;
+    private MaintenanceStatus maintenanceStatus;
+    
+    public Vehicle(String id, String model, double dailyRate) {
+        this.id = id;
+        this.model = model;
+        this.dailyRate = dailyRate;
+        this.isAvailable = true;
+        this.maintenanceStatus = MaintenanceStatus.NORMAL;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public String getModel() { return model; }
+    public double getDailyRate() { return dailyRate; }
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+    public MaintenanceStatus getMaintenanceStatus() { return maintenanceStatus; }
+    public void setMaintenanceStatus(MaintenanceStatus status) { maintenanceStatus = status; }
+}
+```
+
+### FILE: MaintenanceStatus.java
+```java
+package fleet;
+
+public enum MaintenanceStatus {
+    NORMAL, MAINTENANCE, OUT_OF_SERVICE
+}
+```
+
+### FILE: ReservationRequest.java
+```java
+package fleet;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class ReservationRequest {
+    private String customerId;
+    private LocalDate pickupDate;
+    private LocalDate returnDate;
+    private List<String> vehicleIds;
+    
+    public ReservationRequest(String customerId, LocalDate pickupDate, 
+                            LocalDate returnDate, List<String> vehicleIds) {
+        this.customerId = customerId;
+        this.pickupDate = pickupDate;
+        this.returnDate = returnDate;
+        this.vehicleIds = vehicleIds;
+    }
+    
+    // Getters
+    public String getCustomerId() { return customerId; }
+    public LocalDate getPickupDate() { return pickupDate; }
+    public LocalDate getReturnDate() { return returnDate; }
+    public List<String> getVehicleIds() { return vehicleIds; }
+}
+```
+
+### FILE: Reservation.java
+```java
+package

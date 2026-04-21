@@ -1,0 +1,94 @@
+### FILE: Employee.java
+```java
+package payroll;
+
+public class Employee {
+    private int id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(int id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package payroll;
+
+public class LeaveRequest {
+    private int employeeId;
+    private int daysRequested;
+    private String reason;
+    
+    public LeaveRequest(int employeeId, int daysRequested, String reason) {
+        this.employeeId = employeeId;
+        this.daysRequested = daysRequested;
+        this.reason = reason;
+    }
+    
+    public int getEmployeeId() {
+        return employeeId;
+    }
+    
+    public int getDaysRequested() {
+        return daysRequested;
+    }
+    
+    public String getReason() {
+        return reason;
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package payroll;
+
+public class PayrollService {
+    
+    public void processEmployeePayroll(int employeeId, double bonusAmount) {
+        // Transaction script - all logic in one method
+        Employee employee = findEmployee(employeeId);
+        if (employee == null) {
+            throw new RuntimeException("Employee not found");
+        }
+        
+        double grossSalary = calculateGrossSalary(employee, bonusAmount);
+        double taxDeduction = calculateTax(grossSalary);
+        double netSalary = grossSalary - taxDeduction;
+        
+        generatePayslip(employeeId, grossSalary, taxDeduction, netSalary);
+        updateEmployeeRecord(employeeId, netSalary);
+        
+        System.out.println("Payroll processed for employee " + employee.getName());
+    }
+    
+    public void processLeaveRequest(int employeeId, int daysRequested, String reason) {
+        // Transaction script - all logic in one method
+        Employee employee = findEmployee(employeeId);
+        if (employee == null) {
+            throw new RuntimeException("Employee not found");
+        }
+        
+        LeaveRequest request = createLeaveRequest(employeeId, daysRequested, reason);
+        boolean approvalStatus = approveLeaveRequest(request);
+        
+        if (approvalStatus) {
+            updateLeaveBalance(employeeId, daysRequested);
+            System.out.println

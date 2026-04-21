@@ -1,0 +1,88 @@
+### FILE: RoomInventoryService.java
+```java
+package com.hotel.service;
+
+public interface RoomInventoryService {
+    boolean isRoomAvailable(int roomId);
+    void bookRoom(int roomId);
+    void releaseRoom(int roomId);
+}
+```
+
+### FILE: RoomInventoryServiceImpl.java
+```java
+package com.hotel.service.impl;
+
+import com.hotel.service.RoomInventoryService;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class RoomInventoryServiceImpl implements RoomInventoryService {
+    private Set<Integer> availableRooms;
+    
+    public RoomInventoryServiceImpl() {
+        this.availableRooms = new HashSet<>();
+        // Initialize with some sample rooms
+        for (int i = 101; i <= 200; i++) {
+            availableRooms.add(i);
+        }
+    }
+    
+    @Override
+    public boolean isRoomAvailable(int roomId) {
+        return availableRooms.contains(roomId);
+    }
+    
+    @Override
+    public void bookRoom(int roomId) {
+        if (availableRooms.remove(roomId)) {
+            System.out.println("Room " + roomId + " booked successfully");
+        } else {
+            System.out.println("Room " + roomId + " is not available");
+        }
+    }
+    
+    @Override
+    public void releaseRoom(int roomId) {
+        availableRooms.add(roomId);
+        System.out.println("Room " + roomId + " released back to inventory");
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+package com.hotel.service;
+
+public interface BookingService {
+    boolean createBooking(int guestId, int roomId);
+    void cancelBooking(int guestId, int roomId);
+    void checkIn(int guestId, int roomId);
+    void checkOut(int guestId, int roomId);
+}
+```
+
+### FILE: BookingServiceImpl.java
+```java
+package com.hotel.service.impl;
+
+import com.hotel.service.BookingService;
+import com.hotel.service.RoomInventoryService;
+
+public class BookingServiceImpl implements BookingService {
+    private RoomInventoryService inventoryService;
+    
+    public BookingServiceImpl(RoomInventoryService inventoryService) {
+        this.inventoryService = inventoryService;
+    }
+    
+    @Override
+    public boolean createBooking(int guestId, int roomId) {
+        if (inventoryService.isRoomAvailable(roomId)) {
+            inventoryService.bookRoom(roomId);
+            System.out.println("Booking created for guest " + guestId + 
+                             " in room " + roomId);
+            return true;
+        }
+        System.out.println("Cannot create booking - room " + roomId + " not available

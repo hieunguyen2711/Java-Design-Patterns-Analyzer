@@ -1,0 +1,96 @@
+### FILE: StockItem.java
+```java
+package com.example.inventory;
+
+public class StockItem {
+    private String itemId;
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    private boolean dirtyFlag = false;
+    
+    public StockItem(String itemId, String name, int currentStock, int reorderThreshold) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public void updateStock(int quantity) {
+        this.currentStock += quantity;
+        setDirty(true);
+    }
+    
+    public void setReorderThreshold(int threshold) {
+        this.reorderThreshold = threshold;
+        setDirty(true);
+    }
+    
+    public boolean isDirty() {
+        return dirtyFlag;
+    }
+    
+    public void setDirty(boolean dirty) {
+        this.dirtyFlag = dirty;
+    }
+    
+    public void clearDirtyFlag() {
+        this.dirtyFlag = false;
+    }
+    
+    // Getters
+    public String getItemId() { return itemId; }
+    public String getName() { return name; }
+    public int getCurrentStock() { return currentStock; }
+    public int getReorderThreshold() { return reorderThreshold; }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+package com.example.inventory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class InventoryManager {
+    private List<StockItem> items;
+    
+    public InventoryManager() {
+        this.items = new ArrayList<>();
+    }
+    
+    public void addItem(StockItem item) {
+        items.add(item);
+    }
+    
+    public void processDirtyItems() {
+        for (StockItem item : items) {
+            if (item.isDirty()) {
+                System.out.println("Processing dirty item: " + item.getItemId());
+                // In a real system, this would save to database
+                item.clearDirtyFlag();
+            }
+        }
+    }
+    
+    public void updateStock(String itemId, int quantity) {
+        for (StockItem item : items) {
+            if (item.getItemId().equals(itemId)) {
+                item.updateStock(quantity);
+                break;
+            }
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.example.inventory;
+
+public class Main {
+    public static void main(String[] args) {
+        InventoryManager manager = new InventoryManager();
+        
+        StockItem item1 = new StockItem("ITEM001", "Laptop", 50,

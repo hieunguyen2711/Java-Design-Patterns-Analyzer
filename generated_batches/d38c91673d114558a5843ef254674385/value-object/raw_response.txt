@@ -1,0 +1,117 @@
+### FILE: Ticket.java
+```java
+package com.projecttracker.ticket;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+public class Ticket {
+    private final int id;
+    private final String title;
+    private final String description;
+    private final Priority priority;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+    
+    public Ticket(int id, String title, String description, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public Priority getPriority() {
+        return priority;
+    }
+    
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return id == ticket.id;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+    
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", priority=" + priority +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+}
+```
+
+### FILE: Priority.java
+```java
+package com.projecttracker.ticket;
+
+public enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH,
+    URGENT
+}
+```
+
+### FILE: TicketBuilder.java
+```java
+package com.projecttracker.ticket;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+public class TicketBuilder {
+    private int id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    
+    public TicketBuilder setId(int id) {
+        this.id = id;
+        return this;
+    }
+    
+    public TicketBuilder setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+    
+    public TicketBuilder setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+    
+    public TicketBuilder setPriority(Priority priority) {
+       

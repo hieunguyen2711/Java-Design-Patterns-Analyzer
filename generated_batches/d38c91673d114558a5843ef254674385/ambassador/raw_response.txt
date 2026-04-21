@@ -1,0 +1,92 @@
+### FILE: Ticket.java
+```java
+package com.projecttracker.ticket;
+
+public class Ticket {
+    private String id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+    
+    public Ticket(String id, String title, String description, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.OPEN;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+package com.projecttracker.ticket;
+
+public enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH,
+    URGENT
+}
+```
+
+### FILE: Status.java
+```java
+package com.projecttracker.ticket;
+
+public enum Status {
+    OPEN,
+    IN_PROGRESS,
+    RESOLVED,
+    CLOSED
+}
+```
+
+### FILE: TicketService.java
+```java
+package com.projecttracker.service;
+
+import com.projecttracker.ticket.Ticket;
+import com.projecttracker.ticket.Priority;
+import java.util.*;
+
+public class TicketService {
+    private final Map<String, Ticket> tickets = new HashMap<>();
+    
+    public void createTicket(String id, String title, String description, Priority priority) {
+        Ticket ticket = new Ticket(id, title, description, priority);
+        tickets.put(id, ticket);
+    }
+    
+    public Ticket getTicket(String id) {
+        return tickets.get(id);
+    }
+    
+    public List<Ticket> getAllTickets() {
+        return new ArrayList<>(tickets.values());
+    }
+    
+    public void assignTicket(String ticketId, String assignee) {
+        Ticket ticket = tickets.get(ticketId);
+        if (ticket != null) {

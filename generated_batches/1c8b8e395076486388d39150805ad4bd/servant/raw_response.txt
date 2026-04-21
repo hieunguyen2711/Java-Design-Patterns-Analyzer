@@ -1,0 +1,106 @@
+### FILE: Membership.java
+```java
+package com.gym.membership;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private MembershipType type;
+    
+    public Membership(String memberId, String name, MembershipType type) {
+        this.memberId = memberId;
+        this.name = name;
+        this.type = type;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public MembershipType getType() {
+        return type;
+    }
+}
+```
+
+### FILE: MembershipType.java
+```java
+package com.gym.membership;
+
+public enum MembershipType {
+    BASIC,
+    PREMIUM,
+    VIP
+}
+```
+
+### FILE: ClassScheduleService.java
+```java
+package com.gym.service;
+
+import com.gym.membership.Membership;
+import java.util.List;
+
+public class ClassScheduleService {
+    
+    public void viewSchedule(Membership member) {
+        System.out.println("Viewing schedule for " + member.getName());
+        // Servant pattern: this service acts as a servant to the membership
+        // by providing schedule information without being directly tied to it
+    }
+    
+    public void enrollInClass(Membership member, String className) {
+        System.out.println(member.getName() + " enrolled in " + className);
+    }
+}
+```
+
+### FILE: TrainerBookingService.java
+```java
+package com.gym.service;
+
+import com.gym.membership.Membership;
+import java.util.List;
+
+public class TrainerBookingService {
+    
+    public void bookTrainer(Membership member, String trainerName) {
+        System.out.println(member.getName() + " booked trainer " + trainerName);
+    }
+    
+    public void viewBookings(Membership member) {
+        System.out.println("Viewing bookings for " + member.getName());
+    }
+}
+```
+
+### FILE: AttendanceService.java
+```java
+package com.gym.service;
+
+import com.gym.membership.Membership;
+import java.util.List;
+
+public class AttendanceService {
+    
+    public void checkIn(Membership member) {
+        System.out.println(member.getName() + " checked in");
+    }
+    
+    public void viewAttendanceHistory(Membership member) {
+        System.out.println("Viewing attendance history for " + member.getName());
+    }
+}
+```
+
+### FILE: PaymentService.java
+```java
+package com.gym.service;
+
+import com.gym.membership.Membership;
+import java.util.List;
+

@@ -1,0 +1,110 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+}
+```
+
+### FILE: BookFlyweightFactory.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class BookFlyweightFactory {
+    private static final Map<String, Book> bookCache = new HashMap<>();
+    
+    public static Book getBook(String title, String author, String isbn) {
+        String key = title + "|" + author + "|" + isbn;
+        
+        if (!bookCache.containsKey(key)) {
+            bookCache.put(key, new Book(title, author, isbn));
+        }
+        
+        return bookCache.get(key);
+    }
+    
+    public static int getCacheSize() {
+        return bookCache.size();
+    }
+}
+```
+
+### FILE: LibraryMember.java
+```java
+public class LibraryMember {
+    private String memberId;
+    private String name;
+    
+    public LibraryMember(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: BorrowingRecord.java
+```java
+public class BorrowingRecord {
+    private Book book;
+    private LibraryMember member;
+    private String borrowDate;
+    private String dueDate;
+    private boolean isReturned;
+    
+    public BorrowingRecord(Book book, LibraryMember member, String borrowDate, String dueDate) {
+        this.book = book;
+        this.member = member;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+        this.isReturned = false;
+    }
+    
+    public Book getBook() {
+        return book;
+    }
+    
+    public LibraryMember getMember() {
+        return member;
+    }
+    
+    public String getBorrowDate() {
+        return borrowDate;
+    }
+    
+    public String getDueDate() {
+        return dueDate;
+    }
+    
+    public boolean isReturned() {
+        return isReturned;
+    }
+    
+    public void set

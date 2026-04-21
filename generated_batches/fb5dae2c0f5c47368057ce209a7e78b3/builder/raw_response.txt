@@ -1,0 +1,100 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private final String title;
+    private final String description;
+    private final int credits;
+    private final String instructor;
+    private final String prerequisites;
+    
+    private Course(Builder builder) {
+        this.title = builder.title;
+        this.description = builder.description;
+        this.credits = builder.credits;
+        this.instructor = builder.instructor;
+        this.prerequisites = builder.prerequisites;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public int getCredits() {
+        return credits;
+    }
+    
+    public String getInstructor() {
+        return instructor;
+    }
+    
+    public String getPrerequisites() {
+        return prerequisites;
+    }
+    
+    public static class Builder {
+        private String title;
+        private String description;
+        private int credits;
+        private String instructor;
+        private String prerequisites;
+        
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+        
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+        
+        public Builder setCredits(int credits) {
+            this.credits = credits;
+            return this;
+        }
+        
+        public Builder setInstructor(String instructor) {
+            this.instructor = instructor;
+            return this;
+        }
+        
+        public Builder setPrerequisites(String prerequisites) {
+            this.prerequisites = prerequisites;
+            return this;
+        }
+        
+        public Course build() {
+            return new Course(this);
+        }
+    }
+}
+```
+
+### FILE: CourseBuilderDemo.java
+```java
+package com.lms.demo;
+
+import com.lms.model.Course;
+
+public class CourseBuilderDemo {
+    public static void main(String[] args) {
+        Course course = new Course.Builder()
+                .setTitle("Advanced Java Programming")
+                .setDescription("Learn advanced concepts in Java programming")
+                .setCredits(3)
+                .setInstructor("Dr. Smith")
+                .build();
+        
+        System.out.println("Course: " + course.getTitle());
+        System.out.println("Description: " + course.getDescription());
+        System.out.println("Credits: " + course.getCredits());
+        System.out.println("Instructor: " + course.getInstructor());
+    }
+}
+```

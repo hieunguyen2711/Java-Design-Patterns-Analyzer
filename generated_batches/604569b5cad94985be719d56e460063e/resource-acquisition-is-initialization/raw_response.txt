@@ -1,0 +1,84 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: PayrollCalculator.java
+```java
+package hr.system;
+
+public class PayrollCalculator {
+    
+    public static class SalaryCalculationResource implements AutoCloseable {
+        private final Employee employee;
+        private boolean isClosed = false;
+        
+        public SalaryCalculationResource(Employee employee) {
+            this.employee = employee;
+            System.out.println("Acquiring resources for employee: " + employee.getName());
+        }
+        
+        public double calculateGrossSalary() {
+            if (isClosed) {
+                throw new IllegalStateException("Cannot use closed resource");
+            }
+            return employee.getBaseSalary();
+        }
+        
+        public double calculateNetSalary(double taxRate) {
+            if (isClosed) {
+                throw new IllegalStateException("Cannot use closed resource");
+            }
+            double gross = calculateGrossSalary();
+            return gross - (gross * taxRate);
+        }
+        
+        @Override
+        public void close() {
+            if (!isClosed) {
+                System.out.println("Releasing resources for employee: " + employee.getName());
+                isClosed = true;
+            }
+        }
+    }
+    
+    public static SalaryCalculationResource calculateSalary(Employee employee) {
+        return new SalaryCalculationResource(employee);
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    
+    public static void main(String[] args) {
+        Employee emp = new Employee("E001", "John Doe", 5000.0);
+        
+        // Using RAII pattern with try-with-resources
+        try (PayrollCalculator.SalaryCalculationResource resource = 
+             PayrollCalculator.calculateSalary(emp)) {
+            
+            double gross = resource.calculateGrossSalary();

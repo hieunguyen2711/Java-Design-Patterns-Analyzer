@@ -1,0 +1,81 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: SalaryCalculator.java
+```java
+package hr.system;
+
+public interface SalaryCalculator {
+    double calculateNetSalary(Employee employee, double taxRate);
+}
+```
+
+### FILE: BasicSalaryCalculator.java
+```java
+package hr.system;
+
+public class BasicSalaryCalculator implements SalaryCalculator {
+    
+    @Override
+    public double calculateNetSalary(Employee employee, double taxRate) {
+        double gross = employee.getBaseSalary();
+        return gross - (gross * taxRate);
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package hr.system;
+
+public class PayrollService {
+    private SalaryCalculator salaryCalculator;
+    
+    public PayrollService(SalaryCalculator salaryCalculator) {
+        this.salaryCalculator = salaryCalculator;
+    }
+    
+    public double calculateNetSalary(Employee employee, double taxRate) {
+        return salaryCalculator.calculateNetSalary(employee, taxRate);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package hr.system;
+
+public class Main {
+    public static void main(String[] args) {
+        Employee employee = new Employee("E001", "John Doe", 5000.0);
+        
+        SalaryCalculator calculator = new BasicSalaryCalculator();
+        PayrollService payrollService = new PayrollService(calculator);
+        
+        double netSalary = payrollService.calculateNetSalary(employee, 0.2);
+        System.out.println("Net salary: $" + netSalary);
+    }
+}
+```

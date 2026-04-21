@@ -1,0 +1,109 @@
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class AppointmentSlot {
+    private final int slotId;
+    private boolean isAvailable;
+    private BlockingQueue<Patient> waitingList;
+    
+    public AppointmentSlot(int slotId) {
+        this.slotId = slotId;
+        this.isAvailable = true;
+        this.waitingList = new LinkedBlockingQueue<>();
+    }
+    
+    public synchronized boolean bookAppointment(Patient patient) throws InterruptedException {
+        if (isAvailable) {
+            isAvailable = false;
+            return true;
+        } else {
+            // Guarded suspension - wait until slot becomes available
+            waitingList.put(patient);
+            while (!isAvailable) {
+                this.wait();
+            }
+            return true;
+        }
+    }
+    
+    public synchronized void releaseSlot() {
+        isAvailable = true;
+        
+        // Notify one waiting patient that the slot is now available
+        if (!waitingList.isEmpty()) {
+            notify();
+        }
+    }
+    
+    public int getSlotId() {
+        return slotId;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient {
+    private final String name;
+    private final int patientId;
+    
+    public Patient(String name, int patientId) {
+        this.name = name;
+        this.patientId = patientId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getPatientId() {
+        return patientId;
+    }
+}
+```
+
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor {
+    private final String name;
+    private final int doctorId;
+    
+    public Doctor(String name, int doctorId) {
+        this.name = name;
+        this.doctorId = doctorId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getDoctorId() {
+        return doctorId;
+    }
+}
+```
+
+### FILE: ClinicScheduler.java
+```java
+package clinic;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class ClinicScheduler {
+    private final AppointmentSlot[] slots;
+    private final ExecutorService executor;
+    
+    public ClinicScheduler(int numberOfSlots) {
+        this.slots = new AppointmentSlot[numberOfSlots];
+        for (int i = 0; i < numberOfSlots; i++) {
+            slots[i] = new AppointmentSlot

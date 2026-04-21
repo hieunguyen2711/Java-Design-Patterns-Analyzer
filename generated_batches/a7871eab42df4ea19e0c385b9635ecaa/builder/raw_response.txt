@@ -1,0 +1,118 @@
+### FILE: Customer.java
+```java
+package com.example.bank;
+
+public class Customer {
+    private final String customerId;
+    private final String name;
+    private final String email;
+    private final String phoneNumber;
+    
+    private Customer(Builder builder) {
+        this.customerId = builder.customerId;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.phoneNumber = builder.phoneNumber;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    
+    public static class Builder {
+        private String customerId;
+        private String name;
+        private String email;
+        private String phoneNumber;
+        
+        public Builder setCustomerId(String customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+        
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+        
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+        
+        public Builder setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+        
+        public Customer build() {
+            return new Customer(this);
+        }
+    }
+}
+```
+
+### FILE: Account.java
+```java
+package com.example.bank;
+
+public class Account {
+    private final String accountId;
+    private final String accountNumber;
+    private final double balance;
+    private final Customer customer;
+    
+    private Account(Builder builder) {
+        this.accountId = builder.accountId;
+        this.accountNumber = builder.accountNumber;
+        this.balance = builder.balance;
+        this.customer = builder.customer;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public Customer getCustomer() {
+        return customer;
+    }
+    
+    public static class Builder {
+        private String accountId;
+        private String accountNumber;
+        private double balance;
+        private Customer customer;
+        
+        public Builder setAccountId(String accountId) {
+            this.accountId = accountId;
+            return this;
+        }
+        
+        public Builder setAccountNumber(String accountNumber) {
+            this.accountNumber = accountNumber;
+            return this;
+        }
+        
+        public Builder setBalance(double balance) {
+            this.balance = balance;
+            return this

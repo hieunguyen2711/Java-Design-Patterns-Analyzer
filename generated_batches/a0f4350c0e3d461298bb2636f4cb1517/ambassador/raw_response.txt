@@ -1,0 +1,109 @@
+### FILE: Book.java
+```java
+package library;
+
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+}
+```
+
+### FILE: Member.java
+```java
+package library;
+
+public class Member {
+    private String memberId;
+    private String name;
+    
+    public Member(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: LibrarySystem.java
+```java
+package library;
+
+import java.util.*;
+
+public class LibrarySystem {
+    private Map<String, Book> books;
+    private Map<String, Member> members;
+    private List<BorrowingRecord> borrowingRecords;
+    
+    public LibrarySystem() {
+        this.books = new HashMap<>();
+        this.members = new HashMap<>();
+        this.borrowingRecords = new ArrayList<>();
+    }
+    
+    public void addBook(Book book) {
+        books.put(book.getIsbn(), book);
+    }
+    
+    public void registerMember(Member member) {
+        members.put(member.getMemberId(), member);
+    }
+    
+    public BorrowingRecord borrowBook(String memberId, String isbn) {
+        Member member = members.get(memberId);
+        Book book = books.get(isbn);
+        
+        if (member == null || book == null) {
+            return null;
+        }
+        
+        BorrowingRecord record = new BorrowingRecord(member, book);
+        borrowingRecords.add(record);
+        return record;
+    }
+    
+    public boolean returnBook(String isbn) {
+        Iterator<BorrowingRecord> iterator = borrowingRecords.iterator();
+        while (iterator.hasNext()) {
+            BorrowingRecord record = iterator.next();
+            if (record.getBook().getIsbn().equals(isbn)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public List<BorrowingRecord> getBorrowingRecords() {
+        return new ArrayList<>(borrowingRecords);
+    }
+}
+```
+
+### FILE: BorrowingRecord.java

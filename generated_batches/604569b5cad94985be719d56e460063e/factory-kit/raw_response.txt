@@ -1,0 +1,85 @@
+### FILE: Employee.java
+```java
+public abstract class Employee {
+    protected String name;
+    protected String employeeId;
+    protected double baseSalary;
+    
+    public Employee(String name, String employeeId, double baseSalary) {
+        this.name = name;
+        this.employeeId = employeeId;
+        this.baseSalary = baseSalary;
+    }
+    
+    public abstract double calculateSalary();
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmployeeId() {
+        return employeeId;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: Manager.java
+```java
+public class Manager extends Employee {
+    private int teamSize;
+    
+    public Manager(String name, String employeeId, double baseSalary, int teamSize) {
+        super(name, employeeId, baseSalary);
+        this.teamSize = teamSize;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (teamSize * 1000);
+    }
+}
+```
+
+### FILE: Developer.java
+```java
+public class Developer extends Employee {
+    private String programmingLanguage;
+    
+    public Developer(String name, String employeeId, double baseSalary, String programmingLanguage) {
+        super(name, employeeId, baseSalary);
+        this.programmingLanguage = programmingLanguage;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (programmingLanguage.equals("Java") ? 2000 : 1500);
+    }
+}
+```
+
+### FILE: EmployeeFactory.java
+```java
+public class EmployeeFactory {
+    public static Employee createEmployee(String type, String name, String employeeId, double baseSalary, Object additionalInfo) {
+        switch (type.toLowerCase()) {
+            case "manager":
+                return new Manager(name, employeeId, baseSalary, (Integer) additionalInfo);
+            case "developer":
+                return new Developer(name, employeeId, baseSalary, (String) additionalInfo);
+            default:
+                throw new IllegalArgumentException("Unknown employee type: " + type);
+        }
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+public class PayrollSystem {
+    public static void main(String[] args) {
+        Employee manager = EmployeeFactory.createEmployee("manager", "M001", "M001", 5000, 10);
+        Employee developer = EmployeeFactory.createEmployee("developer",

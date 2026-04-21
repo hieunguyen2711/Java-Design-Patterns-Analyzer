@@ -1,0 +1,103 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    private static volatile PayrollSystem instance;
+    
+    private PayrollSystem() {}
+    
+    public static PayrollSystem getInstance() {
+        if (instance == null) {
+            synchronized (PayrollSystem.class) {
+                if (instance == null) {
+                    instance = new PayrollSystem();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public double calculateNetSalary(Employee employee, double taxDeduction, double bonus) {
+        double grossSalary = employee.getBaseSalary() + bonus;
+        return grossSalary - taxDeduction;
+    }
+}
+```
+
+### FILE: TaxCalculator.java
+```java
+package hr.system;
+
+public class TaxCalculator {
+    private static volatile TaxCalculator instance;
+    
+    private TaxCalculator() {}
+    
+    public static TaxCalculator getInstance() {
+        if (instance == null) {
+            synchronized (TaxCalculator.class) {
+                if (instance == null) {
+                    instance = new TaxCalculator();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public double calculateTax(double grossSalary) {
+        if (grossSalary <= 50000) {
+            return grossSalary * 0.10;
+        } else if (grossSalary <= 100000) {
+            return grossSalary * 0.20;
+        } else {
+            return grossSalary * 0.30;
+        }
+    }
+}
+```
+
+### FILE: PayslipGenerator.java
+```java
+package hr.system;
+
+public class PayslipGenerator {
+    private static volatile PayslipGenerator instance;
+    
+    private PayslipGenerator() {}
+    
+    public static PayslipGenerator getInstance() {
+        if (instance == null) {
+            synchronized (PayslipGenerator.class) {
+                if (instance == null) {
+                    instance = new PayslipGenerator();
+               

@@ -1,0 +1,110 @@
+### FILE: Vehicle.java
+```java
+package fleetmanagement;
+
+public class Vehicle {
+    private final String id;
+    private final String make;
+    private final String model;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String make, String model) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.isAvailable = true;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getMake() {
+        return make;
+    }
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: FleetManager.java
+```java
+package fleetmanagement;
+
+import java.util.*;
+
+public class FleetManager {
+    private final Map<String, Vehicle> vehicles;
+    
+    public FleetManager() {
+        this.vehicles = new HashMap<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public Optional<Vehicle> getAvailableVehicle(String id) {
+        Vehicle vehicle = vehicles.get(id);
+        if (vehicle != null && vehicle.isAvailable()) {
+            return Optional.of(vehicle);
+        }
+        return Optional.empty();
+    }
+    
+    public void removeVehicle(String id) {
+        vehicles.remove(id);
+    }
+}
+```
+
+### FILE: Reservation.java
+```java
+package fleetmanagement;
+
+import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class Reservation implements AutoCloseable {
+    private final Vehicle vehicle;
+    private final LocalDateTime pickupTime;
+    private final LocalDateTime returnTime;
+    private final AtomicBoolean isActive;
+    
+    public Reservation(Vehicle vehicle, LocalDateTime pickupTime, LocalDateTime returnTime) {
+        this.vehicle = vehicle;
+        this.pickupTime = pickupTime;
+        this.returnTime = returnTime;
+        this.isActive = new AtomicBoolean(true);
+        
+        // RAII: Acquire resource (mark vehicle as reserved)
+        if (!vehicle.isAvailable()) {
+            throw new IllegalStateException("Vehicle is not available for reservation");
+        }
+        vehicle.setAvailable(false);
+    }
+    
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+    
+    public LocalDateTime getPickupTime() {
+        return pickupTime;
+    }
+    
+    public LocalDateTime getReturnTime() {
+        return returnTime;
+    }
+    
+    public boolean isActive() {
+        return isActive.get

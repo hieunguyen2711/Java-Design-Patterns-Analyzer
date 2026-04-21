@@ -1,0 +1,86 @@
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: FleetActor.java
+```java
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class FleetActor {
+    private final BlockingQueue<Message> messageQueue;
+    private volatile boolean running;
+    
+    public FleetActor() {
+        this.messageQueue = new LinkedBlockingQueue<>();
+        this.running = true;
+        start();
+    }
+    
+    public void send(Message message) {
+        try {
+            messageQueue.put(message);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    private void start() {
+        Thread actorThread = new Thread(() -> {
+            while (running) {
+                try {
+                    Message message = messageQueue.take();
+                    processMessage(message);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+        actorThread.start();
+    }
+    
+    private void processMessage(Message message) {
+        switch (message.getType()) {
+            case "RESERVE":
+                handleReserve((ReserveRequest) message);
+                break;
+            case "RETURN":
+                handleReturn((ReturnRequest) message);
+                break;
+            case "STATUS":
+                handleStatus((StatusRequest) message);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown message type: " + message.getType());
+        }
+    }
+    
+    private void handleReserve(ReserveRequest

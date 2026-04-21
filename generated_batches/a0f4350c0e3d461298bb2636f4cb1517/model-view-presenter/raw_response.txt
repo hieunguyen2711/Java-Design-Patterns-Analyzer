@@ -1,0 +1,85 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    private boolean isAvailable;
+
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.isAvailable = true;
+    }
+
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String name;
+    private String memberId;
+    private int maxBooks;
+
+    public Member(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+        this.maxBooks = 3;
+    }
+
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+    
+    public int getMaxBooks() { return maxBooks; }
+    public void setMaxBooks(int maxBooks) { this.maxBooks = maxBooks; }
+}
+```
+
+### FILE: LibraryModel.java
+```java
+import java.util.*;
+
+public class LibraryModel {
+    private List<Book> books;
+    private List<Member> members;
+    private Map<String, List<Book>> borrowedBooks;
+
+    public LibraryModel() {
+        this.books = new ArrayList<>();
+        this.members = new ArrayList<>();
+        this.borrowedBooks = new HashMap<>();
+    }
+
+    // Book management
+    public void addBook(Book book) {
+        books.add(book);
+    }
+    
+    public void removeBook(String isbn) {
+        books.removeIf(book -> book.getIsbn().equals(isbn));
+    }
+    
+    public List<Book> getAllBooks() {
+        return new ArrayList<>(books);
+    }
+    
+    public Book findBookByIsbn(String isbn) {
+        return books.stream()

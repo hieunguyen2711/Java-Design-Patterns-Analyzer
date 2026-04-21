@@ -1,0 +1,85 @@
+### FILE: Library.java
+```java
+public class Library {
+    private static volatile Library instance;
+    
+    private Library() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static Library getInstance() {
+        if (instance == null) {
+            synchronized (Library.class) {
+                if (instance == null) {
+                    instance = new Library();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void manageBooks() {
+        System.out.println("Managing library books...");
+    }
+}
+```
+
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String name;
+    private int memberId;
+    
+    public Member(String name, int memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public int getMemberId() { return memberId; }
+    public void setMemberId(int memberId) { this.memberId = memberId; }
+}
+```
+
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    public static void main(String[] args) {
+        // Demonstrating double-checked locking pattern with singleton
+        Library library1 = Library.getInstance();
+        Library library2 = Library.getInstance();
+        
+        System.out.println("Same instance: " + (library1 == library2));
+        
+        library1.manageBooks();
+    }
+}
+```

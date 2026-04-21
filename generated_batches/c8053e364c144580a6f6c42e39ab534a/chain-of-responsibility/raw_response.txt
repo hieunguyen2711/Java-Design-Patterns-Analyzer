@@ -1,0 +1,118 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private Doctor doctor;
+    private Patient patient;
+    private String date;
+    private boolean isAvailable;
+
+    public AppointmentSlot(Doctor doctor, String date) {
+        this.doctor = doctor;
+        this.date = date;
+        this.isAvailable = true;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: CheckInHandler.java
+```java
+public abstract class CheckInHandler {
+    protected CheckInHandler nextHandler;
+
+    public void setNext(CheckInHandler handler) {
+        this.nextHandler = handler;
+    }
+
+    public abstract boolean handleCheckIn(AppointmentSlot slot);
+}
+```
+
+### FILE: DoctorCheckInHandler.java
+```java
+public class DoctorCheckInHandler extends CheckInHandler {
+    @Override
+    public boolean handleCheckIn(AppointmentSlot slot) {
+        if (slot.getDoctor() == null) {
+            System.out.println("Error: No doctor assigned to appointment");
+            return false;
+        }
+        
+        if (nextHandler != null) {
+            return nextHandler.handleCheckIn(slot);
+        }
+        return true;
+    }
+}
+```
+
+### FILE: PatientCheckInHandler.java
+```java
+public class PatientCheckInHandler extends CheckInHandler {
+    @Override
+    public boolean handleCheckIn(AppointmentSlot slot)

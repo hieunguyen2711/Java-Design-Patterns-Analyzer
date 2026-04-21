@@ -1,0 +1,124 @@
+### FILE: Room.java
+```java
+package hotel;
+
+public class Room {
+    private int roomId;
+    private String type;
+    private double basePrice;
+    
+    public Room(int roomId, String type, double basePrice) {
+        this.roomId = roomId;
+        this.type = type;
+        this.basePrice = basePrice;
+    }
+    
+    public int getRoomId() {
+        return roomId;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public double getBasePrice() {
+        return basePrice;
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package hotel;
+
+public class Booking {
+    private int bookingId;
+    private Room room;
+    private Guest guest;
+    private int nights;
+    
+    public Booking(int bookingId, Room room, Guest guest, int nights) {
+        this.bookingId = bookingId;
+        this.room = room;
+        this.guest = guest;
+        this.nights = nights;
+    }
+    
+    public double calculateTotal() {
+        return room.getBasePrice() * nights;
+    }
+    
+    public int getBookingId() {
+        return bookingId;
+    }
+    
+    public Room getRoom() {
+        return room;
+    }
+    
+    public Guest getGuest() {
+        return guest;
+    }
+    
+    public int getNights() {
+        return nights;
+    }
+}
+```
+
+### FILE: Guest.java
+```java
+package hotel;
+
+public class Guest {
+    private int guestId;
+    private String name;
+    private String email;
+    
+    public Guest(int guestId, String name, String email) {
+        this.guestId = guestId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    public int getGuestId() {
+        return guestId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: BillingService.java
+```java
+package hotel;
+
+public class BillingService {
+    private static BillingService instance;
+    
+    private BillingService() {}
+    
+    public static BillingService getInstance() {
+        if (instance == null) {
+            synchronized (BillingService.class) {
+                if (instance == null) {
+                    instance = new BillingService();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public double calculateBill(Booking booking) {
+        return booking.calculateTotal();
+    }
+}
+```
+
+### FILE: CheckInProcessor

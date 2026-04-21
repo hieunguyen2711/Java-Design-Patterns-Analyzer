@@ -1,0 +1,117 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course {
+    private String courseId;
+    private String courseName;
+    private List<LessonModule> lessonModules;
+    
+    public Course(String courseId, String courseName) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.lessonModules = new ArrayList<>();
+    }
+    
+    public void addLessonModule(LessonModule lessonModule) {
+        lessonModules.add(lessonModule);
+    }
+    
+    public List<LessonModule> getLessonModules() {
+        return lessonModules;
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LessonModule {
+    private String moduleId;
+    private String moduleName;
+    private List<Assignment> assignments;
+    
+    public LessonModule(String moduleId, String moduleName) {
+        this.moduleId = moduleId;
+        this.moduleName = moduleName;
+        this.assignments = new ArrayList<>();
+    }
+    
+    public void addAssignment(Assignment assignment) {
+        assignments.add(assignment);
+    }
+    
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+    
+    public String getModuleId() {
+        return moduleId;
+    }
+    
+    public String getModuleName() {
+        return moduleName;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Assignment {
+    private String assignmentId;
+    private String title;
+    private List<Submission> submissions;
+    
+    public Assignment(String assignmentId, String title) {
+        this.assignmentId = assignmentId;
+        this.title = title;
+        this.submissions = new ArrayList<>();
+    }
+    
+    public void addSubmission(Submission submission) {
+        submissions.add(submission);
+    }
+    
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+    
+    public String getAssignmentId() {
+        return assignmentId;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.model;
+
+public class Submission {
+    private String submissionId;
+    private String studentId;
+    private String content;
+    private

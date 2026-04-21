@@ -1,0 +1,110 @@
+### FILE: RestaurantFactory.java
+```java
+public interface RestaurantFactory {
+    Kitchen createKitchen();
+    DeliveryService createDeliveryService();
+}
+```
+
+### FILE: ItalianRestaurantFactory.java
+```java
+public class ItalianRestaurantFactory implements RestaurantFactory {
+    @Override
+    public Kitchen createKitchen() {
+        return new ItalianKitchen();
+    }
+    
+    @Override
+    public DeliveryService createDeliveryService() {
+        return new ItalianDeliveryService();
+    }
+}
+```
+
+### FILE: ChineseRestaurantFactory.java
+```java
+public class ChineseRestaurantFactory implements RestaurantFactory {
+    @Override
+    public Kitchen createKitchen() {
+        return new ChineseKitchen();
+    }
+    
+    @Override
+    public DeliveryService createDeliveryService() {
+        return new ChineseDeliveryService();
+    }
+}
+```
+
+### FILE: Kitchen.java
+```java
+public interface Kitchen {
+    void prepareFood(String order);
+    String getSpecialty();
+}
+```
+
+### FILE: ItalianKitchen.java
+```java
+public class ItalianKitchen implements Kitchen {
+    @Override
+    public void prepareFood(String order) {
+        System.out.println("Preparing " + order + " in Italian style");
+    }
+    
+    @Override
+    public String getSpecialty() {
+        return "Pasta";
+    }
+}
+```
+
+### FILE: ChineseKitchen.java
+```java
+public class ChineseKitchen implements Kitchen {
+    @Override
+    public void prepareFood(String order) {
+        System.out.println("Preparing " + order + " in Chinese style");
+    }
+    
+    @Override
+    public String getSpecialty() {
+        return "Dim Sum";
+    }
+}
+```
+
+### FILE: DeliveryService.java
+```java
+public interface DeliveryService {
+    void assignDelivery(String orderId);
+    String getDeliveryMethod();
+}
+```
+
+### FILE: ItalianDeliveryService.java
+```java
+public class ItalianDeliveryService implements DeliveryService {
+    @Override
+    public void assignDelivery(String orderId) {
+        System.out.println("Assigning delivery for " + orderId + " via Italian courier");
+    }
+    
+    @Override
+    public String getDeliveryMethod() {
+        return "Bicycle";
+    }
+}
+```
+
+### FILE: ChineseDeliveryService.java
+```java
+public class ChineseDeliveryService implements DeliveryService {
+    @Override
+    public void assignDelivery(String orderId) {
+        System.out.println("Assigning delivery for " + orderId + " via Chinese courier");
+    }
+    
+    @Override
+    public String getDeliveryMethod() {
+        return "Motorcycle";

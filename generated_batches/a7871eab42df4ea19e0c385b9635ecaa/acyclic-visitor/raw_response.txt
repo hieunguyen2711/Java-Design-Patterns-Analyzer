@@ -1,0 +1,91 @@
+### FILE: Account.java
+```java
+public abstract class Account {
+    protected String accountId;
+    protected double balance;
+    
+    public Account(String accountId, double balance) {
+        this.accountId = accountId;
+        this.balance = balance;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public abstract void accept(AccountVisitor visitor);
+}
+```
+
+### FILE: CheckingAccount.java
+```java
+public class CheckingAccount extends Account {
+    private double overdraftLimit;
+    
+    public CheckingAccount(String accountId, double balance, double overdraftLimit) {
+        super(accountId, balance);
+        this.overdraftLimit = overdraftLimit;
+    }
+    
+    public double getOverdraftLimit() {
+        return overdraftLimit;
+    }
+    
+    @Override
+    public void accept(AccountVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+```
+
+### FILE: SavingsAccount.java
+```java
+public class SavingsAccount extends Account {
+    private double interestRate;
+    
+    public SavingsAccount(String accountId, double balance, double interestRate) {
+        super(accountId, balance);
+        this.interestRate = interestRate;
+    }
+    
+    public double getInterestRate() {
+        return interestRate;
+    }
+    
+    @Override
+    public void accept(AccountVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+```
+
+### FILE: AccountVisitor.java
+```java
+public interface AccountVisitor {
+    void visit(CheckingAccount checkingAccount);
+    void visit(SavingsAccount savingsAccount);
+}
+```
+
+### FILE: StatementGenerator.java
+```java
+public class StatementGenerator implements AccountVisitor {
+    private StringBuilder statement = new StringBuilder();
+    
+    @Override
+    public void visit(CheckingAccount checkingAccount) {
+        statement.append("Checking Account ").append(checkingAccount.getAccountId())
+                 .append(": Balance $").append(String.format("%.2f", checkingAccount.getBalance()))
+                 .append(", Overdraft Limit $").append(String.format("%.2f", checkingAccount.getOverdraftLimit()))
+                 .append("\n");
+    }
+    
+    @Override
+    public void visit(SavingsAccount savingsAccount) {
+        statement.append("Savings Account ").append(savingsAccount.getAccountId())
+                 .append(": Balance $").append(String.format("%.2f", savingsAccount.getBalance()))
+                 .append(", Interest Rate ").append(String.format("%.2f", savingsAccount.getInterestRate() * 100)).append

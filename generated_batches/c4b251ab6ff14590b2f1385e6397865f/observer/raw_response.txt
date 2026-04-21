@@ -1,0 +1,116 @@
+### FILE: Order.java
+```java
+package restaurant;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order {
+    private String orderId;
+    private List<OrderObserver> observers;
+    private OrderStatus status;
+
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.observers = new ArrayList<>();
+        this.status = OrderStatus.PENDING;
+    }
+
+    public void attach(OrderObserver observer) {
+        observers.add(observer);
+    }
+
+    public void detach(OrderObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers() {
+        for (OrderObserver observer : observers) {
+            observer.update(this);
+        }
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+        notifyObservers();
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+}
+```
+
+### FILE: OrderObserver.java
+```java
+package restaurant;
+
+public interface OrderObserver {
+    void update(Order order);
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package restaurant;
+
+public enum OrderStatus {
+    PENDING,
+    CONFIRMED,
+    PREPARING,
+    READY,
+    DELIVERED
+}
+```
+
+### FILE: RestaurantNotificationService.java
+```java
+package restaurant;
+
+public class RestaurantNotificationService implements OrderObserver {
+    @Override
+    public void update(Order order) {
+        System.out.println("Restaurant Notification: Order " + 
+                          order.getOrderId() + " is now " + order.getStatus());
+    }
+}
+```
+
+### FILE: DeliveryService.java
+```java
+package restaurant;
+
+public class DeliveryService implements OrderObserver {
+    @Override
+    public void update(Order order) {
+        if (order.getStatus() == OrderStatus.CONFIRMED) {
+            System.out.println("Delivery Service: Assigning delivery driver for order " + 
+                              order.getOrderId());
+        } else if (order.getStatus() == OrderStatus.READY) {
+            System.out.println("Delivery Service: Order " + order.getOrderId() + 
+                              " is ready for pickup");
+        }
+    }
+}
+```
+
+### FILE: Customer.java
+```java
+package restaurant;
+
+public class Customer implements OrderObserver {
+    private String customerId;
+    private String name;
+
+    public Customer(String customerId, String name) {
+        this.customerId = customerId;
+        this.name = name;
+    }
+
+    @Override
+    public void update(Order order) {
+        System.out.println("Customer "

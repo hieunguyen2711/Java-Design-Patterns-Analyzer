@@ -1,0 +1,116 @@
+### FILE: Account.java
+```java
+package banking;
+
+public class Account {
+    private String accountId;
+    private double balance;
+    
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+}
+```
+
+### FILE: Transaction.java
+```java
+package banking;
+
+public class Transaction {
+    private String transactionId;
+    private String fromAccountId;
+    private String toAccountId;
+    private double amount;
+    private TransactionType type;
+    
+    public Transaction(String transactionId, String fromAccountId, String toAccountId, 
+                      double amount, TransactionType type) {
+        this.transactionId = transactionId;
+        this.fromAccountId = fromAccountId;
+        this.toAccountId = toAccountId;
+        this.amount = amount;
+        this.type = type;
+    }
+    
+    public String getTransactionId() {
+        return transactionId;
+    }
+    
+    public String getFromAccountId() {
+        return fromAccountId;
+    }
+    
+    public String getToAccountId() {
+        return toAccountId;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public TransactionType getType() {
+        return type;
+    }
+}
+```
+
+### FILE: TransactionType.java
+```java
+package banking;
+
+public enum TransactionType {
+    DEPOSIT,
+    WITHDRAWAL,
+    TRANSFER
+}
+```
+
+### FILE: StatementConverter.java
+```java
+package banking;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class StatementConverter {
+    
+    public static List<String> convertTransactionsToStatement(List<Transaction> transactions) {
+        List<String> statement = new ArrayList<>();
+        
+        for (Transaction transaction : transactions) {
+            String line = formatTransactionLine(transaction);
+            statement.add(line);
+        }
+        
+        return statement;
+    }
+    
+    private static String formatTransactionLine(Transaction transaction) {
+        switch (transaction.getType()) {
+            case DEPOSIT:
+                return String.format("DEPOSIT: Account %s, Amount $%.2f", 
+                                   transaction.getToAccountId(), 
+                                  

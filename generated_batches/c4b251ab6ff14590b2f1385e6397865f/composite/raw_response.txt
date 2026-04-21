@@ -1,0 +1,131 @@
+### FILE: MenuItem.java
+```java
+public class MenuItem {
+    private String name;
+    private double price;
+
+    public MenuItem(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: MenuComponent.java
+```java
+import java.util.List;
+
+public abstract class MenuComponent {
+    public void add(MenuComponent component) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void remove(MenuComponent component) {
+        throw new UnsupportedOperationException();
+    }
+
+    public List<MenuComponent> getChildren() {
+        throw new UnsupportedOperationException();
+    }
+
+    public String getName() {
+        throw new UnsupportedOperationException();
+    }
+
+    public double getPrice() {
+        throw new UnsupportedOperationException();
+    }
+
+    public abstract void print();
+}
+```
+
+### FILE: Menu.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Menu extends MenuComponent {
+    private String name;
+    private List<MenuComponent> items;
+
+    public Menu(String name) {
+        this.name = name;
+        this.items = new ArrayList<>();
+    }
+
+    @Override
+    public void add(MenuComponent component) {
+        items.add(component);
+    }
+
+    @Override
+    public void remove(MenuComponent component) {
+        items.remove(component);
+    }
+
+    @Override
+    public List<MenuComponent> getChildren() {
+        return items;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void print() {
+        System.out.println("Menu: " + name);
+        for (MenuComponent item : items) {
+            item.print();
+        }
+    }
+}
+```
+
+### FILE: MenuItemWrapper.java
+```java
+public class MenuItemWrapper extends MenuComponent {
+    private MenuItem menuItem;
+
+    public MenuItemWrapper(MenuItem menuItem) {
+        this.menuItem = menuItem;
+    }
+
+    @Override
+    public String getName() {
+        return menuItem.getName();
+    }
+
+    @Override
+    public double getPrice() {
+        return menuItem.getPrice();
+    }
+
+    @Override
+    public void print() {
+        System.out.println("  " + menuItem.getName() + " - $" + menuItem.getPrice());
+    }
+}
+```
+
+### FILE: Order.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order {
+    private List<MenuComponent> items;
+    
+    public Order() {
+        this.items = new ArrayList<>();
+   

@@ -1,0 +1,113 @@
+### FILE: Event.java
+```java
+public class Event {
+    private final String type;
+    private final Object data;
+
+    public Event(String type, Object data) {
+        this.type = type;
+        this.data = data;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Object getData() {
+        return data;
+    }
+}
+```
+
+### FILE: EventHandler.java
+```java
+@FunctionalInterface
+public interface EventHandler {
+    void handle(Event event);
+}
+```
+
+### FILE: EventDispatcher.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class EventDispatcher {
+    private final Map<String, EventHandler> handlers = new HashMap<>();
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    public void registerHandler(String eventType, EventHandler handler) {
+        handlers.put(eventType, handler);
+    }
+
+    public void dispatch(Event event) {
+        EventHandler handler = handlers.get(event.getType());
+        if (handler != null) {
+            executor.submit(() -> handler.handle(event));
+        }
+    }
+
+    public void shutdown() {
+        executor.shutdown();
+    }
+}
+```
+
+### FILE: SubmissionEvent.java
+```java
+public class SubmissionEvent extends Event {
+    private final String studentId;
+    private final String assignmentId;
+
+    public SubmissionEvent(String studentId, String assignmentId) {
+        super("SUBMISSION", null);
+        this.studentId = studentId;
+        this.assignmentId = assignmentId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getAssignmentId() {
+        return assignmentId;
+    }
+}
+```
+
+### FILE: GradeEvent.java
+```java
+public class GradeEvent extends Event {
+    private final String studentId;
+    private final String assignmentId;
+    private final double grade;
+
+    public GradeEvent(String studentId, String assignmentId, double grade) {
+        super("GRADE", null);
+        this.studentId = studentId;
+        this.assignmentId = assignmentId;
+        this.grade = grade;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getAssignmentId() {
+        return assignmentId;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+public class LMSApplication {
+    private final EventDispatcher dispatcher = new EventDispatcher();
+
+    public void start() {

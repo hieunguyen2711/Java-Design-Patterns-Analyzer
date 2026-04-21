@@ -1,0 +1,95 @@
+### FILE: Account.java
+```java
+package com.example.bank;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class Account {
+    private final String accountNumber;
+    private double balance;
+    private final List<String> auditHistory;
+    private final ReentrantReadWriteLock lock;
+
+    public Account(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+        this.auditHistory = new ArrayList<>();
+        this.lock = new ReentrantReadWriteLock();
+        
+        addAuditEntry("Account created with balance: " + initialBalance);
+    }
+
+    public void deposit(double amount) {
+        lock.writeLock().lock();
+        try {
+            if (amount > 0) {
+                balance += amount;
+                addAuditEntry("Deposit: +" + amount + ", New balance: " + balance);
+            }
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    public boolean withdraw(double amount) {
+        lock.writeLock().lock();
+        try {
+            if (amount > 0 && balance >= amount) {
+                balance -= amount;
+                addAuditEntry("Withdrawal: -" + amount + ", New balance: " + balance);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    public boolean transfer(Account targetAccount, double amount) {
+        lock.writeLock().lock();
+        try {
+            if (amount > 0 && balance >= amount) {
+                balance -= amount;
+                targetAccount.deposit(amount);
+                addAuditEntry("Transfer: -" + amount + " to account " + targetAccount.getAccountNumber() 
+                            + ", New balance: " + balance);
+                return true;
+            }
+            return false;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    public double getBalance() {
+        lock.readLock().lock();
+        try {
+            return balance;
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public List<String> getAuditHistory() {
+        lock.readLock().lock();
+        try {
+            return new ArrayList<>(auditHistory);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    private void addAuditEntry(String entry) {
+        auditHistory.add(entry);
+    }
+}
+```
+
+### FILE: BankService.java
+```

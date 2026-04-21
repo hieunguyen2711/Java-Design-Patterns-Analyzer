@@ -1,0 +1,78 @@
+### FILE: Order.java
+```java
+package restaurant.order;
+
+public class Order {
+    private String orderId;
+    private String customerId;
+    private double totalAmount;
+    
+    public Order(String orderId, String customerId, double totalAmount) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+    }
+    
+    // Getters and setters
+    public String getOrderId() { return orderId; }
+    public void setOrderId(String orderId) { this.orderId = orderId; }
+    public String getCustomerId() { return customerId; }
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId='" + orderId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", totalAmount=" + totalAmount +
+                '}';
+    }
+}
+```
+
+### FILE: OrderPool.java
+```java
+package restaurant.order;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class OrderPool {
+    private static final int POOL_SIZE = 10;
+    private static OrderPool instance;
+    private Deque<Order> pool;
+    
+    private OrderPool() {
+        pool = new ArrayDeque<>(POOL_SIZE);
+        // Pre-populate the pool with Order objects
+        for (int i = 0; i < POOL_SIZE; i++) {
+            pool.push(new Order("ORDER-" + i, "CUSTOMER-" + i, 0.0));
+        }
+    }
+    
+    public static synchronized OrderPool getInstance() {
+        if (instance == null) {
+            instance = new OrderPool();
+        }
+        return instance;
+    }
+    
+    public Order acquireOrder(String orderId, String customerId, double totalAmount) {
+        Order order = pool.pollLast();
+        if (order != null) {
+            // Reset the order state
+            order.setOrderId(orderId);
+            order.setCustomerId(customerId);
+            order.setTotalAmount(totalAmount);
+        } else {
+            // Create new order if pool is empty
+            order = new Order(orderId, customerId, totalAmount);
+        }
+        return order;
+    }
+    
+    public void releaseOrder(Order order) {
+        if (order != null && pool.size() < POOL_SIZE) {
+            // Reset the order state before

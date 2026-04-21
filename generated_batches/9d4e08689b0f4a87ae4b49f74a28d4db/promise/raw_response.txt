@@ -1,0 +1,86 @@
+### FILE: FleetManager.java
+```java
+package com.fleetmanager;
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class FleetManager {
+    private final Map<String, Vehicle> vehicles = new HashMap<>();
+    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+    
+    public CompletableFuture<Vehicle> reserveVehicle(String vehicleId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(100); // Simulate async operation
+                Vehicle vehicle = vehicles.get(vehicleId);
+                if (vehicle != null && !vehicle.isReserved()) {
+                    vehicle.setReserved(true);
+                    return vehicle;
+                }
+                throw new IllegalStateException("Vehicle not available");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }, executor);
+    }
+    
+    public CompletableFuture<Vehicle> returnVehicle(String vehicleId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(50); // Simulate async operation
+                Vehicle vehicle = vehicles.get(vehicleId);
+                if (vehicle != null) {
+                    vehicle.setReserved(false);
+                    return vehicle;
+                }
+                throw new IllegalStateException("Vehicle not found");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }, executor);
+    }
+    
+    public CompletableFuture<List<Vehicle>> getAvailableVehicles() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(20); // Simulate async operation
+                return vehicles.values().stream()
+                    .filter(vehicle -> !vehicle.isReserved())
+                    .collect(ArrayList::new, 
+                            (list, vehicle) -> list.add(vehicle), 
+                            (list1, list2) -> list1.addAll(list2));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }, executor);
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public void shutdown() {
+        executor.shutdown();
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+package com.fleetmanager;
+
+public class Vehicle {
+    private final String id;
+    private final String make;
+    private final String model;
+    private final int year;
+    private boolean reserved;
+    private MaintenanceStatus maintenanceStatus;
+    
+    public Vehicle(String id, String make,

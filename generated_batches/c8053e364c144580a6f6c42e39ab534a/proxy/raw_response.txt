@@ -1,0 +1,111 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private Doctor doctor;
+    private Patient patient;
+    private String dateTime;
+    private boolean isBooked;
+    
+    public AppointmentSlot(Doctor doctor, String dateTime) {
+        this.doctor = doctor;
+        this.dateTime = dateTime;
+        this.isBooked = false;
+    }
+    
+    public void bookAppointment(Patient patient) {
+        if (!isBooked) {
+            this.patient = patient;
+            this.isBooked = true;
+        } else {
+            throw new RuntimeException("Slot already booked");
+        }
+    }
+    
+    public boolean isAvailable() {
+        return !isBooked;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public String getDateTime() {
+        return dateTime;
+    }
+}
+```
+
+### FILE: ClinicService.java
+```java
+public interface ClinicService {
+    void bookAppointment(AppointmentSlot slot, Patient patient);
+    AppointmentSlot findAvailableSlot(Doctor doctor);
+    void checkInPatient(AppointmentSlot slot);
+    void recordVisitHistory(AppointmentSlot slot);
+}
+```
+
+### FILE: ClinicServiceImpl.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClinicServiceImpl implements ClinicService {
+    private List<AppointmentSlot> slots;
+    
+    public ClinicServiceImpl() {
+        this.slots = new ArrayList<>();
+    }
+    
+    @Override
+    public void bookAppointment(AppointmentSlot slot, Patient patient) {
+        if (slot.isAvailable()) {
+            slot.bookAppointment(patient);
+            System.out.println("Appointment booked for " + patient.getName() + 
+                             " with Dr. "

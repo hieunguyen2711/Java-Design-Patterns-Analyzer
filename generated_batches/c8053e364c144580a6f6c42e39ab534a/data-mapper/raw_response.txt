@@ -1,0 +1,84 @@
+### FILE: Doctor.java
+```java
+package clinic.model;
+
+public class Doctor {
+    private int id;
+    private String name;
+    private String specialty;
+    
+    public Doctor(int id, String name, String specialty) {
+        this.id = id;
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getSpecialty() { return specialty; }
+    public void setSpecialty(String specialty) { this.specialty = specialty; }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic.model;
+
+public class Patient {
+    private int id;
+    private String name;
+    private String email;
+    
+    public Patient(int id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic.model;
+
+import java.time.LocalDateTime;
+
+public class AppointmentSlot {
+    private int id;
+    private int doctorId;
+    private int patientId;
+    private LocalDateTime dateTime;
+    
+    public AppointmentSlot(int id, int doctorId, int patientId, LocalDateTime dateTime) {
+        this.id = id;
+        this.doctorId = doctorId;
+        this.patientId = patientId;
+        this.dateTime = dateTime;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public int getDoctorId() { return doctorId; }
+    public void setDoctorId(int doctorId) { this.doctorId = doctorId; }
+    
+    public int getPatientId() { return patientId; }
+    public void setPatientId(int patientId) { this.patientId = patientId; }
+    
+    public LocalDateTime getDateTime()

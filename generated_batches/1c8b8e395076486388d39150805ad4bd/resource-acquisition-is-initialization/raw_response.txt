@@ -1,0 +1,125 @@
+### FILE: Membership.java
+```java
+package com.gym.membership;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    
+    public Membership(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Schedule.java
+```java
+package com.gym.schedule;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Schedule {
+    private List<TrainingSession> sessions;
+    
+    public Schedule() {
+        this.sessions = new ArrayList<>();
+    }
+    
+    public void addSession(TrainingSession session) {
+        sessions.add(session);
+    }
+    
+    public List<TrainingSession> getSessions() {
+        return sessions;
+    }
+}
+```
+
+### FILE: TrainingSession.java
+```java
+package com.gym.schedule;
+
+import java.time.LocalDateTime;
+
+public class TrainingSession {
+    private String sessionId;
+    private LocalDateTime dateTime;
+    private String trainerName;
+    
+    public TrainingSession(String sessionId, LocalDateTime dateTime, String trainerName) {
+        this.sessionId = sessionId;
+        this.dateTime = dateTime;
+        this.trainerName = trainerName;
+    }
+    
+    public String getSessionId() {
+        return sessionId;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public String getTrainerName() {
+        return trainerName;
+    }
+}
+```
+
+### FILE: Trainer.java
+```java
+package com.gym.trainer;
+
+public class Trainer {
+    private String trainerId;
+    private String name;
+    
+    public Trainer(String trainerId, String name) {
+        this.trainerId = trainerId;
+        this.name = name;
+    }
+    
+    public String getTrainerId() {
+        return trainerId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Payment.java
+```java
+package com.gym.payment;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public class Payment {
+    private String paymentId;
+    private BigDecimal amount;
+    private LocalDateTime timestamp;
+    
+    public Payment(String paymentId, BigDecimal amount, LocalDateTime timestamp) {
+        this.paymentId = paymentId;
+        this.amount = amount;
+        this.timestamp = timestamp;
+    }
+    
+    public String getPaymentId() {
+        return paymentId;
+    }
+    
+    public BigDecimal get

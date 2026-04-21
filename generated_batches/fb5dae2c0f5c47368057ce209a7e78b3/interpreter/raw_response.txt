@@ -1,0 +1,96 @@
+### FILE: Expression.java
+```java
+public interface Expression {
+    boolean interpret(String context);
+}
+```
+
+### FILE: TerminalExpression.java
+```java
+public class TerminalExpression implements Expression {
+    private String data;
+    
+    public TerminalExpression(String data) {
+        this.data = data;
+    }
+    
+    @Override
+    public boolean interpret(String context) {
+        return context.contains(data);
+    }
+}
+```
+
+### FILE: OrExpression.java
+```java
+public class OrExpression implements Expression {
+    private Expression expr1;
+    private Expression expr2;
+    
+    public OrExpression(Expression expr1, Expression expr2) {
+        this.expr1 = expr1;
+        this.expr2 = expr2;
+    }
+    
+    @Override
+    public boolean interpret(String context) {
+        return expr1.interpret(context) || expr2.interpret(context);
+    }
+}
+```
+
+### FILE: AndExpression.java
+```java
+public class AndExpression implements Expression {
+    private Expression expr1;
+    private Expression expr2;
+    
+    public AndExpression(Expression expr1, Expression expr2) {
+        this.expr1 = expr1;
+        this.expr2 = expr2;
+    }
+    
+    @Override
+    public boolean interpret(String context) {
+        return expr1.interpret(context) && expr2.interpret(context);
+    }
+}
+```
+
+### FILE: CourseFilter.java
+```java
+public class CourseFilter {
+    private Expression expression;
+    
+    public CourseFilter(Expression expression) {
+        this.expression = expression;
+    }
+    
+    public boolean filterCourse(String courseInfo) {
+        return expression.interpret(courseInfo);
+    }
+}
+```
+
+### FILE: InterpreterDemo.java
+```java
+public class InterpreterDemo {
+    public static void main(String[] args) {
+        // Create terminal expressions
+        Expression javaCourse = new TerminalExpression("Java");
+        Expression advancedCourse = new TerminalExpression("Advanced");
+        Expression beginnerCourse = new TerminalExpression("Beginner");
+        
+        // Combine expressions using interpreter pattern
+        Expression advancedOrBeginner = new OrExpression(advancedCourse, beginnerCourse);
+        Expression javaAdvanced = new AndExpression(javaCourse, advancedOrBeginner);
+        
+        // Create filter with complex expression
+        CourseFilter filter = new CourseFilter(javaAdvanced);
+        
+        // Test filtering
+        String course1 = "Java Advanced Programming";
+        String course2 = "Python Beginner Basics";
+        String course3 = "Java Beginner Fundamentals";
+        
+        System.out.println("Course 1 '" + course1

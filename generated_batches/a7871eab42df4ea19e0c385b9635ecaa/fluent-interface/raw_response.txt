@@ -1,0 +1,99 @@
+### FILE: CustomerAccount.java
+```java
+package com.example.bank;
+
+public class CustomerAccount {
+    private String accountNumber;
+    private String customerName;
+    private double balance;
+    
+    public CustomerAccount(String accountNumber, String customerName) {
+        this.accountNumber = accountNumber;
+        this.customerName = customerName;
+        this.balance = 0.0;
+    }
+    
+    public CustomerAccount deposit(double amount) {
+        if (amount > 0) {
+            this.balance += amount;
+        }
+        return this;
+    }
+    
+    public CustomerAccount withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            this.balance -= amount;
+        }
+        return this;
+    }
+    
+    public CustomerAccount transfer(CustomerAccount targetAccount, double amount) {
+        if (amount > 0 && amount <= balance) {
+            this.balance -= amount;
+            targetAccount.balance += amount;
+        }
+        return this;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    public String getCustomerName() {
+        return customerName;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+}
+```
+
+### FILE: AccountStatement.java
+```java
+package com.example.bank;
+
+public class AccountStatement {
+    private StringBuilder statementBuilder;
+    
+    public AccountStatement() {
+        this.statementBuilder = new StringBuilder();
+    }
+    
+    public AccountStatement addTransaction(String transactionType, double amount) {
+        statementBuilder.append(String.format("%s: $%.2f\n", transactionType, amount));
+        return this;
+    }
+    
+    public AccountStatement withAccountInfo(CustomerAccount account) {
+        statementBuilder.append(String.format("Account: %s - %s\n", 
+            account.getAccountNumber(), account.getCustomerName()));
+        statementBuilder.append(String.format("Balance: $%.2f\n", account.getBalance()));
+        return this;
+    }
+    
+    public String generate() {
+        return statementBuilder.toString();
+    }
+}
+```
+
+### FILE: AuditTrail.java
+```java
+package com.example.bank;
+
+public class AuditTrail {
+    private StringBuilder auditLog;
+    
+    public AuditTrail() {
+        this.auditLog = new StringBuilder();
+    }
+    
+    public AuditTrail log(String action) {
+        auditLog.append(String.format("[%s] %s\n", 
+            java.time.LocalDateTime.now(), action));
+        return this;
+    }
+    
+    public AuditTrail withUser(String user) {
+        auditLog.append

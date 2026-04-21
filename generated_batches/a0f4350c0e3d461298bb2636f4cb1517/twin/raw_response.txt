@@ -1,0 +1,115 @@
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    private static LibrarySystem instance;
+    private final BookManager bookManager;
+    private final MemberManager memberManager;
+    
+    private LibrarySystem() {
+        this.bookManager = new BookManager();
+        this.memberManager = new MemberManager();
+    }
+    
+    public static synchronized LibrarySystem getInstance() {
+        if (instance == null) {
+            instance = new LibrarySystem();
+        }
+        return instance;
+    }
+    
+    public BookManager getBookManager() {
+        return bookManager;
+    }
+    
+    public MemberManager getMemberManager() {
+        return memberManager;
+    }
+}
+```
+
+### FILE: BookManager.java
+```java
+import java.util.*;
+
+public class BookManager {
+    private final Map<String, Book> books;
+    
+    public BookManager() {
+        this.books = new HashMap<>();
+    }
+    
+    public void addBook(Book book) {
+        books.put(book.getIsbn(), book);
+    }
+    
+    public Book findBook(String isbn) {
+        return books.get(isbn);
+    }
+    
+    public Collection<Book> getAllBooks() {
+        return new ArrayList<>(books.values());
+    }
+}
+```
+
+### FILE: MemberManager.java
+```java
+import java.util.*;
+
+public class MemberManager {
+    private final Map<String, Member> members;
+    
+    public MemberManager() {
+        this.members = new HashMap<>();
+    }
+    
+    public void addMember(Member member) {
+        members.put(member.getMemberId(), member);
+    }
+    
+    public Member findMember(String memberId) {
+        return members.get(memberId);
+    }
+    
+    public Collection<Member> getAllMembers() {
+        return new ArrayList<>(members.values());
+    }
+}
+```
+
+### FILE: Book.java
+```java
+import java.time.LocalDate;
+import java.util.Objects;
+
+public class Book {
+    private final String isbn;
+    private final String title;
+    private final String author;
+    private boolean isAvailable;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.isAvailable = true;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        is

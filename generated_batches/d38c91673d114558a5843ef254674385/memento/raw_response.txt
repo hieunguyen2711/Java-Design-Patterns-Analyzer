@@ -1,0 +1,74 @@
+### FILE: Ticket.java
+```java
+package com.example.projecttracker;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Ticket {
+    private String id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+    private List<String> comments;
+    
+    public Ticket(String id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = Priority.MEDIUM;
+        this.status = Status.OPEN;
+        this.comments = new ArrayList<>();
+    }
+    
+    public Memento saveToMemento() {
+        return new Memento(id, title, description, priority, status, assignee, comments);
+    }
+    
+    public void restoreFromMemento(Memento memento) {
+        this.id = memento.getId();
+        this.title = memento.getTitle();
+        this.description = memento.getDescription();
+        this.priority = memento.getPriority();
+        this.status = memento.getStatus();
+        this.assignee = memento.getAssignee();
+        this.comments = new ArrayList<>(memento.getComments());
+    }
+    
+    public void addComment(String comment) {
+        comments.add(comment);
+    }
+    
+    public String getId() { return id; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public Priority getPriority() { return priority; }
+    public Status getStatus() { return status; }
+    public String getAssignee() { return assignee; }
+    public List<String> getComments() { return new ArrayList<>(comments); }
+    
+    public void setTitle(String title) { this.title = title; }
+    public void setDescription(String description) { this.description = description; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    public void setStatus(Status status) { this.status = status; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+    
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
+                ", status=" + status +
+                ", assignee='" + assignee + '\'' +
+                ", comments=" + comments.size() + " comments" +
+                '}';
+    }
+}
+```
+
+### FILE: Memento.java
+```java

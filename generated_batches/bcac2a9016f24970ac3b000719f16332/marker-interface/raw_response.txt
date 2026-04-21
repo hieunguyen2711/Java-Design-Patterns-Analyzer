@@ -1,0 +1,95 @@
+### FILE: Room.java
+```java
+package hotel.inventory;
+
+public class Room implements Identifiable {
+    private final String roomId;
+    private final int capacity;
+    
+    public Room(String roomId, int capacity) {
+        this.roomId = roomId;
+        this.capacity = capacity;
+    }
+    
+    public String getRoomId() {
+        return roomId;
+    }
+    
+    public int getCapacity() {
+        return capacity;
+    }
+}
+```
+
+### FILE: Identifiable.java
+```java
+package hotel.inventory;
+
+public interface Identifiable {
+    // Marker interface - no methods required
+    // Used to identify objects that can be uniquely identified
+}
+```
+
+### FILE: Booking.java
+```java
+package hotel.inventory;
+
+public class Booking implements Identifiable {
+    private final String bookingId;
+    private final Room room;
+    private final String guestName;
+    
+    public Booking(String bookingId, Room room, String guestName) {
+        this.bookingId = bookingId;
+        this.room = room;
+        this.guestName = guestName;
+    }
+    
+    public String getBookingId() {
+        return bookingId;
+    }
+    
+    public Room getRoom() {
+        return room;
+    }
+    
+    public String getGuestName() {
+        return guestName;
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+package hotel.inventory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class InventoryManager {
+    private final List<Identifiable> items = new ArrayList<>();
+    
+    public void addItem(Identifiable item) {
+        items.add(item);
+    }
+    
+    public Identifiable findItemById(String id) {
+        return items.stream()
+                .filter(item -> {
+                    if (item instanceof Room) {
+                        return ((Room) item).getRoomId().equals(id);
+                    } else if (item instanceof Booking) {
+                        return ((Booking) item).getBookingId().equals(id);
+                    }
+                    return false;
+                })
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public List<Identifiable> getAllItems() {
+        return new ArrayList<>(items);
+    }
+}
+```

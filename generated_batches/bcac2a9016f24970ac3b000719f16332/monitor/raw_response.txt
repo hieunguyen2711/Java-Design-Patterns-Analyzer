@@ -1,0 +1,116 @@
+### FILE: Room.java
+```java
+package hotel;
+
+public class Room {
+    private int roomId;
+    private String type;
+    private boolean isAvailable;
+    
+    public Room(int roomId, String type) {
+        this.roomId = roomId;
+        this.type = type;
+        this.isAvailable = true;
+    }
+    
+    public synchronized boolean book() {
+        if (isAvailable) {
+            isAvailable = false;
+            return true;
+        }
+        return false;
+    }
+    
+    public synchronized void checkIn() {
+        isAvailable = false;
+    }
+    
+    public synchronized void checkOut() {
+        isAvailable = true;
+    }
+    
+    public int getRoomId() {
+        return roomId;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+}
+```
+
+### FILE: RoomInventory.java
+```java
+package hotel;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RoomInventory {
+    private List<Room> rooms;
+    
+    public RoomInventory() {
+        this.rooms = new ArrayList<>();
+    }
+    
+    public synchronized void addRoom(Room room) {
+        rooms.add(room);
+    }
+    
+    public synchronized Room findAvailableRoom(String type) {
+        for (Room room : rooms) {
+            if (room.isAvailable() && room.getType().equals(type)) {
+                return room;
+            }
+        }
+        return null;
+    }
+    
+    public synchronized int getAvailableRoomsCount(String type) {
+        int count = 0;
+        for (Room room : rooms) {
+            if (room.isAvailable() && room.getType().equals(type)) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+package hotel;
+
+public class BookingService {
+    private RoomInventory inventory;
+    
+    public BookingService(RoomInventory inventory) {
+        this.inventory = inventory;
+    }
+    
+    public synchronized boolean bookRoom(String type) {
+        Room room = inventory.findAvailableRoom(type);
+        if (room != null) {
+            return room.book();
+        }
+        return false;
+    }
+}
+```
+
+### FILE: HotelSystem.java
+```java
+package hotel;
+
+public class HotelSystem {
+    public static void main(String[] args) {
+        RoomInventory inventory = new RoomInventory();
+        
+        // Add rooms to inventory
+        inventory.addRoom(new Room(101, "single"));
+        inventory.addRoom(new Room(

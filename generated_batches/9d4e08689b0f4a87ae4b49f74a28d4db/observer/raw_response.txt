@@ -1,0 +1,115 @@
+### FILE: Vehicle.java
+```java
+package fleetmanagement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Vehicle {
+    private String id;
+    private String model;
+    private boolean isAvailable;
+    private List<Observer> observers;
+    
+    public Vehicle(String id, String model) {
+        this.id = id;
+        this.model = model;
+        this.isAvailable = true;
+        this.observers = new ArrayList<>();
+    }
+    
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+    
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+    
+    public void setAvailability(boolean available) {
+        this.isAvailable = available;
+        notifyObservers();
+    }
+    
+    private void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+}
+```
+
+### FILE: Observer.java
+```java
+package fleetmanagement;
+
+public interface Observer {
+    void update(Vehicle vehicle);
+}
+```
+
+### FILE: FleetManager.java
+```java
+package fleetmanagement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FleetManager implements Observer {
+    private List<Vehicle> vehicles;
+    
+    public FleetManager() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+        vehicle.addObserver(this);
+    }
+    
+    @Override
+    public void update(Vehicle vehicle) {
+        System.out.println("Fleet Manager notified: Vehicle " + 
+                          vehicle.getId() + " is now " + 
+                          (vehicle.isAvailable() ? "available" : "unavailable"));
+    }
+}
+```
+
+### FILE: ReservationSystem.java
+```java
+package fleetmanagement;
+
+public class ReservationSystem implements Observer {
+    @Override
+    public void update(Vehicle vehicle) {
+        if (vehicle.isAvailable()) {
+            System.out.println("Reservation system: Vehicle " + 
+                              vehicle.getId() + " is now available for booking");
+        } else {
+            System.out.println("Reservation system: Vehicle " + 
+                              vehicle.getId() + " is no longer available");
+        }
+    }
+}
+```
+
+### FILE: MaintenanceTracker.java
+```java
+package fleetmanagement;
+
+public class MaintenanceTracker implements Observer {
+    @Override
+    public

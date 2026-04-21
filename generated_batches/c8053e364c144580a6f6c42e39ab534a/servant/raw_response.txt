@@ -1,0 +1,127 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+public class AppointmentSlot {
+    private Doctor doctor;
+    private Patient patient;
+    private String dateTime;
+    
+    public AppointmentSlot(Doctor doctor, Patient patient, String dateTime) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.dateTime = dateTime;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public String getDateTime() {
+        return dateTime;
+    }
+}
+```
+
+### FILE: CheckInService.java
+```java
+package clinic;
+
+public class CheckInService {
+    private static CheckInService instance;
+    
+    private CheckInService() {}
+    
+    public static CheckInService getInstance() {
+        if (instance == null) {
+            instance = new CheckInService();
+        }
+        return instance;
+    }
+    
+    public void checkInPatient(AppointmentSlot slot) {
+        System.out.println("Checking in patient " + slot.getPatient().getName() 
+                          + " with doctor " + slot.getDoctor().getName());
+    }
+}
+```
+
+### FILE: VisitHistory.java
+```java
+package clinic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VisitHistory {
+    private List<AppointmentSlot> visits;
+    
+    public VisitHistory() {
+        this.visits = new ArrayList<>();
+    }
+    
+    public void addVisit(AppointmentSlot slot) {
+        visits.add(slot);
+    }
+    
+    public List<AppointmentSlot> getVisits() {
+        return visits;
+    }
+}
+```
+
+### FILE: ClinicManagementSystem.java
+```java
+package clinic;
+
+public class ClinicManagementSystem

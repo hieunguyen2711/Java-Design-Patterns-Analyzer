@@ -1,0 +1,97 @@
+### FILE: ActiveObject.java
+```java
+public interface ActiveObject {
+    void scheduleRequest(Request request);
+}
+```
+
+### FILE: BookingService.java
+```java
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class BookingService implements ActiveObject {
+    private final BlockingQueue<Request> requestQueue = new LinkedBlockingQueue<>();
+    
+    public BookingService() {
+        startProcessing();
+    }
+    
+    @Override
+    public void scheduleRequest(Request request) {
+        try {
+            requestQueue.put(request);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    private void startProcessing() {
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Request request = requestQueue.take();
+                    request.execute();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }).start();
+    }
+}
+```
+
+### FILE: Request.java
+```java
+public abstract class Request {
+    public abstract void execute();
+}
+```
+
+### FILE: CheckInRequest.java
+```java
+public class CheckInRequest extends Request {
+    private final String guestName;
+    private final String roomNumber;
+    
+    public CheckInRequest(String guestName, String roomNumber) {
+        this.guestName = guestName;
+        this.roomNumber = roomNumber;
+    }
+    
+    @Override
+    public void execute() {
+        System.out.println("Processing check-in for " + guestName + 
+                          " in room " + roomNumber);
+        // Simulate processing time
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("Check-in completed for " + guestName);
+    }
+}
+```
+
+### FILE: CheckOutRequest.java
+```java
+public class CheckOutRequest extends Request {
+    private final String guestName;
+    private final String roomNumber;
+    
+    public CheckOutRequest(String guestName, String roomNumber) {
+        this.guestName = guestName;
+        this.roomNumber = roomNumber;
+    }
+    
+    @Override
+    public void execute() {
+        System.out.println("Processing check-out for " + guestName + 
+                          " from room " + roomNumber);
+        // Simulate processing time
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();

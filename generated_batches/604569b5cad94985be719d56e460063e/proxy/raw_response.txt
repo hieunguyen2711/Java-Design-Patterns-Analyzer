@@ -1,0 +1,86 @@
+### FILE: Employee.java
+```java
+public class Employee {
+    private int id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(int id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: SalaryCalculator.java
+```java
+public interface SalaryCalculator {
+    double calculateNetSalary(Employee employee);
+    double calculateTax(double grossSalary);
+}
+```
+
+### FILE: RealSalaryCalculator.java
+```java
+public class RealSalaryCalculator implements SalaryCalculator {
+    
+    @Override
+    public double calculateNetSalary(Employee employee) {
+        double grossSalary = employee.getBaseSalary();
+        double tax = calculateTax(grossSalary);
+        return grossSalary - tax;
+    }
+    
+    @Override
+    public double calculateTax(double grossSalary) {
+        // Simple progressive tax calculation
+        if (grossSalary <= 5000) {
+            return grossSalary * 0.10;
+        } else if (grossSalary <= 10000) {
+            return 500 + (grossSalary - 5000) * 0.15;
+        } else {
+            return 1250 + (grossSalary - 10000) * 0.25;
+        }
+    }
+}
+```
+
+### FILE: SalaryCalculatorProxy.java
+```java
+public class SalaryCalculatorProxy implements SalaryCalculator {
+    private RealSalaryCalculator realCalculator;
+    private static final int MAX_CALCULATIONS_PER_DAY = 100;
+    private int calculationCount = 0;
+    
+    @Override
+    public double calculateNetSalary(Employee employee) {
+        if (calculationCount >= MAX_CALCULATIONS_PER_DAY) {
+            throw new RuntimeException("Daily calculation limit exceeded");
+        }
+        
+        if (realCalculator == null) {
+            realCalculator = new RealSalaryCalculator();
+        }
+        
+        calculationCount++;
+        System.out.println("Proxy: Calculating salary for " + employee.getName());
+        return realCalculator.calculateNetSalary(employee);
+    }
+    
+    @Override
+    public double calculateTax(double grossSalary) {
+        if (realCalculator == null) {
+            realCalculator = new Real

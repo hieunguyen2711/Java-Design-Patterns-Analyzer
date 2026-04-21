@@ -1,0 +1,96 @@
+### FILE: Order.java
+```java
+package restaurant;
+
+public class Order {
+    private final String orderId;
+    private final String customerId;
+    
+    public Order(String orderId, String customerId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package restaurant;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class OrderProcessor {
+    private final Order order;
+    private final AtomicBoolean isProcessing = new AtomicBoolean(false);
+    
+    public OrderProcessor(Order order) {
+        this.order = order;
+    }
+    
+    public void process() throws Exception {
+        // RAII pattern: acquire resources at construction and release at cleanup
+        try (OrderResource resource = new OrderResource(order)) {
+            if (!isProcessing.compareAndSet(false, true)) {
+                throw new IllegalStateException("Order already being processed");
+            }
+            
+            // Simulate processing work
+            Thread.sleep(100);
+            System.out.println("Processing order: " + order.getOrderId());
+        } catch (Exception e) {
+            throw new Exception("Failed to process order: " + order.getOrderId(), e);
+        } finally {
+            isProcessing.set(false);
+        }
+    }
+}
+```
+
+### FILE: OrderResource.java
+```java
+package restaurant;
+
+public class OrderResource implements AutoCloseable {
+    private final Order order;
+    private boolean isOpen = true;
+    
+    public OrderResource(Order order) {
+        this.order = order;
+        System.out.println("Acquiring resources for order: " + order.getOrderId());
+    }
+    
+    @Override
+    public void close() {
+        if (isOpen) {
+            isOpen = false;
+            System.out.println("Releasing resources for order: " + order.getOrderId());
+        }
+    }
+}
+```
+
+### FILE: RestaurantService.java
+```java
+package restaurant;
+
+public class RestaurantService {
+    public static void main(String[] args) {
+        try {
+            Order order1 = new Order("ORD-001", "CUST-123");
+            OrderProcessor processor1 = new OrderProcessor(order1);
+            
+            Order order2 = new Order("ORD-002", "CUST-456");
+            OrderProcessor processor2 = new OrderProcessor(order2);
+            
+            processor1.process();
+            processor2.process();
+            
+       

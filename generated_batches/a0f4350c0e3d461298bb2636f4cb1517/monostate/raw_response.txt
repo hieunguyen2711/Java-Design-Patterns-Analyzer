@@ -1,0 +1,95 @@
+### FILE: Library.java
+```java
+public class Library {
+    private static Library instance;
+    private String name;
+    private int totalBooks;
+    private int totalMembers;
+    
+    // Private constructor to prevent instantiation
+    private Library() {
+        this.name = "Central Public Library";
+        this.totalBooks = 0;
+        this.totalMembers = 0;
+    }
+    
+    // Static method to get the single instance
+    public static synchronized Library getInstance() {
+        if (instance == null) {
+            instance = new Library();
+        }
+        return instance;
+    }
+    
+    // Getters and setters for shared state
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getTotalBooks() {
+        return totalBooks;
+    }
+    
+    public void setTotalBooks(int totalBooks) {
+        this.totalBooks = totalBooks;
+    }
+    
+    public int getTotalMembers() {
+        return totalMembers;
+    }
+    
+    public void setTotalMembers(int totalMembers) {
+        this.totalMembers = totalMembers;
+    }
+}
+```
+
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    private boolean isAvailable;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String name;
+    private int memberId;
+    private int booksBorrowed;
+    
+    public Member(String name, int memberId) {
+        this.name = name;
+        this.memberId = memberId;
+        this.booksBorrowed = 0;
+    }
+    
+    // Getters and setters
+    public String getName() {

@@ -1,0 +1,79 @@
+### FILE: FleetService.java
+```java
+package com.fleetmanager.service;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface FleetService {
+    List<Vehicle> getAllVehicles();
+    Optional<Vehicle> getVehicleById(String id);
+    Vehicle addVehicle(Vehicle vehicle);
+    void removeVehicle(String id);
+    List<Vehicle> getAvailableVehicles();
+    List<Vehicle> getMaintenanceVehicles();
+}
+```
+
+### FILE: Vehicle.java
+```java
+package com.fleetmanager.model;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean inMaintenance;
+    private double dailyRate;
+    
+    public Vehicle(String id, String make, String model, int year, boolean inMaintenance, double dailyRate) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.inMaintenance = inMaintenance;
+        this.dailyRate = dailyRate;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public boolean isInMaintenance() { return inMaintenance; }
+    public void setInMaintenance(boolean inMaintenance) { this.inMaintenance = inMaintenance; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+}
+```
+
+### FILE: FleetServiceImpl.java
+```java
+package com.fleetmanager.service.impl;
+
+import com.fleetmanager.model.Vehicle;
+import com.fleetmanager.service.FleetService;
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class FleetServiceImpl implements FleetService {
+    private final Map<String, Vehicle> vehicleRepository = new HashMap<>();
+    
+    @Override
+    public List<Vehicle> getAllVehicles() {
+        return new ArrayList<>(vehicleRepository.values());
+    }
+    
+    @Override
+    public Optional<Vehicle> getVehicleById(String id) {
+        return Optional.ofNullable(vehicleRepository.get

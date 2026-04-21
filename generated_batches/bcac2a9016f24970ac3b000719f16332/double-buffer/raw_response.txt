@@ -1,0 +1,112 @@
+### FILE: RoomInventory.java
+```java
+package hotel.inventory;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+
+public class RoomInventory {
+    private final Map<Integer, Room> rooms = new ConcurrentHashMap<>();
+    
+    public void addRoom(Room room) {
+        rooms.put(room.getId(), room);
+    }
+    
+    public Room getRoom(int id) {
+        return rooms.get(id);
+    }
+}
+```
+
+### FILE: Room.java
+```java
+package hotel.inventory;
+
+public class Room {
+    private final int id;
+    private volatile RoomState state;
+    
+    public Room(int id, RoomState initialState) {
+        this.id = id;
+        this.state = initialState;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public RoomState getState() {
+        return state;
+    }
+    
+    public void setState(RoomState newState) {
+        this.state = newState;
+    }
+}
+```
+
+### FILE: RoomState.java
+```java
+package hotel.inventory;
+
+public enum RoomState {
+    AVAILABLE,
+    OCCUPIED,
+    MAINTENANCE
+}
+```
+
+### FILE: BookingService.java
+```java
+package hotel.booking;
+
+import hotel.inventory.Room;
+import hotel.inventory.RoomInventory;
+import java.util.concurrent.atomic.AtomicReference;
+
+public class BookingService {
+    private final RoomInventory inventory;
+    private final AtomicReference<RoomInventory> doubleBuffer = new AtomicReference<>();
+    
+    public BookingService(RoomInventory initialInventory) {
+        this.inventory = initialInventory;
+        this.doubleBuffer.set(initialInventory);
+    }
+    
+    public void updateInventory(Room room, RoomState newState) {
+        // Double buffering approach - create new inventory snapshot
+        RoomInventory current = doubleBuffer.get();
+        RoomInventory updated = new RoomInventory();
+        
+        // Copy all existing rooms
+        for (Room r : current.getRooms()) {
+            if (r.getId() == room.getId()) {
+                updated.addRoom(new Room(r.getId(), newState));
+            } else {
+                updated.addRoom(r);
+            }
+        }
+        
+        // Atomic swap of inventory reference
+        doubleBuffer.set(updated);
+    }
+    
+    public Room getRoom(int id) {
+        return doubleBuffer.get().getRoom(id);
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+package hotel.booking;
+
+import hotel.inventory.Room;
+import hotel.inventory.RoomInventory;
+import hotel.inventory.RoomState;
+
+public class InventoryManager {
+    private final BookingService bookingService;
+    
+    public InventoryManager(BookingService bookingService) {
+       

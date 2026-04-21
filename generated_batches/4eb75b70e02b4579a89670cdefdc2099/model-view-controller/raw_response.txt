@@ -1,0 +1,81 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private String itemId;
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    private String location;
+    
+    public StockItem(String itemId, String name, int currentStock, int reorderThreshold, String location) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+        this.location = location;
+    }
+    
+    // Getters and setters
+    public String getItemId() { return itemId; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+    
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+}
+```
+
+### FILE: StockModel.java
+```java
+package com.example.stock;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StockModel {
+    private List<StockItem> stockItems;
+    
+    public StockModel() {
+        this.stockItems = new ArrayList<>();
+    }
+    
+    public void addItem(StockItem item) {
+        stockItems.add(item);
+    }
+    
+    public void removeItem(String itemId) {
+        stockItems.removeIf(item -> item.getItemId().equals(itemId));
+    }
+    
+    public List<StockItem> getAllItems() {
+        return new ArrayList<>(stockItems);
+    }
+    
+    public StockItem getItemById(String itemId) {
+        return stockItems.stream()
+                .filter(item -> item.getItemId().equals(itemId))
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public void updateStock(String itemId, int quantity) {
+        StockItem item = getItemById(itemId);
+        if (item != null) {
+            item.setCurrentStock(quantity);
+        }
+    }
+    
+    public List<StockItem> getItemsBelowThreshold() {
+        return stockItems.stream()
+                .filter(item -> item.getCurrentStock() <= item.getReorderThreshold())
+                .collect(ArrayList::new, ArrayList::add, ArrayList

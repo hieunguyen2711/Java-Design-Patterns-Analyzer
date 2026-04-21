@@ -1,0 +1,108 @@
+### FILE: Actor.java
+```java
+package com.lms.actor;
+
+public interface Actor {
+    void receive(Object message);
+}
+```
+
+### FILE: Message.java
+```java
+package com.lms.actor;
+
+public interface Message {
+    Object getPayload();
+}
+```
+
+### FILE: AssignmentSubmissionMessage.java
+```java
+package com.lms.actor;
+
+public class AssignmentSubmissionMessage implements Message {
+    private final String studentId;
+    private final String assignmentId;
+    private final String submissionContent;
+
+    public AssignmentSubmissionMessage(String studentId, String assignmentId, String submissionContent) {
+        this.studentId = studentId;
+        this.assignmentId = assignmentId;
+        this.submissionContent = submissionContent;
+    }
+
+    @Override
+    public Object getPayload() {
+        return this;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getAssignmentId() {
+        return assignmentId;
+    }
+
+    public String getSubmissionContent() {
+        return submissionContent;
+    }
+}
+```
+
+### FILE: GradeAssignmentMessage.java
+```java
+package com.lms.actor;
+
+public class GradeAssignmentMessage implements Message {
+    private final String studentId;
+    private final String assignmentId;
+    private final int grade;
+
+    public GradeAssignmentMessage(String studentId, String assignmentId, int grade) {
+        this.studentId = studentId;
+        this.assignmentId = assignmentId;
+        this.grade = grade;
+    }
+
+    @Override
+    public Object getPayload() {
+        return this;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getAssignmentId() {
+        return assignmentId;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+}
+```
+
+### FILE: SubmissionActor.java
+```java
+package com.lms.actor;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class SubmissionActor implements Actor {
+    private final Map<String, String> submissions = new HashMap<>();
+    
+    @Override
+    public void receive(Object message) {
+        if (message instanceof AssignmentSubmissionMessage) {
+            AssignmentSubmissionMessage msg = (AssignmentSubmissionMessage) message;
+            submissions.put(msg.getStudentId() + "_" + msg.getAssignmentId(), 
+                           msg.getSubmissionContent());
+            System.out.println("Submission recorded for student: " + msg.getStudentId() + 
+                             ", assignment: " + msg.getAssignmentId());
+        }
+    }
+
+    public String getSubmission(String studentId, String assignmentId

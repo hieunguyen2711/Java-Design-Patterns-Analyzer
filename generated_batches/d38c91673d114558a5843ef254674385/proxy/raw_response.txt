@@ -1,0 +1,86 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private int id;
+    private String title;
+    private String description;
+    private String status;
+    private int priority;
+
+    public Ticket(int id, String title, String description, String status, int priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    
+    public int getPriority() { return priority; }
+    public void setPriority(int priority) { this.priority = priority; }
+}
+```
+
+### FILE: TicketService.java
+```java
+public interface TicketService {
+    void createTicket(Ticket ticket);
+    void updateTicket(Ticket ticket);
+    void deleteTicket(int id);
+    Ticket getTicket(int id);
+}
+```
+
+### FILE: RealTicketService.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class RealTicketService implements TicketService {
+    private Map<Integer, Ticket> tickets = new HashMap<>();
+    
+    @Override
+    public void createTicket(Ticket ticket) {
+        System.out.println("Creating ticket in database: " + ticket.getTitle());
+        tickets.put(ticket.getId(), ticket);
+    }
+    
+    @Override
+    public void updateTicket(Ticket ticket) {
+        System.out.println("Updating ticket in database: " + ticket.getTitle());
+        tickets.put(ticket.getId(), ticket);
+    }
+    
+    @Override
+    public void deleteTicket(int id) {
+        System.out.println("Deleting ticket from database with ID: " + id);
+        tickets.remove(id);
+    }
+    
+    @Override
+    public Ticket getTicket(int id) {
+        System.out.println("Retrieving ticket from database with ID: " + id);
+        return tickets.get(id);
+    }
+}
+```
+
+### FILE: TicketServiceProxy.java
+```java
+public class TicketServiceProxy implements TicketService {
+    private RealTicketService realService;
+    private String currentUser;
+    
+    public Ticket

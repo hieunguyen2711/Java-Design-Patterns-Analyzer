@@ -1,0 +1,108 @@
+### FILE: BankAccount.java
+```java
+public class BankAccount {
+    private String accountNumber;
+    private double balance;
+    private String ownerName;
+    
+    public BankAccount(String accountNumber, String ownerName) {
+        this.accountNumber = accountNumber;
+        this.ownerName = ownerName;
+        this.balance = 0.0;
+    }
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    public String getOwnerName() {
+        return ownerName;
+    }
+}
+```
+
+### FILE: Transaction.java
+```java
+public class Transaction {
+    private String transactionId;
+    private String fromAccount;
+    private String toAccount;
+    private double amount;
+    private String type;
+    private long timestamp;
+    
+    public Transaction(String transactionId, String fromAccount, String toAccount, 
+                      double amount, String type) {
+        this.transactionId = transactionId;
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+        this.amount = amount;
+        this.type = type;
+        this.timestamp = System.currentTimeMillis();
+    }
+    
+    public String getTransactionId() {
+        return transactionId;
+    }
+    
+    public String getFromAccount() {
+        return fromAccount;
+    }
+    
+    public String getToAccount() {
+        return toAccount;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: Mediator.java
+```java
+public interface Mediator {
+    void executeTransaction(String fromAccount, String toAccount, double amount);
+    void generateStatement(String accountNumber);
+    void recordAudit(String action, String accountNumber);
+}
+```
+
+### FILE: BankMediator.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class BankMediator implements Mediator {
+    private List<BankAccount> accounts;
+    private List<Transaction> transactions;
+    private List<String> auditLog;
+    
+    public BankMediator() {
+       

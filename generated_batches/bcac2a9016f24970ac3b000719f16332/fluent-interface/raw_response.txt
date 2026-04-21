@@ -1,0 +1,102 @@
+### FILE: Room.java
+```java
+package hotel;
+
+public class Room {
+    private String roomId;
+    private int capacity;
+    private double basePrice;
+    private boolean isAvailable;
+    
+    public Room(String roomId) {
+        this.roomId = roomId;
+        this.isAvailable = true;
+    }
+    
+    public Room setCapacity(int capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+    
+    public Room setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
+        return this;
+    }
+    
+    public Room setIsAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+        return this;
+    }
+    
+    // Getters
+    public String getRoomId() { return roomId; }
+    public int getCapacity() { return capacity; }
+    public double getBasePrice() { return basePrice; }
+    public boolean isAvailable() { return isAvailable; }
+}
+```
+
+### FILE: RoomBuilder.java
+```java
+package hotel;
+
+public class RoomBuilder {
+    private String roomId;
+    private int capacity = 1;
+    private double basePrice = 0.0;
+    private boolean isAvailable = true;
+    
+    public static RoomBuilder create() {
+        return new RoomBuilder();
+    }
+    
+    public RoomBuilder withRoomId(String roomId) {
+        this.roomId = roomId;
+        return this;
+    }
+    
+    public RoomBuilder withCapacity(int capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+    
+    public RoomBuilder withBasePrice(double basePrice) {
+        this.basePrice = basePrice;
+        return this;
+    }
+    
+    public RoomBuilder available() {
+        this.isAvailable = true;
+        return this;
+    }
+    
+    public RoomBuilder unavailable() {
+        this.isAvailable = false;
+        return this;
+    }
+    
+    public Room build() {
+        Room room = new Room(roomId);
+        room.setCapacity(capacity);
+        room.setBasePrice(basePrice);
+        room.setIsAvailable(isAvailable);
+        return room;
+    }
+}
+```
+
+### FILE: HotelSystem.java
+```java
+package hotel;
+
+public class HotelSystem {
+    public static void main(String[] args) {
+        // Fluent interface usage example
+        Room room = RoomBuilder.create()
+                .withRoomId("101")
+                .withCapacity(2)
+                .withBasePrice(150.0)
+                .available()
+                .build();
+        
+        System.out.println("Room

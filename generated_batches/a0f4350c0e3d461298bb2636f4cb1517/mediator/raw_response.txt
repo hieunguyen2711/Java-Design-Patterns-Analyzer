@@ -1,0 +1,80 @@
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    public static void main(String[] args) {
+        Mediator mediator = new LibraryMediator();
+        
+        Book book1 = new Book("1984", "George Orwell");
+        Book book2 = new Book("To Kill a Mockingbird", "Harper Lee");
+        
+        Member member1 = new Member("Alice Johnson", "M001");
+        Member member2 = new Member("Bob Smith", "M002");
+        
+        mediator.registerBook(book1);
+        mediator.registerBook(book2);
+        mediator.registerMember(member1);
+        mediator.registerMember(member2);
+        
+        mediator.borrowBook(book1, member1);
+        mediator.borrowBook(book2, member2);
+        
+        System.out.println("Late fees:");
+        System.out.println(member1.getName() + ": $" + member1.getLateFee());
+        System.out.println(member2.getName() + ": $" + member2.getLateFee());
+    }
+}
+```
+
+### FILE: Mediator.java
+```java
+public interface Mediator {
+    void registerBook(Book book);
+    void registerMember(Member member);
+    void borrowBook(Book book, Member member);
+    void returnBook(Book book, Member member);
+    void updateLateFee(Member member, double fee);
+}
+```
+
+### FILE: LibraryMediator.java
+```java
+import java.util.*;
+
+public class LibraryMediator implements Mediator {
+    private List<Book> books;
+    private List<Member> members;
+    
+    public LibraryMediator() {
+        this.books = new ArrayList<>();
+        this.members = new ArrayList<>();
+    }
+    
+    @Override
+    public void registerBook(Book book) {
+        books.add(book);
+    }
+    
+    @Override
+    public void registerMember(Member member) {
+        members.add(member);
+    }
+    
+    @Override
+    public void borrowBook(Book book, Member member) {
+        if (book.isAvailable()) {
+            book.setAvailable(false);
+            book.setBorrower(member);
+            member.borrowBook(book);
+        } else {
+            System.out.println("Book " + book.getTitle() + " is already borrowed.");
+        }
+    }
+    
+    @Override
+    public void returnBook(Book book, Member member) {
+        if (book.getBorrower() == member) {
+            book.setAvailable(true);
+            book.setBorrower(null);
+            member.returnBook(book);
+        } else {
+            System.out.println("Member " + member.getName() + "

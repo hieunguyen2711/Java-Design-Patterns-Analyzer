@@ -1,0 +1,91 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+
+    public Ticket(String title, String description, Priority priority) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.NEW;
+    }
+
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+public enum Priority {
+    LOW, MEDIUM, HIGH, URGENT
+}
+```
+
+### FILE: Status.java
+```java
+public enum Status {
+    NEW, ASSIGNED, IN_PROGRESS, RESOLVED, CLOSED
+}
+```
+
+### FILE: Handler.java
+```java
+public abstract class Handler {
+    protected Handler nextHandler;
+
+    public void setNext(Handler handler) {
+        this.nextHandler = handler;
+    }
+
+    public abstract void handleRequest(Ticket ticket);
+
+    protected void processTicket(Ticket ticket) {
+        if (nextHandler != null) {
+            nextHandler.handleRequest(ticket);
+        }
+    }
+}
+```
+
+### FILE: PriorityHandler.java
+```java
+public class PriorityHandler extends Handler {
+    @Override
+    public void handleRequest(Ticket ticket) {
+        if (ticket.getPriority() == Priority.URGENT) {
+            System.out.println("URGENT ticket handled by PriorityHandler");
+            ticket.setStatus(Status.ASSIGNED);
+            processTicket(ticket);
+        } else {
+            processTicket(ticket);
+        }
+    }
+}
+```
+
+### FILE: StatusHandler.java
+```java
+public class StatusHandler extends Handler {
+    @Override
+    public void handleRequest(Ticket ticket) {
+        if (ticket.getStatus() == Status.NEW) {
+            System.out.println("New ticket handled by StatusHandler");
+            ticket.setStatus(Status

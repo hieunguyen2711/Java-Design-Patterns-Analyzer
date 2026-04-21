@@ -1,0 +1,103 @@
+### FILE: Command.java
+```java
+package com.projecttracker.command;
+
+public interface Command {
+    void execute();
+}
+```
+
+### FILE: Ticket.java
+```java
+package com.projecttracker.model;
+
+public class Ticket {
+    private int id;
+    private String title;
+    private String status;
+    
+    public Ticket(int id, String title) {
+        this.id = id;
+        this.title = title;
+        this.status = "OPEN";
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+}
+```
+
+### FILE: TicketManager.java
+```java
+package com.projecttracker.manager;
+
+import com.projecttracker.model.Ticket;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TicketManager {
+    private List<Ticket> tickets;
+    
+    public TicketManager() {
+        this.tickets = new ArrayList<>();
+    }
+    
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
+    
+    public Ticket getTicket(int id) {
+        return tickets.stream()
+                .filter(t -> t.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public List<Ticket> getAllTickets() {
+        return new ArrayList<>(tickets);
+    }
+}
+```
+
+### FILE: CreateTicketCommand.java
+```java
+package com.projecttracker.command;
+
+import com.projecttracker.manager.TicketManager;
+import com.projecttracker.model.Ticket;
+
+public class CreateTicketCommand implements Command {
+    private TicketManager ticketManager;
+    private String title;
+    
+    public CreateTicketCommand(TicketManager ticketManager, String title) {
+        this.ticketManager = ticketManager;
+        this.title = title;
+    }
+    
+    @Override
+    public void execute() {
+        Ticket newTicket = new Ticket(
+            ticketManager.getAllTickets().size() + 1,
+            title
+        );
+        ticketManager.addTicket(newTicket);
+        System.out.println("Created ticket: " + title);
+    }
+}
+```
+
+### FILE: UpdateStatusCommand.java
+```java
+package com.projecttracker.command;
+
+import com.projecttracker.manager.TicketManager;
+import com.projecttracker.model.Ticket;
+
+public class UpdateStatusCommand implements Command {
+    private TicketManager ticket

@@ -1,0 +1,118 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private Doctor doctor;
+    private Patient patient;
+    private String date;
+    private String time;
+    private AppointmentState state;
+    
+    public AppointmentSlot(Doctor doctor, Patient patient, String date, String time) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.date = date;
+        this.time = time;
+        this.state = new AvailableState();
+    }
+    
+    public void checkIn() {
+        state.checkIn(this);
+    }
+    
+    public void completeVisit() {
+        state.completeVisit(this);
+    }
+    
+    public void cancel() {
+        state.cancel(this);
+    }
+    
+    public AppointmentState getState() {
+        return state;
+    }
+    
+    public void setState(AppointmentState state) {
+        this.state = state;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public String getDate() {
+        return date;
+    }
+    
+    public String getTime() {
+        return time;
+    }
+}
+```
+
+### FILE: AppointmentState.java
+```java
+public abstract class AppointmentState {
+    public abstract void checkIn(AppointmentSlot slot);
+    public abstract void completeVisit(AppointmentSlot slot);
+    public abstract void cancel(AppointmentSlot slot);
+}
+```
+
+### FILE: AvailableState.java
+```java
+public class AvailableState extends AppointmentState {
+    @Override
+    public void checkIn(AppointmentSlot slot) {
+        System.out.println("Patient checked in for appointment");
+        slot.setState(new CheckedInState());
+    }
+    
+    @Override
+    public void completeVisit(AppointmentSlot slot) {
+       

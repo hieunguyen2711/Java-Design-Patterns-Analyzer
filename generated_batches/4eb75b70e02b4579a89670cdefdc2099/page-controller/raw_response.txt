@@ -1,0 +1,85 @@
+### FILE: StockIntakeController.java
+```java
+import java.util.*;
+
+public class StockIntakeController {
+    private final InventoryService inventoryService;
+    private final SupplierService supplierService;
+    
+    public StockIntakeController(InventoryService inventoryService, SupplierService supplierService) {
+        this.inventoryService = inventoryService;
+        this.supplierService = supplierService;
+    }
+    
+    public void processStockIntake(String itemId, int quantity, String supplierId) {
+        // Validate input
+        if (itemId == null || itemId.trim().isEmpty() || quantity <= 0) {
+            throw new IllegalArgumentException("Invalid item ID or quantity");
+        }
+        
+        // Check if supplier exists
+        Supplier supplier = supplierService.getSupplier(supplierId);
+        if (supplier == null) {
+            throw new IllegalArgumentException("Supplier not found: " + supplierId);
+        }
+        
+        // Update inventory
+        inventoryService.updateStock(itemId, quantity);
+        
+        // Log the movement
+        MovementLog log = new MovementLog(itemId, quantity, "STOCK_INTAKE", supplierId);
+        inventoryService.logMovement(log);
+    }
+}
+```
+
+### FILE: InventoryService.java
+```java
+import java.util.*;
+
+public class InventoryService {
+    private final Map<String, Item> items;
+    private final List<MovementLog> movementLogs;
+    
+    public InventoryService() {
+        this.items = new HashMap<>();
+        this.movementLogs = new ArrayList<>();
+    }
+    
+    public void updateStock(String itemId, int quantity) {
+        Item item = items.get(itemId);
+        if (item == null) {
+            item = new Item(itemId, 0, 0);
+            items.put(itemId, item);
+        }
+        
+        item.setQuantity(item.getQuantity() + quantity);
+    }
+    
+    public void logMovement(MovementLog log) {
+        movementLogs.add(log);
+    }
+    
+    public List<MovementLog> getMovementLogs(String itemId) {
+        return movementLogs.stream()
+                .filter(log -> log.getItemId().equals(itemId))
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
+    
+    public Item getItem(String itemId) {
+        return items.get(itemId);
+    }
+}
+```
+
+### FILE: SupplierService.java
+```java
+import java.util.*;
+
+public class SupplierService {
+    private final Map<String, Supplier> suppliers;
+    
+    public SupplierService() {
+        this.suppliers = new HashMap<>();
+        // Initialize with sample data
+        suppliers.put("SUP001",

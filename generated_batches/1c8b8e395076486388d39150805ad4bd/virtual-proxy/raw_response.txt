@@ -1,0 +1,86 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private String memberId;
+    private String name;
+    private boolean isActive;
+    
+    public Membership(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+        this.isActive = true;
+    }
+    
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public String getName() { return name; }
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
+}
+```
+
+### FILE: PaymentRecord.java
+```java
+public class PaymentRecord {
+    private String paymentId;
+    private String memberId;
+    private double amount;
+    private String date;
+    
+    public PaymentRecord(String paymentId, String memberId, double amount, String date) {
+        this.paymentId = paymentId;
+        this.memberId = memberId;
+        this.amount = amount;
+        this.date = date;
+    }
+    
+    // Getters
+    public String getPaymentId() { return paymentId; }
+    public String getMemberId() { return memberId; }
+    public double getAmount() { return amount; }
+    public String getDate() { return date; }
+}
+```
+
+### FILE: PaymentTracker.java
+```java
+import java.util.*;
+
+public class PaymentTracker {
+    private Map<String, List<PaymentRecord>> paymentRecords;
+    
+    public PaymentTracker() {
+        this.paymentRecords = new HashMap<>();
+    }
+    
+    public void addPayment(PaymentRecord record) {
+        paymentRecords.computeIfAbsent(record.getMemberId(), k -> new ArrayList<>()).add(record);
+    }
+    
+    public List<PaymentRecord> getPaymentsForMember(String memberId) {
+        return paymentRecords.getOrDefault(memberId, Collections.emptyList());
+    }
+}
+```
+
+### FILE: PaymentTrackerProxy.java
+```java
+public class PaymentTrackerProxy implements PaymentTrackerInterface {
+    private PaymentTracker realTracker;
+    private String currentUser;
+    
+    public PaymentTrackerProxy(String currentUser) {
+        this.currentUser = currentUser;
+    }
+    
+    @Override
+    public List<PaymentRecord> getPaymentsForMember(String memberId) {
+        // Lazy initialization - only create real object when needed
+        if (realTracker == null) {
+            realTracker = new PaymentTracker();
+            loadSampleData(realTracker);
+        }
+        
+        // Security check - only allow access to own records or admin
+        if (!currentUser.equals(memberId) && !isAdmin()) {
+            throw new

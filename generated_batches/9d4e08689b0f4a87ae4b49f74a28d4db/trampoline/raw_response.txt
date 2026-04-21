@@ -1,0 +1,86 @@
+### FILE: FleetManager.java
+```java
+package com.fleetmanager;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+public class FleetManager {
+    private final List<Vehicle> vehicles;
+    
+    public FleetManager() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public Trampoline<List<Vehicle>> findVehicles(Predicate<Vehicle> predicate) {
+        return new Trampoline<>() {
+            @Override
+            protected Trampoline<List<Vehicle>> compute() {
+                List<Vehicle> result = new ArrayList<>();
+                for (Vehicle vehicle : vehicles) {
+                    if (predicate.test(vehicle)) {
+                        result.add(vehicle);
+                    }
+                }
+                return Trampoline.done(result);
+            }
+        };
+    }
+    
+    public static void main(String[] args) {
+        FleetManager manager = new FleetManager();
+        
+        // Add some sample vehicles
+        manager.addVehicle(new Vehicle("Car", "Toyota Camry", 2020, true));
+        manager.addVehicle(new Vehicle("Truck", "Ford F-150", 2019, false));
+        manager.addVehicle(new Vehicle("Car", "Honda Civic", 2021, true));
+        
+        // Find all available vehicles using trampoline
+        Trampoline<List<Vehicle>> result = manager.findVehicles(Vehicle::isAvailable);
+        List<Vehicle> availableVehicles = result.result();
+        
+        System.out.println("Available vehicles:");
+        for (Vehicle vehicle : availableVehicles) {
+            System.out.println("- " + vehicle.getModel());
+        }
+    }
+}
+```
+
+### FILE: Trampoline.java
+```java
+package com.fleetmanager;
+
+public abstract class Trampoline<T> {
+    
+    protected abstract Trampoline<T> compute();
+    
+    public T result() {
+        Trampoline<T> current = this;
+        while (true) {
+            if (current instanceof Done<T> done) {
+                return done.value;
+            }
+            current = current.compute();
+        }
+    }
+    
+    public static <T> Trampoline<T> done(T value) {
+        return new Done<>(value);
+    }
+    
+    private static class Done<T> extends Trampoline<T> {
+        private final T value;
+        
+        public Done(T value) {
+            this.value = value;
+        }
+        
+        @Override
+        protected Trampoline<T> compute() {
+            throw new

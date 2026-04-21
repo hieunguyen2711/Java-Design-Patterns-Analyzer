@@ -1,0 +1,106 @@
+### FILE: MenuItem.java
+```java
+package restaurant.menu;
+
+import java.math.BigDecimal;
+import java.util.Objects;
+
+public final class MenuItem {
+    private final String id;
+    private final String name;
+    private final BigDecimal price;
+    private final String description;
+    
+    public MenuItem(String id, String name, BigDecimal price, String description) {
+        this.id = Objects.requireNonNull(id);
+        this.name = Objects.requireNonNull(name);
+        this.price = Objects.requireNonNull(price);
+        this.description = description;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MenuItem menuItem = (MenuItem) o;
+        return Objects.equals(id, menuItem.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+    
+    @Override
+    public String toString() {
+        return "MenuItem{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package restaurant.order;
+
+import java.math.BigDecimal;
+import java.util.Objects;
+
+public final class OrderItem {
+    private final String menuItemId;
+    private final String name;
+    private final BigDecimal price;
+    private final int quantity;
+    
+    public OrderItem(String menuItemId, String name, BigDecimal price, int quantity) {
+        this.menuItemId = Objects.requireNonNull(menuItemId);
+        this.name = Objects.requireNonNull(name);
+        this.price = Objects.requireNonNull(price);
+        this.quantity = quantity;
+    }
+    
+    public String getMenuItemId() {
+        return menuItemId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public BigDecimal getTotalPrice() {
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+       

@@ -1,0 +1,38 @@
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    private static LibrarySystem instance;
+    
+    private LibrarySystem() {}
+    
+    public static synchronized LibrarySystem getInstance() {
+        if (instance == null) {
+            instance = new LibrarySystem();
+        }
+        return instance;
+    }
+    
+    public void borrowBook(String bookTitle, String memberName) {
+        System.out.println("Book '" + bookTitle + "' borrowed by " + memberName);
+    }
+    
+    public void returnBook(String bookTitle, String memberName) {
+        System.out.println("Book '" + bookTitle + "' returned by " + memberName);
+    }
+}
+```
+
+### FILE: LibraryManager.java
+```java
+public class LibraryManager {
+    public static void main(String[] args) {
+        LibrarySystem library1 = LibrarySystem.getInstance();
+        LibrarySystem library2 = LibrarySystem.getInstance();
+        
+        System.out.println("Are both instances the same? " + (library1 == library2));
+        
+        library1.borrowBook("Java Programming", "John Doe");
+        library2.returnBook("Java Programming", "John Doe");
+    }
+}
+```

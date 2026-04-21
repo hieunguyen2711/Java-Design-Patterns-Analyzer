@@ -1,0 +1,109 @@
+### FILE: LibraryItem.java
+```java
+package library;
+
+public abstract class LibraryItem {
+    protected String title;
+    protected String itemId;
+    
+    public LibraryItem(String title, String itemId) {
+        this.title = title;
+        this.itemId = itemId;
+    }
+    
+    public abstract double calculateLateFee(int daysOverdue);
+    public abstract boolean isAvailable();
+    public abstract void borrowItem();
+    public abstract void returnItem();
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getItemId() {
+        return itemId;
+    }
+}
+```
+
+### FILE: Book.java
+```java
+package library;
+
+public class Book extends LibraryItem {
+    private boolean isBorrowed;
+    private String author;
+    
+    public Book(String title, String itemId, String author) {
+        super(title, itemId);
+        this.author = author;
+        this.isBorrowed = false;
+    }
+    
+    @Override
+    public double calculateLateFee(int daysOverdue) {
+        return daysOverdue * 0.50;
+    }
+    
+    @Override
+    public boolean isAvailable() {
+        return !isBorrowed;
+    }
+    
+    @Override
+    public void borrowItem() {
+        if (isAvailable()) {
+            isBorrowed = true;
+        }
+    }
+    
+    @Override
+    public void returnItem() {
+        isBorrowed = false;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+}
+```
+
+### FILE: LibraryCollection.java
+```java
+package library;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LibraryCollection extends LibraryItem {
+    private List<LibraryItem> items;
+    private String collectionName;
+    
+    public LibraryCollection(String name, String itemId) {
+        super(name, itemId);
+        this.items = new ArrayList<>();
+        this.collectionName = name;
+    }
+    
+    public void addItem(LibraryItem item) {
+        items.add(item);
+    }
+    
+    public void removeItem(LibraryItem item) {
+        items.remove(item);
+    }
+    
+    @Override
+    public double calculateLateFee(int daysOverdue) {
+        double totalFee = 0.0;
+        for (LibraryItem item : items) {
+            if (!item.isAvailable()) {
+                totalFee += item.calculateLateFee(daysOverdue);
+            }
+        }
+        return totalFee;
+    }
+    
+    @Override
+    public boolean isAvailable() {
+        for (

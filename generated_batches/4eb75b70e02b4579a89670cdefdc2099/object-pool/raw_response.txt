@@ -1,0 +1,78 @@
+### FILE: StockItem.java
+```java
+public class StockItem {
+    private String itemId;
+    private int quantity;
+    private int reorderThreshold;
+    
+    public StockItem(String itemId, int quantity, int reorderThreshold) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    // Getters and setters
+    public String getItemId() { return itemId; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+}
+```
+
+### FILE: StockItemPool.java
+```java
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public class StockItemPool {
+    private static StockItemPool instance;
+    private ConcurrentLinkedQueue<StockItem> pool;
+    private int maxPoolSize;
+    
+    private StockItemPool(int maxPoolSize) {
+        this.maxPoolSize = maxPoolSize;
+        this.pool = new ConcurrentLinkedQueue<>();
+        initializePool();
+    }
+    
+    public static synchronized StockItemPool getInstance(int maxPoolSize) {
+        if (instance == null) {
+            instance = new StockItemPool(maxPoolSize);
+        }
+        return instance;
+    }
+    
+    private void initializePool() {
+        for (int i = 0; i < maxPoolSize; i++) {
+            pool.offer(new StockItem("ITEM-" + i, 0, 10));
+        }
+    }
+    
+    public StockItem acquireItem() {
+        StockItem item = pool.poll();
+        if (item == null) {
+            // Create new item if pool is empty
+            return new StockItem("DYNAMIC-ITEM", 0, 10);
+        }
+        return item;
+    }
+    
+    public void releaseItem(StockItem item) {
+        if (pool.size() < maxPoolSize) {
+            // Reset item state before returning to pool
+            item.setQuantity(0);
+            item.setReorderThreshold(10);
+            pool.offer(item);
+        }
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+public class InventoryManager {
+    private StockItemPool itemPool;
+    
+    public InventoryManager() {
+        this.itemPool = StockItemPool.getInstance(

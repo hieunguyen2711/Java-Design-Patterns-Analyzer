@@ -1,0 +1,111 @@
+### FILE: OrderEvent.java
+```java
+public abstract class OrderEvent {
+    private final String orderId;
+    private final long timestamp;
+
+    public OrderEvent(String orderId) {
+        this.orderId = orderId;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public abstract String getType();
+}
+```
+
+### FILE: OrderCreatedEvent.java
+```java
+public class OrderCreatedEvent extends OrderEvent {
+    private final String customerId;
+    private final String menuItems;
+
+    public OrderCreatedEvent(String orderId, String customerId, String menuItems) {
+        super(orderId);
+        this.customerId = customerId;
+        this.menuItems = menuItems;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public String getMenuItems() {
+        return menuItems;
+    }
+
+    @Override
+    public String getType() {
+        return "ORDER_CREATED";
+    }
+}
+```
+
+### FILE: OrderStatusUpdatedEvent.java
+```java
+public class OrderStatusUpdatedEvent extends OrderEvent {
+    private final String status;
+
+    public OrderStatusUpdatedEvent(String orderId, String status) {
+        super(orderId);
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
+    public String getType() {
+        return "ORDER_STATUS_UPDATED";
+    }
+}
+```
+
+### FILE: EventStore.java
+```java
+import java.util.*;
+
+public class EventStore {
+    private final Map<String, List<OrderEvent>> events = new HashMap<>();
+
+    public void save(String orderId, OrderEvent event) {
+        events.computeIfAbsent(orderId, k -> new ArrayList<>()).add(event);
+    }
+
+    public List<OrderEvent> getEventsForOrder(String orderId) {
+        return events.getOrDefault(orderId, Collections.emptyList());
+    }
+
+    public void clear() {
+        events.clear();
+    }
+}
+```
+
+### FILE: OrderAggregate.java
+```java
+import java.util.*;
+
+public class OrderAggregate {
+    private final String orderId;
+    private String status = "CREATED";
+    private String customerId;
+    private List<String> menuItems = new ArrayList<>();
+    private final EventStore eventStore;
+
+    public OrderAggregate(String orderId, EventStore eventStore) {
+        this.orderId = orderId;
+        this.eventStore = eventStore;
+    }
+
+    public void createOrder(String customerId, List<String> items) {
+        this.customerId = customerId;
+       

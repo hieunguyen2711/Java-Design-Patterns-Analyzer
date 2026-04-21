@@ -1,0 +1,100 @@
+### FILE: CustomerAccount.java
+```java
+package com.example.bank;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class CustomerAccount {
+    private final String accountId;
+    private volatile double balance;
+    
+    public CustomerAccount(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        balance += amount;
+    }
+    
+    public boolean withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+}
+```
+
+### FILE: BankService.java
+```java
+package com.example.bank;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class BankService {
+    private final BlockingQueue<Runnable> requestQueue = new LinkedBlockingQueue<>();
+    private final ActiveObject activeObject;
+    
+    public BankService() {
+        this.activeObject = new ActiveObject(requestQueue);
+        Thread workerThread = new Thread(activeObject::run);
+        workerThread.start();
+    }
+    
+    public void deposit(String accountId, double amount) {
+        requestQueue.add(() -> {
+            // Simulate actual processing
+            System.out.println("Processing deposit of " + amount + " to account " + accountId);
+            try {
+                Thread.sleep(100); // Simulate work
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    public boolean withdraw(String accountId, double amount) {
+        // This would be implemented with proper synchronization in a real system
+        return true;
+    }
+}
+```
+
+### FILE: ActiveObject.java
+```java
+package com.example.bank;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class ActiveObject implements Runnable {
+    private final BlockingQueue<Runnable> requestQueue;
+    private final AtomicBoolean running = new AtomicBoolean(true);
+    
+    public ActiveObject(BlockingQueue<Runnable> requestQueue) {
+        this.requestQueue = requestQueue;
+    }
+    
+    @Override
+    public void run() {
+        while (running.get()) {
+            try {
+                Runnable request = requestQueue.take();
+                request.run();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }

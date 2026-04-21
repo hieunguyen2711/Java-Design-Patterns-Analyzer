@@ -1,0 +1,77 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private String itemId;
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    private String location;
+    
+    public StockItem(String itemId, String name, int currentStock, int reorderThreshold, String location) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+        this.location = location;
+    }
+    
+    // Getters and setters
+    public String getItemId() { return itemId; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+    
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+}
+```
+
+### FILE: StockViewHelper.java
+```java
+package com.example.stock;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StockViewHelper {
+    private List<StockItem> stockItems;
+    
+    public StockViewHelper(List<StockItem> stockItems) {
+        this.stockItems = stockItems;
+    }
+    
+    public String generateInventoryReport() {
+        StringBuilder report = new StringBuilder();
+        report.append("=== INVENTORY REPORT ===\n");
+        
+        for (StockItem item : stockItems) {
+            report.append(String.format("ID: %s | Name: %s | Stock: %d | Location: %s\n", 
+                item.getItemId(), item.getName(), item.getCurrentStock(), item.getLocation()));
+        }
+        
+        return report.toString();
+    }
+    
+    public List<StockItem> getLowStockItems() {
+        return stockItems.stream()
+            .filter(item -> item.getCurrentStock() <= item.getReorderThreshold())
+            .collect(Collectors.toList());
+    }
+    
+    public String generateReorderReport() {
+        List<StockItem> lowStock = getLowStockItems();
+        
+        if (lowStock.isEmpty()) {
+            return "No items require reordering.";
+        }
+        
+       

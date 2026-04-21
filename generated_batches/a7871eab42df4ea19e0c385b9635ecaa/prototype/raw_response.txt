@@ -1,0 +1,85 @@
+### FILE: CustomerAccount.java
+```java
+package com.bank.account;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomerAccount implements Cloneable {
+    private String accountNumber;
+    private String customerName;
+    private BigDecimal balance;
+    private List<AuditEntry> auditTrail;
+    
+    public CustomerAccount(String accountNumber, String customerName, BigDecimal balance) {
+        this.accountNumber = accountNumber;
+        this.customerName = customerName;
+        this.balance = balance;
+        this.auditTrail = new ArrayList<>();
+        addAuditEntry("Account created");
+    }
+    
+    public void deposit(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) > 0) {
+            balance = balance.add(amount);
+            addAuditEntry("Deposit: " + amount);
+        }
+    }
+    
+    public boolean withdraw(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) > 0 && balance.compareTo(amount) >= 0) {
+            balance = balance.subtract(amount);
+            addAuditEntry("Withdrawal: " + amount);
+            return true;
+        }
+        return false;
+    }
+    
+    public void transfer(CustomerAccount target, BigDecimal amount) {
+        if (withdraw(amount)) {
+            target.deposit(amount);
+            addAuditEntry("Transfer to " + target.getAccountNumber() + ": " + amount);
+        }
+    }
+    
+    private void addAuditEntry(String action) {
+        auditTrail.add(new AuditEntry(action, LocalDateTime.now()));
+    }
+    
+    @Override
+    public CustomerAccount clone() throws CloneNotSupportedException {
+        CustomerAccount cloned = (CustomerAccount) super.clone();
+        cloned.auditTrail = new ArrayList<>(this.auditTrail);
+        return cloned;
+    }
+    
+    // Getters and setters
+    public String getAccountNumber() { return accountNumber; }
+    public String getCustomerName() { return customerName; }
+    public BigDecimal getBalance() { return balance; }
+    public List<AuditEntry> getAuditTrail() { return auditTrail; }
+    
+    @Override
+    public String toString() {
+        return "CustomerAccount{" +
+                "accountNumber='" + accountNumber + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
+}
+```
+
+### FILE: AuditEntry.java
+```java
+package com.bank.account;
+
+import java.time.LocalDateTime;
+
+public class AuditEntry {
+    private String action;
+    private LocalDateTime timestamp;
+    
+    public AuditEntry(String

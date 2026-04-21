@@ -1,0 +1,93 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    // Getters and setters
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private int memberId;
+    private String name;
+    private String email;
+    
+    public Member(int memberId, String name, String email) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public int getMemberId() { return memberId; }
+    public void setMemberId(int memberId) { this.memberId = memberId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: BookDAO.java
+```java
+import java.util.List;
+
+public interface BookDAO {
+    Book getBookByIsbn(String isbn);
+    List<Book> getAllBooks();
+    void save(Book book);
+    void update(Book book);
+    void delete(String isbn);
+}
+```
+
+### FILE: MemberDAO.java
+```java
+import java.util.List;
+
+public interface MemberDAO {
+    Member getMemberById(int memberId);
+    List<Member> getAllMembers();
+    void save(Member member);
+    void update(Member member);
+    void delete(int memberId);
+}
+```
+
+### FILE: BookDAOMySQLImpl.java
+```java
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookDAOMySQLImpl implements BookDAO {
+    private Connection connection;
+    
+    public BookDAOMySQLImpl(Connection connection) {
+        this.connection = connection;
+    }
+    
+    @Override
+    public Book getBookByIsbn(String isbn) {
+        try {
+            PreparedStatement stmt =

@@ -1,0 +1,118 @@
+### FILE: Order.java
+```java
+package restaurant.backend;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+
+public class Order {
+    private final List<OrderItem> items;
+    private final String customerId;
+    private final LocalDateTime timestamp;
+    
+    public Order(String customerId) {
+        this.items = new ArrayList<>();
+        this.customerId = customerId;
+        this.timestamp = LocalDateTime.now();
+    }
+    
+    public void addItem(MenuItem menuItem, int quantity) {
+        items.add(new OrderItem(menuItem, quantity));
+    }
+    
+    public List<OrderItem> getItems() {
+        return new ArrayList<>(items); // Return defensive copy
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package restaurant.backend;
+
+public class OrderItem {
+    private final MenuItem menuItem;
+    private final int quantity;
+    
+    public OrderItem(MenuItem menuItem, int quantity) {
+        this.menuItem = menuItem;
+        this.quantity = quantity;
+    }
+    
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+}
+```
+
+### FILE: MenuItem.java
+```java
+package restaurant.backend;
+
+public class MenuItem {
+    private final String name;
+    private final double price;
+    private final String category;
+    
+    public MenuItem(String name, double price, String category) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+package restaurant.backend;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class OrderProcessor {
+    private final List<Order> orders;
+    
+    public OrderProcessor() {
+        this.orders = new ArrayList<>();
+    }
+    
+    public void processOrder(Order order) {
+        // Process the order by adding it to internal collection
+        orders.add(order);
+        
+        // In a real implementation, we would do more processing here
+        System.out.println("Processing order for customer: " + order.getCustomerId());
+    }
+    
+    public List<Order> getOrders() {
+        return new ArrayList<>(orders); // Return defensive copy
+    }
+}
+```
+
+### FILE: RestaurantSystem.java

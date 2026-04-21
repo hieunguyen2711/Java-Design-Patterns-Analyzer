@@ -1,0 +1,78 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private String memberId;
+    private String name;
+    private MembershipType type;
+    
+    public Membership(String memberId, String name, MembershipType type) {
+        this.memberId = memberId;
+        this.name = name;
+        this.type = type;
+    }
+    
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public MembershipType getType() { return type; }
+    public void setType(MembershipType type) { this.type = type; }
+}
+```
+
+### FILE: MembershipType.java
+```java
+public enum MembershipType {
+    BASIC, PREMIUM, VIP
+}
+```
+
+### FILE: ClassSchedule.java
+```java
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClassSchedule {
+    private String classId;
+    private String className;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private List<Membership> enrolledMembers;
+    
+    public ClassSchedule(String classId, String className, LocalDateTime startTime, LocalDateTime endTime) {
+        this.classId = classId;
+        this.className = className;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.enrolledMembers = new ArrayList<>();
+    }
+    
+    public void enrollMember(Membership member) {
+        enrolledMembers.add(member);
+    }
+    
+    // Getters and setters
+    public String getClassId() { return classId; }
+    public void setClassId(String classId) { this.classId = classId; }
+    public String getClassName() { return className; }
+    public void setClassName(String className) { this.className = className; }
+    public LocalDateTime getStartTime() { return startTime; }
+    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
+    public LocalDateTime getEndTime() { return endTime; }
+    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
+    public List<Membership> getEnrolledMembers() { return enrolledMembers; }
+}
+```
+
+### FILE: Trainer.java
+```java
+public class Trainer {
+    private String trainerId;
+    private String name;
+    
+    public Trainer(String trainerId, String name) {
+        this.trainerId = trainerId;
+        this.name = name;
+   

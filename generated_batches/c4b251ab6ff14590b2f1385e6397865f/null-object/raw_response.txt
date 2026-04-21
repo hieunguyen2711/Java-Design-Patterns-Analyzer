@@ -1,0 +1,109 @@
+### FILE: Customer.java
+```java
+public class Customer {
+    private String name;
+    private String email;
+    
+    public Customer(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: NullCustomer.java
+```java
+public class NullCustomer extends Customer {
+    
+    public NullCustomer() {
+        super("Unknown Customer", "unknown@restaurant.com");
+    }
+    
+    @Override
+    public String getName() {
+        return "Unknown Customer";
+    }
+    
+    @Override
+    public String getEmail() {
+        return "unknown@restaurant.com";
+    }
+}
+```
+
+### FILE: CustomerService.java
+```java
+public class CustomerService {
+    
+    public Customer findCustomer(String customerId) {
+        // Simulate database lookup
+        if (customerId == null || customerId.isEmpty()) {
+            return new NullCustomer();
+        }
+        
+        // In a real system, this would query a database
+        // For demo purposes, we'll just return null for invalid IDs
+        if ("123".equals(customerId)) {
+            return new Customer("John Doe", "john@example.com");
+        }
+        
+        return new NullCustomer();
+    }
+}
+```
+
+### FILE: Order.java
+```java
+public class Order {
+    private String orderId;
+    private Customer customer;
+    
+    public Order(String orderId, Customer customer) {
+        this.orderId = orderId;
+        this.customer = customer;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public Customer getCustomer() {
+        return customer;
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+public class OrderService {
+    private CustomerService customerService;
+    
+    public OrderService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+    
+    public Order createOrder(String customerId) {
+        Customer customer = customerService.findCustomer(customerId);
+        return new Order("ORD-" + System.currentTimeMillis(), customer);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        CustomerService customerService = new CustomerService();
+        OrderService orderService = new OrderService(customerService);
+        
+        // Valid customer
+        Order validOrder = orderService.createOrder("123");
+        System.out.println("Customer:

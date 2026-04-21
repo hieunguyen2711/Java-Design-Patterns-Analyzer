@@ -1,0 +1,98 @@
+### FILE: Course.java
+```java
+public class Course {
+    private String name;
+    private Mediator mediator;
+
+    public Course(String name, Mediator mediator) {
+        this.name = name;
+        this.mediator = mediator;
+    }
+
+    public void submitAssignment(Assignment assignment) {
+        System.out.println("Submitting assignment: " + assignment.getName());
+        mediator.submitAssignment(this, assignment);
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+public class Assignment {
+    private String name;
+    private int maxPoints;
+
+    public Assignment(String name, int maxPoints) {
+        this.name = name;
+        this.maxPoints = maxPoints;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getMaxPoints() {
+        return maxPoints;
+    }
+}
+```
+
+### FILE: Student.java
+```java
+public class Student {
+    private String name;
+    private Mediator mediator;
+
+    public Student(String name, Mediator mediator) {
+        this.name = name;
+        this.mediator = mediator;
+    }
+
+    public void submitAssignment(Course course, Assignment assignment) {
+        System.out.println("Student " + name + " submitting to course: " + course.getName());
+        mediator.submitAssignment(course, assignment);
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: LMSMediator.java
+```java
+import java.util.*;
+
+public class LMSMediator implements Mediator {
+    private Map<String, Course> courses;
+    private Map<String, Student> students;
+    private List<Submission> submissions;
+
+    public LMSMediator() {
+        this.courses = new HashMap<>();
+        this.students = new HashMap<>();
+        this.submissions = new ArrayList<>();
+    }
+
+    @Override
+    public void submitAssignment(Course course, Assignment assignment) {
+        System.out.println("Processing submission for: " + assignment.getName());
+        Submission submission = new Submission(course, assignment);
+        submissions.add(submission);
+        
+        // Notify all students about the new assignment
+        notifyStudents(course, assignment);
+    }
+
+    private void notifyStudents(Course course, Assignment assignment) {
+        System.out.println("Notifying students about new assignment: " + assignment.getName());
+        for (Student student : students.values()) {
+            System.out.println("  - Notifying " + student.getName() + " in " + course.getName());
+        }
+    }
+
+    public void addCourse(C

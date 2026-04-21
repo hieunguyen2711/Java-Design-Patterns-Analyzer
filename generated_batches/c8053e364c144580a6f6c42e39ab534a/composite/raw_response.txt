@@ -1,0 +1,122 @@
+### FILE: ClinicComponent.java
+```java
+package clinic;
+
+public interface ClinicComponent {
+    void display();
+    String getName();
+}
+```
+
+### FILE: Doctor.java
+```java
+package clinic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Doctor implements ClinicComponent {
+    private String name;
+    private List<Patient> patients;
+    
+    public Doctor(String name) {
+        this.name = name;
+        this.patients = new ArrayList<>();
+    }
+    
+    public void addPatient(Patient patient) {
+        patients.add(patient);
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("Doctor: " + name);
+        for (Patient patient : patients) {
+            patient.display();
+        }
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Patient implements ClinicComponent {
+    private String name;
+    private List<AppointmentSlot> appointmentSlots;
+    
+    public Patient(String name) {
+        this.name = name;
+        this.appointmentSlots = new ArrayList<>();
+    }
+    
+    public void addAppointment(AppointmentSlot slot) {
+        appointmentSlots.add(slot);
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("  Patient: " + name);
+        for (AppointmentSlot slot : appointmentSlots) {
+            slot.display();
+        }
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+public class AppointmentSlot implements ClinicComponent {
+    private String time;
+    private String type;
+    
+    public AppointmentSlot(String time, String type) {
+        this.time = time;
+        this.type = type;
+    }
+    
+    @Override
+    public void display() {
+        System.out.println("    Slot: " + time + " - " + type);
+    }
+    
+    @Override
+    public String getName() {
+        return time;
+    }
+}
+```
+
+### FILE: ClinicSystem.java
+```java
+package clinic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClinicSystem implements ClinicComponent {
+    private List<ClinicComponent> components;
+    private String name;
+    
+    public ClinicSystem(String name) {
+        this.name = name;
+        this.components = new ArrayList<>();
+    }
+    
+    public void addComponent(ClinicComponent

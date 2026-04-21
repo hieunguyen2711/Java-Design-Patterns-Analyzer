@@ -1,0 +1,85 @@
+### FILE: PageController.java
+```java
+public interface PageController {
+    String handleRequest(String request);
+}
+```
+
+### FILE: CoursePageController.java
+```java
+public class CoursePageController implements PageController {
+    @Override
+    public String handleRequest(String request) {
+        if (request.equals("/courses")) {
+            return "Displaying course list page";
+        }
+        return "Course page not found";
+    }
+}
+```
+
+### FILE: AssignmentPageController.java
+```java
+public class AssignmentPageController implements PageController {
+    @Override
+    public String handleRequest(String request) {
+        if (request.equals("/assignments")) {
+            return "Displaying assignment list page";
+        }
+        return "Assignment page not found";
+    }
+}
+```
+
+### FILE: SubmissionPageController.java
+```java
+public class SubmissionPageController implements PageController {
+    @Override
+    public String handleRequest(String request) {
+        if (request.equals("/submissions")) {
+            return "Displaying submission list page";
+        }
+        return "Submission page not found";
+    }
+}
+```
+
+### FILE: LMSDispatcher.java
+```java
+public class LMSDispatcher {
+    private final PageController courseController;
+    private final PageController assignmentController;
+    private final PageController submissionController;
+
+    public LMSDispatcher() {
+        this.courseController = new CoursePageController();
+        this.assignmentController = new AssignmentPageController();
+        this.submissionController = new SubmissionPageController();
+    }
+
+    public String dispatch(String request) {
+        if (request.startsWith("/courses")) {
+            return courseController.handleRequest(request);
+        } else if (request.startsWith("/assignments")) {
+            return assignmentController.handleRequest(request);
+        } else if (request.startsWith("/submissions")) {
+            return submissionController.handleRequest(request);
+        }
+        return "Page not found";
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+public class LMSApplication {
+    public static void main(String[] args) {
+        LMSDispatcher dispatcher = new LMSDispatcher();
+        
+        System.out.println(dispatcher.dispatch("/courses"));
+        System.out.println(dispatcher.dispatch("/assignments"));
+        System.out.println(dispatcher.dispatch("/submissions"));
+        System.out.println(dispatcher.dispatch("/invalid"));
+    }
+}
+```

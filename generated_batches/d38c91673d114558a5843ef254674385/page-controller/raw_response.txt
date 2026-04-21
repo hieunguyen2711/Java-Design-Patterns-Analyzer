@@ -1,0 +1,82 @@
+### FILE: Ticket.java
+```java
+package com.projecttracker.ticket;
+
+public class Ticket {
+    private int id;
+    private String title;
+    private String description;
+    private String status;
+    private String priority;
+    private String assignee;
+    
+    public Ticket(int id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = "OPEN";
+        this.priority = "MEDIUM";
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) { this.priority = priority; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: TicketController.java
+```java
+package com.projecttracker.controller;
+
+import com.projecttracker.ticket.Ticket;
+import com.projecttracker.service.TicketService;
+import java.util.List;
+
+public class TicketController {
+    private TicketService ticketService;
+    
+    public TicketController() {
+        this.ticketService = new TicketService();
+    }
+    
+    public void createTicket(String title, String description) {
+        Ticket ticket = new Ticket(0, title, description);
+        ticketService.saveTicket(ticket);
+    }
+    
+    public List<Ticket> getAllTickets() {
+        return ticketService.getAllTickets();
+    }
+    
+    public Ticket getTicketById(int id) {
+        return ticketService.getTicketById(id);
+    }
+    
+    public void updateTicketStatus(int id, String status) {
+        Ticket ticket = ticketService.getTicketById(id);
+        if (ticket != null) {
+            ticket.setStatus(status);
+            ticketService.saveTicket(ticket);
+        }
+    }
+    
+    public void assignTicket(int id, String assignee) {
+        Ticket ticket = ticketService.getTicketById(id);
+        if (ticket != null) {
+            ticket.setAssignee(assignee);
+            ticketService.saveTicket(ticket);

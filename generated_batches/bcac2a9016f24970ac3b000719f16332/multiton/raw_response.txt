@@ -1,0 +1,81 @@
+### FILE: RoomInventoryManager.java
+```java
+public class RoomInventoryManager {
+    private static final int MAX_ROOMS = 5;
+    private static RoomInventoryManager[] instances = new RoomInventoryManager[MAX_ROOMS];
+    
+    private String location;
+    private int roomCount;
+    
+    private RoomInventoryManager(String location) {
+        this.location = location;
+        this.roomCount = 0;
+    }
+    
+    public static synchronized RoomInventoryManager getInstance(String location) {
+        for (int i = 0; i < MAX_ROOMS; i++) {
+            if (instances[i] != null && instances[i].location.equals(location)) {
+                return instances[i];
+            }
+        }
+        
+        for (int i = 0; i < MAX_ROOMS; i++) {
+            if (instances[i] == null) {
+                instances[i] = new RoomInventoryManager(location);
+                return instances[i];
+            }
+        }
+        
+        throw new RuntimeException("Maximum room inventory managers exceeded");
+    }
+    
+    public void addRoom() {
+        roomCount++;
+    }
+    
+    public int getRoomCount() {
+        return roomCount;
+    }
+    
+    public String getLocation() {
+        return location;
+    }
+}
+```
+
+### FILE: RoomType.java
+```java
+public enum RoomType {
+    SINGLE, DOUBLE, SUITE, DELUXE, FAMILY
+}
+```
+
+### FILE: PricingPlan.java
+```java
+import java.math.BigDecimal;
+
+public class PricingPlan {
+    private static final int MAX_PLANS = 3;
+    private static PricingPlan[] instances = new PricingPlan[MAX_PLANS];
+    
+    private RoomType roomType;
+    private BigDecimal basePrice;
+    private String planName;
+    
+    private PricingPlan(RoomType roomType, BigDecimal basePrice, String planName) {
+        this.roomType = roomType;
+        this.basePrice = basePrice;
+        this.planName = planName;
+    }
+    
+    public static synchronized PricingPlan getInstance(RoomType roomType, BigDecimal basePrice, String planName) {
+        for (int i = 0; i < MAX_PLANS; i++) {
+            if (instances[i] != null && instances[i].roomType == roomType) {
+                return instances[i];
+            }
+        }
+        
+        for (int i = 0; i < MAX_PLANS; i++) {
+            if (instances[i] == null) {
+                instances[i] = new PricingPlan(roomType, basePrice, planName);
+                return instances

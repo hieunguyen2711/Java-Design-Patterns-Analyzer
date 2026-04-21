@@ -1,0 +1,88 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private String id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+
+    public Ticket(String id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = Priority.MEDIUM;
+        this.status = Status.OPEN;
+    }
+
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+public enum Priority {
+    LOW, MEDIUM, HIGH, URGENT
+}
+```
+
+### FILE: Status.java
+```java
+public enum Status {
+    OPEN, IN_PROGRESS, RESOLVED, CLOSED
+}
+```
+
+### FILE: TicketProcessor.java
+```java
+import java.util.function.Function;
+
+public class TicketProcessor {
+    private Function<Ticket, Ticket> processorChain;
+    
+    public TicketProcessor() {
+        this.processorChain = ticket -> ticket; // Identity function as base
+    }
+    
+    public void addProcessor(Function<Ticket, Ticket> processor) {
+        this.processorChain = this.processorChain.andThen(processor);
+    }
+    
+    public Ticket process(Ticket ticket) {
+        return processorChain.apply(ticket);
+    }
+}
+```
+
+### FILE: TicketService.java
+```java
+public class TicketService {
+    private TicketProcessor processor;
+    
+    public TicketService() {
+        this.processor = new TicketProcessor();
+        setupDefaultProcessors();
+    }
+    
+    private void setupDefaultProcessors() {
+        // Function composition - each processor modifies the ticket in sequence
+        processor.addProcessor(this::assignPriority);
+        processor.addProcessor(this::setInitialStatus

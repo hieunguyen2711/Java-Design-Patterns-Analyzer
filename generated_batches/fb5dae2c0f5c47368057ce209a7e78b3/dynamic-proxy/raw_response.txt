@@ -1,0 +1,81 @@
+### FILE: CourseService.java
+```java
+public interface CourseService {
+    void enrollStudent(String studentId, String courseId);
+    void completeLesson(String studentId, String lessonId);
+    double getProgress(String studentId, String courseId);
+}
+```
+
+### FILE: CourseServiceImpl.java
+```java
+public class CourseServiceImpl implements CourseService {
+    
+    @Override
+    public void enrollStudent(String studentId, String courseId) {
+        System.out.println("Enrolling student " + studentId + " in course " + courseId);
+    }
+    
+    @Override
+    public void completeLesson(String studentId, String lessonId) {
+        System.out.println("Marking lesson " + lessonId + " as completed for student " + studentId);
+    }
+    
+    @Override
+    public double getProgress(String studentId, String courseId) {
+        System.out.println("Calculating progress for student " + studentId + " in course " + courseId);
+        return 75.0;
+    }
+}
+```
+
+### FILE: LoggingHandler.java
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class LoggingHandler implements InvocationHandler {
+    private final Object target;
+    
+    public LoggingHandler(Object target) {
+        this.target = target;
+    }
+    
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("Before calling " + method.getName());
+        Object result = method.invoke(target, args);
+        System.out.println("After calling " + method.getName());
+        return result;
+    }
+}
+```
+
+### FILE: CourseServiceProxy.java
+```java
+import java.lang.reflect.Proxy;
+
+public class CourseServiceProxy {
+    
+    public static CourseService createCourseService() {
+        CourseService target = new CourseServiceImpl();
+        return (CourseService) Proxy.newProxyInstance(
+            CourseService.class.getClassLoader(),
+            new Class[]{CourseService.class},
+            new LoggingHandler(target)
+        );
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        CourseService courseService = CourseServiceProxy.createCourseService();
+        
+        courseService.enrollStudent("student123", "course456");
+        courseService.completeLesson("student123", "lesson789");
+        double progress = courseService.getProgress("student123", "course456");
+        
+        System.out.println("Final progress: "

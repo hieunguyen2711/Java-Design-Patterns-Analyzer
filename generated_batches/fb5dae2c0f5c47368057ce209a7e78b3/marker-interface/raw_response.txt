@@ -1,0 +1,87 @@
+### FILE: Serializable.java
+```java
+package com.lms.model;
+
+/**
+ * Marker interface for serializable objects in the LMS system.
+ * This interface indicates that a class can be serialized to persist
+ * course data, user progress, and assignment submissions.
+ */
+public interface Serializable {
+    // Marker interface - no methods required
+}
+```
+
+### FILE: Course.java
+```java
+package com.lms.model;
+
+/**
+ * Represents a course in the LMS system.
+ * Implements Serializable marker interface to indicate
+ * that this object can be persisted.
+ */
+public class Course implements Serializable {
+    private String courseId;
+    private String title;
+    private String description;
+    
+    public Course(String courseId, String title, String description) {
+        this.courseId = courseId;
+        this.title = title;
+        this.description = description;
+    }
+    
+    // Getters and setters
+    public String getCourseId() { return courseId; }
+    public void setCourseId(String courseId) { this.courseId = courseId; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+/**
+ * Represents an assignment in the LMS system.
+ * Implements Serializable marker interface to indicate
+ * that this object can be persisted.
+ */
+public class Assignment implements Serializable {
+    private String assignmentId;
+    private String title;
+    private String description;
+    private Course course;
+    
+    public Assignment(String assignmentId, String title, String description, Course course) {
+        this.assignmentId = assignmentId;
+        this.title = title;
+        this.description = description;
+        this.course = course;
+    }
+    
+    // Getters and setters
+    public String getAssignmentId() { return assignmentId; }
+    public void setAssignmentId(String assignmentId) { this.assignmentId = assignmentId; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Course getCourse() { return course; }
+    public void setCourse(Course course) { this.course = course; }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.model;
+

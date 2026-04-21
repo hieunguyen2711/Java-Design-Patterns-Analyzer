@@ -1,0 +1,88 @@
+### FILE: BankAccount.java
+```java
+public class BankAccount {
+    private String accountNumber;
+    private double balance;
+    
+    public BankAccount(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        balance += amount;
+    }
+    
+    public boolean withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+}
+```
+
+### FILE: DepositService.java
+```java
+public class DepositService {
+    public void deposit(BankAccount account, double amount) {
+        account.deposit(amount);
+        System.out.println("Deposited $" + amount + " into account " + account.getAccountNumber());
+    }
+}
+```
+
+### FILE: WithdrawalService.java
+```java
+public class WithdrawalService {
+    public boolean withdraw(BankAccount account, double amount) {
+        boolean success = account.withdraw(amount);
+        if (success) {
+            System.out.println("Withdrew $" + amount + " from account " + account.getAccountNumber());
+        } else {
+            System.out.println("Insufficient funds for withdrawal of $" + amount);
+        }
+        return success;
+    }
+}
+```
+
+### FILE: TransferService.java
+```java
+public class TransferService {
+    public void transfer(BankAccount fromAccount, BankAccount toAccount, double amount) {
+        if (fromAccount.withdraw(amount)) {
+            toAccount.deposit(amount);
+            System.out.println("Transferred $" + amount + " from account " + 
+                             fromAccount.getAccountNumber() + " to " + toAccount.getAccountNumber());
+        } else {
+            System.out.println("Transfer failed: insufficient funds in " + fromAccount.getAccountNumber());
+        }
+    }
+}
+```
+
+### FILE: StatementService.java
+```java
+public class StatementService {
+    public void generateStatement(BankAccount account) {
+        System.out.println("Account Statement for " + account.getAccountNumber() + 
+                          ": Balance = $" + account.getBalance());
+    }
+}
+```
+
+### FILE: AuditService.java
+```java
+public class AuditService {
+    public void logTransaction(String transactionType, BankAccount account, double amount) {
+        System.out.println("Audit Log - " + transactionType +

@@ -1,0 +1,115 @@
+### FILE: Order.java
+```java
+package restaurant;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Order {
+    private List<String> items;
+    private String status;
+    
+    public Order() {
+        this.items = new ArrayList<>();
+        this.status = "CREATED";
+    }
+    
+    public void addItem(String item) {
+        items.add(item);
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    public List<String> getItems() {
+        return new ArrayList<>(items);
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    
+    public Memento createMemento() {
+        return new Memento(new ArrayList<>(items), status);
+    }
+    
+    public void restoreFromMemento(Memento memento) {
+        this.items = memento.getItems();
+        this.status = memento.getStatus();
+    }
+}
+```
+
+### FILE: Memento.java
+```java
+package restaurant;
+
+import java.util.List;
+
+public class Memento {
+    private List<String> items;
+    private String status;
+    
+    public Memento(List<String> items, String status) {
+        this.items = new ArrayList<>(items);
+        this.status = status;
+    }
+    
+    public List<String> getItems() {
+        return new ArrayList<>(items);
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+}
+```
+
+### FILE: OrderCareTaker.java
+```java
+package restaurant;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderCareTaker {
+    private List<Memento> mementos;
+    
+    public OrderCareTaker() {
+        this.mementos = new ArrayList<>();
+    }
+    
+    public void addMemento(Memento memento) {
+        mementos.add(memento);
+    }
+    
+    public Memento getMemento(int index) {
+        return mementos.get(index);
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package restaurant;
+
+public class OrderService {
+    private Order order;
+    private OrderCareTaker careTaker;
+    
+    public OrderService() {
+        this.order = new Order();
+        this.careTaker = new OrderCareTaker();
+    }
+    
+    public void addItem(String item) {
+        order.addItem(item);
+    }
+    
+    public void updateStatus(String status) {
+        order.setStatus(status);
+    }
+    
+    public void saveState() {
+        careTaker.addMemento(order.createMemento());

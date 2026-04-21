@@ -1,0 +1,109 @@
+### FILE: Event.java
+```java
+public interface Event {
+    String getEventId();
+    long getTimestamp();
+    String getType();
+}
+```
+
+### FILE: CourseEnrollmentEvent.java
+```java
+public class CourseEnrollmentEvent implements Event {
+    private final String eventId;
+    private final long timestamp;
+    private final String userId;
+    private final String courseId;
+    private final String type = "COURSE_ENROLLMENT";
+
+    public CourseEnrollmentEvent(String eventId, long timestamp, String userId, String courseId) {
+        this.eventId = eventId;
+        this.timestamp = timestamp;
+        this.userId = userId;
+        this.courseId = courseId;
+    }
+
+    @Override
+    public String getEventId() {
+        return eventId;
+    }
+
+    @Override
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+}
+```
+
+### FILE: AssignmentSubmittedEvent.java
+```java
+public class AssignmentSubmittedEvent implements Event {
+    private final String eventId;
+    private final long timestamp;
+    private final String userId;
+    private final String assignmentId;
+    private final String type = "ASSIGNMENT_SUBMITTED";
+
+    public AssignmentSubmittedEvent(String eventId, long timestamp, String userId, String assignmentId) {
+        this.eventId = eventId;
+        this.timestamp = timestamp;
+        this.userId = userId;
+        this.assignmentId = assignmentId;
+    }
+
+    @Override
+    public String getEventId() {
+        return eventId;
+    }
+
+    @Override
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getAssignmentId() {
+        return assignmentId;
+    }
+}
+```
+
+### FILE: EventStore.java
+```java
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class EventStore {
+    private final Map<String, List<Event>> eventsByAggregate = new ConcurrentHashMap<>();
+    
+    public void saveEvent(Event event) {
+        eventsByAggregate.computeIfAbsent(event.getEventId(), k -> new ArrayList<>()).add(event);
+    }
+    
+    public List<Event> getEventsForAggregate(String aggregateId) {
+        return eventsByAggregate.getOrDefault(aggregateId, Collections.emptyList());
+    }
+}
+```
+

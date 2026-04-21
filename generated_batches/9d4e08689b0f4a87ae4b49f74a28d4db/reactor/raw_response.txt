@@ -1,0 +1,75 @@
+### FILE: Vehicle.java
+```java
+package com.fleetmanager.model;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean isAvailable;
+    private double dailyRate;
+    
+    public Vehicle(String id, String make, String model, int year, double dailyRate) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.dailyRate = dailyRate;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+}
+```
+
+### FILE: Reservation.java
+```java
+package com.fleetmanager.model;
+
+public class Reservation {
+    private String id;
+    private String customerId;
+    private Vehicle vehicle;
+    private int rentalDays;
+    
+    public Reservation(String id, String customerId, Vehicle vehicle, int rentalDays) {
+        this.id = id;
+        this.customerId = customerId;
+        this.vehicle = vehicle;
+        this.rentalDays = rentalDays;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getCustomerId() { return customerId; }
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
+    
+    public Vehicle getVehicle() { return vehicle; }
+    public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
+    
+    public int getRentalDays() { return rentalDays; }
+    public void setRentalDays(int rentalDays) { this.rentalDays = rentalDays; }
+}
+```
+
+### FILE:

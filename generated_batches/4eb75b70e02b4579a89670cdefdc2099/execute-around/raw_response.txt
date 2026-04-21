@@ -1,0 +1,99 @@
+### FILE: StockIntakeService.java
+```java
+package com.example.stock;
+
+public class StockIntakeService {
+    private final InventoryRepository repository;
+    
+    public StockIntakeService(InventoryRepository repository) {
+        this.repository = repository;
+    }
+    
+    public void processStockIntake(String itemId, int quantity) {
+        // Execute-around pattern: acquire resources, perform operation, release resources
+        try (DatabaseTransaction transaction = new DatabaseTransaction()) {
+            transaction.begin();
+            
+            InventoryItem item = repository.findById(itemId);
+            item.setQuantity(item.getQuantity() + quantity);
+            repository.save(item);
+            
+            transaction.commit();
+        } catch (Exception e) {
+            // Handle exception appropriately
+            throw new RuntimeException("Failed to process stock intake", e);
+        }
+    }
+}
+```
+
+### FILE: InventoryRepository.java
+```java
+package com.example.stock;
+
+public interface InventoryRepository {
+    InventoryItem findById(String id);
+    void save(InventoryItem item);
+}
+```
+
+### FILE: DatabaseTransaction.java
+```java
+package com.example.stock;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseTransaction implements AutoCloseable {
+    private Connection connection;
+    private boolean committed = false;
+    
+    public void begin() throws SQLException {
+        connection = DriverManager.getConnection(
+            "jdbc:sqlite:test.db", "", "");
+        connection.setAutoCommit(false);
+    }
+    
+    public void commit() throws SQLException {
+        if (connection != null && !committed) {
+            connection.commit();
+            committed = true;
+        }
+    }
+    
+    @Override
+    public void close() throws SQLException {
+        if (!committed && connection != null) {
+            connection.rollback();
+        }
+        if (connection != null) {
+            connection.close();
+        }
+    }
+}
+```
+
+### FILE: InventoryItem.java
+```java
+package com.example.stock;
+
+public class InventoryItem {
+    private String id;
+    private int quantity;
+    private int reorderThreshold;
+    
+    public InventoryItem(String id, int quantity, int reorderThreshold) {
+        this.id = id;
+        this.quantity = quantity;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    
+    public int getReorderThreshold() { return

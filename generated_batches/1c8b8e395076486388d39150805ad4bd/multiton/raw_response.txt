@@ -1,0 +1,78 @@
+### FILE: MembershipManager.java
+```java
+public class MembershipManager {
+    private static final String[] MEMBERSHIP_TYPES = {"BASIC", "PREMIUM", "VIP"};
+    private static final MembershipManager[] INSTANCES = new MembershipManager[3];
+    
+    private final String membershipType;
+    private int activeMembers;
+    
+    private MembershipManager(String membershipType) {
+        this.membershipType = membershipType;
+        this.activeMembers = 0;
+    }
+    
+    public static MembershipManager getInstance(String membershipType) {
+        int index = -1;
+        for (int i = 0; i < MEMBERSHIP_TYPES.length; i++) {
+            if (MEMBERSHIP_TYPES[i].equals(membershipType)) {
+                index = i;
+                break;
+            }
+        }
+        
+        if (index == -1) {
+            throw new IllegalArgumentException("Invalid membership type: " + membershipType);
+        }
+        
+        if (INSTANCES[index] == null) {
+            INSTANCES[index] = new MembershipManager(membershipType);
+        }
+        
+        return INSTANCES[index];
+    }
+    
+    public void addMember() {
+        activeMembers++;
+        System.out.println("Added member to " + membershipType + " plan. Total: " + activeMembers);
+    }
+    
+    public int getActiveMembers() {
+        return activeMembers;
+    }
+    
+    public String getMembershipType() {
+        return membershipType;
+    }
+}
+```
+
+### FILE: TrainerScheduler.java
+```java
+public class TrainerScheduler {
+    private static final String[] TRAINER_LEVELS = {"JUNIOR", "SENIOR", "MASTER"};
+    private static final TrainerScheduler[] INSTANCES = new TrainerScheduler[3];
+    
+    private final String trainerLevel;
+    private int scheduledClasses;
+    
+    private TrainerScheduler(String trainerLevel) {
+        this.trainerLevel = trainerLevel;
+        this.scheduledClasses = 0;
+    }
+    
+    public static TrainerScheduler getInstance(String trainerLevel) {
+        int index = -1;
+        for (int i = 0; i < TRAINER_LEVELS.length; i++) {
+            if (TRAINER_LEVELS[i].equals(trainerLevel)) {
+                index = i;
+                break;
+            }
+        }
+        
+        if (index == -1) {
+            throw new IllegalArgumentException("Invalid trainer level: " + trainerLevel);
+        }
+        
+        if (INSTANCES[index] == null) {
+            INSTANCES[index] = new TrainerScheduler

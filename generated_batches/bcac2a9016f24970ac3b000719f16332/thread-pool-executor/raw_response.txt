@@ -1,0 +1,92 @@
+### FILE: RoomInventorySystem.java
+```java
+package com.hotel.inventory;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class RoomInventorySystem {
+    private final ExecutorService executorService;
+    
+    public RoomInventorySystem() {
+        this.executorService = Executors.newFixedThreadPool(3);
+    }
+    
+    public void processBooking(String bookingId, String guestName) {
+        executorService.submit(new BookingTask(bookingId, guestName));
+    }
+    
+    public void processCheckIn(String roomId, String guestName) {
+        executorService.submit(new CheckInTask(roomId, guestName));
+    }
+    
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+    }
+}
+```
+
+### FILE: BookingTask.java
+```java
+package com.hotel.inventory;
+
+public class BookingTask implements Runnable {
+    private final String bookingId;
+    private final String guestName;
+    
+    public BookingTask(String bookingId, String guestName) {
+        this.bookingId = bookingId;
+        this.guestName = guestName;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("Processing booking " + bookingId + 
+                          " for guest " + guestName);
+        
+        // Simulate some processing time
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        System.out.println("Booking " + bookingId + " completed");
+    }
+}
+```
+
+### FILE: CheckInTask.java
+```java
+package com.hotel.inventory;
+
+public class CheckInTask implements Runnable {
+    private final String roomId;
+    private final String guestName;
+    
+    public CheckInTask(String roomId, String guestName) {
+        this.roomId = roomId;
+        this.guestName = guestName;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("Processing check-in for room " + roomId + 
+                          " guest " + guestName);
+        
+        // Simulate some processing time
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        System.out.println("Check-in for room " + roomId + "

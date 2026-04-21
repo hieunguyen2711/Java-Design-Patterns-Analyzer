@@ -1,0 +1,114 @@
+### FILE: Account.java
+```java
+package com.example.bank;
+
+public class Account {
+    private String accountId;
+    private double balance;
+    
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        balance += amount;
+    }
+    
+    public boolean withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+}
+```
+
+### FILE: Transaction.java
+```java
+package com.example.bank;
+
+public class Transaction {
+    private String transactionId;
+    private String accountId;
+    private TransactionType type;
+    private double amount;
+    private long timestamp;
+    
+    public Transaction(String transactionId, String accountId, TransactionType type, double amount) {
+        this.transactionId = transactionId;
+        this.accountId = accountId;
+        this.type = type;
+        this.amount = amount;
+        this.timestamp = System.currentTimeMillis();
+    }
+    
+    public String getTransactionId() {
+        return transactionId;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+    
+    public TransactionType getType() {
+        return type;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: TransactionType.java
+```java
+package com.example.bank;
+
+public enum TransactionType {
+    DEPOSIT,
+    WITHDRAWAL,
+    TRANSFER_OUT,
+    TRANSFER_IN
+}
+```
+
+### FILE: StatementGenerator.java
+```java
+package com.example.bank;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class StatementGenerator {
+    
+    public List<String> generateStatement(String accountId, List<Transaction> transactions) {
+        List<String> statement = new ArrayList<>();
+        statement.add("Account Statement for " + accountId);
+        statement.add("==================");
+        
+        double balance = 0.0;
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccountId().equals(accountId)) {
+                balance += transaction.getAmount();
+                statement.add(String.format("%s: %s - %.2f", 
+                    transaction.getType(), 
+                    transaction.getTransactionId(),
+                    transaction.getAmount()));
+            }
+        }
+        
+        statement.add("Final Balance: " + String.format("%.

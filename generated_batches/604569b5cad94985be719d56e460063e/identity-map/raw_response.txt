@@ -1,0 +1,106 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private final int id;
+    private String name;
+    private double salary;
+    
+    public Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public double getSalary() {
+        return salary;
+    }
+    
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee employee = (Employee) obj;
+        return id == employee.id;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+}
+```
+
+### FILE: EmployeeRepository.java
+```java
+package hr.system;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class EmployeeRepository {
+    private static final Map<Integer, Employee> employeeMap = new HashMap<>();
+    
+    public static Employee findById(int id) {
+        return employeeMap.get(id);
+    }
+    
+    public static void save(Employee employee) {
+        employeeMap.put(employee.getId(), employee);
+    }
+    
+    public static void remove(int id) {
+        employeeMap.remove(id);
+    }
+    
+    public static boolean exists(int id) {
+        return employeeMap.containsKey(id);
+    }
+}
+```
+
+### FILE: EmployeeService.java
+```java
+package hr.system;
+
+public class EmployeeService {
+    
+    public Employee getEmployeeById(int id) {
+        // First check if employee already exists in memory (identity map)
+        Employee existing = EmployeeRepository.findById(id);
+        if (existing != null) {
+            return existing;
+        }
+        
+        // If not found, create new employee (simulating database fetch)
+        Employee newEmployee = new Employee(id, "Employee-" + id, 50000.0);
+        EmployeeRepository.save(newEmployee);
+        return newEmployee;
+    }
+    
+    public void updateEmployee(int id, String name, double salary) {
+        Employee employee = getEmployeeById(id);
+        employee.setName(name);
+        employee.setSalary(salary);
+    }
+}
+```
+
+### FILE:

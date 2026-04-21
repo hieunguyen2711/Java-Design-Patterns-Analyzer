@@ -1,0 +1,89 @@
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private double dailyRate;
+    private boolean isAvailable;
+    private MaintenanceStatus maintenanceStatus;
+    
+    public Vehicle(String id, String make, String model, int year, double dailyRate) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.dailyRate = dailyRate;
+        this.isAvailable = true;
+        this.maintenanceStatus = MaintenanceStatus.NORMAL;
+    }
+    
+    public String getId() { return id; }
+    public String getMake() { return make; }
+    public String getModel() { return model; }
+    public int getYear() { return year; }
+    public double getDailyRate() { return dailyRate; }
+    public boolean isAvailable() { return isAvailable; }
+    public MaintenanceStatus getMaintenanceStatus() { return maintenanceStatus; }
+    
+    public void setAvailable(boolean available) { isAvailable = available; }
+    public void setMaintenanceStatus(MaintenanceStatus status) { maintenanceStatus = status; }
+}
+```
+
+### FILE: FleetManager.java
+```java
+package fleet;
+
+import java.util.*;
+
+public class FleetManager {
+    private Map<String, Vehicle> vehicles;
+    
+    public FleetManager() {
+        this.vehicles = new HashMap<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public List<Vehicle> getAvailableVehicles() {
+        List<Vehicle> available = new ArrayList<>();
+        for (Vehicle v : vehicles.values()) {
+            if (v.isAvailable() && v.getMaintenanceStatus() == MaintenanceStatus.NORMAL) {
+                available.add(v);
+            }
+        }
+        return available;
+    }
+    
+    public Vehicle findVehicle(String id) {
+        return vehicles.get(id);
+    }
+}
+```
+
+### FILE: Reservation.java
+```java
+package fleet;
+
+import java.time.LocalDate;
+
+public class Reservation {
+    private String id;
+    private String customerId;
+    private Vehicle vehicle;
+    private LocalDate pickupDate;
+    private LocalDate returnDate;
+    
+    public Reservation(String id, String customerId, Vehicle vehicle, 
+                      LocalDate pickupDate, LocalDate returnDate) {
+        this.id = id;
+        this.customerId = customerId;
+        this.vehicle = vehicle;
+        this.pickupDate = pickupDate;
+        this.returnDate = returnDate;

@@ -1,0 +1,107 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+
+    public Ticket(String title, String description, Priority priority) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.OPEN;
+    }
+
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+public interface Priority {
+    String getPriorityLevel();
+    int getPriorityValue();
+}
+```
+
+### FILE: HighPriority.java
+```java
+public class HighPriority implements Priority {
+    @Override
+    public String getPriorityLevel() {
+        return "HIGH";
+    }
+
+    @Override
+    public int getPriorityValue() {
+        return 3;
+    }
+}
+```
+
+### FILE: MediumPriority.java
+```java
+public class MediumPriority implements Priority {
+    @Override
+    public String getPriorityLevel() {
+        return "MEDIUM";
+    }
+
+    @Override
+    public int getPriorityValue() {
+        return 2;
+    }
+}
+```
+
+### FILE: LowPriority.java
+```java
+public class LowPriority implements Priority {
+    @Override
+    public String getPriorityLevel() {
+        return "LOW";
+    }
+
+    @Override
+    public int getPriorityValue() {
+        return 1;
+    }
+}
+```
+
+### FILE: Status.java
+```java
+public interface Status {
+    String getStatusName();
+    void updateStatus(Ticket ticket);
+}
+```
+
+### FILE: OpenStatus.java
+```java
+public class OpenStatus implements Status {
+    @Override
+    public String getStatusName() {
+        return "OPEN";
+    }
+
+    @Override
+    public void updateStatus(Ticket ticket) {
+        ticket.setStatus(this);
+   

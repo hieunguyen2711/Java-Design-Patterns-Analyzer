@@ -1,0 +1,682 @@
+{
+  "job_id": "bcac2a9016f24970ac3b000719f16332",
+  "status": "completed",
+  "model_used": "qwen3-coder-30b-a3b-instruct",
+  "project_context": "A Java system for room inventory, bookings, check-in/check-out, pricing plans, and guest billing.",
+  "concurrency": 2,
+  "total_patterns": 83,
+  "completed_patterns": 83,
+  "successful_patterns": 83,
+  "failed_patterns": 0,
+  "started_at": 1775915876.636959,
+  "updated_at": 1775917023.3921049,
+  "completed_at": 1775917023.3921049,
+  "output_dir": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend/generated_batches/bcac2a9016f24970ac3b000719f16332",
+  "final_bundle_relative_path": "bcac2a9016f24970ac3b000719f16332/generated_projects_bundle.zip",
+  "results": [
+    {
+      "pattern": "abstract-factory",
+      "status": "success",
+      "files_count": 10,
+      "duration_ms": 26752,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/abstract-factory/abstract-factory.zip",
+      "error": null
+    },
+    {
+      "pattern": "active-object",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 26748,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/active-object/active-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "actor-model",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 26387,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/actor-model/actor-model.zip",
+      "error": null
+    },
+    {
+      "pattern": "acyclic-visitor",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 26386,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/acyclic-visitor/acyclic-visitor.zip",
+      "error": null
+    },
+    {
+      "pattern": "adapter",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 27993,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/adapter/adapter.zip",
+      "error": null
+    },
+    {
+      "pattern": "ambassador",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 27990,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/ambassador/ambassador.zip",
+      "error": null
+    },
+    {
+      "pattern": "balking",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 26160,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/balking/balking.zip",
+      "error": null
+    },
+    {
+      "pattern": "bridge",
+      "status": "success",
+      "files_count": 8,
+      "duration_ms": 27323,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/bridge/bridge.zip",
+      "error": null
+    },
+    {
+      "pattern": "builder",
+      "status": "success",
+      "files_count": 1,
+      "duration_ms": 28808,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/builder/builder.zip",
+      "error": null
+    },
+    {
+      "pattern": "business-delegate",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 24531,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/business-delegate/business-delegate.zip",
+      "error": null
+    },
+    {
+      "pattern": "chain-of-responsibility",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 27334,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/chain-of-responsibility/chain-of-responsibility.zip",
+      "error": null
+    },
+    {
+      "pattern": "collection-pipeline",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 27329,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/collection-pipeline/collection-pipeline.zip",
+      "error": null
+    },
+    {
+      "pattern": "combinator",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 27475,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/combinator/combinator.zip",
+      "error": null
+    },
+    {
+      "pattern": "command",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 26819,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/command/command.zip",
+      "error": null
+    },
+    {
+      "pattern": "composite",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 26981,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/composite/composite.zip",
+      "error": null
+    },
+    {
+      "pattern": "converter",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 27339,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/converter/converter.zip",
+      "error": null
+    },
+    {
+      "pattern": "curiously-recurring-template-pattern",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 31085,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/curiously-recurring-template-pattern/curiously-recurring-template-pattern.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-access-object",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 31104,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/data-access-object/data-access-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-mapper",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 27497,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/data-mapper/data-mapper.zip",
+      "error": null
+    },
+    {
+      "pattern": "data-transfer-object",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 27472,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/data-transfer-object/data-transfer-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "decorator",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 28701,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/decorator/decorator.zip",
+      "error": null
+    },
+    {
+      "pattern": "dependency-injection",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 30156,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/dependency-injection/dependency-injection.zip",
+      "error": null
+    },
+    {
+      "pattern": "dirty-flag",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28331,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/dirty-flag/dirty-flag.zip",
+      "error": null
+    },
+    {
+      "pattern": "double-buffer",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 26951,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/double-buffer/double-buffer.zip",
+      "error": null
+    },
+    {
+      "pattern": "double-checked-locking",
+      "status": "success",
+      "files_count": 1,
+      "duration_ms": 8689,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/double-checked-locking/double-checked-locking.zip",
+      "error": null
+    },
+    {
+      "pattern": "dynamic-proxy",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 25374,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/dynamic-proxy/dynamic-proxy.zip",
+      "error": null
+    },
+    {
+      "pattern": "event-sourcing",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 30316,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/event-sourcing/event-sourcing.zip",
+      "error": null
+    },
+    {
+      "pattern": "execute-around",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 29134,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/execute-around/execute-around.zip",
+      "error": null
+    },
+    {
+      "pattern": "facade",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 27292,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/facade/facade.zip",
+      "error": null
+    },
+    {
+      "pattern": "factory-kit",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 28551,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/factory-kit/factory-kit.zip",
+      "error": null
+    },
+    {
+      "pattern": "factory-method",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 28588,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/factory-method/factory-method.zip",
+      "error": null
+    },
+    {
+      "pattern": "factory",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 28247,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/factory/factory.zip",
+      "error": null
+    },
+    {
+      "pattern": "fluent-interface",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28234,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/fluent-interface/fluent-interface.zip",
+      "error": null
+    },
+    {
+      "pattern": "flyweight",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 28382,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/flyweight/flyweight.zip",
+      "error": null
+    },
+    {
+      "pattern": "function-composition",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 27860,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/function-composition/function-composition.zip",
+      "error": null
+    },
+    {
+      "pattern": "guarded-suspension",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28707,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/guarded-suspension/guarded-suspension.zip",
+      "error": null
+    },
+    {
+      "pattern": "identity-map",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28813,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/identity-map/identity-map.zip",
+      "error": null
+    },
+    {
+      "pattern": "interpreter",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 29411,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/interpreter/interpreter.zip",
+      "error": null
+    },
+    {
+      "pattern": "iterator",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 22863,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/iterator/iterator.zip",
+      "error": null
+    },
+    {
+      "pattern": "marker-interface",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 23913,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/marker-interface/marker-interface.zip",
+      "error": null
+    },
+    {
+      "pattern": "mediator",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 27189,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/mediator/mediator.zip",
+      "error": null
+    },
+    {
+      "pattern": "memento",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28711,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/memento/memento.zip",
+      "error": null
+    },
+    {
+      "pattern": "model-view-controller",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 29572,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/model-view-controller/model-view-controller.zip",
+      "error": null
+    },
+    {
+      "pattern": "model-view-presenter",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 29238,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/model-view-presenter/model-view-presenter.zip",
+      "error": null
+    },
+    {
+      "pattern": "monad",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 28586,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/monad/monad.zip",
+      "error": null
+    },
+    {
+      "pattern": "monitor",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 26797,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/monitor/monitor.zip",
+      "error": null
+    },
+    {
+      "pattern": "monostate",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 27060,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/monostate/monostate.zip",
+      "error": null
+    },
+    {
+      "pattern": "multiton",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 29081,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/multiton/multiton.zip",
+      "error": null
+    },
+    {
+      "pattern": "null-object",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 28390,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/null-object/null-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "object-pool",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 27017,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/object-pool/object-pool.zip",
+      "error": null
+    },
+    {
+      "pattern": "observer",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 27104,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/observer/observer.zip",
+      "error": null
+    },
+    {
+      "pattern": "page-controller",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 22676,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/page-controller/page-controller.zip",
+      "error": null
+    },
+    {
+      "pattern": "page-object",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 27981,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/page-object/page-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "private-class-data",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28575,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/private-class-data/private-class-data.zip",
+      "error": null
+    },
+    {
+      "pattern": "promise",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 28881,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/promise/promise.zip",
+      "error": null
+    },
+    {
+      "pattern": "prototype",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28530,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/prototype/prototype.zip",
+      "error": null
+    },
+    {
+      "pattern": "proxy",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28899,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/proxy/proxy.zip",
+      "error": null
+    },
+    {
+      "pattern": "reactor",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 28967,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/reactor/reactor.zip",
+      "error": null
+    },
+    {
+      "pattern": "repository",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 29648,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/repository/repository.zip",
+      "error": null
+    },
+    {
+      "pattern": "resource-acquisition-is-initialization",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 30886,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/resource-acquisition-is-initialization/resource-acquisition-is-initialization.zip",
+      "error": null
+    },
+    {
+      "pattern": "role-object",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 30386,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/role-object/role-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "servant",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28409,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/servant/servant.zip",
+      "error": null
+    },
+    {
+      "pattern": "service-layer",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 27293,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/service-layer/service-layer.zip",
+      "error": null
+    },
+    {
+      "pattern": "service-locator",
+      "status": "success",
+      "files_count": 7,
+      "duration_ms": 28462,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/service-locator/service-locator.zip",
+      "error": null
+    },
+    {
+      "pattern": "service-stub",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 29366,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/service-stub/service-stub.zip",
+      "error": null
+    },
+    {
+      "pattern": "single-table-inheritance",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 28832,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/single-table-inheritance/single-table-inheritance.zip",
+      "error": null
+    },
+    {
+      "pattern": "singleton",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 20063,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/singleton/singleton.zip",
+      "error": null
+    },
+    {
+      "pattern": "special-case",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 26674,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/special-case/special-case.zip",
+      "error": null
+    },
+    {
+      "pattern": "specification",
+      "status": "success",
+      "files_count": 5,
+      "duration_ms": 27230,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/specification/specification.zip",
+      "error": null
+    },
+    {
+      "pattern": "state",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 28881,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/state/state.zip",
+      "error": null
+    },
+    {
+      "pattern": "strategy",
+      "status": "success",
+      "files_count": 6,
+      "duration_ms": 25051,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/strategy/strategy.zip",
+      "error": null
+    },
+    {
+      "pattern": "table-inheritance",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 26661,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/table-inheritance/table-inheritance.zip",
+      "error": null
+    },
+    {
+      "pattern": "table-module",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 26528,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/table-module/table-module.zip",
+      "error": null
+    },
+    {
+      "pattern": "template-method",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 26782,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/template-method/template-method.zip",
+      "error": null
+    },
+    {
+      "pattern": "thread-pool-executor",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28599,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/thread-pool-executor/thread-pool-executor.zip",
+      "error": null
+    },
+    {
+      "pattern": "trampoline",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 29442,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/trampoline/trampoline.zip",
+      "error": null
+    },
+    {
+      "pattern": "transaction-script",
+      "status": "success",
+      "files_count": 4,
+      "duration_ms": 29270,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/transaction-script/transaction-script.zip",
+      "error": null
+    },
+    {
+      "pattern": "twin",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28028,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/twin/twin.zip",
+      "error": null
+    },
+    {
+      "pattern": "unit-of-work",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 28255,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/unit-of-work/unit-of-work.zip",
+      "error": null
+    },
+    {
+      "pattern": "update-method",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28683,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/update-method/update-method.zip",
+      "error": null
+    },
+    {
+      "pattern": "value-object",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 28578,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/value-object/value-object.zip",
+      "error": null
+    },
+    {
+      "pattern": "view-helper",
+      "status": "success",
+      "files_count": 2,
+      "duration_ms": 30062,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/view-helper/view-helper.zip",
+      "error": null
+    },
+    {
+      "pattern": "virtual-proxy",
+      "status": "success",
+      "files_count": 3,
+      "duration_ms": 28699,
+      "output_zip_relative_path": "bcac2a9016f24970ac3b000719f16332/virtual-proxy/virtual-proxy.zip",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+### FILE: Library.java
+```java
+package library;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Library {
+    private List<Book> books;
+    private List<Member> members;
+    
+    public Library() {
+        this.books = new ArrayList<>();
+        this.members = new ArrayList<>();
+    }
+    
+    public void addBook(Book book) {
+        books.add(book);
+    }
+    
+    public void registerMember(Member member) {
+        members.add(member);
+    }
+    
+    public Book findBook(String title) {
+        return books.stream()
+                   .filter(b -> b.getTitle().equals(title))
+                   .findFirst()
+                   .orElse(null);
+    }
+    
+    public Member findMember(String name) {
+        return members.stream()
+                     .filter(m -> m.getName().equals(name))
+                     .findFirst()
+                     .orElse(null);
+    }
+    
+    public void borrowBook(String memberName, String bookTitle) {
+        Member member = findMember(memberName);
+        Book book = findBook(bookTitle);
+        
+        if (member != null && book != null && !book.isBorrowed()) {
+            book.borrow();
+            member.borrowBook(book);
+            System.out.println("Book '" + bookTitle + "' borrowed by " + memberName);
+        }
+    }
+    
+    public void returnBook(String memberName, String bookTitle) {
+        Member member = findMember(memberName);
+        Book book = findBook(bookTitle);
+        
+        if (member != null && book != null && book.isBorrowed()) {
+            book.returnBook();
+            member.returnBook(book);
+            System.out.println("Book '" + bookTitle + "' returned by " + memberName);
+        }
+    }
+    
+    public void calculateLateFees() {
+        books.forEach(Book::calculateLateFee);
+    }
+}
+```
+
+### FILE: Book.java
+```java
+package library;
+
+import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
+
+public class Book {
+    private String title;
+    private String author;
+    private boolean isBorrowed;
+    private LocalDate borrowDate;
+    private Member borrower;
+    private double lateFeePerDay;
+    
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.isBorrowed = false;
+        this.lateFeePerDay = 0.50;
+    }
+    
+    public void borrow() {
+        isBorrowed = true;
+        borrowDate = LocalDate.now();
+    }
+    
+    public void

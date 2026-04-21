@@ -1,0 +1,90 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    public String getIsbn() { return isbn; }
+    public String getTitle() { return title; }
+    public String getAuthor() { return author; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String memberId;
+    private String name;
+    
+    public Member(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+    }
+    
+    public String getMemberId() { return memberId; }
+    public String getName() { return name; }
+}
+```
+
+### FILE: LibraryService.java
+```java
+public interface LibraryService {
+    void borrowBook(Member member, Book book);
+    void returnBook(Member member, Book book);
+    double calculateLateFee(Book book, int daysOverdue);
+}
+```
+
+### FILE: BorrowingService.java
+```java
+public class BorrowingService implements LibraryService {
+    @Override
+    public void borrowBook(Member member, Book book) {
+        System.out.println("Borrowing book " + book.getTitle() + 
+                          " for member " + member.getName());
+    }
+    
+    @Override
+    public void returnBook(Member member, Book book) {
+        System.out.println("Returning book " + book.getTitle() + 
+                          " from member " + member.getName());
+    }
+    
+    @Override
+    public double calculateLateFee(Book book, int daysOverdue) {
+        return daysOverdue * 0.50;
+    }
+}
+```
+
+### FILE: LibraryServiceLocator.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class LibraryServiceLocator {
+    private static Map<String, LibraryService> services = new HashMap<>();
+    
+    static {
+        services.put("borrowing", new BorrowingService());
+    }
+    
+    public static LibraryService getService(String serviceType) {
+        return services.get(serviceType);
+    }
+}
+```
+
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    public static void main(String[] args) {
+        Book book = new Book("978-0134685991", "Effective Java", "Joshua Bloch");
+        Member member

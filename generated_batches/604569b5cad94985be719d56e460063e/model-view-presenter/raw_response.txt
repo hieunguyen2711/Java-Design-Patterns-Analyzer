@@ -1,0 +1,83 @@
+### FILE: Employee.java
+```java
+package hr.system.model;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system.model;
+
+public class LeaveRequest {
+    private String id;
+    private String employeeId;
+    private String startDate;
+    private String endDate;
+    private String status;
+    
+    public LeaveRequest(String id, String employeeId, String startDate, String endDate) {
+        this.id = id;
+        this.employeeId = employeeId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = "PENDING";
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    
+    public String getStartDate() { return startDate; }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
+    
+    public String getEndDate() { return endDate; }
+    public void setEndDate(String endDate) { this.endDate = endDate; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+}
+```
+
+### FILE: EmployeeView.java
+```java
+package hr.system.view;
+
+import hr.system.model.Employee;
+import hr.system.model.LeaveRequest;
+
+public interface EmployeeView {
+    void displayEmployeeDetails(Employee employee);
+    void displayLeaveRequests(java.util.List<LeaveRequest> requests);
+    void showSuccessMessage(String message);
+    void showErrorMessage(String message);
+    String getEmployeeId();
+    String getLeaveStartDate();
+    String getLeaveEndDate();
+}
+```
+
+### FILE: EmployeePresenter.java

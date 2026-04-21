@@ -1,0 +1,91 @@
+### FILE: MembershipService.java
+```java
+package com.example.membership.service;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface MembershipService {
+    Membership createMembership(Membership membership);
+    Optional<Membership> getMembershipById(Long id);
+    List<Membership> getAllMemberships();
+    Membership updateMembership(Long id, Membership membership);
+    void deleteMembership(Long id);
+}
+```
+
+### FILE: MembershipServiceImpl.java
+```java
+package com.example.membership.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class MembershipServiceImpl implements MembershipService {
+    private final ConcurrentHashMap<Long, Membership> memberships = new ConcurrentHashMap<>();
+    private long nextId = 1L;
+
+    @Override
+    public Membership createMembership(Membership membership) {
+        membership.setId(nextId++);
+        memberships.put(membership.getId(), membership);
+        return membership;
+    }
+
+    @Override
+    public Optional<Membership> getMembershipById(Long id) {
+        return Optional.ofNullable(memberships.get(id));
+    }
+
+    @Override
+    public List<Membership> getAllMemberships() {
+        return new ArrayList<>(memberships.values());
+    }
+
+    @Override
+    public Membership updateMembership(Long id, Membership membership) {
+        if (memberships.containsKey(id)) {
+            membership.setId(id);
+            memberships.put(id, membership);
+            return membership;
+        }
+        throw new RuntimeException("Membership not found with id: " + id);
+    }
+
+    @Override
+    public void deleteMembership(Long id) {
+        memberships.remove(id);
+    }
+}
+```
+
+### FILE: Membership.java
+```java
+package com.example.membership.service;
+
+public class Membership {
+    private Long id;
+    private String memberName;
+    private String membershipType;
+    private double monthlyFee;
+
+    public Membership() {}
+
+    public Membership(Long id, String memberName, String membershipType, double monthlyFee) {
+        this.id = id;
+        this.memberName = memberName;
+        this.membershipType = membershipType;
+        this.monthlyFee = monthlyFee;
+    }
+
+    // Getters and setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getMemberName() { return memberName; }
+    public void setMemberName(String memberName) { this.memberName = memberName; }
+    
+    public String getMembershipType() { return membershipType; }
+    public void setMembership

@@ -1,0 +1,99 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private String title;
+    private String courseId;
+    
+    public Course(String title, String courseId) {
+        this.title = title;
+        this.courseId = courseId;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.model;
+
+public class LessonModule extends Module<LessonModule> {
+    private String lessonTitle;
+    
+    public LessonModule(String lessonTitle, String moduleId) {
+        super(moduleId);
+        this.lessonTitle = lessonTitle;
+    }
+    
+    public String getLessonTitle() {
+        return lessonTitle;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+public class Assignment extends Module<Assignment> {
+    private String assignmentTitle;
+    
+    public Assignment(String assignmentTitle, String moduleId) {
+        super(moduleId);
+        this.assignmentTitle = assignmentTitle;
+    }
+    
+    public String getAssignmentTitle() {
+        return assignmentTitle;
+    }
+}
+```
+
+### FILE: Module.java
+```java
+package com.lms.model;
+
+public abstract class Module<T extends Module<T>> {
+    private String moduleId;
+    
+    protected Module(String moduleId) {
+        this.moduleId = moduleId;
+    }
+    
+    public String getModuleId() {
+        return moduleId;
+    }
+    
+    public T withTitle(String title) {
+        // This method would be implemented in concrete classes
+        // to demonstrate the CRTP pattern
+        return (T) this;
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.model;
+
+public class Submission extends Module<Submission> {
+    private String studentId;
+    
+    public Submission(String studentId, String moduleId) {
+        super(moduleId);
+        this.studentId = studentId;
+    }
+    
+    public String getStudentId() {
+        return studentId;
+    }
+}
+```

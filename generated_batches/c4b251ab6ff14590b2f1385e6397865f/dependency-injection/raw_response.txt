@@ -1,0 +1,119 @@
+### FILE: OrderService.java
+```java
+package restaurant.backend;
+
+public class OrderService {
+    private final PaymentProcessor paymentProcessor;
+    private final DeliveryService deliveryService;
+    
+    public OrderService(PaymentProcessor paymentProcessor, DeliveryService deliveryService) {
+        this.paymentProcessor = paymentProcessor;
+        this.deliveryService = deliveryService;
+    }
+    
+    public void processOrder(Order order) {
+        if (paymentProcessor.processPayment(order.getCustomer(), order.getTotal())) {
+            deliveryService.assignDelivery(order);
+        }
+    }
+}
+```
+
+### FILE: PaymentProcessor.java
+```java
+package restaurant.backend;
+
+public interface PaymentProcessor {
+    boolean processPayment(Customer customer, double amount);
+}
+```
+
+### FILE: StripePaymentProcessor.java
+```java
+package restaurant.backend;
+
+public class StripePaymentProcessor implements PaymentProcessor {
+    @Override
+    public boolean processPayment(Customer customer, double amount) {
+        // Simulate payment processing
+        System.out.println("Processing payment of $" + amount + " for customer " + customer.getName());
+        return true;
+    }
+}
+```
+
+### FILE: DeliveryService.java
+```java
+package restaurant.backend;
+
+public interface DeliveryService {
+    void assignDelivery(Order order);
+}
+```
+
+### FILE: GoogleMapsDeliveryService.java
+```java
+package restaurant.backend;
+
+public class GoogleMapsDeliveryService implements DeliveryService {
+    @Override
+    public void assignDelivery(Order order) {
+        // Simulate delivery assignment
+        System.out.println("Assigning delivery for order " + order.getId());
+    }
+}
+```
+
+### FILE: Customer.java
+```java
+package restaurant.backend;
+
+public class Customer {
+    private final String name;
+    
+    public Customer(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package restaurant.backend;
+
+public class Order {
+    private final String id;
+    private final Customer customer;
+    private final double total;
+    
+    public Order(String id, Customer customer, double total) {
+        this.id = id;
+        this.customer = customer;
+        this.total = total;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public Customer getCustomer() {
+        return customer;
+    }
+    
+    public double getTotal() {
+        return total;
+    }
+}
+```
+
+### FILE: RestaurantApplication.java
+```java
+package restaurant.backend;
+
+public class RestaurantApplication {
+    public static void main(String[] args) {
+        // Dependency

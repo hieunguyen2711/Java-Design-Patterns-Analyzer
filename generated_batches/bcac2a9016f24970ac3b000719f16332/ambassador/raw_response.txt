@@ -1,0 +1,92 @@
+### FILE: Room.java
+```java
+package com.hotel.inventory;
+
+public class Room {
+    private String roomId;
+    private int capacity;
+    private double basePrice;
+    
+    public Room(String roomId, int capacity, double basePrice) {
+        this.roomId = roomId;
+        this.capacity = capacity;
+        this.basePrice = basePrice;
+    }
+    
+    // Getters and setters
+    public String getRoomId() { return roomId; }
+    public void setRoomId(String roomId) { this.roomId = roomId; }
+    
+    public int getCapacity() { return capacity; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
+    
+    public double getBasePrice() { return basePrice; }
+    public void setBasePrice(double basePrice) { this.basePrice = basePrice; }
+}
+```
+
+### FILE: RoomInventory.java
+```java
+package com.hotel.inventory;
+
+import java.util.*;
+
+public class RoomInventory {
+    private static volatile RoomInventory instance;
+    private Map<String, Room> rooms;
+    
+    private RoomInventory() {
+        rooms = new HashMap<>();
+    }
+    
+    public static RoomInventory getInstance() {
+        if (instance == null) {
+            synchronized (RoomInventory.class) {
+                if (instance == null) {
+                    instance = new RoomInventory();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void addRoom(Room room) {
+        rooms.put(room.getRoomId(), room);
+    }
+    
+    public Room getRoom(String roomId) {
+        return rooms.get(roomId);
+    }
+    
+    public Collection<Room> getAllRooms() {
+        return new ArrayList<>(rooms.values());
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package com.hotel.inventory;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class Booking {
+    private String bookingId;
+    private String guestName;
+    private List<String> roomIds;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    
+    public Booking(String bookingId, String guestName, List<String> roomIds, 
+                  LocalDate checkInDate, LocalDate checkOutDate) {
+        this.bookingId = bookingId;
+        this.guestName = guestName;
+        this.roomIds = roomIds;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+    }
+    
+    // Getters and setters
+    public String getBookingId() { return bookingId; }
+    public

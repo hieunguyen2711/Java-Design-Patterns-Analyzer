@@ -1,0 +1,80 @@
+### FILE: Vehicle.java
+```java
+package fleet.inventory;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private double dailyRate;
+    private boolean isAvailable;
+    private String maintenanceStatus;
+
+    public Vehicle(String id, String make, String model, int year, double dailyRate) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.dailyRate = dailyRate;
+        this.isAvailable = true;
+        this.maintenanceStatus = "GOOD";
+    }
+
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+    
+    public String getMaintenanceStatus() { return maintenanceStatus; }
+    public void setMaintenanceStatus(String maintenanceStatus) { this.maintenanceStatus = maintenanceStatus; }
+}
+```
+
+### FILE: FleetInventory.java
+```java
+package fleet.inventory;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class FleetInventory {
+    private List<Vehicle> vehicles;
+    
+    public FleetInventory() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public List<Vehicle> getAvailableVehicles() {
+        return vehicles.stream()
+                .filter(Vehicle::isAvailable)
+                .collect(Collectors.toList());
+    }
+    
+    public List<Vehicle> getVehiclesByMake(String make) {
+        return vehicles.stream()
+                .filter(v -> v.getMake().equalsIgnoreCase(make))
+                .collect(Collectors.toList());
+    }
+    
+    public List<Vehicle> getVehiclesInMaintenance() {
+        return vehicles.stream()
+                .filter(v -> !v.getMaintenanceStatus

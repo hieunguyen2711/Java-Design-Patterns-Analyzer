@@ -1,0 +1,110 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private String id;
+    private double baseSalary;
+    
+    public Employee(String name, String id, double baseSalary) {
+        this.name = name;
+        this.id = id;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: SalaryCalculator.java
+```java
+package hr.system;
+
+public abstract class SalaryCalculator {
+    protected Employee employee;
+    
+    public SalaryCalculator(Employee employee) {
+        this.employee = employee;
+    }
+    
+    public abstract double calculateSalary();
+    public abstract double calculateTax();
+}
+```
+
+### FILE: FixedSalaryCalculator.java
+```java
+package hr.system;
+
+public class FixedSalaryCalculator extends SalaryCalculator {
+    
+    public FixedSalaryCalculator(Employee employee) {
+        super(employee);
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return employee.getBaseSalary();
+    }
+    
+    @Override
+    public double calculateTax() {
+        return employee.getBaseSalary() * 0.2;
+    }
+}
+```
+
+### FILE: ContractSalaryCalculator.java
+```java
+package hr.system;
+
+public class ContractSalaryCalculator extends SalaryCalculator {
+    
+    public ContractSalaryCalculator(Employee employee) {
+        super(employee);
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return employee.getBaseSalary() * 1.2;
+    }
+    
+    @Override
+    public double calculateTax() {
+        return employee.getBaseSalary() * 0.15;
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package hr.system;
+
+public class PayrollService {
+    private SalaryCalculator salaryCalculator;
+    
+    public PayrollService(SalaryCalculator salaryCalculator) {
+        this.salaryCalculator = salaryCalculator;
+    }
+    
+    public void processPayroll() {
+        double grossSalary = salaryCalculator.calculateSalary();
+        double tax = salaryCalculator.calculateTax();
+        double netSalary = grossSalary - tax;
+        
+        System.out.println("Processing payroll for employee: " + 
+                          salaryCalculator.employee.getName());
+        System.out.println("Gross Salary: $" + grossSalary);
+        System.out.println("Tax Deduction: $" + tax);
+        System.out.println("Net Salary: $" + net

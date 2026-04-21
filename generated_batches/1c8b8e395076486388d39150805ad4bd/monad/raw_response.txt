@@ -1,0 +1,95 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private String memberId;
+    private String name;
+    private boolean isActive;
+
+    public Membership(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+        this.isActive = true;
+    }
+
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public String getName() { return name; }
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
+}
+```
+
+### FILE: Course.java
+```java
+public class Course {
+    private String courseId;
+    private String title;
+    private int maxCapacity;
+
+    public Course(String courseId, String title, int maxCapacity) {
+        this.courseId = courseId;
+        this.title = title;
+        this.maxCapacity = maxCapacity;
+    }
+
+    // Getters and setters
+    public String getCourseId() { return courseId; }
+    public String getTitle() { return title; }
+    public int getMaxCapacity() { return maxCapacity; }
+}
+```
+
+### FILE: Trainer.java
+```java
+public class Trainer {
+    private String trainerId;
+    private String name;
+
+    public Trainer(String trainerId, String name) {
+        this.trainerId = trainerId;
+        this.name = name;
+    }
+
+    // Getters and setters
+    public String getTrainerId() { return trainerId; }
+    public String getName() { return name; }
+}
+```
+
+### FILE: Schedule.java
+```java
+import java.time.LocalDateTime;
+
+public class Schedule {
+    private String scheduleId;
+    private Course course;
+    private Trainer trainer;
+    private LocalDateTime dateTime;
+
+    public Schedule(String scheduleId, Course course, Trainer trainer, LocalDateTime dateTime) {
+        this.scheduleId = scheduleId;
+        this.course = course;
+        this.trainer = trainer;
+        this.dateTime = dateTime;
+    }
+
+    // Getters and setters
+    public String getScheduleId() { return scheduleId; }
+    public Course getCourse() { return course; }
+    public Trainer getTrainer() { return trainer; }
+    public LocalDateTime getDateTime() { return dateTime; }
+}
+```
+
+### FILE: AttendanceRecord.java
+```java
+import java.time.LocalDateTime;
+
+public class AttendanceRecord {
+    private String recordId;
+    private String memberId;
+    private String scheduleId;
+    private LocalDateTime checkInTime;
+    private boolean isCheckedIn;
+
+    public AttendanceRecord(String recordId, String

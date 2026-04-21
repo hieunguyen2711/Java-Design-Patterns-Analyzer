@@ -1,0 +1,109 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private Doctor doctor;
+    private Patient patient;
+    private String dateTime;
+    
+    public AppointmentSlot(Doctor doctor, Patient patient, String dateTime) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.dateTime = dateTime;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public String getDateTime() {
+        return dateTime;
+    }
+}
+```
+
+### FILE: CheckInSystem.java
+```java
+public interface CheckInSystem {
+    void checkIn(AppointmentSlot slot);
+}
+```
+
+### FILE: StandardCheckIn.java
+```java
+public class StandardCheckIn implements CheckInSystem {
+    @Override
+    public void checkIn(AppointmentSlot slot) {
+        System.out.println("Standard check-in for " + slot.getPatient().getName() 
+            + " with Dr. " + slot.getDoctor().getName());
+    }
+}
+```
+
+### FILE: PremiumCheckIn.java
+```java
+public class PremiumCheckIn implements CheckInSystem {
+    @Override
+    public void checkIn(AppointmentSlot slot) {
+        System.out.println("Premium check-in for " + slot.getPatient().getName() 
+            + " with Dr. " + slot.getDoctor().getName());
+    }
+}
+```
+
+### FILE: Clinic.java
+```java
+public class Clinic {
+    private CheckInSystem checkInSystem;
+    
+    public Clinic(CheckInSystem checkInSystem) {
+        this.checkInSystem = checkInSystem;
+    }
+    
+    public void performCheckIn(AppointmentSlot slot) {
+        checkInSystem.checkIn

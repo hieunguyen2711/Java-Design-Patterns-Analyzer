@@ -1,0 +1,105 @@
+### FILE: FleetManager.java
+```java
+public class FleetManager {
+    private static FleetManager instance;
+    
+    // Private constructor to prevent instantiation
+    private FleetManager() {}
+    
+    public static FleetManager getInstance() {
+        if (instance == null) {
+            instance = new FleetManager();
+        }
+        return instance;
+    }
+    
+    // Monostate pattern - shared state across all instances
+    private int totalVehicles = 0;
+    private int availableVehicles = 0;
+    private double dailyRevenue = 0.0;
+    
+    public void addVehicle() {
+        totalVehicles++;
+        availableVehicles++;
+    }
+    
+    public void removeVehicle() {
+        if (totalVehicles > 0) {
+            totalVehicles--;
+            if (availableVehicles > 0) {
+                availableVehicles--;
+            }
+        }
+    }
+    
+    public void rentVehicle() {
+        if (availableVehicles > 0) {
+            availableVehicles--;
+        }
+    }
+    
+    public void returnVehicle() {
+        availableVehicles++;
+    }
+    
+    public void addRevenue(double amount) {
+        dailyRevenue += amount;
+    }
+    
+    // Getters for shared state
+    public int getTotalVehicles() {
+        return totalVehicles;
+    }
+    
+    public int getAvailableVehicles() {
+        return availableVehicles;
+    }
+    
+    public double getDailyRevenue() {
+        return dailyRevenue;
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String id;
+    private String model;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String model) {
+        this.id = id;
+        this.model = model;
+        this.isAvailable = true;
+    }
+    
+    public void rent() {
+        this.isAvailable = false;
+        FleetManager.getInstance().rentVehicle();
+    }
+    
+    public void returnVehicle() {
+        this.isAvailable = true;
+        FleetManager.getInstance().returnVehicle();
+    }
+    
+    // Getters
+    public String getId() { return id; }
+    public String getModel() { return model; }
+    public boolean isAvailable() { return isAvailable; }
+}
+```
+
+### FILE: ReservationSystem.java
+```java
+public class ReservationSystem {
+    private static ReservationSystem instance;
+    
+    private ReservationSystem() {}
+    
+    public static ReservationSystem getInstance() {
+        if (instance == null) {
+            instance = new ReservationSystem();
+        }
+        return

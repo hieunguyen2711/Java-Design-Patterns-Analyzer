@@ -1,0 +1,133 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor {
+    private String id;
+    private String name;
+    
+    public Doctor(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient {
+    private String id;
+    private String name;
+    
+    public Patient(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class AppointmentSlot {
+    private String id;
+    private Doctor doctor;
+    private Patient patient;
+    private LocalDateTime dateTime;
+    private boolean isBooked;
+    
+    public AppointmentSlot(String id, Doctor doctor, LocalDateTime dateTime) {
+        this.id = id;
+        this.doctor = doctor;
+        this.dateTime = dateTime;
+        this.isBooked = false;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public boolean isBooked() {
+        return isBooked;
+    }
+    
+    public void book(Patient patient) {
+        this.patient = patient;
+        this.isBooked = true;
+    }
+}
+```
+
+### FILE: CheckIn.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class CheckIn {
+    private String id;
+    private AppointmentSlot slot;
+    private LocalDateTime checkInTime;
+    
+    public CheckIn(String id, AppointmentSlot slot) {
+        this.id = id;
+        this.slot = slot;
+        this.checkInTime = LocalDateTime.now();
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public AppointmentSlot getSlot() {
+        return slot;
+    }
+    
+    public LocalDateTime getCheckInTime() {
+        return checkInTime;
+    }
+}
+```
+
+### FILE: VisitHistory.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public

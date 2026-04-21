@@ -1,0 +1,80 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private int id;
+    private double baseSalary;
+    
+    public Employee(String name, int id, double baseSalary) {
+        this.name = name;
+        this.id = id;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: Manager.java
+```java
+package hr.system;
+
+public class Manager extends Employee implements BonusEligible {
+    private String department;
+    
+    public Manager(String name, int id, double baseSalary, String department) {
+        super(name, id, baseSalary);
+        this.department = department;
+    }
+    
+    public String getDepartment() {
+        return department;
+    }
+}
+```
+
+### FILE: BonusEligible.java
+```java
+package hr.system;
+
+public interface BonusEligible {
+    // Marker interface - no methods required
+}
+```
+
+### FILE: PayrollProcessor.java
+```java
+package hr.system;
+
+public class PayrollProcessor {
+    
+    public double calculateBonus(Employee employee) {
+        if (employee instanceof BonusEligible) {
+            return employee.getBaseSalary() * 0.1; // 10% bonus
+        }
+        return 0.0;
+    }
+    
+    public static void main(String[] args) {
+        Employee regularEmployee = new Employee("John Doe", 101, 50000);
+        Manager manager = new Manager("Jane Smith", 201, 75000, "Engineering");
+        
+        PayrollProcessor processor = new PayrollProcessor();
+        
+        System.out.println("Regular employee bonus: $" + processor.calculateBonus(regularEmployee));
+        System.out.println("Manager bonus: $" + processor.calculateBonus(manager));
+    }
+}
+```

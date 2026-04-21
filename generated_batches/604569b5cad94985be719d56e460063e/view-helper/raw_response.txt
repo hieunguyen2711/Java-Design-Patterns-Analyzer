@@ -1,0 +1,72 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private String employeeId;
+    private double baseSalary;
+    
+    public Employee(String name, String employeeId, double baseSalary) {
+        this.name = name;
+        this.employeeId = employeeId;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private String employeeId;
+    private String leaveType;
+    private int daysRequested;
+    
+    public LeaveRequest(String employeeId, String leaveType, int daysRequested) {
+        this.employeeId = employeeId;
+        this.leaveType = leaveType;
+        this.daysRequested = daysRequested;
+    }
+    
+    // Getters and setters
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    public String getLeaveType() { return leaveType; }
+    public void setLeaveType(String leaveType) { this.leaveType = leaveType; }
+    public int getDaysRequested() { return daysRequested; }
+    public void setDaysRequested(int daysRequested) { this.daysRequested = daysRequested; }
+}
+```
+
+### FILE: PayrollCalculator.java
+```java
+package hr.system;
+
+public class PayrollCalculator {
+    private static final double TAX_RATE = 0.20;
+    private static final double BONUS_MULTIPLIER = 1.10;
+    
+    public double calculateNetSalary(Employee employee, int leaveDays) {
+        double grossSalary = employee.getBaseSalary();
+        
+        // Apply bonus for good attendance
+        if (leaveDays <= 5) {
+            grossSalary *= BONUS_MULTIPLIER;
+        }
+        
+        // Deduct taxes
+        return grossSalary - (grossSalary * TAX_RATE);
+    }
+    
+    public double calculateLeaveDeduction(LeaveRequest request, Employee employee) {
+        double dailyRate =

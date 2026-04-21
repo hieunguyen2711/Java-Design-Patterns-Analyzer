@@ -1,0 +1,88 @@
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    public static void main(String[] args) {
+        Book book1 = new Book("1234567890", "Java Programming");
+        Book book2 = new Book("0987654321", "Design Patterns");
+        
+        Member member1 = new Member("John Doe", "JD001");
+        Member member2 = new Member("Jane Smith", "JS002");
+        
+        BorrowingService borrowingService = new BorrowingService();
+        
+        borrowingService.borrowBook(book1, member1);
+        borrowingService.borrowBook(book2, member2);
+        
+        System.out.println("Books borrowed:");
+        System.out.println(member1.getName() + " has: " + book1.getTitle());
+        System.out.println(member2.getName() + " has: " + book2.getTitle());
+    }
+}
+```
+
+### FILE: Book.java
+```java
+public class Book {
+    private String isbn;
+    private String title;
+    
+    public Book(String isbn, String title) {
+        this.isbn = isbn;
+        this.title = title;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String name;
+    private String memberId;
+    
+    public Member(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+}
+```
+
+### FILE: BorrowingService.java
+```java
+public class BorrowingService {
+    private Book book;
+    private Member member;
+    
+    public void borrowBook(Book book, Member member) {
+        this.book = book;
+        this.member = member;
+        
+        // Role-object pattern: the service object (BorrowingService)
+        // takes on the role of managing the borrowing relationship
+        System.out.println(member.getName() + " borrowed " + book.getTitle());
+    }
+    
+    public Book getBook() {
+        return book;
+    }
+    
+    public Member getMember() {
+        return member;
+    }
+}
+```

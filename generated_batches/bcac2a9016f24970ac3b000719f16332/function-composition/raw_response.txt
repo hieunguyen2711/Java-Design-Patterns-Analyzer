@@ -1,0 +1,91 @@
+### FILE: RoomInventoryService.java
+```java
+package com.hotel.inventory;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class RoomInventoryService {
+    private final List<Room> rooms;
+    
+    public RoomInventoryService(List<Room> rooms) {
+        this.rooms = rooms;
+    }
+    
+    // Function composition example: chain multiple operations
+    public List<String> getAvailableRoomNumbers() {
+        Function<List<Room>, List<Room>> filterAvailable = 
+            roomList -> roomList.stream()
+                .filter(Room::isAvailable)
+                .collect(Collectors.toList());
+                
+        Function<List<Room>, List<String>> extractNumbers = 
+            roomList -> roomList.stream()
+                .map(Room::getNumber)
+                .collect(Collectors.toList());
+                
+        // Compose functions: first filter, then extract
+        return filterAvailable.andThen(extractNumbers).apply(rooms);
+    }
+    
+    public List<Room> getRoomsByType(String type) {
+        Function<List<Room>, List<Room>> filterByType = 
+            roomList -> roomList.stream()
+                .filter(room -> room.getType().equals(type))
+                .collect(Collectors.toList());
+                
+        return filterByType.apply(rooms);
+    }
+}
+```
+
+### FILE: Room.java
+```java
+package com.hotel.inventory;
+
+public class Room {
+    private final String number;
+    private final String type;
+    private final boolean available;
+    
+    public Room(String number, String type, boolean available) {
+        this.number = number;
+        this.type = type;
+        this.available = available;
+    }
+    
+    public String getNumber() {
+        return number;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public boolean isAvailable() {
+        return available;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.hotel.inventory;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        List<Room> rooms = Arrays.asList(
+            new Room("101", "single", true),
+            new Room("102", "double", false),
+            new Room("103", "single", true),
+            new Room("104", "suite", true)
+        );
+        
+        RoomInventoryService service = new RoomInventoryService(rooms);
+        
+        // Demonstrates function composition
+        List<String> availableRooms = service

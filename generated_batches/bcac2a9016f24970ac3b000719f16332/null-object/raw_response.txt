@@ -1,0 +1,132 @@
+### FILE: Room.java
+```java
+package hotel;
+
+public class Room {
+    private final int roomId;
+    private boolean isAvailable;
+    
+    public Room(int roomId) {
+        this.roomId = roomId;
+        this.isAvailable = true;
+    }
+    
+    public int getRoomId() {
+        return roomId;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: Guest.java
+```java
+package hotel;
+
+public class Guest {
+    private final String guestId;
+    private final String name;
+    
+    public Guest(String guestId, String name) {
+        this.guestId = guestId;
+        this.name = name;
+    }
+    
+    public String getGuestId() {
+        return guestId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package hotel;
+
+public class Booking {
+    private final int bookingId;
+    private Guest guest;
+    private Room room;
+    private boolean isActive;
+    
+    public Booking(int bookingId) {
+        this.bookingId = bookingId;
+        this.guest = null;
+        this.room = null;
+        this.isActive = false;
+    }
+    
+    public int getBookingId() {
+        return bookingId;
+    }
+    
+    public Guest getGuest() {
+        return guest;
+    }
+    
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
+    
+    public Room getRoom() {
+        return room;
+    }
+    
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+    
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+}
+```
+
+### FILE: NullBooking.java
+```java
+package hotel;
+
+public class NullBooking extends Booking {
+    private static final NullBooking INSTANCE = new NullBooking();
+    
+    private NullBooking() {
+        super(-1);
+    }
+    
+    public static NullBooking getInstance() {
+        return INSTANCE;
+    }
+    
+    @Override
+    public Guest getGuest() {
+        return null;
+    }
+    
+    @Override
+    public Room getRoom() {
+        return null;
+    }
+    
+    @Override
+    public boolean isActive() {
+        return false;
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+package

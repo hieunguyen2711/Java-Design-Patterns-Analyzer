@@ -1,0 +1,87 @@
+### FILE: Employee.java
+```java
+package hr.system.model;
+
+public class Employee {
+    private int id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(int id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: EmployeeModel.java
+```java
+package hr.system.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class EmployeeModel {
+    private List<Employee> employees;
+    
+    public EmployeeModel() {
+        this.employees = new ArrayList<>();
+        // Initialize with sample data
+        employees.add(new Employee(1, "John Doe", 50000));
+        employees.add(new Employee(2, "Jane Smith", 60000));
+    }
+    
+    public List<Employee> getAllEmployees() {
+        return employees;
+    }
+    
+    public Employee getEmployeeById(int id) {
+        for (Employee emp : employees) {
+            if (emp.getId() == id) {
+                return emp;
+            }
+        }
+        return null;
+    }
+    
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+    }
+}
+```
+
+### FILE: EmployeeView.java
+```java
+package hr.system.view;
+
+import hr.system.model.Employee;
+import java.util.List;
+
+public class EmployeeView {
+    
+    public void displayEmployees(List<Employee> employees) {
+        System.out.println("=== Employee List ===");
+        for (Employee emp : employees) {
+            System.out.println("ID: " + emp.getId() + 
+                             ", Name: " + emp.getName() + 
+                             ", Salary: $" + emp.getBaseSalary());
+        }
+    }
+    
+    public void displayEmployee(Employee employee) {
+        if (employee != null) {
+            System.out.println("=== Employee Details ===");
+            System.out.println("ID: " + employee.getId());
+            System.out.println("Name: " + employee.getName());
+            System.out.println("Salary: $" + employee.getBaseSalary());

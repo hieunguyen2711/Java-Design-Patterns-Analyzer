@@ -1,0 +1,92 @@
+### FILE: FleetManagementSystem.java
+```java
+package com.fleet.management;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class FleetManagementSystem {
+    private final ExecutorService executorService;
+    
+    public FleetManagementSystem() {
+        this.executorService = Executors.newFixedThreadPool(3);
+    }
+    
+    public void processVehicleMaintenance(String vehicleId) {
+        executorService.submit(() -> {
+            System.out.println("Processing maintenance for vehicle: " + vehicleId);
+            try {
+                Thread.sleep(2000); // Simulate maintenance work
+                System.out.println("Maintenance completed for vehicle: " + vehicleId);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    public void processReservation(String reservationId) {
+        executorService.submit(() -> {
+            System.out.println("Processing reservation: " + reservationId);
+            try {
+                Thread.sleep(1000); // Simulate reservation processing
+                System.out.println("Reservation processed: " + reservationId);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+    }
+}
+```
+
+### FILE: VehicleMaintenanceTask.java
+```java
+package com.fleet.management;
+
+public class VehicleMaintenanceTask implements Runnable {
+    private final String vehicleId;
+    
+    public VehicleMaintenanceTask(String vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("Starting maintenance for: " + vehicleId);
+        try {
+            Thread.sleep(1500); // Simulate work
+            System.out.println("Completed maintenance for: " + vehicleId);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+### FILE: ReservationProcessor.java
+```java
+package com.fleet.management;
+
+public class ReservationProcessor implements Runnable {
+    private final String reservationId;
+    
+    public ReservationProcessor(String reservationId) {
+        this.reservationId = reservationId;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("Processing reservation: " + reservationId);
+        try {
+            Thread

@@ -1,0 +1,76 @@
+### FILE: Room.java
+```java
+public class Room {
+    private int roomId;
+    private String type;
+    private double basePrice;
+    
+    public Room(int roomId, String type, double basePrice) {
+        this.roomId = roomId;
+        this.type = type;
+        this.basePrice = basePrice;
+    }
+    
+    // Getters and setters
+    public int getRoomId() { return roomId; }
+    public void setRoomId(int roomId) { this.roomId = roomId; }
+    
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    
+    public double getBasePrice() { return basePrice; }
+    public void setBasePrice(double basePrice) { this.basePrice = basePrice; }
+}
+```
+
+### FILE: Guest.java
+```java
+public class Guest {
+    private int guestId;
+    private String name;
+    private String email;
+    
+    public Guest(int guestId, String name, String email) {
+        this.guestId = guestId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public int getGuestId() { return guestId; }
+    public void setGuestId(int guestId) { this.guestId = guestId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: Booking.java
+```java
+public class Booking {
+    private int bookingId;
+    private Guest guest;
+    private Room room;
+    private int nights;
+    private double totalAmount;
+    
+    public Booking(int bookingId, Guest guest, Room room, int nights) {
+        this.bookingId = bookingId;
+        this.guest = guest;
+        this.room = room;
+        this.nights = nights;
+        this.totalAmount = room.getBasePrice() * nights;
+    }
+    
+    // Getters and setters
+    public int getBookingId() { return bookingId; }
+    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+    
+    public Guest getGuest() { return guest; }
+    public void setGuest(Guest guest) { this.guest = guest; }
+    
+    public Room getRoom() { return room; }
+    public void

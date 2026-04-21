@@ -1,0 +1,84 @@
+### FILE: StockItem.java
+```java
+public abstract class StockItem {
+    protected String name;
+    protected int currentStock;
+    protected int reorderThreshold;
+    
+    public StockItem(String name, int currentStock, int reorderThreshold) {
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public abstract void accept(StockVisitor visitor);
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+}
+```
+
+### FILE: Electronics.java
+```java
+public class Electronics extends StockItem {
+    private String brand;
+    
+    public Electronics(String name, int currentStock, int reorderThreshold, String brand) {
+        super(name, currentStock, reorderThreshold);
+        this.brand = brand;
+    }
+    
+    @Override
+    public void accept(StockVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    // Getters and setters
+    public String getBrand() { return brand; }
+    public void setBrand(String brand) { this.brand = brand; }
+}
+```
+
+### FILE: Clothing.java
+```java
+public class Clothing extends StockItem {
+    private String size;
+    
+    public Clothing(String name, int currentStock, int reorderThreshold, String size) {
+        super(name, currentStock, reorderThreshold);
+        this.size = size;
+    }
+    
+    @Override
+    public void accept(StockVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    // Getters and setters
+    public String getSize() { return size; }
+    public void setSize(String size) { this.size = size; }
+}
+```
+
+### FILE: StockVisitor.java
+```java
+public interface StockVisitor {
+    void visit(Electronics electronics);
+    void visit(Clothing clothing);
+}
+```
+
+### FILE: InventoryReportVisitor.java
+```java
+public class InventoryReportVisitor implements StockVisitor {
+    private StringBuilder report = new StringBuilder();
+    
+    @Override
+    public void visit(Electronics electronics) {
+        report.append("Electronics Item: ").append(electronics.getName())
+              .append(", Brand: ").append(electronics.getBrand())
+             

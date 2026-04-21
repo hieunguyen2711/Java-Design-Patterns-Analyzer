@@ -1,0 +1,95 @@
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: FleetManager.java
+```java
+import java.util.*;
+
+public class FleetManager {
+    private List<Vehicle> vehicles;
+    private Queue<Command> commandHistory;
+    
+    public FleetManager() {
+        this.vehicles = new ArrayList<>();
+        this.commandHistory = new LinkedList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public void executeCommand(Command command) {
+        command.execute();
+        commandHistory.offer(command);
+    }
+    
+    public void undoLastCommand() {
+        if (!commandHistory.isEmpty()) {
+            Command lastCommand = commandHistory.poll();
+            lastCommand.undo();
+        }
+    }
+    
+    public List<Vehicle> getVehicles() {
+        return new ArrayList<>(vehicles);
+    }
+}
+```
+
+### FILE: Command.java
+```java
+public interface Command {
+    void execute();
+    void undo();
+}
+```
+
+### FILE: ReserveVehicleCommand.java
+```java
+import java.util.List;
+import java.util.ArrayList;
+
+public class ReserveVehicleCommand implements Command {
+    private FleetManager fleetManager;
+    private String vehicleId;
+    private Vehicle reservedVehicle;
+    
+    public ReserveVehicleCommand(FleetManager fleetManager, String vehicleId) {
+        this.fleetManager = fleetManager;
+        this.vehicleId = vehicleId;
+    }
+    
+    @Override
+    public void execute() {

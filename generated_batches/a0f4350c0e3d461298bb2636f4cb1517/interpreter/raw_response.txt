@@ -1,0 +1,119 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+}
+```
+
+### FILE: LibraryMember.java
+```java
+public class LibraryMember {
+    private String name;
+    private String memberId;
+    
+    public LibraryMember(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+}
+```
+
+### FILE: BorrowingRecord.java
+```java
+import java.time.LocalDate;
+
+public class BorrowingRecord {
+    private Book book;
+    private LibraryMember member;
+    private LocalDate borrowDate;
+    private LocalDate dueDate;
+    
+    public BorrowingRecord(Book book, LibraryMember member, LocalDate borrowDate, LocalDate dueDate) {
+        this.book = book;
+        this.member = member;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+    }
+    
+    public Book getBook() {
+        return book;
+    }
+    
+    public LibraryMember getMember() {
+        return member;
+    }
+    
+    public LocalDate getBorrowDate() {
+        return borrowDate;
+    }
+    
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+}
+```
+
+### FILE: Expression.java
+```java
+import java.time.LocalDate;
+
+public interface Expression {
+    boolean interpret(BorrowingRecord record, LocalDate currentDate);
+}
+```
+
+### FILE: BookTitleExpression.java
+```java
+public class BookTitleExpression implements Expression {
+    private String title;
+    
+    public BookTitleExpression(String title) {
+        this.title = title;
+    }
+    
+    @Override
+    public boolean interpret(BorrowingRecord record, LocalDate currentDate) {
+        return record.getBook().getTitle().equals(title);
+    }
+}
+```
+
+### FILE: MemberExpression.java
+```java
+public class MemberExpression implements Expression {
+    private String memberId;
+    
+    public MemberExpression(String memberId) {
+        this.memberId = memberId;
+    }
+    
+    @Override
+    public

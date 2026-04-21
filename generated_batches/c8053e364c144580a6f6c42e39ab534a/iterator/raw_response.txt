@@ -1,0 +1,116 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private Doctor doctor;
+    private Patient patient;
+    private String timeSlot;
+    
+    public AppointmentSlot(Doctor doctor, Patient patient, String timeSlot) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.timeSlot = timeSlot;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public String getTimeSlot() {
+        return timeSlot;
+    }
+}
+```
+
+### FILE: Clinic.java
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Clinic {
+    private List<AppointmentSlot> appointmentSlots;
+    
+    public Clinic() {
+        this.appointmentSlots = new ArrayList<>();
+    }
+    
+    public void addAppointment(AppointmentSlot slot) {
+        appointmentSlots.add(slot);
+    }
+    
+    public Iterator<AppointmentSlot> getAppointmentIterator() {
+        return appointmentSlots.iterator();
+    }
+}
+```
+
+### FILE: AppointmentIterator.java
+```java
+import java.util.Iterator;
+
+public class AppointmentIterator implements Iterator<AppointmentSlot> {
+    private Clinic clinic;
+    private int currentIndex = 0;
+    
+    public AppointmentIterator(Clinic clinic) {
+        this.clinic = clinic;
+    }
+    
+    @Override
+    public boolean hasNext() {
+        return currentIndex < clinic.getAppointmentIterator().nextIndex();
+    }
+    
+    @Override
+    public AppointmentSlot next() {
+        if (!hasNext()) {
+            throw new java.util.NoSuchElementException();
+        }
+        // This is a simplified implementation for demonstration purposes
+        Iterator<AppointmentSlot> iterator = clinic.getAppointmentIterator

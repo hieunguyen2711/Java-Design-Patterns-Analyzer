@@ -1,0 +1,25 @@
+### FILE: LessonManager.java
+```java
+public class LessonManager {
+    private static volatile LessonManager instance;
+    
+    private LessonManager() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static LessonManager getInstance() {
+        if (instance == null) {
+            synchronized (LessonManager.class) {
+                if (instance == null) {
+                    instance = new LessonManager();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void loadLessons() {
+        System.out.println("Loading lessons...");
+    }
+}
+```

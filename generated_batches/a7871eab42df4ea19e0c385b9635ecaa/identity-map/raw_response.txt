@@ -1,0 +1,110 @@
+### FILE: Customer.java
+```java
+package com.example.bank;
+
+import java.util.Objects;
+
+public class Customer {
+    private final String customerId;
+    private String name;
+    private String email;
+
+    public Customer(String customerId, String name, String email) {
+        this.customerId = customerId;
+        this.name = name;
+        this.email = email;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(customerId, customer.customerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerId);
+    }
+}
+```
+
+### FILE: CustomerRepository.java
+```java
+package com.example.bank;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class CustomerRepository {
+    private static final Map<String, Customer> customerCache = new HashMap<>();
+    
+    public static Customer findById(String customerId) {
+        return customerCache.get(customerId);
+    }
+    
+    public static void save(Customer customer) {
+        customerCache.put(customer.getCustomerId(), customer);
+    }
+    
+    public static void clearCache() {
+        customerCache.clear();
+    }
+}
+```
+
+### FILE: CustomerService.java
+```java
+package com.example.bank;
+
+public class CustomerService {
+    
+    public Customer getCustomer(String customerId) {
+        // Check if customer is already loaded
+        Customer existingCustomer = CustomerRepository.findById(customerId);
+        
+        if (existingCustomer != null) {
+            return existingCustomer;
+        }
+        
+        // Simulate loading from database
+        Customer newCustomer = createCustomerFromDatabase(customerId);
+        CustomerRepository.save(newCustomer);
+        
+        return newCustomer;
+    }
+    
+    private Customer createCustomerFromDatabase(String customerId) {
+        // In a real application, this would query a database
+        return new Customer(customerId, "John Doe", "john.doe@example.com");
+    }
+}
+```
+
+### FILE: BankApplication.java
+```java
+package com.example.bank;
+
+public class BankApplication {
+    public static void main(String[] args) {

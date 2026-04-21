@@ -1,0 +1,100 @@
+### FILE: FleetManager.java
+```java
+public class FleetManager {
+    private static volatile FleetManager instance;
+    
+    private FleetManager() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static FleetManager getInstance() {
+        if (instance == null) {
+            synchronized (FleetManager.class) {
+                if (instance == null) {
+                    instance = new FleetManager();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void manageVehicles() {
+        System.out.println("Managing fleet vehicles...");
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String id;
+    private String model;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String model) {
+        this.id = id;
+        this.model = model;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: ReservationSystem.java
+```java
+public class ReservationSystem {
+    private static volatile ReservationSystem instance;
+    
+    private ReservationSystem() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static ReservationSystem getInstance() {
+        if (instance == null) {
+            synchronized (ReservationSystem.class) {
+                if (instance == null) {
+                    instance = new ReservationSystem();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void processReservation(Vehicle vehicle) {
+        System.out.println("Processing reservation for vehicle: " + vehicle.getId());
+    }
+}
+```
+
+### FILE: MaintenanceTracker.java
+```java
+public class MaintenanceTracker {
+    private static volatile MaintenanceTracker instance;
+    
+    private MaintenanceTracker() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static MaintenanceTracker getInstance() {
+        if (instance == null) {
+            synchronized (MaintenanceTracker.class) {
+                if (instance == null) {
+                    instance = new MaintenanceTracker();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void updateMaintenanceStatus(Vehicle vehicle, String status) {
+        System.out.println("Updating maintenance status for vehicle " + 
+                          vehicle

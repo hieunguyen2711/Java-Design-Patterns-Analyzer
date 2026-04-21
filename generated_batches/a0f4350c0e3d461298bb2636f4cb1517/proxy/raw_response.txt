@@ -1,0 +1,76 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+}
+```
+
+### FILE: LibraryService.java
+```java
+public interface LibraryService {
+    void borrowBook(String memberId, String isbn);
+    void returnBook(String memberId, String isbn);
+    boolean isBookAvailable(String isbn);
+}
+```
+
+### FILE: RealLibraryService.java
+```java
+import java.util.*;
+
+public class RealLibraryService implements LibraryService {
+    private Map<String, Book> books;
+    private Map<String, List<String>> memberBorrowedBooks;
+    
+    public RealLibraryService() {
+        this.books = new HashMap<>();
+        this.memberBorrowedBooks = new HashMap<>();
+        initializeBooks();
+    }
+    
+    private void initializeBooks() {
+        books.put("978-0-123456-78-9", new Book("978-0-123456-78-9", "Effective Java", "Joshua Bloch"));
+        books.put("978-0-987654-32-1", new Book("978-0-987654-32-1", "Clean Code", "Robert Martin"));
+    }
+    
+    @Override
+    public void borrowBook(String memberId, String isbn) {
+        if (isBookAvailable(isbn)) {
+            memberBorrowedBooks.computeIfAbsent(memberId, k -> new ArrayList<>()).add(isbn);
+            System.out.println("Book borrowed successfully by member: " + memberId);
+        } else {
+            System.out.println("Book is not available for borrowing");
+        }
+    }
+    
+    @Override
+    public void returnBook(String memberId, String isbn) {
+        if (memberBorrowedBooks.containsKey(memberId)) {
+            memberBorrowedBooks.get(memberId).remove(isbn);
+            System.out.println("Book returned successfully by member: " + memberId);
+        }
+    }
+    
+    @Override
+    public boolean isBookAvailable(String isbn) {
+        return

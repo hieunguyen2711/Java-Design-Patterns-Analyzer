@@ -1,0 +1,94 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee implements Cloneable {
+    private String name;
+    private int id;
+    private double baseSalary;
+    
+    public Employee(String name, int id, double baseSalary) {
+        this.name = name;
+        this.id = id;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+    
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+    
+    @Override
+    public Employee clone() throws CloneNotSupportedException {
+        return (Employee) super.clone();
+    }
+    
+    @Override
+    public String toString() {
+        return "Employee{name='" + name + "', id=" + id + ", baseSalary=" + baseSalary + "}";
+    }
+}
+```
+
+### FILE: EmployeePrototypeRegistry.java
+```java
+package hr.system;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class EmployeePrototypeRegistry {
+    private Map<String, Employee> prototypes = new HashMap<>();
+    
+    public void registerPrototype(String key, Employee prototype) {
+        prototypes.put(key, prototype);
+    }
+    
+    public Employee createEmployee(String key) throws CloneNotSupportedException {
+        Employee prototype = prototypes.get(key);
+        if (prototype != null) {
+            return prototype.clone();
+        }
+        throw new IllegalArgumentException("No prototype found for key: " + key);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package hr.system;
+
+public class Main {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        EmployeePrototypeRegistry registry = new EmployeePrototypeRegistry();
+        
+        // Register prototypes
+        Employee developerPrototype = new Employee("John Doe", 1001, 75000.0);
+        Employee managerPrototype = new Employee("Jane Smith", 1002, 95000.0);
+        
+        registry.registerPrototype("developer", developerPrototype);
+        registry.registerPrototype("manager", managerPrototype);
+        
+        // Create new employees using prototypes
+        Employee juniorDev = registry.createEmployee("developer");
+        juniorDev.setName("Alice Johnson");
+        juniorDev.setId(20

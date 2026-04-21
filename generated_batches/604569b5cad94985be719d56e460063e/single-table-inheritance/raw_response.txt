@@ -1,0 +1,88 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public abstract class Employee {
+    protected String id;
+    protected String name;
+    protected double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public abstract double calculateSalary();
+    
+    public abstract String getEmployeeType();
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: Manager.java
+```java
+package hr.system;
+
+public class Manager extends Employee {
+    private int teamSize;
+    
+    public Manager(String id, String name, double baseSalary, int teamSize) {
+        super(id, name, baseSalary);
+        this.teamSize = teamSize;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (teamSize * 500);
+    }
+    
+    @Override
+    public String getEmployeeType() {
+        return "Manager";
+    }
+    
+    // Getters and setters
+    public int getTeamSize() { return teamSize; }
+    public void setTeamSize(int teamSize) { this.teamSize = teamSize; }
+}
+```
+
+### FILE: Developer.java
+```java
+package hr.system;
+
+public class Developer extends Employee {
+    private String programmingLanguage;
+    
+    public Developer(String id, String name, double baseSalary, String programmingLanguage) {
+        super(id, name, baseSalary);
+        this.programmingLanguage = programmingLanguage;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (programmingLanguage.equals("Java") ? 1000 : 500);
+    }
+    
+    @Override
+    public String getEmployeeType() {
+        return "Developer";
+    }
+    
+    // Getters and setters
+    public String getProgrammingLanguage() { return programmingLanguage; }
+    public void setProgrammingLanguage(String programmingLanguage) { this.programmingLanguage = programmingLanguage; }
+}
+```
+
+### FILE: Intern.java
+```java
+package hr.system

@@ -1,0 +1,88 @@
+### FILE: Menu.java
+```java
+public interface Menu {
+    String getMenuItems();
+}
+```
+
+### FILE: RealMenu.java
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public class RealMenu implements Menu {
+    private List<String> items;
+    
+    public RealMenu() {
+        // Simulate expensive operation to load menu data
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        this.items = Arrays.asList(
+            "Margherita Pizza", 
+            "Pepperoni Pizza", 
+            "Caesar Salad", 
+            "Garlic Bread",
+            "Tiramisu"
+        );
+    }
+    
+    @Override
+    public String getMenuItems() {
+        return String.join(", ", items);
+    }
+}
+```
+
+### FILE: VirtualMenuProxy.java
+```java
+public class VirtualMenuProxy implements Menu {
+    private RealMenu realMenu;
+    private boolean loaded = false;
+    
+    @Override
+    public String getMenuItems() {
+        if (!loaded) {
+            realMenu = new RealMenu();
+            loaded = true;
+        }
+        return realMenu.getMenuItems();
+    }
+}
+```
+
+### FILE: RestaurantService.java
+```java
+public class RestaurantService {
+    private Menu menu;
+    
+    public RestaurantService() {
+        this.menu = new VirtualMenuProxy();
+    }
+    
+    public String getAvailableMenu() {
+        return "Current Menu: " + menu.getMenuItems();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        RestaurantService service = new RestaurantService();
+        
+        System.out.println("Loading restaurant menu...");
+        long startTime = System.currentTimeMillis();
+        
+        String menu = service.getAvailableMenu();
+        
+        long endTime = System.currentTimeMillis();
+        System.out.println(menu);
+        System.out.println("Load time: " + (endTime - startTime) + "ms");
+    }
+}
+```

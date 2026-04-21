@@ -1,0 +1,84 @@
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    public static void main(String[] args) {
+        Book book1 = new Book("1234567890", "Java Programming", "John Doe");
+        Book book2 = new Book("0987654321", "Design Patterns", "Gang of Four");
+        
+        Library library = Library.getInstance();
+        library.addBook(book1);
+        library.addBook(book2);
+        
+        Member member1 = new Member("M001", "Alice Smith");
+        Member member2 = new Member("M002", "Bob Johnson");
+        
+        library.registerMember(member1);
+        library.registerMember(member2);
+        
+        library.borrowBook("1234567890", "M001");
+        library.borrowBook("0987654321", "M002");
+        
+        System.out.println("Books in library: " + library.getAvailableBooks().size());
+    }
+}
+```
+
+### FILE: Book.java
+```java
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    public String getIsbn() { return isbn; }
+    public String getTitle() { return title; }
+    public String getAuthor() { return author; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String memberId;
+    private String name;
+    
+    public Member(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+    }
+    
+    public String getMemberId() { return memberId; }
+    public String getName() { return name; }
+}
+```
+
+### FILE: Library.java
+```java
+import java.util.*;
+
+public class Library {
+    private static Library instance;
+    private List<Book> books;
+    private Map<String, Member> members;
+    private Map<String, Book> borrowedBooks;
+    
+    private Library() {
+        books = new ArrayList<>();
+        members = new HashMap<>();
+        borrowedBooks = new HashMap<>();
+    }
+    
+    public static synchronized Library getInstance() {
+        if (instance == null) {
+            instance = new Library();
+        }
+        return instance;
+    }
+    
+    public void addBook(Book

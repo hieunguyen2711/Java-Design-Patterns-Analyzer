@@ -1,0 +1,106 @@
+### FILE: MenuItem.java
+```java
+public class MenuItem {
+    private String name;
+    private double price;
+    
+    public MenuItem(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: Menu.java
+```java
+import java.util.*;
+
+public class Menu implements Iterable<MenuItem> {
+    private List<MenuItem> items;
+    
+    public Menu() {
+        this.items = new ArrayList<>();
+    }
+    
+    public void addItem(MenuItem item) {
+        items.add(item);
+    }
+    
+    public Iterator<MenuItem> iterator() {
+        return items.iterator();
+    }
+}
+```
+
+### FILE: Order.java
+```java
+import java.util.*;
+
+public class Order {
+    private List<MenuItem> items;
+    
+    public Order() {
+        this.items = new ArrayList<>();
+    }
+    
+    public void addItem(MenuItem item) {
+        items.add(item);
+    }
+    
+    public Iterator<MenuItem> getItemsIterator() {
+        return items.iterator();
+    }
+}
+```
+
+### FILE: Restaurant.java
+```java
+public class Restaurant {
+    private Menu menu;
+    
+    public Restaurant() {
+        this.menu = new Menu();
+        initializeMenu();
+    }
+    
+    private void initializeMenu() {
+        menu.addItem(new MenuItem("Burger", 12.99));
+        menu.addItem(new MenuItem("Pizza", 15.50));
+        menu.addItem(new MenuItem("Salad", 8.75));
+        menu.addItem(new MenuItem("Pasta", 14.25));
+    }
+    
+    public void displayMenu() {
+        System.out.println("Restaurant Menu:");
+        for (MenuItem item : menu) {
+            System.out.println("- " + item.getName() + ": $" + item.getPrice());
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.displayMenu();
+        
+        Order order = new Order();
+        order.addItem(new MenuItem("Burger", 12.99));
+        order.addItem(new MenuItem("Pizza", 15.50));
+        
+        System.out.println("\nOrder items:");
+        for (MenuItem item : order.getItemsIterator()) {
+            System.out.println("- " + item.getName() + ": $" + item.getPrice());
+        }
+    }
+}

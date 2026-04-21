@@ -1,0 +1,105 @@
+### FILE: FleetManager.java
+```java
+package fleet;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class FleetManager {
+    private final BlockingQueue<VehicleRequest> requestQueue = new LinkedBlockingQueue<>();
+    private final AtomicBoolean isRunning = new AtomicBoolean(true);
+    
+    public void submitRequest(VehicleRequest request) throws InterruptedException {
+        requestQueue.put(request);
+    }
+    
+    public VehicleRequest getNextRequest() throws InterruptedException {
+        return requestQueue.take();
+    }
+    
+    public boolean isRunning() {
+        return isRunning.get();
+    }
+    
+    public void stop() {
+        isRunning.set(false);
+    }
+}
+```
+
+### FILE: VehicleRequest.java
+```java
+package fleet;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+
+public class VehicleRequest {
+    private final String vehicleType;
+    private final int durationHours;
+    private final Future<Vehicle> responseFuture;
+    
+    public VehicleRequest(String vehicleType, int durationHours) {
+        this.vehicleType = vehicleType;
+        this.durationHours = durationHours;
+        this.responseFuture = new CompletableFuture<>();
+    }
+    
+    public String getVehicleType() {
+        return vehicleType;
+    }
+    
+    public int getDurationHours() {
+        return durationHours;
+    }
+    
+    public Future<Vehicle> getResponseFuture() {
+        return responseFuture;
+    }
+    
+    public void completeWith(Vehicle vehicle) {
+        ((CompletableFuture<Vehicle>) responseFuture).complete(vehicle);
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public class Vehicle {
+    private final String id;
+    private final String type;
+    private boolean isAvailable;
+    private int maintenanceHoursRemaining;
+    
+    public Vehicle(String id, String type) {
+        this.id = id;
+        this.type = type;
+        this.isAvailable = true;
+        this.maintenanceHoursRemaining = 100; // Starting with 100 hours
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+    
+    public int getMaintenanceHoursRemaining() {
+        return maintenanceHoursRemaining;
+    }
+    
+    public void decrementMaintenanceHours(int hours) {
+        maintenanceHoursRemaining -= hours

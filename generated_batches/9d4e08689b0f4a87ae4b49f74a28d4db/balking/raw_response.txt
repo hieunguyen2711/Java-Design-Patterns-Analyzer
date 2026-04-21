@@ -1,0 +1,97 @@
+### FILE: FleetManager.java
+```java
+package com.fleetmanager;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class FleetManager {
+    private final AtomicBoolean isMaintenanceInProgress = new AtomicBoolean(false);
+    private final Vehicle[] vehicles;
+    
+    public FleetManager(int vehicleCount) {
+        this.vehicles = new Vehicle[vehicleCount];
+        for (int i = 0; i < vehicleCount; i++) {
+            vehicles[i] = new Vehicle("VEH-" + i);
+        }
+    }
+    
+    public boolean reserveVehicle(String vehicleId) {
+        // Balking pattern: if maintenance is in progress, don't proceed
+        if (isMaintenanceInProgress.get()) {
+            System.out.println("Cannot reserve vehicle " + vehicleId + 
+                             " - Maintenance in progress");
+            return false;
+        }
+        
+        Vehicle vehicle = findVehicle(vehicleId);
+        if (vehicle != null && !vehicle.isReserved()) {
+            vehicle.reserve();
+            System.out.println("Vehicle " + vehicleId + " reserved successfully");
+            return true;
+        }
+        return false;
+    }
+    
+    public void startMaintenance() {
+        // Only allow maintenance to start if no reservations are active
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.isReserved()) {
+                System.out.println("Cannot start maintenance - vehicle " + 
+                                 vehicle.getId() + " is reserved");
+                return;
+            }
+        }
+        
+        isMaintenanceInProgress.set(true);
+        System.out.println("Maintenance started on all vehicles");
+    }
+    
+    public void completeMaintenance() {
+        isMaintenanceInProgress.set(false);
+        System.out.println("Maintenance completed");
+    }
+    
+    private Vehicle findVehicle(String vehicleId) {
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getId().equals(vehicleId)) {
+                return vehicle;
+            }
+        }
+        return null;
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+package com.fleetmanager;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class Vehicle {
+    private final String id;
+    private final AtomicBoolean isReserved = new AtomicBoolean(false);
+    
+    public Vehicle(String id) {
+        this.id = id;
+    }
+    
+    public void reserve() {
+        isReserved.set(true);
+    }
+    
+    public boolean isReserved() {
+        return isReserved.get();
+    }
+    
+    public String getId() {
+        return id;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.fleetmanager;
+
+public class Main

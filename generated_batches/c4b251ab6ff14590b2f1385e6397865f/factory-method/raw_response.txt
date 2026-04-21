@@ -1,0 +1,95 @@
+### FILE: Order.java
+```java
+public abstract class Order {
+    protected String orderId;
+    protected double totalAmount;
+    
+    public Order(String orderId, double totalAmount) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+    }
+    
+    public abstract void processOrder();
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+}
+```
+
+### FILE: FoodOrder.java
+```java
+public class FoodOrder extends Order {
+    private String menuItems;
+    
+    public FoodOrder(String orderId, double totalAmount, String menuItems) {
+        super(orderId, totalAmount);
+        this.menuItems = menuItems;
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing food order: " + orderId + 
+                          " with items: " + menuItems);
+    }
+}
+```
+
+### FILE: BeverageOrder.java
+```java
+public class BeverageOrder extends Order {
+    private String beverages;
+    
+    public BeverageOrder(String orderId, double totalAmount, String beverages) {
+        super(orderId, totalAmount);
+        this.beverages = beverages;
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing beverage order: " + orderId + 
+                          " with drinks: " + beverages);
+    }
+}
+```
+
+### FILE: OrderFactory.java
+```java
+public abstract class OrderFactory {
+    public abstract Order createOrder(String orderId, double totalAmount, String details);
+    
+    public Order createFoodOrder(String orderId, double totalAmount, String menuItems) {
+        return createOrder(orderId, totalAmount, menuItems);
+    }
+    
+    public Order createBeverageOrder(String orderId, double totalAmount, String beverages) {
+        return createOrder(orderId, totalAmount, beverages);
+    }
+}
+```
+
+### FILE: FoodOrderFactory.java
+```java
+public class FoodOrderFactory extends OrderFactory {
+    @Override
+    public Order createOrder(String orderId, double totalAmount, String details) {
+        return new FoodOrder(orderId, totalAmount, details);
+    }
+}
+```
+
+### FILE: BeverageOrderFactory.java
+```java
+public class BeverageOrderFactory extends OrderFactory {
+    @Override
+    public Order createOrder(String orderId, double totalAmount, String details) {
+        return new BeverageOrder(orderId, totalAmount, details);
+    }
+}
+```
+
+### FILE:

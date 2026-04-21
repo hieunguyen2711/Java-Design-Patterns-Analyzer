@@ -1,0 +1,99 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private String title;
+    private boolean isDirty = false;
+    
+    public Course(String title) {
+        this.title = title;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+        setDirty(true);
+    }
+    
+    public boolean isDirty() {
+        return isDirty;
+    }
+    
+    public void setDirty(boolean dirty) {
+        isDirty = dirty;
+    }
+    
+    public void clearDirtyFlag() {
+        isDirty = false;
+    }
+}
+```
+
+### FILE: CourseManager.java
+```java
+package com.lms.service;
+
+import com.lms.model.Course;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CourseManager {
+    private List<Course> courses = new ArrayList<>();
+    
+    public void addCourse(Course course) {
+        courses.add(course);
+    }
+    
+    public void updateCourseTitle(int index, String newTitle) {
+        if (index >= 0 && index < courses.size()) {
+            courses.get(index).setTitle(newTitle);
+        }
+    }
+    
+    public List<Course> getDirtyCourses() {
+        List<Course> dirtyCourses = new ArrayList<>();
+        for (Course course : courses) {
+            if (course.isDirty()) {
+                dirtyCourses.add(course);
+            }
+        }
+        return dirtyCourses;
+    }
+    
+    public void saveAllDirtyCourses() {
+        for (Course course : getDirtyCourses()) {
+            System.out.println("Saving course: " + course.getTitle());
+            course.clearDirtyFlag();
+        }
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package com.lms;
+
+import com.lms.model.Course;
+import com.lms.service.CourseManager;
+
+public class Main {
+    public static void main(String[] args) {
+        CourseManager manager = new CourseManager();
+        
+        Course course1 = new Course("Java Fundamentals");
+        Course course2 = new Course("Advanced Java");
+        
+        manager.addCourse(course1);
+        manager.addCourse(course2);
+        
+        System.out.println("Initial dirty flags:");
+        System.out.println("Course 1 is dirty: " + course1.isDirty());
+        System.out.println("Course 2 is dirty: " + course2.isDirty());
+        
+        manager.updateCourseTitle(0, "Java Fundamentals - Updated");
+        
+        System.out.println("\nAfter updating first course:");

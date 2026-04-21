@@ -1,0 +1,94 @@
+### FILE: RoomInventoryService.java
+```java
+package hotel.inventory;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class RoomInventoryService {
+    private final BlockingQueue<RoomRequest> requestQueue = new LinkedBlockingQueue<>();
+    private volatile boolean shutdown = false;
+    
+    public void submitRequest(RoomRequest request) throws InterruptedException {
+        if (!shutdown) {
+            requestQueue.put(request);
+        }
+    }
+    
+    public RoomResponse processNextRequest() throws InterruptedException {
+        RoomRequest request = requestQueue.take();
+        return handleRequest(request);
+    }
+    
+    private RoomResponse handleRequest(RoomRequest request) {
+        // Simulate processing
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return new RoomResponse(false, "Interrupted");
+        }
+        
+        if (request.getType() == RequestType.AVAILABILITY) {
+            boolean available = Math.random() > 0.3;
+            return new RoomResponse(available, 
+                available ? "Room available" : "No rooms available");
+        } else if (request.getType() == RequestType.BOOKING) {
+            boolean booked = Math.random() > 0.2;
+            return new RoomResponse(booked, 
+                booked ? "Booking confirmed" : "Booking failed");
+        }
+        
+        return new RoomResponse(false, "Unknown request type");
+    }
+    
+    public void shutdown() {
+        shutdown = true;
+    }
+}
+```
+
+### FILE: RoomRequest.java
+```java
+package hotel.inventory;
+
+public class RoomRequest {
+    private final RequestType type;
+    private final String guestName;
+    private final int roomNumber;
+    
+    public RoomRequest(RequestType type, String guestName, int roomNumber) {
+        this.type = type;
+        this.guestName = guestName;
+        this.roomNumber = roomNumber;
+    }
+    
+    public RequestType getType() {
+        return type;
+    }
+    
+    public String getGuestName() {
+        return guestName;
+    }
+    
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+}
+```
+
+### FILE: RoomResponse.java
+```java
+package hotel.inventory;
+
+public class RoomResponse {
+    private final boolean success;
+    private final String message;
+    
+    public RoomResponse(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
+    
+    public boolean isSuccess() {
+        return success;

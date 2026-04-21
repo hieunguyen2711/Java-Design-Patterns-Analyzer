@@ -1,0 +1,87 @@
+### FILE: Account.java
+```java
+package banking;
+
+public class Account {
+    private final String accountId;
+    private double balance;
+    
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+    
+    public synchronized boolean withdraw(double amount) {
+        if (amount <= 0 || balance < amount) {
+            return false; // Balking - cannot proceed with withdrawal
+        }
+        
+        balance -= amount;
+        System.out.println("Withdrawal of " + amount + " completed. New balance: " + balance);
+        return true;
+    }
+    
+    public synchronized boolean deposit(double amount) {
+        if (amount <= 0) {
+            return false; // Balking - cannot proceed with invalid deposit
+        }
+        
+        balance += amount;
+        System.out.println("Deposit of " + amount + " completed. New balance: " + balance);
+        return true;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+}
+```
+
+### FILE: TransferService.java
+```java
+package banking;
+
+public class TransferService {
+    private final Account fromAccount;
+    private final Account toAccount;
+    
+    public TransferService(Account fromAccount, Account toAccount) {
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+    }
+    
+    public synchronized boolean transfer(double amount) {
+        // Balking - if withdrawal fails, don't proceed with deposit
+        if (!fromAccount.withdraw(amount)) {
+            System.out.println("Transfer failed: insufficient funds in account " + 
+                             fromAccount.getAccountId());
+            return false;
+        }
+        
+        // If we reach here, withdrawal succeeded, so proceed with deposit
+        boolean success = toAccount.deposit(amount);
+        if (!success) {
+            // This is a rare case - should ideally rollback the withdrawal
+            System.out.println("Transfer failed: could not complete deposit");
+            return false;
+        }
+        
+        System.out.println("Transfer of " + amount + " completed from account " + 
+                         fromAccount.getAccountId() + " to " + toAccount.getAccountId());
+        return true;
+    }
+}
+```
+
+### FILE: BankingSystem.java
+```java
+package banking;
+
+public class BankingSystem {
+    public static void main(String[] args) {
+        Account account1 = new Account("ACC001", 1000.0);
+       

@@ -1,0 +1,81 @@
+### FILE: Promise.java
+```java
+package com.lms.promise;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+public class Promise<T> {
+    private final CompletableFuture<T> future;
+    
+    private Promise(CompletableFuture<T> future) {
+        this.future = future;
+    }
+    
+    public static <T> Promise<T> resolve(T value) {
+        return new Promise<>(CompletableFuture.completedFuture(value));
+    }
+    
+    public static <T> Promise<T> reject(Throwable throwable) {
+        CompletableFuture<T> failedFuture = new CompletableFuture<>();
+        failedFuture.completeExceptionally(throwable);
+        return new Promise<>(failedFuture);
+    }
+    
+    public static <T> Promise<T> async(Function<Consumer<T>, Void> asyncOperation) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        asyncOperation.accept(future::complete);
+        return new Promise<>(future);
+    }
+    
+    public <U> Promise<U> then(Function<T, U> mapper) {
+        return new Promise<>(future.thenApply(mapper));
+    }
+    
+    public Promise<Void> then(Consumer<T> action) {
+        return new Promise<>(future.thenAccept(action));
+    }
+    
+    public Promise<T> catchException(Function<Throwable, T> errorHandler) {
+        return new Promise<>(future.exceptionally(errorHandler::apply));
+    }
+    
+    public T get() throws InterruptedException, java.util.concurrent.ExecutionException {
+        return future.get();
+    }
+}
+```
+
+### FILE: AssignmentSubmission.java
+```java
+package com.lms.model;
+
+import com.lms.promise.Promise;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public class AssignmentSubmission {
+    private final UUID id;
+    private final UUID assignmentId;
+    private final UUID studentId;
+    private final String content;
+    private final LocalDateTime submittedAt;
+    private Promise<Grade> gradePromise;
+    
+    public AssignmentSubmission(UUID assignmentId, UUID studentId, String content) {
+        this.id = UUID.randomUUID();
+        this.assignmentId = assignmentId;
+        this.studentId = studentId;
+        this.content = content;
+        this.submittedAt = LocalDateTime.now();
+    }
+    
+    public Promise<Grade> getGrade() {
+        if (gradePromise == null) {
+            gradePromise = Promise.async((callback) -> {
+                // Simulate async grading process
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000); // Simulate processing time
+                        Grade grade = new Grade

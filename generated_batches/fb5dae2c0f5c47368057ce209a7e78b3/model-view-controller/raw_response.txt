@@ -1,0 +1,96 @@
+### FILE: Course.java
+```java
+package lms.model;
+
+public class Course {
+    private String courseId;
+    private String title;
+    private String description;
+    
+    public Course(String courseId, String title, String description) {
+        this.courseId = courseId;
+        this.title = title;
+        this.description = description;
+    }
+    
+    // Getters and setters
+    public String getCourseId() { return courseId; }
+    public void setCourseId(String courseId) { this.courseId = courseId; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+}
+```
+
+### FILE: CourseController.java
+```java
+package lms.controller;
+
+import lms.model.Course;
+import lms.view.CourseView;
+
+public class CourseController {
+    private Course model;
+    private CourseView view;
+    
+    public CourseController(Course model, CourseView view) {
+        this.model = model;
+        this.view = view;
+    }
+    
+    public void updateCourseTitle(String title) {
+        model.setTitle(title);
+        view.printCourseDetails(model.getTitle(), model.getDescription());
+    }
+    
+    public void updateCourseDescription(String description) {
+        model.setDescription(description);
+        view.printCourseDetails(model.getTitle(), model.getDescription());
+    }
+    
+    public void displayCourse() {
+        view.printCourseDetails(model.getTitle(), model.getDescription());
+    }
+}
+```
+
+### FILE: CourseView.java
+```java
+package lms.view;
+
+public class CourseView {
+    public void printCourseDetails(String title, String description) {
+        System.out.println("Course Details:");
+        System.out.println("Title: " + title);
+        System.out.println("Description: " + description);
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+package lms;
+
+import lms.controller.CourseController;
+import lms.model.Course;
+import lms.view.CourseView;
+
+public class LMSApplication {
+    public static void main(String[] args) {
+        // Model
+        Course course = new Course("CS101", "Introduction to Computer Science", 
+                                  "Learn the fundamentals of computer science");
+        
+        // View
+        CourseView courseView = new CourseView();
+        
+        // Controller
+        CourseController controller = new CourseController(course, courseView);
+        
+        // Display initial course details
+        controller.displayCourse();
+        
+       

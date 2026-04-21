@@ -1,0 +1,93 @@
+### FILE: MenuItem.java
+```java
+package restaurant.menu;
+
+public class MenuItem implements Cloneable {
+    private String name;
+    private double price;
+    private String category;
+    
+    public MenuItem(String name, double price, String category) {
+        this.name = name;
+        this.price = price;
+        this.category = category;
+    }
+    
+    @Override
+    public MenuItem clone() throws CloneNotSupportedException {
+        return (MenuItem) super.clone();
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+}
+```
+
+### FILE: MenuPrototypeRegistry.java
+```java
+package restaurant.menu;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MenuPrototypeRegistry {
+    private Map<String, MenuItem> prototypes = new HashMap<>();
+    
+    public MenuPrototypeRegistry() {
+        initializePrototypes();
+    }
+    
+    private void initializePrototypes() {
+        prototypes.put("pizza", new MenuItem("Margherita Pizza", 12.99, "Main Course"));
+        prototypes.put("salad", new MenuItem("Caesar Salad", 8.50, "Appetizer"));
+        prototypes.put("coffee", new MenuItem("Espresso", 3.25, "Beverage"));
+    }
+    
+    public MenuItem createMenuItem(String type) {
+        try {
+            MenuItem prototype = prototypes.get(type);
+            if (prototype != null) {
+                return prototype.clone();
+            }
+            return null;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Failed to clone menu item", e);
+        }
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package restaurant.order;
+
+import restaurant.menu.MenuItem;
+
+public class OrderItem {
+    private MenuItem menuItem;
+    private int quantity;
+    
+    public OrderItem(MenuItem menuItem, int quantity) {
+        this.menuItem = menuItem;
+        this.quantity = quantity;
+    }
+    
+    public MenuItem getMenuItem() {
+        return menuItem;
+    }
+    
+    public void setMenuItem(MenuItem menuItem) {
+        this.menuItem = menuItem;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(int quantity) {
+        this.quantity =

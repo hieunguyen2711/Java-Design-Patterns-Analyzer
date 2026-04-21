@@ -1,0 +1,112 @@
+### FILE: Book.java
+```java
+package library.model;
+
+public class Book {
+    private final String isbn;
+    private final String title;
+    private final String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+        Book book = (Book) obj;
+        return isbn.equals(book.isbn);
+    }
+    
+    @Override
+    public int hashCode() {
+        return isbn.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return "Book{" +
+                "isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: Member.java
+```java
+package library.model;
+
+public class Member {
+    private final int memberId;
+    private final String name;
+    private final String email;
+    
+    public Member(int memberId, String name, String email) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    public int getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+        Member member = (Member) obj;
+        return memberId == member.memberId;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(memberId);
+    }
+    
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId=" + memberId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: BorrowingRecord.java
+```java
+package library.model;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
+public class BorrowingRecord {

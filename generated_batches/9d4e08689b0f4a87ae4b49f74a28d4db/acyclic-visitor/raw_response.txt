@@ -1,0 +1,99 @@
+### FILE: Vehicle.java
+```java
+public abstract class Vehicle {
+    protected String make;
+    protected String model;
+    protected int year;
+    
+    public Vehicle(String make, String model, int year) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+    }
+    
+    public abstract void accept(VehicleVisitor visitor);
+    
+    // Getters
+    public String getMake() { return make; }
+    public String getModel() { return model; }
+    public int getYear() { return year; }
+}
+```
+
+### FILE: Car.java
+```java
+public class Car extends Vehicle {
+    private boolean isConvertible;
+    
+    public Car(String make, String model, int year, boolean isConvertible) {
+        super(make, model, year);
+        this.isConvertible = isConvertible;
+    }
+    
+    @Override
+    public void accept(VehicleVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    // Getters
+    public boolean isConvertible() { return isConvertible; }
+}
+```
+
+### FILE: Truck.java
+```java
+public class Truck extends Vehicle {
+    private double cargoCapacity;
+    
+    public Truck(String make, String model, int year, double cargoCapacity) {
+        super(make, model, year);
+        this.cargoCapacity = cargoCapacity;
+    }
+    
+    @Override
+    public void accept(VehicleVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    // Getters
+    public double getCargoCapacity() { return cargoCapacity; }
+}
+```
+
+### FILE: Motorcycle.java
+```java
+public class Motorcycle extends Vehicle {
+    private boolean hasSidecar;
+    
+    public Motorcycle(String make, String model, int year, boolean hasSidecar) {
+        super(make, model, year);
+        this.hasSidecar = hasSidecar;
+    }
+    
+    @Override
+    public void accept(VehicleVisitor visitor) {
+        visitor.visit(this);
+    }
+    
+    // Getters
+    public boolean hasSidecar() { return hasSidecar; }
+}
+```
+
+### FILE: VehicleVisitor.java
+```java
+public interface VehicleVisitor {
+    void visit(Car car);
+    void visit(Truck truck);
+    void visit(Motorcycle motorcycle);
+}
+```
+
+### FILE: MaintenanceStatusVisitor.java
+```java
+public class MaintenanceStatusVisitor implements VehicleVisitor {
+    private String status;
+    
+    @Override
+    public void visit(Car car) {
+        status = "Car maintenance: Check

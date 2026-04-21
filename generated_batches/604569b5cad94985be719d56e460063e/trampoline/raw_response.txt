@@ -1,0 +1,103 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: SalaryCalculator.java
+```java
+package hr.system;
+
+public class SalaryCalculator {
+    private static final double TAX_RATE = 0.2;
+    private static final double BONUS_MULTIPLIER = 1.1;
+    
+    public TrampolineResult calculateTotalSalary(Employee employee) {
+        return new TrampolineResult(() -> calculateTax(employee));
+    }
+    
+    private TrampolineResult calculateTax(Employee employee) {
+        double taxAmount = employee.getBaseSalary() * TAX_RATE;
+        return new TrampolineResult(() -> calculateBonus(employee, taxAmount));
+    }
+    
+    private TrampolineResult calculateBonus(Employee employee, double taxAmount) {
+        double bonus = employee.getBaseSalary() * BONUS_MULTIPLIER;
+        double total = employee.getBaseSalary() + bonus - taxAmount;
+        return new TrampolineResult(total);
+    }
+}
+```
+
+### FILE: TrampolineResult.java
+```java
+package hr.system;
+
+@FunctionalInterface
+public interface TrampolineResult {
+    TrampolineResult compute();
+    
+    default double getResult() {
+        TrampolineResult current = this;
+        while (current instanceof TrampolineResult) {
+            if (current instanceof ResultWrapper) {
+                return ((ResultWrapper) current).value;
+            }
+            current = current.compute();
+        }
+        throw new IllegalStateException("Invalid trampoline result");
+    }
+    
+    static TrampolineResult of(double value) {
+        return new ResultWrapper(value);
+    }
+    
+    class ResultWrapper implements TrampolineResult {
+        private final double value;
+        
+        public ResultWrapper(double value) {
+            this.value = value;
+        }
+        
+        @Override
+        public TrampolineResult compute() {
+            return this;
+        }
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package hr.system;
+
+public class PayrollService {
+    
+    public double processPayroll(Employee employee) {
+        SalaryCalculator calculator = new SalaryCalculator();
+        TrampolineResult result = calculator.calculateTotalSalary(employee);
+        return result.getResult();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package

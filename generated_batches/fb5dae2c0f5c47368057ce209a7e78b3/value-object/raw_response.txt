@@ -1,0 +1,108 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private final String courseId;
+    private final String title;
+    private final String description;
+    
+    public Course(String courseId, String title, String description) {
+        this.courseId = courseId;
+        this.title = title;
+        this.description = description;
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+        Course course = (Course) obj;
+        return courseId.equals(course.courseId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return courseId.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseId='" + courseId + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.model;
+
+public class LessonModule {
+    private final String moduleId;
+    private final String title;
+    private final int durationMinutes;
+    
+    public LessonModule(String moduleId, String title, int durationMinutes) {
+        this.moduleId = moduleId;
+        this.title = title;
+        this.durationMinutes = durationMinutes;
+    }
+    
+    public String getModuleId() {
+        return moduleId;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public int getDurationMinutes() {
+        return durationMinutes;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        
+        LessonModule that = (LessonModule) obj;
+        return moduleId.equals(that.moduleId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return moduleId.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return "LessonModule{" +
+                "moduleId='" + moduleId + '\'' +
+                ", title='" + title + '\'' +
+                ", durationMinutes=" + durationMinutes +
+                '}';
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+

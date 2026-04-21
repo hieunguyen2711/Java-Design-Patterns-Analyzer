@@ -1,0 +1,84 @@
+### FILE: Employee.java
+```java
+package hr.system.model;
+
+public class Employee {
+    private int id;
+    private String name;
+    private String email;
+    private double salary;
+    
+    public Employee() {}
+    
+    public Employee(int id, String name, String email, double salary) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.salary = salary;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public double getSalary() { return salary; }
+    public void setSalary(double salary) { this.salary = salary; }
+}
+```
+
+### FILE: EmployeeDAO.java
+```java
+package hr.system.dao;
+
+import hr.system.model.Employee;
+import java.util.List;
+
+public interface EmployeeDAO {
+    void save(Employee employee);
+    Employee findById(int id);
+    List<Employee> findAll();
+    void update(Employee employee);
+    void delete(int id);
+}
+```
+
+### FILE: EmployeeDAOMySQLImpl.java
+```java
+package hr.system.dao.impl;
+
+import hr.system.model.Employee;
+import hr.system.dao.EmployeeDAO;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EmployeeDAOMySQLImpl implements EmployeeDAO {
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/hrdb";
+    private static final String USERNAME = "user";
+    private static final String PASSWORD = "password";
+    
+    @Override
+    public void save(Employee employee) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(
+                 "INSERT INTO employees (name, email, salary) VALUES (?, ?, ?)")) {
+            
+            stmt.setString(1, employee.getName());
+            stmt.setString(2, employee.getEmail());
+            stmt.setDouble(3, employee.getSalary());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error saving employee", e);
+        }
+    }
+    
+    @Override
+    public Employee findById(int id) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement("SELECT *

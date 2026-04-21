@@ -1,0 +1,75 @@
+### FILE: CourseManager.java
+```java
+public class CourseManager {
+    private static final String[] COURSE_NAMES = {"Mathematics", "Physics", "Chemistry", "Biology"};
+    private static CourseManager[] instances = new CourseManager[COURSE_NAMES.length];
+    
+    private final String courseName;
+    private int studentCount;
+    
+    private CourseManager(String courseName) {
+        this.courseName = courseName;
+        this.studentCount = 0;
+    }
+    
+    public static CourseManager getInstance(String courseName) {
+        int index = -1;
+        for (int i = 0; i < COURSE_NAMES.length; i++) {
+            if (COURSE_NAMES[i].equals(courseName)) {
+                index = i;
+                break;
+            }
+        }
+        
+        if (index == -1) {
+            throw new IllegalArgumentException("Invalid course name: " + courseName);
+        }
+        
+        if (instances[index] == null) {
+            instances[index] = new CourseManager(courseName);
+        }
+        
+        return instances[index];
+    }
+    
+    public void addStudent() {
+        studentCount++;
+        System.out.println("Added student to " + courseName + ". Total students: " + studentCount);
+    }
+    
+    public int getStudentCount() {
+        return studentCount;
+    }
+    
+    public String getCourseName() {
+        return courseName;
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+public class LMSApplication {
+    public static void main(String[] args) {
+        // Demonstrating multiton pattern with CourseManager instances
+        CourseManager math = CourseManager.getInstance("Mathematics");
+        CourseManager physics = CourseManager.getInstance("Physics");
+        CourseManager chemistry = CourseManager.getInstance("Chemistry");
+        
+        // Accessing same instance through different references
+        CourseManager math2 = CourseManager.getInstance("Mathematics");
+        
+        math.addStudent();
+        math.addStudent();
+        physics.addStudent();
+        chemistry.addStudent();
+        
+        System.out.println("Math students: " + math.getStudentCount());
+        System.out.println("Physics students: " + physics.getStudentCount());
+        System.out.println("Chemistry students: " + chemistry.getStudentCount());
+        
+        // Verify that same instances are returned
+        System.out.println("Are math and math2 the same instance? " + (math == math2));
+    }
+}
+```

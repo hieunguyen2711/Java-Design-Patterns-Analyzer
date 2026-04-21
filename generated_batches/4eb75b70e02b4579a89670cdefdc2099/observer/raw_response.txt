@@ -1,0 +1,101 @@
+### FILE: StockItem.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class StockItem {
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    private List<StockObserver> observers;
+
+    public StockItem(String name, int initialStock, int reorderThreshold) {
+        this.name = name;
+        this.currentStock = initialStock;
+        this.reorderThreshold = reorderThreshold;
+        this.observers = new ArrayList<>();
+    }
+
+    public void addObserver(StockObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(StockObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void setStock(int stock) {
+        this.currentStock = stock;
+        notifyObservers();
+    }
+
+    private void notifyObservers() {
+        for (StockObserver observer : observers) {
+            observer.update(this);
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCurrentStock() {
+        return currentStock;
+    }
+
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+
+    public boolean needsRestock() {
+        return currentStock <= reorderThreshold;
+    }
+}
+```
+
+### FILE: StockObserver.java
+```java
+public interface StockObserver {
+    void update(StockItem item);
+}
+```
+
+### FILE: InventoryLogger.java
+```java
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class InventoryLogger implements StockObserver {
+    private static final DateTimeFormatter formatter = 
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    @Override
+    public void update(StockItem item) {
+        String timestamp = LocalDateTime.now().format(formatter);
+        System.out.println(String.format("[%s] %s stock updated to: %d", 
+            timestamp, item.getName(), item.getCurrentStock()));
+    }
+}
+```
+
+### FILE: ReorderNotifier.java
+```java
+public class ReorderNotifier implements StockObserver {
+
+    @Override
+    public void update(StockItem item) {
+        if (item.needsRestock()) {
+            System.out.println("ALERT: " + item.getName() + 
+                " is below reorder threshold. Current stock: " + 
+                item.getCurrentStock());
+        }
+    }
+}
+```
+
+### FILE: StockManagementSystem.java
+```java
+public class StockManagementSystem {
+    public static void main(String[] args) {
+        // Create a stock item
+        StockItem laptop = new StockItem("Laptop

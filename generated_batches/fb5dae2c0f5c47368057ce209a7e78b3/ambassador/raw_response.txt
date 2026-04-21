@@ -1,0 +1,119 @@
+### FILE: Course.java
+```java
+package com.lms.course;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Course {
+    private String courseId;
+    private String title;
+    private List<LessonModule> modules;
+    
+    public Course(String courseId, String title) {
+        this.courseId = courseId;
+        this.title = title;
+        this.modules = new ArrayList<>();
+    }
+    
+    public void addModule(LessonModule module) {
+        modules.add(module);
+    }
+    
+    public List<LessonModule> getModules() {
+        return modules;
+    }
+    
+    public String getCourseId() {
+        return courseId;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.course;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class LessonModule {
+    private String moduleId;
+    private String title;
+    private List<Assignment> assignments;
+    
+    public LessonModule(String moduleId, String title) {
+        this.moduleId = moduleId;
+        this.title = title;
+        this.assignments = new ArrayList<>();
+    }
+    
+    public void addAssignment(Assignment assignment) {
+        assignments.add(assignment);
+    }
+    
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+    
+    public String getModuleId() {
+        return moduleId;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.course;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Assignment {
+    private String assignmentId;
+    private String title;
+    private List<Submission> submissions;
+    
+    public Assignment(String assignmentId, String title) {
+        this.assignmentId = assignmentId;
+        this.title = title;
+        this.submissions = new ArrayList<>();
+    }
+    
+    public void addSubmission(Submission submission) {
+        submissions.add(submission);
+    }
+    
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+    
+    public String getAssignmentId() {
+        return assignmentId;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.course;
+
+public class Submission {
+    private String submissionId;
+    private String studentId;
+    private String content;
+    private Grade grade;
+    
+    public Submission(String submissionId, String studentId, String content)

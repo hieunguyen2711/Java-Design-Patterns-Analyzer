@@ -1,0 +1,115 @@
+### FILE: MenuItem.java
+```java
+public class MenuItem {
+    private String name;
+    private double price;
+    
+    public MenuItem(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: Beverage.java
+```java
+public class Beverage extends MenuItem {
+    private boolean isAlcoholic;
+    
+    public Beverage(String name, double price, boolean isAlcoholic) {
+        super(name, price);
+        this.isAlcoholic = isAlcoholic;
+    }
+    
+    public boolean isAlcoholic() {
+        return isAlcoholic;
+    }
+}
+```
+
+### FILE: Food.java
+```java
+public class Food extends MenuItem {
+    private String category;
+    
+    public Food(String name, double price, String category) {
+        super(name, price);
+        this.category = category;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+public interface OrderItem {
+    void accept(OrderItemVisitor visitor);
+}
+```
+
+### FILE: OrderItemVisitor.java
+```java
+public interface OrderItemVisitor {
+    void visit(MenuItem menuItem);
+    void visit(Beverage beverage);
+    void visit(Food food);
+}
+```
+
+### FILE: PriceCalculationVisitor.java
+```java
+public class PriceCalculationVisitor implements OrderItemVisitor {
+    private double totalPrice = 0.0;
+    
+    @Override
+    public void visit(MenuItem menuItem) {
+        totalPrice += menuItem.getPrice();
+    }
+    
+    @Override
+    public void visit(Beverage beverage) {
+        totalPrice += beverage.getPrice();
+    }
+    
+    @Override
+    public void visit(Food food) {
+        totalPrice += food.getPrice();
+    }
+    
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+}
+```
+
+### FILE: AlcoholCheckVisitor.java
+```java
+public class AlcoholCheckVisitor implements OrderItemVisitor {
+    private boolean hasAlcoholic = false;
+    
+    @Override
+    public void visit(MenuItem menuItem) {
+        // Do nothing for non-beverages
+    }
+    
+    @Override
+    public void visit(Beverage beverage) {
+        if (beverage.isAlcoholic()) {
+            hasAlcoholic = true;
+        }
+    }
+    
+    @Override
+    public void visit(Food food) {
+        // Do nothing for food items

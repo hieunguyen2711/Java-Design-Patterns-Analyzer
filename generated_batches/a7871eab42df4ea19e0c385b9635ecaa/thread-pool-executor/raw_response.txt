@@ -1,0 +1,113 @@
+### FILE: Account.java
+```java
+package com.example.bank;
+
+public class Account {
+    private String accountId;
+    private double balance;
+    
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+}
+```
+
+### FILE: Transaction.java
+```java
+package com.example.bank;
+
+public class Transaction {
+    private String transactionId;
+    private String accountId;
+    private String type;
+    private double amount;
+    private long timestamp;
+    
+    public Transaction(String transactionId, String accountId, String type, double amount) {
+        this.transactionId = transactionId;
+        this.accountId = accountId;
+        this.type = type;
+        this.amount = amount;
+        this.timestamp = System.currentTimeMillis();
+    }
+    
+    public String getTransactionId() {
+        return transactionId;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: TransactionProcessor.java
+```java
+package com.example.bank;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
+public class TransactionProcessor {
+    private final ExecutorService executorService;
+    
+    public TransactionProcessor(int poolSize) {
+        this.executorService = Executors.newFixedThreadPool(poolSize);
+    }
+    
+    public void processTransaction(Transaction transaction) {
+        executorService.submit(() -> {
+            // Simulate transaction processing
+            System.out.println("Processing " + transaction.getType() + 
+                             " of $" + transaction.getAmount() + 
+                             " for account " + transaction.getAccountId());
+            
+            try {
+                Thread.sleep(100); // Simulate work
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            
+            System.out.println("Completed processing " + transaction.getType() + 
+                             " of $" + transaction.getAmount());
+        });
+    }
+    
+    public void shutdown() {
+        executorService.shutdown();
+    }
+}
+```
+
+### FILE: BankService.java
+```java
+package com.example.bank;
+
+public class BankService {
+    private TransactionProcessor processor;

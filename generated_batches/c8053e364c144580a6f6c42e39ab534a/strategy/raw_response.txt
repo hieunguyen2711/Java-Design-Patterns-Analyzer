@@ -1,0 +1,108 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+public class AppointmentSlot {
+    private Doctor doctor;
+    private Patient patient;
+    private String dateTime;
+    private CheckInStrategy checkInStrategy;
+    
+    public AppointmentSlot(Doctor doctor, Patient patient, String dateTime) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.dateTime = dateTime;
+        this.checkInStrategy = new StandardCheckIn();
+    }
+    
+    public void setCheckInStrategy(CheckInStrategy strategy) {
+        this.checkInStrategy = strategy;
+    }
+    
+    public void checkIn() {
+        checkInStrategy.performCheckIn(this);
+    }
+    
+    // Getters
+    public Doctor getDoctor() { return doctor; }
+    public Patient getPatient() { return patient; }
+    public String getDateTime() { return dateTime; }
+}
+```
+
+### FILE: CheckInStrategy.java
+```java
+package clinic;
+
+public interface CheckInStrategy {
+    void performCheckIn(AppointmentSlot slot);
+}
+```
+
+### FILE: StandardCheckIn.java
+```java
+package clinic;
+
+public class StandardCheckIn implements CheckInStrategy {
+    @Override
+    public void performCheckIn(AppointmentSlot slot) {
+        System.out.println("Standard check-in for " + slot.getPatient().getName() + 
+                          " with Dr. " + slot.getDoctor().getName());
+    }
+}
+```
+
+### FILE: FastTrackCheckIn.java
+```java
+package clinic;
+
+public class FastTrackCheckIn implements CheckInStrategy {
+    @Override
+    public void performCheckIn(AppointmentSlot slot) {
+        System.out.println("Fast-track check-in for " + slot.getPatient().getName() +

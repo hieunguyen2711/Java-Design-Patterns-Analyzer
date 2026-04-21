@@ -1,0 +1,88 @@
+### FILE: StockIntakeService.java
+```java
+package com.example.stock;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class StockIntakeService {
+    private final ExecutorService executorService;
+    
+    public StockIntakeService() {
+        this.executorService = Executors.newFixedThreadPool(3);
+    }
+    
+    public void processStockIntake(Item item, int quantity) {
+        executorService.submit(() -> {
+            try {
+                // Simulate stock intake processing
+                Thread.sleep(1000);
+                System.out.println("Processing intake for " + item.getName() + 
+                                 ": " + quantity + " units");
+                
+                // Update inventory logic here
+                item.setQuantity(item.getQuantity() + quantity);
+                
+                // Log movement
+                MovementLog.logMovement(item, quantity, "INTAKE");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+    }
+}
+```
+
+### FILE: Item.java
+```java
+package com.example.stock;
+
+public class Item {
+    private String name;
+    private int quantity;
+    private int reorderThreshold;
+    
+    public Item(String name, int quantity, int reorderThreshold) {
+        this.name = name;
+        this.quantity = quantity;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+}
+```
+
+### FILE: MovementLog.java
+```java
+package com.example.stock;
+
+public class MovementLog {
+    public static void logMovement(Item item, int quantity, String type) {
+        System.out.println("LOG [" + type + "] " + 
+                          item.getName() + ": " + quantity + 
+                          " units (Total: " + item.getQuantity() + ")");
+    }
+}
+```
+
+### FILE

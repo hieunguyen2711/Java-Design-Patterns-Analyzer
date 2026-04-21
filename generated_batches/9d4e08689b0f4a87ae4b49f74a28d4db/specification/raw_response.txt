@@ -1,0 +1,83 @@
+### FILE: Vehicle.java
+```java
+package fleetmanagement;
+
+public class Vehicle {
+    private String id;
+    private String model;
+    private double dailyRate;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String model, double dailyRate) {
+        this.id = id;
+        this.model = model;
+        this.dailyRate = dailyRate;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: VehicleFactory.java
+```java
+package fleetmanagement;
+
+public class VehicleFactory {
+    public static Vehicle createVehicle(String type, String id, String model, double dailyRate) {
+        switch (type.toLowerCase()) {
+            case "car":
+                return new Car(id, model, dailyRate);
+            case "truck":
+                return new Truck(id, model, dailyRate);
+            case "suv":
+                return new SUV(id, model, dailyRate);
+            default:
+                throw new IllegalArgumentException("Unknown vehicle type: " + type);
+        }
+    }
+}
+```
+
+### FILE: Car.java
+```java
+package fleetmanagement;
+
+public class Car extends Vehicle {
+    private int numberOfDoors;
+    
+    public Car(String id, String model, double dailyRate) {
+        super(id, model, dailyRate);
+        this.numberOfDoors = 4;
+    }
+    
+    public int getNumberOfDoors() { return numberOfDoors; }
+    public void setNumberOfDoors(int numberOfDoors) { this.numberOfDoors = numberOfDoors; }
+}
+```
+
+### FILE: Truck.java
+```java
+package fleetmanagement;
+
+public class Truck extends Vehicle {
+    private double cargoCapacity;
+    
+    public Truck(String id, String model, double dailyRate) {
+        super(id, model, dailyRate);
+        this.cargoCapacity = 1000.0; // in kg
+    }
+    
+    public double getCargoCapacity() { return cargoCapacity; }
+    public

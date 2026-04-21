@@ -1,0 +1,79 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+public abstract class StockItem {
+    protected String id;
+    protected String name;
+    protected BigDecimal price;
+    protected int currentStock;
+    protected int reorderThreshold;
+    
+    public StockItem(String id, String name, BigDecimal price, int currentStock, int reorderThreshold) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public abstract String getItemType();
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+}
+```
+
+### FILE: Electronics.java
+```java
+package com.example.stock;
+
+import java.math.BigDecimal;
+
+public class Electronics extends StockItem {
+    private String brand;
+    private int warrantyMonths;
+    
+    public Electronics(String id, String name, BigDecimal price, int currentStock, 
+                     int reorderThreshold, String brand, int warrantyMonths) {
+        super(id, name, price, currentStock, reorderThreshold);
+        this.brand = brand;
+        this.warrantyMonths = warrantyMonths;
+    }
+    
+    @Override
+    public String getItemType() {
+        return "ELECTRONICS";
+    }
+    
+    // Getters and setters for electronics-specific fields
+    public String getBrand() { return brand; }
+    public void setBrand(String brand) { this.brand = brand; }
+    public int getWarrantyMonths() { return warrantyMonths; }
+    public void setWarrantyMonths(int warrantyMonths) { this.warrantyMonths = warrantyMonths; }
+}
+```
+
+### FILE: Clothing.java
+```java
+package com.example.stock;
+
+import java.math.BigDecimal;
+
+public class Clothing extends StockItem {
+    private String size;
+    private String color;
+    
+    public

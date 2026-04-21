@@ -1,0 +1,104 @@
+### FILE: Vehicle.java
+```java
+public abstract class Vehicle {
+    protected String model;
+    protected String type;
+    protected double dailyRate;
+    
+    public Vehicle(String model, String type, double dailyRate) {
+        this.model = model;
+        this.type = type;
+        this.dailyRate = dailyRate;
+    }
+    
+    public abstract void startEngine();
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public double getDailyRate() {
+        return dailyRate;
+    }
+}
+```
+
+### FILE: Car.java
+```java
+public class Car extends Vehicle {
+    private int doors;
+    
+    public Car(String model, int doors) {
+        super(model, "Car", 50.0);
+        this.doors = doors;
+    }
+    
+    @Override
+    public void startEngine() {
+        System.out.println("Car engine started with key ignition");
+    }
+    
+    public int getDoors() {
+        return doors;
+    }
+}
+```
+
+### FILE: Truck.java
+```java
+public class Truck extends Vehicle {
+    private double cargoCapacity;
+    
+    public Truck(String model, double cargoCapacity) {
+        super(model, "Truck", 80.0);
+        this.cargoCapacity = cargoCapacity;
+    }
+    
+    @Override
+    public void startEngine() {
+        System.out.println("Truck engine started with diesel ignition");
+    }
+    
+    public double getCargoCapacity() {
+        return cargoCapacity;
+    }
+}
+```
+
+### FILE: Motorcycle.java
+```java
+public class Motorcycle extends Vehicle {
+    private boolean hasSidecar;
+    
+    public Motorcycle(String model, boolean hasSidecar) {
+        super(model, "Motorcycle", 30.0);
+        this.hasSidecar = hasSidecar;
+    }
+    
+    @Override
+    public void startEngine() {
+        System.out.println("Motorcycle engine started with electric starter");
+    }
+    
+    public boolean hasSidecar() {
+        return hasSidecar;
+    }
+}
+```
+
+### FILE: VehicleFactory.java
+```java
+public class VehicleFactory {
+    
+    public static Vehicle createVehicle(String type, String model, Object... params) {
+        switch (type.toLowerCase()) {
+            case "car":
+                int doors = (Integer) params[0];
+                return new Car(model, doors);
+            case "truck":
+                double capacity = (Double) params[0];
+                return

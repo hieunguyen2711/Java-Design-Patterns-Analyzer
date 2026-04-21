@@ -1,0 +1,124 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor implements HealthcareWorker {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient implements HealthcareWorker {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: HealthcareWorker.java
+```java
+package clinic;
+
+public interface HealthcareWorker {
+    // Marker interface - no methods, just type safety
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class AppointmentSlot {
+    private LocalDateTime dateTime;
+    private HealthcareWorker healthcareWorker;
+    
+    public AppointmentSlot(LocalDateTime dateTime, HealthcareWorker healthcareWorker) {
+        this.dateTime = dateTime;
+        this.healthcareWorker = healthcareWorker;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public HealthcareWorker getHealthcareWorker() {
+        return healthcareWorker;
+    }
+}
+```
+
+### FILE: CheckIn.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class CheckIn {
+    private Patient patient;
+    private LocalDateTime checkInTime;
+    
+    public CheckIn(Patient patient, LocalDateTime checkInTime) {
+        this.patient = patient;
+        this.checkInTime = checkInTime;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public LocalDateTime getCheckInTime() {
+        return checkInTime;
+    }
+}
+```
+
+### FILE: VisitHistory.java
+```java
+package clinic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VisitHistory {
+    private List<CheckIn> visits = new ArrayList<>();
+    
+    public void addVisit(CheckIn visit) {
+        visits.add(visit);
+    }
+    
+    public List<CheckIn> getVisits() {
+        return visits;
+    }
+}
+```

@@ -1,0 +1,111 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: SalaryCalculator.java
+```java
+package hr.system;
+
+public interface SalaryCalculator {
+    double calculateSalary(Employee employee);
+}
+```
+
+### FILE: BasicSalaryCalculator.java
+```java
+package hr.system;
+
+public class BasicSalaryCalculator implements SalaryCalculator {
+    @Override
+    public double calculateSalary(Employee employee) {
+        return employee.getBaseSalary();
+    }
+}
+```
+
+### FILE: SalaryDecorator.java
+```java
+package hr.system;
+
+public abstract class SalaryDecorator implements SalaryCalculator {
+    protected SalaryCalculator decoratedCalculator;
+    
+    public SalaryDecorator(SalaryCalculator decoratedCalculator) {
+        this.decoratedCalculator = decoratedCalculator;
+    }
+    
+    @Override
+    public double calculateSalary(Employee employee) {
+        return decoratedCalculator.calculateSalary(employee);
+    }
+}
+```
+
+### FILE: BonusDecorator.java
+```java
+package hr.system;
+
+public class BonusDecorator extends SalaryDecorator {
+    private double bonusAmount;
+    
+    public BonusDecorator(SalaryCalculator decoratedCalculator, double bonusAmount) {
+        super(decoratedCalculator);
+        this.bonusAmount = bonusAmount;
+    }
+    
+    @Override
+    public double calculateSalary(Employee employee) {
+        return super.calculateSalary(employee) + bonusAmount;
+    }
+}
+```
+
+### FILE: TaxDeductionDecorator.java
+```java
+package hr.system;
+
+public class TaxDeductionDecorator extends SalaryDecorator {
+    private double taxRate;
+    
+    public TaxDeductionDecorator(SalaryCalculator decoratedCalculator, double taxRate) {
+        super(decoratedCalculator);
+        this.taxRate = taxRate;
+    }
+    
+    @Override
+    public double calculateSalary(Employee employee) {
+        double baseSalary = super.calculateSalary(employee);
+        return baseSalary - (baseSalary * taxRate);
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    public static void main(String[] args) {
+        Employee employee = new Employee("John Doe", 5000.0);
+        
+        SalaryCalculator calculator = new BasicSalaryCalculator();
+        calculator

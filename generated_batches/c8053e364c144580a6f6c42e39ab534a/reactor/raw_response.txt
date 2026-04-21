@@ -1,0 +1,119 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String id;
+    private String name;
+    
+    public Doctor(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String id;
+    private String name;
+    
+    public Patient(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private String id;
+    private Doctor doctor;
+    private Patient patient;
+    private long timestamp;
+    private boolean isAvailable;
+    
+    public AppointmentSlot(String id, Doctor doctor, long timestamp) {
+        this.id = id;
+        this.doctor = doctor;
+        this.timestamp = timestamp;
+        this.isAvailable = true;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+        this.isAvailable = false;
+    }
+}
+```
+
+### FILE: CheckInEvent.java
+```java
+public class CheckInEvent {
+    private String appointmentId;
+    private long timestamp;
+    
+    public CheckInEvent(String appointmentId, long timestamp) {
+        this.appointmentId = appointmentId;
+        this.timestamp = timestamp;
+    }
+    
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: VisitHistory.java
+```java
+public class VisitHistory {
+    private String id;
+    private Patient patient;
+    private Doctor doctor;
+    private long visitTime;
+    
+    public VisitHistory(String id, Patient patient, Doctor doctor, long visitTime) {
+        this.id = id;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.visitTime = visitTime;

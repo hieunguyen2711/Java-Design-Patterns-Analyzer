@@ -1,0 +1,96 @@
+### FILE: Vehicle.java
+```java
+package fleetmanagement;
+
+public class Vehicle {
+    private String id;
+    private String model;
+    private double dailyRate;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String model, double dailyRate) {
+        this.id = id;
+        this.model = model;
+        this.dailyRate = dailyRate;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: FleetManager.java
+```java
+package fleetmanagement;
+
+import java.util.*;
+
+public class FleetManager {
+    private static FleetManager instance;
+    private Map<String, Vehicle> vehicles;
+    
+    private FleetManager() {
+        this.vehicles = new HashMap<>();
+    }
+    
+    public static FleetManager getInstance() {
+        if (instance == null) {
+            instance = new FleetManager();
+        }
+        return instance;
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public Vehicle getVehicle(String id) {
+        return vehicles.get(id);
+    }
+    
+    public List<Vehicle> getAllVehicles() {
+        return new ArrayList<>(vehicles.values());
+    }
+    
+    public List<Vehicle> getAvailableVehicles() {
+        List<Vehicle> available = new ArrayList<>();
+        for (Vehicle vehicle : vehicles.values()) {
+            if (vehicle.isAvailable()) {
+                available.add(vehicle);
+            }
+        }
+        return available;
+    }
+}
+```
+
+### FILE: Reservation.java
+```java
+package fleetmanagement;
+
+import java.time.LocalDate;
+
+public class Reservation {
+    private String id;
+    private String customerId;
+    private Vehicle vehicle;
+    private LocalDate pickupDate;
+    private LocalDate returnDate;
+    
+    public Reservation(String id, String customerId, Vehicle vehicle, 
+                      LocalDate pickupDate, LocalDate returnDate) {
+        this.id = id;
+        this.customerId = customerId;
+        this.vehicle = vehicle;
+        this.pickupDate =

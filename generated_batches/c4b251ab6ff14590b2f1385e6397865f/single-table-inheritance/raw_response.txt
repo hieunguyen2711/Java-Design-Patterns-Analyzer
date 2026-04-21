@@ -1,0 +1,103 @@
+### FILE: Order.java
+```java
+package restaurant.model;
+
+public abstract class Order {
+    protected String orderId;
+    protected double totalAmount;
+    protected OrderStatus status;
+    
+    public Order(String orderId, double totalAmount) {
+        this.orderId = orderId;
+        this.totalAmount = totalAmount;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public abstract void processOrder();
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: DeliveryOrder.java
+```java
+package restaurant.model;
+
+public class DeliveryOrder extends Order {
+    private String deliveryAddress;
+    private double deliveryFee;
+    
+    public DeliveryOrder(String orderId, double totalAmount, String deliveryAddress, double deliveryFee) {
+        super(orderId, totalAmount);
+        this.deliveryAddress = deliveryAddress;
+        this.deliveryFee = deliveryFee;
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing delivery order #" + orderId + " to " + deliveryAddress);
+        status = OrderStatus.PROCESSING;
+    }
+    
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+    
+    public double getDeliveryFee() {
+        return deliveryFee;
+    }
+}
+```
+
+### FILE: PickupOrder.java
+```java
+package restaurant.model;
+
+public class PickupOrder extends Order {
+    private String pickupTime;
+    private String customerName;
+    
+    public PickupOrder(String orderId, double totalAmount, String pickupTime, String customerName) {
+        super(orderId, totalAmount);
+        this.pickupTime = pickupTime;
+        this.customerName = customerName;
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing pickup order #" + orderId + " for " + customerName);
+        status = OrderStatus.PROCESSING;
+    }
+    
+    public String getPickupTime() {
+        return pickupTime;
+    }
+    
+    public String getCustomerName() {
+        return customerName;
+    }
+}
+```
+
+### FILE: OrderFactory.java
+```java
+package restaurant.model;
+
+public class OrderFactory {
+    public static Order createOrder(OrderType type, String orderId, double totalAmount, 
+                                  String details1, String details2) {
+        switch (

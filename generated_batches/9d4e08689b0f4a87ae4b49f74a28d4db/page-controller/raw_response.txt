@@ -1,0 +1,85 @@
+### FILE: FleetManagementSystem.java
+```java
+public class FleetManagementSystem {
+    public static void main(String[] args) {
+        // Create page controller
+        PageController controller = new PageController();
+        
+        // Simulate user requests
+        controller.handleRequest("vehicle_list");
+        controller.handleRequest("reservation_form");
+        controller.handleRequest("maintenance_status");
+        controller.handleRequest("invalid_page");
+    }
+}
+```
+
+### FILE: PageController.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class PageController {
+    private Map<String, PageHandler> handlers;
+    
+    public PageController() {
+        handlers = new HashMap<>();
+        handlers.put("vehicle_list", new VehicleListPage());
+        handlers.put("reservation_form", new ReservationFormPage());
+        handlers.put("maintenance_status", new MaintenanceStatusPage());
+    }
+    
+    public void handleRequest(String pageName) {
+        PageHandler handler = handlers.get(pageName);
+        if (handler != null) {
+            handler.display();
+        } else {
+            System.out.println("Page not found: " + pageName);
+        }
+    }
+}
+```
+
+### FILE: PageHandler.java
+```java
+public interface PageHandler {
+    void display();
+}
+```
+
+### FILE: VehicleListPage.java
+```java
+public class VehicleListPage implements PageHandler {
+    @Override
+    public void display() {
+        System.out.println("=== Vehicle List Page ===");
+        System.out.println("Displaying all vehicles in fleet:");
+        System.out.println("- Car #123 (Toyota Camry)");
+        System.out.println("- Truck #456 (Ford F-150)");
+        System.out.println("- Van #789 (Honda Odyssey)");
+    }
+}
+```
+
+### FILE: ReservationFormPage.java
+```java
+public class ReservationFormPage implements PageHandler {
+    @Override
+    public void display() {
+        System.out.println("=== Reservation Form Page ===");
+        System.out.println("Please fill out the reservation form:");
+        System.out.println("- Select vehicle type");
+        System.out.println("- Enter pickup date");
+        System.out.println("- Enter return date");
+    }
+}
+```
+
+### FILE: MaintenanceStatusPage.java
+```java
+public class MaintenanceStatusPage implements PageHandler {
+    @Override
+    public void display() {
+        System.out.println("=== Maintenance Status Page ===");
+        System.out.println("Current maintenance status:");
+        System.out.println("- Car #123: Service due in 30 days

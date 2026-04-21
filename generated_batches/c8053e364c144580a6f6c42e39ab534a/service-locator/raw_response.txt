@@ -1,0 +1,94 @@
+### FILE: ServiceLocator.java
+```java
+public class ServiceLocator {
+    private static ServiceLocator instance;
+    private Map<String, Object> services;
+
+    private ServiceLocator() {
+        services = new HashMap<>();
+        initializeServices();
+    }
+
+    public static ServiceLocator getInstance() {
+        if (instance == null) {
+            instance = new ServiceLocator();
+        }
+        return instance;
+    }
+
+    private void initializeServices() {
+        services.put("DoctorService", new DoctorServiceImpl());
+        services.put("PatientService", new PatientServiceImpl());
+        services.put("AppointmentService", new AppointmentServiceImpl());
+    }
+
+    public Object getService(String serviceName) {
+        return services.get(serviceName);
+    }
+}
+```
+
+### FILE: Service.java
+```java
+public interface Service {
+    String getName();
+}
+```
+
+### FILE: DoctorService.java
+```java
+public interface DoctorService extends Service {
+    void scheduleAppointment(int doctorId, int patientId, String date);
+    void updateDoctorInfo(int doctorId, String name, String specialty);
+}
+```
+
+### FILE: PatientService.java
+```java
+public interface PatientService extends Service {
+    void registerPatient(String name, String contact);
+    void updatePatientInfo(int patientId, String name, String contact);
+}
+```
+
+### FILE: AppointmentService.java
+```java
+public interface AppointmentService extends Service {
+    void bookAppointment(int doctorId, int patientId, String date);
+    void cancelAppointment(int appointmentId);
+}
+```
+
+### FILE: DoctorServiceImpl.java
+```java
+public class DoctorServiceImpl implements DoctorService {
+    @Override
+    public String getName() {
+        return "DoctorService";
+    }
+
+    @Override
+    public void scheduleAppointment(int doctorId, int patientId, String date) {
+        System.out.println("Scheduled appointment for doctor " + doctorId + 
+                          " and patient " + patientId + " on " + date);
+    }
+
+    @Override
+    public void updateDoctorInfo(int doctorId, String name, String specialty) {
+        System.out.println("Updated doctor " + doctorId + " info: " + name + ", " + specialty);
+    }
+}
+```
+
+### FILE: PatientServiceImpl.java
+```java
+public class PatientServiceImpl implements PatientService {
+    @Override
+    public String getName() {
+        return "PatientService";
+    }
+
+    @Override
+    public void registerPatient(String name, String contact) {
+        System.out.println("Registered patient: " + name + ", Contact: " + contact);
+   

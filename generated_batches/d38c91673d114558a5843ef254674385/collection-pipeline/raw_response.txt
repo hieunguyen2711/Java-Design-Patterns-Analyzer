@@ -1,0 +1,89 @@
+### FILE: Ticket.java
+```java
+package com.example.projecttracker;
+
+public class Ticket {
+    private String id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+    
+    public Ticket(String id, String title, String description, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.OPEN;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+package com.example.projecttracker;
+
+public enum Priority {
+    LOW, MEDIUM, HIGH, URGENT
+}
+```
+
+### FILE: Status.java
+```java
+package com.example.projecttracker;
+
+public enum Status {
+    OPEN, IN_PROGRESS, RESOLVED, CLOSED
+}
+```
+
+### FILE: TicketCollectionPipeline.java
+```java
+package com.example.projecttracker;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class TicketCollectionPipeline {
+    private List<Ticket> tickets;
+    
+    public TicketCollectionPipeline(List<Ticket> tickets) {
+        this.tickets = new ArrayList<>(tickets);
+    }
+    
+    public List<Ticket> filterByPriority(Priority priority) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getPriority() == priority)
+                .collect(Collectors.toList());
+    }
+    
+    public List<Ticket> filterByStatus(Status status) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getStatus() == status)
+                .collect(Collectors.toList());
+    }
+    
+    public Map<Priority, Long> countTicketsByPriority() {
+        return tickets.stream()
+                .

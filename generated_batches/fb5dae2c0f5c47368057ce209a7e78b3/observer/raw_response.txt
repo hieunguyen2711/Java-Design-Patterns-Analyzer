@@ -1,0 +1,113 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course {
+    private String title;
+    private List<Observer> observers;
+    
+    public Course(String title) {
+        this.title = title;
+        this.observers = new ArrayList<>();
+    }
+    
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+    
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+    
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+    
+    public void addLesson(String lessonTitle) {
+        System.out.println("Adding lesson: " + lessonTitle);
+        notifyObservers("New lesson added to course: " + title + " - " + lessonTitle);
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+}
+```
+
+### FILE: Observer.java
+```java
+package com.lms.model;
+
+public interface Observer {
+    void update(String message);
+}
+```
+
+### FILE: Student.java
+```java
+package com.lms.model;
+
+public class Student implements Observer {
+    private String name;
+    
+    public Student(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("Student " + name + " notified: " + message);
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Instructor.java
+```java
+package com.lms.model;
+
+public class Instructor implements Observer {
+    private String name;
+    
+    public Instructor(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("Instructor " + name + " notified: " + message);
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+package com.lms;
+
+import com.lms.model.Course;
+import com.lms.model.Student;
+import com.lms.model.Instructor;
+
+public class LMSApplication {
+    public static void main(String[] args) {
+        Course javaCourse = new Course("Java Programming");
+        
+        Student alice = new Student("Alice");
+        Student bob = new Student("Bob");
+        Instructor john = new Instructor("John Smith");
+        
+        javaCourse.addObserver(alice);
+        javaCourse.addObserver(bob);
+       

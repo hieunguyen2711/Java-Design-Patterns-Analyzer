@@ -1,0 +1,88 @@
+### FILE: Account.java
+```java
+package banking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Account {
+    private final String accountNumber;
+    private double balance;
+    private final List<String> auditTrail;
+    
+    public Account(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+        this.auditTrail = new ArrayList<>();
+        addAuditEntry("Account created with balance: " + initialBalance);
+    }
+    
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+        balance += amount;
+        addAuditEntry("Deposited: " + amount);
+    }
+    
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive");
+        }
+        if (amount > balance) {
+            throw new IllegalStateException("Insufficient funds");
+        }
+        balance -= amount;
+        addAuditEntry("Withdrew: " + amount);
+    }
+    
+    public void transfer(Account target, double amount) {
+        if (target == null) {
+            throw new IllegalArgumentException("Target account cannot be null");
+        }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Transfer amount must be positive");
+        }
+        if (amount > balance) {
+            throw new IllegalStateException("Insufficient funds for transfer");
+        }
+        
+        balance -= amount;
+        target.balance += amount;
+        addAuditEntry("Transferred: " + amount + " to account " + target.accountNumber);
+        target.addAuditEntry("Received: " + amount + " from account " + this.accountNumber);
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    private void addAuditEntry(String entry) {
+        auditTrail.add(entry);
+    }
+    
+    public List<String> getAuditTrail() {
+        return new ArrayList<>(auditTrail);
+    }
+}
+```
+
+### FILE: StatementGenerator.java
+```java
+package banking;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+public class StatementGenerator {
+    private static final DateTimeFormatter DATE_FORMATTER = 
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    public String generateStatement(Account account) {
+        StringBuilder statement = new StringBuilder();
+        statement.append("Account Statement for

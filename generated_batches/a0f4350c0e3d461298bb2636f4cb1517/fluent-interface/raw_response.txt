@@ -1,0 +1,98 @@
+### FILE: Book.java
+```java
+package library;
+
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    private boolean isAvailable;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.isAvailable = true;
+    }
+    
+    public Book setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+    
+    public Book setAuthor(String author) {
+        this.author = author;
+        return this;
+    }
+    
+    public Book setIsbn(String isbn) {
+        this.isbn = isbn;
+        return this;
+    }
+    
+    public Book setAvailable(boolean available) {
+        isAvailable = available;
+        return this;
+    }
+    
+    // Getters
+    public String getTitle() { return title; }
+    public String getAuthor() { return author; }
+    public String getIsbn() { return isbn; }
+    public boolean isAvailable() { return isAvailable; }
+}
+```
+
+### FILE: Library.java
+```java
+package library;
+
+import java.time.LocalDate;
+import java.util.*;
+
+public class Library {
+    private Map<String, Book> books;
+    private Map<String, Member> members;
+    
+    public Library() {
+        this.books = new HashMap<>();
+        this.members = new HashMap<>();
+    }
+    
+    public Library addBook(String title, String author, String isbn) {
+        books.put(isbn, new Book(title, author, isbn));
+        return this;
+    }
+    
+    public Library removeBook(String isbn) {
+        books.remove(isbn);
+        return this;
+    }
+    
+    public Library registerMember(String name, String memberId) {
+        members.put(memberId, new Member(name, memberId));
+        return this;
+    }
+    
+    public Book getBook(String isbn) {
+        return books.get(isbn);
+    }
+    
+    public Member getMember(String memberId) {
+        return members.get(memberId);
+    }
+    
+    public Library borrowBook(String isbn, String memberId) {
+        Book book = books.get(isbn);
+        Member member = members.get(memberId);
+        
+        if (book != null && member != null && book.isAvailable()) {
+            book.setAvailable(false);
+            member.borrowBook(book);
+        }
+        return this;
+    }
+    
+    public Library returnBook(String isbn, String memberId) {
+        Book book = books.get(isbn);
+        Member member = members.get(memberId

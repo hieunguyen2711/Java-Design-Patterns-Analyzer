@@ -1,0 +1,111 @@
+### FILE: Membership.java
+```java
+package com.membership;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private MembershipType type;
+    
+    public Membership(String memberId, String name, MembershipType type) {
+        this.memberId = memberId;
+        this.name = name;
+        this.type = type;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public MembershipType getType() {
+        return type;
+    }
+}
+```
+
+### FILE: MembershipType.java
+```java
+package com.membership;
+
+public enum MembershipType {
+    BASIC,
+    PREMIUM,
+    VIP
+}
+```
+
+### FILE: MembershipFactory.java
+```java
+package com.membership;
+
+public class MembershipFactory {
+    
+    public static Membership createMembership(String memberId, String name, String type) {
+        MembershipType membershipType = MembershipType.valueOf(type.toUpperCase());
+        
+        switch (membershipType) {
+            case BASIC:
+                return new BasicMembership(memberId, name);
+            case PREMIUM:
+                return new PremiumMembership(memberId, name);
+            case VIP:
+                return new VipMembership(memberId, name);
+            default:
+                throw new IllegalArgumentException("Unknown membership type: " + type);
+        }
+    }
+}
+```
+
+### FILE: BasicMembership.java
+```java
+package com.membership;
+
+public class BasicMembership extends Membership {
+    
+    public BasicMembership(String memberId, String name) {
+        super(memberId, name, MembershipType.BASIC);
+    }
+    
+    @Override
+    public String toString() {
+        return "BasicMembership{" +
+                "memberId='" + getMemberId() + '\'' +
+                ", name='" + getName() + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: PremiumMembership.java
+```java
+package com.membership;
+
+public class PremiumMembership extends Membership {
+    
+    public PremiumMembership(String memberId, String name) {
+        super(memberId, name, MembershipType.PREMIUM);
+    }
+    
+    @Override
+    public String toString() {
+        return "PremiumMembership{" +
+                "memberId='" + getMemberId() + '\'' +
+                ", name='" + getName() + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: VipMembership.java
+```java
+package com.membership;
+
+public class VipMembership extends Membership {
+    
+    public VipMembership(String memberId, String name) {
+        super(memberId, name

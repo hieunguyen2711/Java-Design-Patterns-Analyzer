@@ -1,0 +1,95 @@
+### FILE: Room.java
+```java
+public class Room {
+    private int roomId;
+    private String type;
+    private boolean isAvailable;
+
+    public Room(int roomId, String type) {
+        this.roomId = roomId;
+        this.type = type;
+        this.isAvailable = true;
+    }
+
+    // Getters and setters
+    public int getRoomId() { return roomId; }
+    public String getType() { return type; }
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: RoomPool.java
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class RoomPool {
+    private static RoomPool instance;
+    private Deque<Room> availableRooms;
+    private Deque<Room> occupiedRooms;
+
+    private RoomPool() {
+        availableRooms = new ArrayDeque<>();
+        occupiedRooms = new ArrayDeque<>();
+        
+        // Initialize with some rooms
+        for (int i = 1; i <= 5; i++) {
+            availableRooms.push(new Room(i, "Standard"));
+        }
+    }
+
+    public static synchronized RoomPool getInstance() {
+        if (instance == null) {
+            instance = new RoomPool();
+        }
+        return instance;
+    }
+
+    public Room acquireRoom() {
+        Room room = availableRooms.pollLast();
+        if (room != null) {
+            occupiedRooms.push(room);
+            room.setAvailable(false);
+        }
+        return room;
+    }
+
+    public void releaseRoom(Room room) {
+        if (room != null && !room.isAvailable()) {
+            occupiedRooms.remove(room);
+            availableRooms.push(room);
+            room.setAvailable(true);
+        }
+    }
+
+    public int getAvailableRoomsCount() {
+        return availableRooms.size();
+    }
+
+    public int getOccupiedRoomsCount() {
+        return occupiedRooms.size();
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+public class BookingService {
+    
+    public Room bookRoom() {
+        RoomPool pool = RoomPool.getInstance();
+        Room room = pool.acquireRoom();
+        
+        if (room != null) {
+            System.out.println("Room " + room.getRoomId() + " booked successfully.");
+        } else {
+            System.out.println("No rooms available for booking.");
+        }
+        
+        return room;
+    }
+
+    public void checkOut(Room room) {
+        RoomPool pool = RoomPool.getInstance();
+        if (room != null) {

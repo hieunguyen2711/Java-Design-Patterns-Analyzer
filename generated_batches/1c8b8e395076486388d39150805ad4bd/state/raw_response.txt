@@ -1,0 +1,110 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private String memberId;
+    private MembershipState state;
+    
+    public Membership(String memberId) {
+        this.memberId = memberId;
+        this.state = new PendingState();
+    }
+    
+    public void setState(MembershipState state) {
+        this.state = state;
+    }
+    
+    public void activate() {
+        state.activate(this);
+    }
+    
+    public void suspend() {
+        state.suspend(this);
+    }
+    
+    public void cancel() {
+        state.cancel(this);
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public MembershipState getState() {
+        return state;
+    }
+}
+```
+
+### FILE: MembershipState.java
+```java
+public interface MembershipState {
+    void activate(Membership membership);
+    void suspend(Membership membership);
+    void cancel(Membership membership);
+}
+```
+
+### FILE: ActiveState.java
+```java
+public class ActiveState implements MembershipState {
+    
+    @Override
+    public void activate(Membership membership) {
+        System.out.println("Membership already active");
+    }
+    
+    @Override
+    public void suspend(Membership membership) {
+        membership.setState(new SuspendedState());
+        System.out.println("Membership suspended");
+    }
+    
+    @Override
+    public void cancel(Membership membership) {
+        membership.setState(new CancelledState());
+        System.out.println("Membership cancelled");
+    }
+}
+```
+
+### FILE: PendingState.java
+```java
+public class PendingState implements MembershipState {
+    
+    @Override
+    public void activate(Membership membership) {
+        membership.setState(new ActiveState());
+        System.out.println("Membership activated");
+    }
+    
+    @Override
+    public void suspend(Membership membership) {
+        System.out.println("Cannot suspend pending membership");
+    }
+    
+    @Override
+    public void cancel(Membership membership) {
+        membership.setState(new CancelledState());
+        System.out.println("Membership cancelled");
+    }
+}
+```
+
+### FILE: SuspendedState.java
+```java
+public class SuspendedState implements MembershipState {
+    
+    @Override
+    public void activate(Membership membership) {
+        membership.setState(new ActiveState());
+        System.out.println("Membership reactivated");
+    }
+    
+    @Override
+    public void suspend(Membership membership) {
+        System.out.println("Membership already suspended");
+    }
+    
+    @Override
+    public void cancel(Membership membership) {
+        membership.setState(new Cancel

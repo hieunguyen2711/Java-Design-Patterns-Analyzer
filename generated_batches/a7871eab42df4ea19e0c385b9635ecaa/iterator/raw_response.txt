@@ -1,0 +1,108 @@
+### FILE: Customer.java
+```java
+package banking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Customer {
+    private String customerId;
+    private String name;
+    private List<Account> accounts;
+    
+    public Customer(String customerId, String name) {
+        this.customerId = customerId;
+        this.name = name;
+        this.accounts = new ArrayList<>();
+    }
+    
+    public void addAccount(Account account) {
+        accounts.add(account);
+    }
+    
+    public Iterable<Account> getAccounts() {
+        return accounts;
+    }
+    
+    // Getters
+    public String getCustomerId() { return customerId; }
+    public String getName() { return name; }
+}
+```
+
+### FILE: Account.java
+```java
+package banking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Account {
+    private String accountId;
+    private double balance;
+    private List<Transaction> transactions;
+    
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+        this.transactions = new ArrayList<>();
+    }
+    
+    public void deposit(double amount) {
+        balance += amount;
+        transactions.add(new Transaction("DEPOSIT", amount));
+    }
+    
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            transactions.add(new Transaction("WITHDRAWAL", amount));
+        }
+    }
+    
+    public Iterable<Transaction> getTransactions() {
+        return transactions;
+    }
+    
+    // Getters
+    public String getAccountId() { return accountId; }
+    public double getBalance() { return balance; }
+}
+```
+
+### FILE: Transaction.java
+```java
+package banking;
+
+public class Transaction {
+    private String type;
+    private double amount;
+    
+    public Transaction(String type, double amount) {
+        this.type = type;
+        this.amount = amount;
+    }
+    
+    // Getters
+    public String getType() { return type; }
+    public double getAmount() { return amount; }
+}
+```
+
+### FILE: StatementGenerator.java
+```java
+package banking;
+
+import java.util.Iterator;
+
+public class StatementGenerator {
+    
+    public void generateStatement(Customer customer) {
+        System.out.println("Customer: " + customer.getName());
+        System.out.println("Account Statements:");
+        
+        // Using Iterator pattern to traverse accounts
+        Iterator<Account> accountIterator = customer.getAccounts().iterator();
+        while (accountIterator.hasNext()) {
+            Account account = accountIterator.next();
+            System.out.println("  Account ID:

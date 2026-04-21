@@ -1,0 +1,90 @@
+### FILE: Book.java
+```java
+package library.model;
+
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    // Getters and setters
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+}
+```
+
+### FILE: Member.java
+```java
+package library.model;
+
+public class Member {
+    private int memberId;
+    private String name;
+    private String email;
+    
+    public Member(int memberId, String name, String email) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public int getMemberId() { return memberId; }
+    public void setMemberId(int memberId) { this.memberId = memberId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: BookDTO.java
+```java
+package library.dto;
+
+public class BookDTO {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public BookDTO(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    // Getters and setters
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+}
+```
+
+### FILE: MemberDTO.java
+```java
+package library.dto;
+
+public class MemberDTO {
+    private int memberId;
+    private String name;
+    private String email;
+    

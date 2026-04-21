@@ -1,0 +1,79 @@
+### FILE: Order.java
+```java
+package restaurant.backend;
+
+public class Order {
+    private String orderId;
+    private OrderStatus status;
+    
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.status = OrderStatus.RECEIVED;
+    }
+    
+    public void updateStatus(OrderStatus newStatus) {
+        this.status = newStatus;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package restaurant.backend;
+
+public enum OrderStatus {
+    RECEIVED,
+    PREPARING,
+    READY,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: OrderUpdateService.java
+```java
+package restaurant.backend;
+
+public class OrderUpdateService {
+    
+    public void updateOrder(Order order, OrderStatus newStatus) {
+        // Business logic for updating order status
+        if (order.getStatus() == OrderStatus.CANCELLED) {
+            throw new IllegalStateException("Cannot update cancelled order");
+        }
+        
+        // Update the order with new status
+        order.updateStatus(newStatus);
+    }
+}
+```
+
+### FILE: RestaurantBackendApplication.java
+```java
+package restaurant.backend;
+
+public class RestaurantBackendApplication {
+    
+    public static void main(String[] args) {
+        Order order = new Order("ORD-001");
+        OrderUpdateService service = new OrderUpdateService();
+        
+        System.out.println("Initial status: " + order.getStatus());
+        
+        // Update order status through the service
+        service.updateOrder(order, OrderStatus.PREPARING);
+        System.out.println("After preparing: " + order.getStatus());
+        
+        service.updateOrder(order, OrderStatus.READY);
+        System.out.println("After ready: " + order.getStatus());
+    }
+}
+```

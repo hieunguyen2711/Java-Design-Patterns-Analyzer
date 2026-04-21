@@ -1,0 +1,105 @@
+### FILE: StockItem.java
+```java
+package com.example.inventory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StockItem {
+    private final String itemId;
+    private int quantity;
+    private final int reorderThreshold;
+    private final List<StockEvent> eventHistory;
+
+    public StockItem(String itemId, int initialQuantity, int reorderThreshold) {
+        this.itemId = itemId;
+        this.quantity = initialQuantity;
+        this.reorderThreshold = reorderThreshold;
+        this.eventHistory = new ArrayList<>();
+        eventHistory.add(new StockEvent("INITIAL_STOCK", initialQuantity));
+    }
+
+    public void addStock(int amount) {
+        quantity += amount;
+        eventHistory.add(new StockEvent("STOCK_ADDED", amount));
+    }
+
+    public boolean removeStock(int amount) {
+        if (quantity >= amount) {
+            quantity -= amount;
+            eventHistory.add(new StockEvent("STOCK_REMOVED", amount));
+            return true;
+        }
+        return false;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+
+    public List<StockEvent> getEventHistory() {
+        return new ArrayList<>(eventHistory);
+    }
+}
+```
+
+### FILE: StockEvent.java
+```java
+package com.example.inventory;
+
+public class StockEvent {
+    private final String eventType;
+    private final int quantity;
+    private final long timestamp;
+
+    public StockEvent(String eventType, int quantity) {
+        this.eventType = eventType;
+        this.quantity = quantity;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: InventoryService.java
+```java
+package com.example.inventory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class InventoryService {
+    private final Map<String, StockItem> inventory;
+    
+    public InventoryService() {
+        this.inventory = new HashMap<>();
+    }
+
+    public void addItem(String itemId, int initialQuantity, int reorderThreshold) {
+        inventory.put(itemId, new StockItem(itemId, initialQuantity, reorderThreshold));
+    }
+
+    public void addStock(String itemId, int amount) {
+        StockItem item = inventory.get(itemId);
+        if (item != null) {
+            item.addStock

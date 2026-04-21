@@ -1,0 +1,94 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private final String itemId;
+    private final String name;
+    private final int currentStock;
+    private final int reorderThreshold;
+    private final String location;
+    private final String supplier;
+    
+    private StockItem(Builder builder) {
+        this.itemId = builder.itemId;
+        this.name = builder.name;
+        this.currentStock = builder.currentStock;
+        this.reorderThreshold = builder.reorderThreshold;
+        this.location = builder.location;
+        this.supplier = builder.supplier;
+    }
+    
+    public String getItemId() { return itemId; }
+    public String getName() { return name; }
+    public int getCurrentStock() { return currentStock; }
+    public int getReorderThreshold() { return reorderThreshold; }
+    public String getLocation() { return location; }
+    public String getSupplier() { return supplier; }
+    
+    public static class Builder {
+        private String itemId;
+        private String name;
+        private int currentStock;
+        private int reorderThreshold;
+        private String location;
+        private String supplier;
+        
+        public Builder setItemId(String itemId) {
+            this.itemId = itemId;
+            return this;
+        }
+        
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+        
+        public Builder setCurrentStock(int currentStock) {
+            this.currentStock = currentStock;
+            return this;
+        }
+        
+        public Builder setReorderThreshold(int reorderThreshold) {
+            this.reorderThreshold = reorderThreshold;
+            return this;
+        }
+        
+        public Builder setLocation(String location) {
+            this.location = location;
+            return this;
+        }
+        
+        public Builder setSupplier(String supplier) {
+            this.supplier = supplier;
+            return this;
+        }
+        
+        public StockItem build() {
+            return new StockItem(this);
+        }
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+package com.example.stock;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class InventoryManager {
+    private final List<StockItem> items = new ArrayList<>();
+    
+    public void addItem(StockItem item) {
+        items.add(item);
+    }
+    
+    public StockItem createNewItem(String itemId, String name, int currentStock, 
+                                 int reorderThreshold, String location, String supplier) {
+        return new StockItem.Builder()
+                .setItemId(itemId)
+                .setName(name)
+                .setCurrentStock(currentStock)
+                .setReorder

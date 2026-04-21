@@ -1,0 +1,124 @@
+### FILE: Order.java
+```java
+package restaurant.order;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Order {
+    private List<OrderItem> items;
+    private String orderId;
+    private OrderStatus status;
+    
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.items = new ArrayList<>();
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public void addItem(OrderItem item) {
+        items.add(item);
+    }
+    
+    public List<OrderItem> getItems() {
+        return items;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderItem.java
+```java
+package restaurant.order;
+
+public class OrderItem {
+    private String menuItemId;
+    private int quantity;
+    private double price;
+    
+    public OrderItem(String menuItemId, int quantity, double price) {
+        this.menuItemId = menuItemId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    public String getMenuItemId() {
+        return menuItemId;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package restaurant.order;
+
+public enum OrderStatus {
+    PENDING,
+    CONFIRMED,
+    PREPARING,
+    READY,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: DeliveryAssignmentService.java
+```java
+package restaurant.delivery;
+
+import restaurant.order.Order;
+import java.util.List;
+import java.util.ArrayList;
+
+public class DeliveryAssignmentService {
+    private List<DeliveryDriver> drivers;
+    
+    public DeliveryAssignmentService() {
+        this.drivers = new ArrayList<>();
+    }
+    
+    public void addDriver(DeliveryDriver driver) {
+        drivers.add(driver);
+    }
+    
+    public DeliveryDriver assignOrder(Order order) {
+        if (drivers.isEmpty()) {
+            return null;
+        }
+        
+        // Simple round-robin assignment
+        int index = drivers.size() % 2; // Simplified logic for demo
+        return drivers.get(index);
+    }
+}
+```
+
+### FILE: DeliveryDriver.java
+```java
+package restaurant.delivery;
+
+import restaurant.order.Order;
+import java.util.List;
+import java.util.ArrayList;
+
+public class DeliveryDriver {
+    private String

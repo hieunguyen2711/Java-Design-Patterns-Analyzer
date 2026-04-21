@@ -1,0 +1,118 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public abstract class AppointmentSlot {
+    protected String date;
+    protected String time;
+    protected boolean isAvailable;
+    
+    public AppointmentSlot(String date, String time) {
+        this.date = date;
+        this.time = time;
+        this.isAvailable = true;
+    }
+    
+    public abstract Doctor getDoctor();
+    
+    public String getDate() {
+        return date;
+    }
+    
+    public String getTime() {
+        return time;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: GeneralPractitionerSlot.java
+```java
+public class GeneralPractitionerSlot extends AppointmentSlot {
+    private Doctor doctor;
+    
+    public GeneralPractitionerSlot(String date, String time) {
+        super(date, time);
+        this.doctor = new Doctor("Dr. Smith", "General Practice");
+    }
+    
+    @Override
+    public Doctor getDoctor() {
+        return doctor;
+    }
+}
+```
+
+### FILE: SpecialistSlot.java
+```java
+public class SpecialistSlot extends AppointmentSlot {
+    private Doctor doctor;
+    
+    public SpecialistSlot(String date, String time) {
+        super(date, time);
+        this.doctor = new Doctor("Dr. Johnson", "Cardiology");
+    }
+    
+    @Override
+    public Doctor getDoctor() {
+        return doctor;
+    }
+}
+```
+
+### FILE: AppointmentSlotFactory.java
+```java
+public abstract class AppointmentSlotFactory {
+    public abstract AppointmentSlot createAppointmentSlot(String date, String time);
+}
+```
+
+### FILE: GeneralPractitionerSlotFactory.java
+```java

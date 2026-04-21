@@ -1,0 +1,115 @@
+### FILE: Account.java
+```java
+package banking;
+
+public class Account {
+    private String accountNumber;
+    private double balance;
+    private AccountType accountType;
+    
+    public Account(String accountNumber, double initialBalance, AccountType accountType) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+        this.accountType = accountType;
+    }
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    public AccountType getAccountType() {
+        return accountType;
+    }
+}
+```
+
+### FILE: AccountType.java
+```java
+package banking;
+
+public enum AccountType {
+    CHECKING,
+    SAVINGS,
+    BUSINESS
+}
+```
+
+### FILE: TransactionStrategy.java
+```java
+package banking;
+
+public interface TransactionStrategy {
+    void execute(Account fromAccount, Account toAccount, double amount);
+    String getTransactionType();
+}
+```
+
+### FILE: TransferStrategy.java
+```java
+package banking;
+
+public class TransferStrategy implements TransactionStrategy {
+    
+    @Override
+    public void execute(Account fromAccount, Account toAccount, double amount) {
+        if (fromAccount != null && toAccount != null && amount > 0) {
+            if (fromAccount.withdraw(amount)) {
+                toAccount.deposit(amount);
+            }
+        }
+    }
+    
+    @Override
+    public String getTransactionType() {
+        return "Transfer";
+    }
+}
+```
+
+### FILE: DepositStrategy.java
+```java
+package banking;
+
+public class DepositStrategy implements TransactionStrategy {
+    
+    @Override
+    public void execute(Account fromAccount, Account toAccount, double amount) {
+        if (toAccount != null && amount > 0) {
+            toAccount.deposit(amount);
+        }
+    }
+    
+    @Override
+    public String getTransactionType() {
+        return "Deposit";
+    }
+}
+```
+
+### FILE: WithdrawalStrategy.java
+```java
+package banking;
+
+public class WithdrawalStrategy implements TransactionStrategy {
+    
+    @Override
+    public void execute(Account fromAccount, Account toAccount, double amount) {
+        if (

@@ -1,0 +1,109 @@
+### FILE: Room.java
+```java
+public class Room {
+    private String roomId;
+    private double basePrice;
+    
+    public Room(String roomId, double basePrice) {
+        this.roomId = roomId;
+        this.basePrice = basePrice;
+    }
+    
+    public double getBasePrice() {
+        return basePrice;
+    }
+    
+    public String getRoomId() {
+        return roomId;
+    }
+}
+```
+
+### FILE: RoomDecorator.java
+```java
+public abstract class RoomDecorator implements RoomService {
+    protected RoomService roomService;
+    
+    public RoomDecorator(RoomService roomService) {
+        this.roomService = roomService;
+    }
+}
+```
+
+### FILE: RoomService.java
+```java
+public interface RoomService {
+    double calculatePrice();
+    String getServiceDescription();
+}
+```
+
+### FILE: BasicRoomService.java
+```java
+public class BasicRoomService implements RoomService {
+    private Room room;
+    
+    public BasicRoomService(Room room) {
+        this.room = room;
+    }
+    
+    @Override
+    public double calculatePrice() {
+        return room.getBasePrice();
+    }
+    
+    @Override
+    public String getServiceDescription() {
+        return "Basic room service for room " + room.getRoomId();
+    }
+}
+```
+
+### FILE: WiFiDecorator.java
+```java
+public class WiFiDecorator extends RoomDecorator {
+    private static final double WIFI_PRICE = 15.0;
+    
+    public WiFiDecorator(RoomService roomService) {
+        super(roomService);
+    }
+    
+    @Override
+    public double calculatePrice() {
+        return roomService.calculatePrice() + WIFI_PRICE;
+    }
+    
+    @Override
+    public String getServiceDescription() {
+        return roomService.getServiceDescription() + " with WiFi";
+    }
+}
+```
+
+### FILE: BreakfastDecorator.java
+```java
+public class BreakfastDecorator extends RoomDecorator {
+    private static final double BREAKFAST_PRICE = 25.0;
+    
+    public BreakfastDecorator(RoomService roomService) {
+        super(roomService);
+    }
+    
+    @Override
+    public double calculatePrice() {
+        return roomService.calculatePrice() + BREAKFAST_PRICE;
+    }
+    
+    @Override
+    public String getServiceDescription() {
+        return roomService.getServiceDescription() + " with breakfast";
+    }
+}
+```
+
+### FILE: RoomBookingSystem.java
+```java
+public class RoomBookingSystem {
+    public static void main(String[] args) {
+        // Create a basic room
+        Room room = new Room

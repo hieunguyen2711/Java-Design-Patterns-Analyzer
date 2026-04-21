@@ -1,0 +1,109 @@
+### FILE: Account.java
+```java
+package banking;
+
+public abstract class Account {
+    protected String accountId;
+    protected double balance;
+    
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    public abstract boolean withdraw(double amount);
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountId() {
+        return accountId;
+    }
+}
+```
+
+### FILE: CheckingAccount.java
+```java
+package banking;
+
+public class CheckingAccount extends Account {
+    private static final double OVERDRAFT_LIMIT = 100.0;
+    
+    public CheckingAccount(String accountId, double initialBalance) {
+        super(accountId, initialBalance);
+    }
+    
+    @Override
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance + OVERDRAFT_LIMIT >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### FILE: SavingsAccount.java
+```java
+package banking;
+
+public class SavingsAccount extends Account {
+    
+    public SavingsAccount(String accountId, double initialBalance) {
+        super(accountId, initialBalance);
+    }
+    
+    @Override
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### FILE: SpecialCaseAccount.java
+```java
+package banking;
+
+public class SpecialCaseAccount extends Account {
+    
+    public SpecialCaseAccount(String accountId, double initialBalance) {
+        super(accountId, initialBalance);
+    }
+    
+    @Override
+    public boolean withdraw(double amount) {
+        // Special case: always allow withdrawal but with penalty
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            balance -= 5.0; // Penalty fee
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+### FILE: AccountFactory.java
+```java
+package banking;
+
+public class AccountFactory {
+    
+    public static Account createAccount(String type, String accountId, double initialBalance) {
+        switch (type.toLowerCase()) {
+            case "checking":
+                return new CheckingAccount(accountId, initialBalance);
+            case "savings":
+                return new SavingsAccount(accountId,

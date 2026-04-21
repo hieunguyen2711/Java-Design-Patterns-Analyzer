@@ -1,0 +1,123 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient {
+    private String name;
+    private int id;
+    
+    public Patient(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+
+public class AppointmentSlot {
+    private LocalDateTime dateTime;
+    private Doctor doctor;
+    private Patient patient;
+    private boolean isBooked;
+    private boolean isCheckedIn;
+    
+    public AppointmentSlot(LocalDateTime dateTime, Doctor doctor) {
+        this.dateTime = dateTime;
+        this.doctor = doctor;
+        this.isBooked = false;
+        this.isCheckedIn = false;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public boolean isBooked() {
+        return isBooked;
+    }
+    
+    public void book(Patient patient) {
+        if (!isBooked) {
+            this.patient = patient;
+            this.isBooked = true;
+        }
+    }
+    
+    public boolean isCheckedIn() {
+        return isCheckedIn;
+    }
+    
+    public void checkIn() {
+        // Balking pattern: only allow check-in if not already checked in
+        if (!isCheckedIn) {
+            isCheckedIn = true;
+        }
+    }
+}
+```
+
+### FILE: ClinicManager.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClinicManager {
+    private List<AppointmentSlot> appointmentSlots;
+    
+    public ClinicManager() {
+        this.appointmentSlots = new ArrayList<>();
+    }
+    
+    public void addAppointmentSlot(AppointmentSlot slot) {
+        appointmentSlots.add(slot);
+    }
+    
+    public AppointmentSlot findAvailableSlot(Doctor doctor, LocalDateTime dateTime) {
+        for

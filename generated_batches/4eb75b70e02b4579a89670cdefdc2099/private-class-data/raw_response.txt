@@ -1,0 +1,85 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StockItem {
+    private final String itemId;
+    private final String name;
+    private int currentStock;
+    private final int reorderThreshold;
+    private final Supplier supplier;
+    private final List<StockMovement> movementLog;
+    
+    public StockItem(String itemId, String name, int initialStock, int reorderThreshold, Supplier supplier) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = initialStock;
+        this.reorderThreshold = reorderThreshold;
+        this.supplier = supplier;
+        this.movementLog = new ArrayList<>();
+    }
+    
+    public void addStock(int quantity) {
+        currentStock += quantity;
+        movementLog.add(new StockMovement("ADD", quantity, currentStock));
+    }
+    
+    public boolean removeStock(int quantity) {
+        if (currentStock >= quantity) {
+            currentStock -= quantity;
+            movementLog.add(new StockMovement("REMOVE", quantity, currentStock));
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean needsReorder() {
+        return currentStock <= reorderThreshold;
+    }
+    
+    public void requestRestock() {
+        if (needsReorder()) {
+            supplier.processOrder(this);
+        }
+    }
+    
+    // Private class data accessors
+    public String getItemId() { return itemId; }
+    public String getName() { return name; }
+    public int getCurrentStock() { return currentStock; }
+    public int getReorderThreshold() { return reorderThreshold; }
+    public Supplier getSupplier() { return supplier; }
+    public List<StockMovement> getMovementLog() { 
+        return new ArrayList<>(movementLog); // Return copy to maintain encapsulation
+    }
+}
+```
+
+### FILE: Supplier.java
+```java
+package com.example.stock;
+
+public class Supplier {
+    private final String supplierId;
+    private final String name;
+    
+    public Supplier(String supplierId, String name) {
+        this.supplierId = supplierId;
+        this.name = name;
+    }
+    
+    public void processOrder(StockItem item) {
+        System.out.println("Processing order for " + item.getName() + 
+                          " from supplier " + name);
+    }
+    
+    // Private class data accessors
+    public String getSupplierId() { return supplierId; }
+    public String getName() { return name; }
+}
+```
+
+### FILE: StockMovement

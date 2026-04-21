@@ -1,0 +1,80 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+}
+```
+
+### FILE: Member.java
+```java
+public class Member {
+    private String name;
+    private String memberId;
+    
+    public Member(String name, String memberId) {
+        this.name = name;
+        this.memberId = memberId;
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+}
+```
+
+### FILE: LibraryItem.java
+```java
+public abstract class LibraryItem {
+    protected Book book;
+    protected Member member;
+    protected java.time.LocalDate borrowDate;
+    protected java.time.LocalDate dueDate;
+    
+    public LibraryItem(Book book, Member member) {
+        this.book = book;
+        this.member = member;
+        this.borrowDate = java.time.LocalDate.now();
+        this.dueDate = borrowDate.plusDays(getBorrowPeriod());
+    }
+    
+    public abstract int getBorrowPeriod();
+    public abstract double calculateLateFee(int daysOverdue);
+    
+    // Getters
+    public Book getBook() { return book; }
+    public Member getMember() { return member; }
+    public java.time.LocalDate getBorrowDate() { return borrowDate; }
+    public java.time.LocalDate getDueDate() { return dueDate; }
+}
+```
+
+### FILE: BookLoan.java
+```java
+public class BookLoan extends LibraryItem {
+    private static final int BORROW_PERIOD = 14;
+    
+    public BookLoan(Book book, Member member) {
+        super(book, member);
+    }
+    
+    @Override
+    public int getBorrowPeriod() {
+        return B

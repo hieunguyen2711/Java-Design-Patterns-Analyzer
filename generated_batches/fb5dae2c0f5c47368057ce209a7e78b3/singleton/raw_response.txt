@@ -1,0 +1,64 @@
+### FILE: DatabaseConnection.java
+```java
+public class DatabaseConnection {
+    private static volatile DatabaseConnection instance;
+    
+    private DatabaseConnection() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static DatabaseConnection getInstance() {
+        if (instance == null) {
+            synchronized (DatabaseConnection.class) {
+                if (instance == null) {
+                    instance = new DatabaseConnection();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void connect() {
+        System.out.println("Connected to database");
+    }
+    
+    public void disconnect() {
+        System.out.println("Disconnected from database");
+    }
+}
+```
+
+### FILE: CourseManager.java
+```java
+public class CourseManager {
+    private DatabaseConnection dbConnection;
+    
+    public CourseManager() {
+        this.dbConnection = DatabaseConnection.getInstance();
+        this.dbConnection.connect();
+    }
+    
+    public void enrollStudent(String studentId, String courseId) {
+        System.out.println("Enrolling student " + studentId + " in course " + courseId);
+    }
+    
+    public void addCourse(String courseId, String courseName) {
+        System.out.println("Adding course: " + courseName + " with ID: " + courseId);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        CourseManager manager1 = new CourseManager();
+        CourseManager manager2 = new CourseManager();
+        
+        System.out.println("Are managers the same instance? " + (manager1 == manager2));
+        
+        manager1.enrollStudent("S001", "C001");
+        manager2.addCourse("C002", "Advanced Java");
+    }
+}
+```

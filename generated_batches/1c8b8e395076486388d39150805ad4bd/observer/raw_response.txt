@@ -1,0 +1,109 @@
+### FILE: Membership.java
+```java
+package com.membership;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private List<Observer> observers;
+    
+    public Membership(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+        this.observers = new ArrayList<>();
+    }
+    
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+    
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+    
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Observer.java
+```java
+package com.membership;
+
+public interface Observer {
+    void update(String message);
+}
+```
+
+### FILE: PaymentObserver.java
+```java
+package com.membership;
+
+public class PaymentObserver implements Observer {
+    private String observerName;
+    
+    public PaymentObserver(String observerName) {
+        this.observerName = observerName;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("Payment Notification for " + observerName + ": " + message);
+    }
+}
+```
+
+### FILE: ScheduleObserver.java
+```java
+package com.membership;
+
+public class ScheduleObserver implements Observer {
+    private String observerName;
+    
+    public ScheduleObserver(String observerName) {
+        this.observerName = observerName;
+    }
+    
+    @Override
+    public void update(String message) {
+        System.out.println("Schedule Notification for " + observerName + ": " + message);
+    }
+}
+```
+
+### FILE: MembershipSystem.java
+```java
+package com.membership;
+
+public class MembershipSystem {
+    public static void main(String[] args) {
+        // Create membership
+        Membership membership = new Membership("M001", "John Doe");
+        
+        // Add observers
+        PaymentObserver paymentObserver = new PaymentObserver("Accounting Dept");
+        ScheduleObserver scheduleObserver = new ScheduleObserver("Training Coordinator");
+        
+        membership.addObserver(paymentObserver);
+        membership.addObserver(scheduleObserver);
+        
+        // Notify observers about a change
+        membership.notifyObservers("Membership updated with new payment method");
+        membership.notifyObservers("New class schedule available for next week");
+    }
+}
+```

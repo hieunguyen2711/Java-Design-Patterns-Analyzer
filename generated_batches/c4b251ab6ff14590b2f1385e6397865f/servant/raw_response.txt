@@ -1,0 +1,103 @@
+### FILE: Order.java
+```java
+package restaurant;
+
+public class Order {
+    private String orderId;
+    private String customerId;
+    private String status;
+    
+    public Order(String orderId, String customerId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.status = "PLACED";
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+package restaurant;
+
+public class OrderService {
+    private OrderRepository orderRepository;
+    
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+    
+    public void processOrder(String orderId, String customerId) {
+        Order order = new Order(orderId, customerId);
+        orderRepository.save(order);
+        
+        // Servant pattern: delegate to servant for status update
+        StatusUpdateServant.updateStatus(order, "PREPARING");
+        StatusUpdateServant.updateStatus(order, "READY");
+        StatusUpdateServant.updateStatus(order, "DELIVERED");
+    }
+}
+```
+
+### FILE: OrderRepository.java
+```java
+package restaurant;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class OrderRepository {
+    private Map<String, Order> orders = new HashMap<>();
+    
+    public void save(Order order) {
+        orders.put(order.getOrderId(), order);
+    }
+    
+    public Order findById(String orderId) {
+        return orders.get(orderId);
+    }
+}
+```
+
+### FILE: StatusUpdateServant.java
+```java
+package restaurant;
+
+public class StatusUpdateServant {
+    public static void updateStatus(Order order, String status) {
+        // Servant performs the actual work of updating order status
+        order.setStatus(status);
+        System.out.println("Order " + order.getOrderId() + " status updated to: " + status);
+    }
+}
+```
+
+### FILE: RestaurantApplication.java
+```java
+package restaurant;
+
+public class RestaurantApplication {
+    public static void main(String[] args) {
+        OrderRepository repository = new OrderRepository();
+        OrderService service = new OrderService(repository);
+        
+        // Process an order through the servant pattern
+        service.processOrder("ORD-001", "CUST-123");
+    }
+}
+```

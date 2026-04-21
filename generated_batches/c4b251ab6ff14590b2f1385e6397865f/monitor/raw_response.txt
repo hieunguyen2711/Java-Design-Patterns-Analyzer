@@ -1,0 +1,112 @@
+### FILE: Order.java
+```java
+package restaurant.monitor;
+
+public class Order {
+    private String orderId;
+    private String customerId;
+    private double totalAmount;
+    private OrderStatus status;
+    
+    public Order(String orderId, String customerId, double totalAmount) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public String getOrderId() {
+        return orderId;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package restaurant.monitor;
+
+public enum OrderStatus {
+    PENDING,
+    CONFIRMED,
+    PREPARING,
+    READY,
+    DELIVERING,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: OrderMonitor.java
+```java
+package restaurant.monitor;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Collections;
+
+public class OrderMonitor {
+    private final Map<String, Order> orders;
+    
+    public OrderMonitor() {
+        this.orders = new ConcurrentHashMap<>();
+    }
+    
+    public void addOrder(Order order) {
+        orders.put(order.getOrderId(), order);
+    }
+    
+    public Order getOrder(String orderId) {
+        return orders.get(orderId);
+    }
+    
+    public Set<String> getAllOrderIds() {
+        return Collections.unmodifiableSet(orders.keySet());
+    }
+    
+    public int getTotalOrders() {
+        return orders.size();
+    }
+    
+    public void updateOrderStatus(String orderId, OrderStatus status) {
+        Order order = orders.get(orderId);
+        if (order != null) {
+            order.setStatus(status);
+        }
+    }
+}
+```
+
+### FILE: RestaurantService.java
+```java
+package restaurant.monitor;
+
+public class RestaurantService {
+    private final OrderMonitor monitor;
+    
+    public RestaurantService() {
+        this.monitor = new OrderMonitor();
+    }
+    
+    public void processOrder(String orderId, String customerId, double amount) {
+        Order order = new Order(orderId, customerId, amount);
+        monitor.addOrder(order);
+        
+        // Simulate processing
+        System.out.println("Order " + orderId + " created with status: " + order.getStatus

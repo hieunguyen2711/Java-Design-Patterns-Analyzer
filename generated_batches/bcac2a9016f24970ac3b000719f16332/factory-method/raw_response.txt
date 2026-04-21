@@ -1,0 +1,93 @@
+### FILE: Room.java
+```java
+public abstract class Room {
+    protected String roomId;
+    protected double basePrice;
+    
+    public Room(String roomId, double basePrice) {
+        this.roomId = roomId;
+        this.basePrice = basePrice;
+    }
+    
+    public abstract double calculateFinalPrice(int numberOfNights);
+    
+    public String getRoomId() {
+        return roomId;
+    }
+    
+    public double getBasePrice() {
+        return basePrice;
+    }
+}
+```
+
+### FILE: StandardRoom.java
+```java
+public class StandardRoom extends Room {
+    public StandardRoom(String roomId, double basePrice) {
+        super(roomId, basePrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice(int numberOfNights) {
+        return basePrice * numberOfNights;
+    }
+}
+```
+
+### FILE: DeluxeRoom.java
+```java
+public class DeluxeRoom extends Room {
+    public DeluxeRoom(String roomId, double basePrice) {
+        super(roomId, basePrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice(int numberOfNights) {
+        return basePrice * numberOfNights * 1.5;
+    }
+}
+```
+
+### FILE: SuiteRoom.java
+```java
+public class SuiteRoom extends Room {
+    public SuiteRoom(String roomId, double basePrice) {
+        super(roomId, basePrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice(int numberOfNights) {
+        return basePrice * numberOfNights * 2.0;
+    }
+}
+```
+
+### FILE: RoomFactory.java
+```java
+public abstract class RoomFactory {
+    public abstract Room createRoom(String roomId, double basePrice);
+    
+    public Room createStandardRoom(String roomId, double basePrice) {
+        return new StandardRoom(roomId, basePrice);
+    }
+    
+    public Room createDeluxeRoom(String roomId, double basePrice) {
+        return new DeluxeRoom(roomId, basePrice);
+    }
+    
+    public Room createSuiteRoom(String roomId, double basePrice) {
+        return new SuiteRoom(roomId, basePrice);
+    }
+}
+```
+
+### FILE: HotelRoomFactory.java
+```java
+public class HotelRoomFactory extends RoomFactory {
+    @Override
+    public Room createRoom(String roomId, double basePrice) {
+        // This method demonstrates the factory method pattern
+        // by providing a way to create different types of rooms
+        return new StandardRoom(roomId, basePrice);
+    }

@@ -1,0 +1,50 @@
+### FILE: ClinicManager.java
+```java
+public class ClinicManager {
+    private static volatile ClinicManager instance;
+    
+    private ClinicManager() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static ClinicManager getInstance() {
+        if (instance == null) {
+            synchronized (ClinicManager.class) {
+                if (instance == null) {
+                    instance = new ClinicManager();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void scheduleAppointment(String patientName, String doctorName, String slotTime) {
+        System.out.println("Appointment scheduled for " + patientName + 
+                          " with " + doctorName + " at " + slotTime);
+    }
+    
+    public void checkInPatient(String patientName) {
+        System.out.println(patientName + " has checked in");
+    }
+    
+    public void recordVisit(String patientName, String doctorName) {
+        System.out.println("Visit recorded: " + patientName + " seen by " + doctorName);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        ClinicManager manager1 = ClinicManager.getInstance();
+        ClinicManager manager2 = ClinicManager.getInstance();
+        
+        System.out.println("Are both instances the same? " + (manager1 == manager2));
+        
+        manager1.scheduleAppointment("John Doe", "Dr. Smith", "10:00 AM");
+        manager2.checkInPatient("Jane Smith");
+        manager1.recordVisit("John Doe", "Dr. Smith");
+    }
+}
+```

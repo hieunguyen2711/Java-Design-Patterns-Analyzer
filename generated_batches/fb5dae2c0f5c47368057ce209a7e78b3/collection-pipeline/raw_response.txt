@@ -1,0 +1,109 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Course {
+    private String name;
+    private List<LessonModule> modules;
+    
+    public Course(String name, List<LessonModule> modules) {
+        this.name = name;
+        this.modules = modules;
+    }
+    
+    public List<Assignment> getAllAssignments() {
+        return modules.stream()
+                .flatMap(module -> module.getAssignments().stream())
+                .collect(Collectors.toList());
+    }
+    
+    public List<Submission> getSubmissionsForCourse() {
+        return getAllAssignments().stream()
+                .flatMap(assignment -> assignment.getSubmissions().stream())
+                .collect(Collectors.toList());
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.model;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class LessonModule {
+    private String title;
+    private List<Assignment> assignments;
+    
+    public LessonModule(String title, List<Assignment> assignments) {
+        this.title = title;
+        this.assignments = assignments;
+    }
+    
+    public List<Submission> getSubmissions() {
+        return assignments.stream()
+                .flatMap(assignment -> assignment.getSubmissions().stream())
+                .collect(Collectors.toList());
+    }
+    
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Assignment {
+    private String title;
+    private List<Submission> submissions;
+    
+    public Assignment(String title, List<Submission> submissions) {
+        this.title = title;
+        this.submissions = submissions;
+    }
+    
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+    
+    public int getTotalSubmitted() {
+        return submissions.stream()
+                .filter(submission -> submission.getStatus().equals("SUBMITTED"))
+                .collect(Collectors.toList())
+                .size();
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.model;
+
+public class Submission {
+    private String studentId;
+    private String status;
+    
+    public Submission(String studentId, String status) {
+        this.studentId = studentId;
+        this.status = status;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    
+    public String get

@@ -1,0 +1,123 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private String title;
+    private String instructor;
+    
+    public Course(String title, String instructor) {
+        this.title = title;
+        this.instructor = instructor;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getInstructor() {
+        return instructor;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.model;
+
+public class LessonModule {
+    private String moduleName;
+    private int durationMinutes;
+    
+    public LessonModule(String moduleName, int durationMinutes) {
+        this.moduleName = moduleName;
+        this.durationMinutes = durationMinutes;
+    }
+    
+    public String getModuleName() {
+        return moduleName;
+    }
+    
+    public int getDurationMinutes() {
+        return durationMinutes;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+public class Assignment {
+    private String title;
+    private String description;
+    
+    public Assignment(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.model;
+
+public class Submission {
+    private Assignment assignment;
+    private String studentId;
+    private String content;
+    
+    public Submission(Assignment assignment, String studentId, String content) {
+        this.assignment = assignment;
+        this.studentId = studentId;
+        this.content = content;
+    }
+    
+    public Assignment getAssignment() {
+        return assignment;
+    }
+    
+    public String getStudentId() {
+        return studentId;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+### FILE: GradingSystem.java
+```java
+package com.lms.service;
+
+public interface GradingSystem {
+    double calculateGrade(Submission submission);
+}
+```
+
+### FILE: LMSGradingAdapter.java
+```java
+package com.lms.service;
+
+import com.lms.model.Submission;
+
+public class LMSGradingAdapter implements GradingSystem {
+    private LegacyGradingService legacyService;
+    
+    public LMSGradingAdapter(LegacyGradingService legacyService) {
+        this.legacyService = legacyService;
+    }
+    
+    @Override
+    public double calculateGrade(Submission submission) {
+       

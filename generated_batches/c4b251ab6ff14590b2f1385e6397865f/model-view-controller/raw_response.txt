@@ -1,0 +1,90 @@
+### FILE: RestaurantController.java
+```java
+import java.util.List;
+
+public class RestaurantController {
+    private final RestaurantModel model;
+    private final RestaurantView view;
+    
+    public RestaurantController(RestaurantModel model, RestaurantView view) {
+        this.model = model;
+        this.view = view;
+    }
+    
+    public void updateOrderStatus(int orderId, String status) {
+        model.updateOrderStatus(orderId, status);
+        view.displayOrderStatus(orderId, status);
+    }
+    
+    public void addMenuItem(String name, double price) {
+        model.addMenuItem(name, price);
+        view.displayMenu(model.getMenu());
+    }
+    
+    public List<MenuItem> getMenu() {
+        return model.getMenu();
+    }
+    
+    public Order createOrder(List<Integer> itemIds) {
+        return model.createOrder(itemIds);
+    }
+}
+```
+
+### FILE: RestaurantModel.java
+```java
+import java.util.*;
+
+public class RestaurantModel {
+    private final Map<Integer, MenuItem> menu;
+    private final List<Order> orders;
+    private int nextOrderId;
+    
+    public RestaurantModel() {
+        this.menu = new HashMap<>();
+        this.orders = new ArrayList<>();
+        this.nextOrderId = 1;
+        
+        // Initialize with some sample data
+        menu.put(1, new MenuItem(1, "Burger", 9.99));
+        menu.put(2, new MenuItem(2, "Pizza", 12.99));
+    }
+    
+    public void updateOrderStatus(int orderId, String status) {
+        for (Order order : orders) {
+            if (order.getId() == orderId) {
+                order.setStatus(status);
+                break;
+            }
+        }
+    }
+    
+    public void addMenuItem(String name, double price) {
+        int id = menu.size() + 1;
+        menu.put(id, new MenuItem(id, name, price));
+    }
+    
+    public List<MenuItem> getMenu() {
+        return new ArrayList<>(menu.values());
+    }
+    
+    public Order createOrder(List<Integer> itemIds) {
+        List<MenuItem> items = new ArrayList<>();
+        double total = 0.0;
+        
+        for (Integer id : itemIds) {
+            MenuItem item = menu.get(id);
+            if (item != null) {
+                items.add(item);
+                total += item.getPrice();
+            }
+        }
+        
+        Order order = new Order(nextOrderId++, items, total);
+        orders.add(order);
+        return order;
+    }
+}
+```
+
+### FILE:

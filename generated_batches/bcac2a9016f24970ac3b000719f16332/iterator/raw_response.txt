@@ -1,0 +1,62 @@
+### FILE: Room.java
+```java
+public class Room {
+    private int roomId;
+    private String roomType;
+    private double pricePerNight;
+    
+    public Room(int roomId, String roomType, double pricePerNight) {
+        this.roomId = roomId;
+        this.roomType = roomType;
+        this.pricePerNight = pricePerNight;
+    }
+    
+    // Getters
+    public int getRoomId() { return roomId; }
+    public String getRoomType() { return roomType; }
+    public double getPricePerNight() { return pricePerNight; }
+}
+```
+
+### FILE: RoomInventory.java
+```java
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class RoomInventory implements Iterable<Room> {
+    private ArrayList<Room> rooms;
+    
+    public RoomInventory() {
+        this.rooms = new ArrayList<>();
+    }
+    
+    public void addRoom(Room room) {
+        rooms.add(room);
+    }
+    
+    @Override
+    public Iterator<Room> iterator() {
+        return rooms.iterator();
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        RoomInventory inventory = new RoomInventory();
+        
+        inventory.addRoom(new Room(101, "Single", 100.0));
+        inventory.addRoom(new Room(102, "Double", 150.0));
+        inventory.addRoom(new Room(103, "Suite", 300.0));
+        
+        System.out.println("Rooms in inventory:");
+        for (Room room : inventory) {
+            System.out.println("Room " + room.getRoomId() + 
+                             " (" + room.getRoomType() + 
+                             ") - $" + room.getPricePerNight() + "/night");
+        }
+    }
+}
+```

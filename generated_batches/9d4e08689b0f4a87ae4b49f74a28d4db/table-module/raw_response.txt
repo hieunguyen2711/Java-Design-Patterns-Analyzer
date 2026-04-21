@@ -1,0 +1,91 @@
+### FILE: FleetManager.java
+```java
+package com.fleetapp;
+
+import java.util.*;
+
+public class FleetManager {
+    private Map<String, Vehicle> vehicles;
+    
+    public FleetManager() {
+        this.vehicles = new HashMap<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.put(vehicle.getId(), vehicle);
+    }
+    
+    public List<Vehicle> getAvailableVehicles() {
+        List<Vehicle> available = new ArrayList<>();
+        for (Vehicle vehicle : vehicles.values()) {
+            if (vehicle.isAvailable()) {
+                available.add(vehicle);
+            }
+        }
+        return available;
+    }
+    
+    public Vehicle findVehicle(String id) {
+        return vehicles.get(id);
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+package com.fleetapp;
+
+public class Vehicle {
+    private String id;
+    private String model;
+    private boolean isAvailable;
+    private double dailyRate;
+    
+    public Vehicle(String id, String model, double dailyRate) {
+        this.id = id;
+        this.model = model;
+        this.dailyRate = dailyRate;
+        this.isAvailable = true;
+    }
+    
+    public String getId() { return id; }
+    public String getModel() { return model; }
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+    public double getDailyRate() { return dailyRate; }
+}
+```
+
+### FILE: ReservationService.java
+```java
+package com.fleetapp;
+
+import java.util.*;
+
+public class ReservationService {
+    private FleetManager fleetManager;
+    private Map<String, Reservation> reservations;
+    
+    public ReservationService(FleetManager fleetManager) {
+        this.fleetManager = fleetManager;
+        this.reservations = new HashMap<>();
+    }
+    
+    public Reservation createReservation(String vehicleId, String customerId, 
+                                       Date pickupDate, Date returnDate) {
+        Vehicle vehicle = fleetManager.findVehicle(vehicleId);
+        if (vehicle == null || !vehicle.isAvailable()) {
+            throw new IllegalArgumentException("Vehicle not available");
+        }
+        
+        Reservation reservation = new Reservation(vehicleId, customerId, pickupDate, returnDate);
+        reservations.put(reservation.getId(), reservation);
+        vehicle.setAvailable(false);
+        
+        return reservation;
+    }
+    
+    public List<Reservation> getCustomerReservations(String customerId) {
+        List<Reservation> customerReservations = new ArrayList<>();
+        for (Reservation res : reservations.values()) {
+            if (res.get

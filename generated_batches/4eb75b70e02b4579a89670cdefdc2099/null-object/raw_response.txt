@@ -1,0 +1,100 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private String itemId;
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    private Location location;
+    private Supplier supplier;
+    
+    public StockItem(String itemId, String name, int currentStock, int reorderThreshold) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+        this.location = Location.NULL_LOCATION;
+        this.supplier = Supplier.NULL_SUPPLIER;
+    }
+    
+    public StockItem(String itemId, String name, int currentStock, int reorderThreshold, 
+                     Location location, Supplier supplier) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+        this.location = location != null ? location : Location.NULL_LOCATION;
+        this.supplier = supplier != null ? supplier : Supplier.NULL_SUPPLIER;
+    }
+    
+    public String getItemId() {
+        return itemId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getCurrentStock() {
+        return currentStock;
+    }
+    
+    public void setCurrentStock(int currentStock) {
+        this.currentStock = currentStock;
+    }
+    
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+    
+    public Location getLocation() {
+        return location;
+    }
+    
+    public Supplier getSupplier() {
+        return supplier;
+    }
+    
+    public boolean needsReordering() {
+        return currentStock <= reorderThreshold;
+    }
+}
+```
+
+### FILE: Location.java
+```java
+package com.example.stock;
+
+public class Location {
+    private String aisle;
+    private String shelf;
+    private String bin;
+    
+    public static final Location NULL_LOCATION = new NullLocation();
+    
+    public Location(String aisle, String shelf, String bin) {
+        this.aisle = aisle;
+        this.shelf = shelf;
+        this.bin = bin;
+    }
+    
+    public String getAisle() {
+        return aisle;
+    }
+    
+    public String getShelf() {
+        return shelf;
+    }
+    
+    public String getBin() {
+        return bin;
+    }
+    
+    @Override
+    public String toString() {
+        return "Location{" +
+                "aisle='" + aisle + '\'' +
+                ", shelf='" + shelf + '\'' +
+                ", bin='" + bin + '\'' +

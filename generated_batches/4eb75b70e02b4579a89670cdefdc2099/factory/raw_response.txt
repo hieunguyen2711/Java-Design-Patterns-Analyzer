@@ -1,0 +1,79 @@
+### FILE: StockItem.java
+```java
+public class StockItem {
+    private String itemId;
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    
+    public StockItem(String itemId, String name, int currentStock, int reorderThreshold) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    // Getters and setters
+    public String getItemId() { return itemId; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+}
+```
+
+### FILE: Supplier.java
+```java
+public class Supplier {
+    private String supplierId;
+    private String name;
+    private String contactInfo;
+    
+    public Supplier(String supplierId, String name, String contactInfo) {
+        this.supplierId = supplierId;
+        this.name = name;
+        this.contactInfo = contactInfo;
+    }
+    
+    // Getters and setters
+    public String getSupplierId() { return supplierId; }
+    public void setSupplierId(String supplierId) { this.supplierId = supplierId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getContactInfo() { return contactInfo; }
+    public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
+}
+```
+
+### FILE: MovementType.java
+```java
+public enum MovementType {
+    INBOUND,
+    OUTBOUND,
+    TRANSFER
+}
+```
+
+### FILE: StockMovementLog.java
+```java
+import java.time.LocalDateTime;
+
+public class StockMovementLog {
+    private String logId;
+    private String itemId;
+    private MovementType type;
+    private int quantity;
+    private LocalDateTime timestamp;
+    private String locationFrom;
+    private String locationTo;
+    
+    public StockMovementLog(String logId, String itemId, MovementType type, int quantity, 
+                          LocalDateTime timestamp, String locationFrom, String

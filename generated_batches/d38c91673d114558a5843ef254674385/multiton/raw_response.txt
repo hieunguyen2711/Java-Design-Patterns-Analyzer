@@ -1,0 +1,112 @@
+### FILE: TicketPriority.java
+```java
+public enum TicketPriority {
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL
+}
+```
+
+### FILE: TicketStatus.java
+```java
+public enum TicketStatus {
+    OPEN,
+    IN_PROGRESS,
+    RESOLVED,
+    CLOSED
+}
+```
+
+### FILE: ProjectTrackerMultiton.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ProjectTrackerMultiton {
+    private static final Map<String, ProjectTrackerMultiton> instances = new HashMap<>();
+    
+    private final String projectName;
+    private int ticketCount;
+    
+    private ProjectTrackerMultiton(String projectName) {
+        this.projectName = projectName;
+        this.ticketCount = 0;
+    }
+    
+    public static synchronized ProjectTrackerMultiton getInstance(String projectName) {
+        return instances.computeIfAbsent(projectName, ProjectTrackerMultiton::new);
+    }
+    
+    public String getProjectName() {
+        return projectName;
+    }
+    
+    public int getTicketCount() {
+        return ticketCount;
+    }
+    
+    public void incrementTicketCount() {
+        ticketCount++;
+    }
+}
+```
+
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private final String id;
+    private final String description;
+    private TicketPriority priority;
+    private TicketStatus status;
+    private final String projectName;
+    
+    public Ticket(String id, String description, TicketPriority priority, String projectName) {
+        this.id = id;
+        this.description = description;
+        this.priority = priority;
+        this.status = TicketStatus.OPEN;
+        this.projectName = projectName;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public TicketPriority getPriority() {
+        return priority;
+    }
+    
+    public void setPriority(TicketPriority priority) {
+        this.priority = priority;
+    }
+    
+    public TicketStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(TicketStatus status) {
+        this.status = status;
+    }
+    
+    public String getProjectName() {
+        return projectName;
+    }
+}
+```
+
+### FILE: ProjectTicketManager.java
+```java
+public class ProjectTicketManager {
+    private final String projectName;
+    
+    public ProjectTicketManager(String projectName) {
+        this.projectName = projectName;
+    }
+    
+    public Ticket createTicket(String id, String description, TicketPriority priority) {
+        // Increment ticket count in multiton for this project

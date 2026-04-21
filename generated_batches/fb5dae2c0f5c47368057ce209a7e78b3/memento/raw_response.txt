@@ -1,0 +1,119 @@
+### FILE: Course.java
+```java
+package lms;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course {
+    private String name;
+    private List<LessonModule> modules;
+    
+    public Course(String name) {
+        this.name = name;
+        this.modules = new ArrayList<>();
+    }
+    
+    public void addModule(LessonModule module) {
+        modules.add(module);
+    }
+    
+    public Memento saveState() {
+        return new Memento(name, new ArrayList<>(modules));
+    }
+    
+    public void restoreState(Memento memento) {
+        this.name = memento.getName();
+        this.modules = new ArrayList<>(memento.getModules());
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public List<LessonModule> getModules() {
+        return modules;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package lms;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LessonModule {
+    private String title;
+    private List<Assignment> assignments;
+    
+    public LessonModule(String title) {
+        this.title = title;
+        this.assignments = new ArrayList<>();
+    }
+    
+    public void addAssignment(Assignment assignment) {
+        assignments.add(assignment);
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package lms;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Assignment {
+    private String name;
+    private List<Submission> submissions;
+    
+    public Assignment(String name) {
+        this.name = name;
+        this.submissions = new ArrayList<>();
+    }
+    
+    public void addSubmission(Submission submission) {
+        submissions.add(submission);
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package lms;
+
+public class Submission {
+    private String studentId;
+    private String content;
+    private double grade;
+    
+    public Submission(String studentId, String content) {
+        this.studentId = studentId;
+        this.content = content;
+        this.grade = -1; // Not graded yet
+    }
+    
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+    
+    public String getStudentId()

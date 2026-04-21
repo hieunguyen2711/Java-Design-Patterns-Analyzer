@@ -1,0 +1,102 @@
+### FILE: ClinicManager.java
+```java
+public class ClinicManager {
+    private static ClinicManager instance;
+    private String clinicName;
+    private int totalAppointments;
+    private int checkedInPatients;
+    
+    // Private constructor to prevent instantiation
+    private ClinicManager() {
+        this.clinicName = "City Medical Clinic";
+        this.totalAppointments = 0;
+        this.checkedInPatients = 0;
+    }
+    
+    // Static method to get the single instance
+    public static synchronized ClinicManager getInstance() {
+        if (instance == null) {
+            instance = new ClinicManager();
+        }
+        return instance;
+    }
+    
+    // Methods to manage clinic data
+    public void scheduleAppointment() {
+        totalAppointments++;
+        System.out.println("Appointment scheduled. Total appointments: " + totalAppointments);
+    }
+    
+    public void checkInPatient() {
+        checkedInPatients++;
+        System.out.println("Patient checked in. Total checked-in patients: " + checkedInPatients);
+    }
+    
+    public String getClinicName() {
+        return clinicName;
+    }
+    
+    public int getTotalAppointments() {
+        return totalAppointments;
+    }
+    
+    public int getCheckedInPatients() {
+        return checkedInPatients;
+    }
+}
+```
+
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public void conductVisit() {
+        ClinicManager manager = ClinicManager.getInstance();
+        System.out.println(name + " is conducting a visit at " + manager.getClinicName());
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int patientId;
+    
+    public Patient(String name, int patientId) {
+        this.name = name;
+        this.patientId = patientId;
+    }
+    
+    public void scheduleAppointment() {
+        ClinicManager manager = ClinicManager.getInstance();
+        manager.scheduleAppointment();
+    }
+    
+    public void checkIn() {
+        ClinicManager manager = ClinicManager.getInstance();
+        manager.checkInPatient();
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getPatientId() {
+        return patientId;
+   

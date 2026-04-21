@@ -1,0 +1,97 @@
+### FILE: RoomInventoryModule.java
+```java
+package hotel.module;
+
+import java.util.*;
+
+public class RoomInventoryModule {
+    private Map<String, Room> rooms;
+    
+    public RoomInventoryModule() {
+        this.rooms = new HashMap<>();
+    }
+    
+    public void addRoom(Room room) {
+        rooms.put(room.getRoomNumber(), room);
+    }
+    
+    public Room getRoom(String roomNumber) {
+        return rooms.get(roomNumber);
+    }
+    
+    public List<Room> getAllRooms() {
+        return new ArrayList<>(rooms.values());
+    }
+    
+    public boolean isAvailable(String roomNumber) {
+        Room room = rooms.get(roomNumber);
+        return room != null && !room.isOccupied();
+    }
+}
+```
+
+### FILE: BookingModule.java
+```java
+package hotel.module;
+
+import java.time.LocalDate;
+import java.util.*;
+
+public class BookingModule {
+    private Map<String, Booking> bookings;
+    
+    public BookingModule() {
+        this.bookings = new HashMap<>();
+    }
+    
+    public String createBooking(String guestName, String roomNumber, 
+                               LocalDate checkInDate, LocalDate checkOutDate) {
+        String bookingId = UUID.randomUUID().toString();
+        Booking booking = new Booking(bookingId, guestName, roomNumber, 
+                                    checkInDate, checkOutDate);
+        bookings.put(bookingId, booking);
+        return bookingId;
+    }
+    
+    public Booking getBooking(String bookingId) {
+        return bookings.get(bookingId);
+    }
+    
+    public List<Booking> getAllBookings() {
+        return new ArrayList<>(bookings.values());
+    }
+}
+```
+
+### FILE: CheckInOutModule.java
+```java
+package hotel.module;
+
+import java.time.LocalDate;
+import java.util.*;
+
+public class CheckInOutModule {
+    private Map<String, CheckInRecord> checkIns;
+    
+    public CheckInOutModule() {
+        this.checkIns = new HashMap<>();
+    }
+    
+    public String checkIn(String bookingId, LocalDate checkInDate) {
+        String recordId = UUID.randomUUID().toString();
+        CheckInRecord record = new CheckInRecord(recordId, bookingId, checkInDate);
+        checkIns.put(recordId, record);
+        return recordId;
+    }
+    
+    public CheckInRecord getCheckIn(String recordId) {
+        return checkIns.get(recordId);
+    }
+    
+    public List<CheckInRecord> getAllCheckIns() {
+        return new ArrayList<>(checkIns.values());
+    }
+}
+```
+
+### FILE: PricingModule.java

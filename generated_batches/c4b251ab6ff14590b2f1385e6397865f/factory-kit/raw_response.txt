@@ -1,0 +1,105 @@
+### FILE: OrderFactory.java
+```java
+public class OrderFactory {
+    public static Order createOrder(OrderType type, String customerId) {
+        switch (type) {
+            case DELIVERY:
+                return new DeliveryOrder(customerId);
+            case PICKUP:
+                return new PickupOrder(customerId);
+            case DINE_IN:
+                return new DineInOrder(customerId);
+            default:
+                throw new IllegalArgumentException("Unknown order type: " + type);
+        }
+    }
+}
+```
+
+### FILE: OrderType.java
+```java
+public enum OrderType {
+    DELIVERY,
+    PICKUP,
+    DINE_IN
+}
+```
+
+### FILE: Order.java
+```java
+public abstract class Order {
+    protected String customerId;
+    protected OrderStatus status;
+    
+    public Order(String customerId) {
+        this.customerId = customerId;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public abstract void processOrder();
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+}
+```
+
+### FILE: DeliveryOrder.java
+```java
+public class DeliveryOrder extends Order {
+    private String deliveryAddress;
+    
+    public DeliveryOrder(String customerId) {
+        super(customerId);
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing delivery order for customer " + customerId);
+        this.status = OrderStatus.CONFIRMED;
+    }
+    
+    public void setDeliveryAddress(String address) {
+        this.deliveryAddress = address;
+    }
+}
+```
+
+### FILE: PickupOrder.java
+```java
+public class PickupOrder extends Order {
+    private String pickupTime;
+    
+    public PickupOrder(String customerId) {
+        super(customerId);
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing pickup order for customer " + customerId);
+        this.status = OrderStatus.CONFIRMED;
+    }
+    
+    public void setPickupTime(String time) {
+        this.pickupTime = time;
+    }
+}
+```
+
+### FILE: DineInOrder.java
+```java
+public class DineInOrder extends Order {
+    private int tableNumber;
+    
+    public DineInOrder(String customerId) {
+        super(customerId);
+    }
+    
+    @Override
+    public void processOrder() {
+        System.out.println("Processing dine-in order for customer " + customerId);
+        this.status = OrderStatus.CONFIRMED

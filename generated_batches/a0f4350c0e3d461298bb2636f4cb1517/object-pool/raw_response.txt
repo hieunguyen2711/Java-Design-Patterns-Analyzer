@@ -1,0 +1,79 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    // Getters and setters
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Book book = (Book) obj;
+        return isbn.equals(book.isbn);
+    }
+    
+    @Override
+    public int hashCode() {
+        return isbn.hashCode();
+    }
+}
+```
+
+### FILE: LibraryMember.java
+```java
+public class LibraryMember {
+    private String memberId;
+    private String name;
+    
+    public LibraryMember(String memberId, String name) {
+        this.memberId = memberId;
+        this.name = name;
+    }
+    
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}
+```
+
+### FILE: BookPool.java
+```java
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public class BookPool {
+    private static BookPool instance;
+    private ConcurrentLinkedQueue<Book> availableBooks;
+    
+    private BookPool() {
+        availableBooks = new ConcurrentLinkedQueue<>();
+        initializePool();
+    }
+    
+    public static synchronized BookPool getInstance() {
+        if (instance == null) {
+            instance = new BookPool();
+        }
+        return instance;
+    }
+    
+    private void initializePool() {
+        // Pre-populate with some books
+        availableBooks.offer(new Book("978-0134685991", "Effective Java", "Joshua Bloch"));
+        availableBooks.offer(new Book("978-0596009205", "

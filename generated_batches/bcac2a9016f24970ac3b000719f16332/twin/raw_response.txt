@@ -1,0 +1,106 @@
+### FILE: Room.java
+```java
+package com.hotel.inventory;
+
+public class Room {
+    private final int roomId;
+    private String type;
+    private boolean isAvailable;
+    
+    public Room(int roomId, String type) {
+        this.roomId = roomId;
+        this.type = type;
+        this.isAvailable = true;
+    }
+    
+    public int getRoomId() {
+        return roomId;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: RoomInventory.java
+```java
+package com.hotel.inventory;
+
+import java.util.*;
+
+public class RoomInventory {
+    private final Map<Integer, Room> rooms;
+    
+    public RoomInventory() {
+        this.rooms = new HashMap<>();
+    }
+    
+    public void addRoom(Room room) {
+        rooms.put(room.getRoomId(), room);
+    }
+    
+    public Room findAvailableRoom(String type) {
+        return rooms.values().stream()
+                .filter(room -> room.getType().equals(type))
+                .filter(Room::isAvailable)
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public List<Room> getAllRooms() {
+        return new ArrayList<>(rooms.values());
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package com.hotel.inventory;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
+public class Booking {
+    private final int bookingId;
+    private final Room room;
+    private final LocalDate checkInDate;
+    private final LocalDate checkOutDate;
+    
+    public Booking(int bookingId, Room room, LocalDate checkInDate, LocalDate checkOutDate) {
+        this.bookingId = bookingId;
+        this.room = room;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+    }
+    
+    public int getBookingId() {
+        return bookingId;
+    }
+    
+    public Room getRoom() {
+        return room;
+    }
+    
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+    
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return booking

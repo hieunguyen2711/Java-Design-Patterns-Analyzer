@@ -1,0 +1,92 @@
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean isAvailable;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.isAvailable = true;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public boolean isAvailable() { return isAvailable; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+}
+```
+
+### FILE: FleetManager.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class FleetManager {
+    private List<Vehicle> vehicles;
+    private Handler handlerChain;
+    
+    public FleetManager() {
+        this.vehicles = new ArrayList<>();
+        this.handlerChain = setupHandlerChain();
+    }
+    
+    private Handler setupHandlerChain() {
+        Handler availabilityHandler = new AvailabilityHandler();
+        Handler maintenanceHandler = new MaintenanceHandler();
+        Handler pricingHandler = new PricingHandler();
+        
+        availabilityHandler.setNext(maintenanceHandler);
+        maintenanceHandler.setNext(pricingHandler);
+        
+        return availabilityHandler;
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public boolean processReservation(String vehicleId, String customerName) {
+        ReservationRequest request = new ReservationRequest(vehicleId, customerName);
+        return handlerChain.handle(request);
+    }
+    
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+}
+```
+
+### FILE: Handler.java
+```java
+public abstract class Handler {
+    protected Handler nextHandler;
+    
+    public void setNext(Handler next) {
+        this.nextHandler = next;
+    }
+    
+    public abstract boolean handle(ReservationRequest request);
+}
+```
+
+### FILE: ReservationRequest.java
+```java
+public class ReservationRequest {
+    private String vehicleId

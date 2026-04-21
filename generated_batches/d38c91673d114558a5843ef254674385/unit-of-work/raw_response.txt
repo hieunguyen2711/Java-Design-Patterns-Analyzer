@@ -1,0 +1,90 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private int id;
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private String assignee;
+
+    public Ticket(int id, String title, String description, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = Status.OPEN;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public Priority getPriority() { return priority; }
+    public void setPriority(Priority priority) { this.priority = priority; }
+    
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: Priority.java
+```java
+public enum Priority {
+    LOW, MEDIUM, HIGH, URGENT
+}
+```
+
+### FILE: Status.java
+```java
+public enum Status {
+    OPEN, IN_PROGRESS, RESOLVED, CLOSED
+}
+```
+
+### FILE: TicketRepository.java
+```java
+import java.util.*;
+
+public class TicketRepository {
+    private Map<Integer, Ticket> tickets = new HashMap<>();
+    
+    public void save(Ticket ticket) {
+        tickets.put(ticket.getId(), ticket);
+    }
+    
+    public Ticket findById(int id) {
+        return tickets.get(id);
+    }
+    
+    public List<Ticket> findAll() {
+        return new ArrayList<>(tickets.values());
+    }
+}
+```
+
+### FILE: UnitOfWork.java
+```java
+import java.util.*;
+
+public class UnitOfWork {
+    private Map<Integer, Ticket> addedTickets = new HashMap<>();
+    private Map<Integer, Ticket> updatedTickets = new HashMap<>();
+    private Set<Integer> deletedTicketIds = new HashSet<>();
+    private TicketRepository repository;
+    
+    public UnitOfWork(TicketRepository repository) {
+        this.repository = repository;
+    }
+    
+    public void registerNew(Ticket ticket) {
+        addedTickets.put(ticket.getId(), ticket

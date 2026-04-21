@@ -1,0 +1,26 @@
+### FILE: RoomInventoryManager.java
+```java
+public class RoomInventoryManager {
+    private static volatile RoomInventoryManager instance;
+    
+    private RoomInventoryManager() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static RoomInventoryManager getInstance() {
+        if (instance == null) {
+            synchronized (RoomInventoryManager.class) {
+                if (instance == null) {
+                    instance = new RoomInventoryManager();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void updateInventory(String roomType, int quantity) {
+        // Implementation for updating inventory
+        System.out.println("Updating " + roomType + " inventory to: " + quantity);
+    }
+}
+```

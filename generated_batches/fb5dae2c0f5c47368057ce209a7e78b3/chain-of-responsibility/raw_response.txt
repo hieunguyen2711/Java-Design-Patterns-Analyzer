@@ -1,0 +1,79 @@
+### FILE: Assignment.java
+```java
+public class Assignment {
+    private String title;
+    private String description;
+    private int maxPoints;
+
+    public Assignment(String title, String description, int maxPoints) {
+        this.title = title;
+        this.description = description;
+        this.maxPoints = maxPoints;
+    }
+
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public int getMaxPoints() { return maxPoints; }
+    public void setMaxPoints(int maxPoints) { this.maxPoints = maxPoints; }
+}
+```
+
+### FILE: Submission.java
+```java
+public class Submission {
+    private Assignment assignment;
+    private String studentId;
+    private String content;
+    private double grade;
+
+    public Submission(Assignment assignment, String studentId, String content) {
+        this.assignment = assignment;
+        this.studentId = studentId;
+        this.content = content;
+        this.grade = 0.0;
+    }
+
+    // Getters and setters
+    public Assignment getAssignment() { return assignment; }
+    public void setAssignment(Assignment assignment) { this.assignment = assignment; }
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+    public double getGrade() { return grade; }
+    public void setGrade(double grade) { this.grade = grade; }
+}
+```
+
+### FILE: GradeHandler.java
+```java
+public abstract class GradeHandler {
+    protected GradeHandler nextHandler;
+
+    public void setNext(GradeHandler handler) {
+        this.nextHandler = handler;
+    }
+
+    public abstract double handleRequest(Submission submission);
+
+    protected double processNext(Submission submission) {
+        if (nextHandler != null) {
+            return nextHandler.handleRequest(submission);
+        }
+        return 0.0;
+    }
+}
+```
+
+### FILE: GrammarChecker.java
+```java
+public class GrammarChecker extends GradeHandler {
+    @Override
+    public double handleRequest(Submission submission) {
+        String content = submission.getContent();
+        
+        if (content != null && content.length() > 100) {
+            // Simple grammar

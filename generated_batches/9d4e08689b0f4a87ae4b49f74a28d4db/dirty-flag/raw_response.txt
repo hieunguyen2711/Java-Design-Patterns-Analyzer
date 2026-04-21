@@ -1,0 +1,108 @@
+### FILE: Vehicle.java
+```java
+package fleetmanagement;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private boolean isDirty;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.isDirty = false;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getMake() {
+        return make;
+    }
+    
+    public void setMake(String make) {
+        this.make = make;
+        markAsDirty();
+    }
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public void setModel(String model) {
+        this.model = model;
+        markAsDirty();
+    }
+    
+    public int getYear() {
+        return year;
+    }
+    
+    public void setYear(int year) {
+        this.year = year;
+        markAsDirty();
+    }
+    
+    public boolean isDirty() {
+        return isDirty;
+    }
+    
+    public void markAsDirty() {
+        this.isDirty = true;
+    }
+    
+    public void clearDirtyFlag() {
+        this.isDirty = false;
+    }
+    
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id='" + id + '\'' +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", isDirty=" + isDirty +
+                '}';
+    }
+}
+```
+
+### FILE: VehicleManager.java
+```java
+package fleetmanagement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VehicleManager {
+    private List<Vehicle> vehicles;
+    
+    public VehicleManager() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public void updateVehicle(String id, String make, String model, int year) {
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getId().equals(id)) {
+                vehicle.setMake(make);
+                vehicle.setModel(model);
+                vehicle.setYear(year);
+                break;
+            }
+        }
+    }
+    
+    public List<Vehicle> getDirtyVehicles() {
+        List<Vehicle> dirtyVehicles = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.isDirty())

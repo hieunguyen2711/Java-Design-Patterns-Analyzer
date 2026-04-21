@@ -1,0 +1,83 @@
+### FILE: Membership.java
+```java
+package com.membership.system;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private String email;
+    private MembershipType type;
+    
+    public Membership(String memberId, String name, String email, MembershipType type) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+        this.type = type;
+    }
+    
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public MembershipType getType() { return type; }
+    public void setType(MembershipType type) { this.type = type; }
+}
+```
+
+### FILE: MembershipType.java
+```java
+package com.membership.system;
+
+public enum MembershipType {
+    BASIC,
+    PREMIUM,
+    VIP
+}
+```
+
+### FILE: ClassSchedulePage.java
+```java
+package com.membership.system.pageobject;
+
+import com.membership.system.Membership;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+public class ClassSchedulePage {
+    private WebDriver driver;
+    private WebDriverWait wait;
+    
+    // Page elements
+    private By scheduleTable = By.id("schedule-table");
+    private By registerButton = By.className("register-btn");
+    private By membershipDropdown = By.id("membership-select");
+    private By logoutLink = By.linkText("Logout");
+    
+    public ClassSchedulePage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, 10);
+        PageFactory.initElements(driver, this);
+    }
+    
+    // Page actions
+    public void navigateToSchedule() {
+        driver.get("https://membership-system.com/schedule");
+    }
+    
+    public boolean isPageLoaded() {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(scheduleTable)) != null;
+    }
+    
+    public void selectMembership(Membership membership) {
+        WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(membershipDropdown));
+        dropdown.sendKeys(membership.getType().

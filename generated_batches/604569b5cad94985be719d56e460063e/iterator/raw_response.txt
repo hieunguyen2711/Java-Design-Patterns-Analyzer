@@ -1,0 +1,94 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public double getBaseSalary() { return baseSalary; }
+}
+```
+
+### FILE: EmployeeIterator.java
+```java
+package hr.system;
+
+import java.util.Iterator;
+
+public class EmployeeIterator implements Iterator<Employee> {
+    private Employee[] employees;
+    private int position = 0;
+    
+    public EmployeeIterator(Employee[] employees) {
+        this.employees = employees;
+    }
+    
+    @Override
+    public boolean hasNext() {
+        return position < employees.length && employees[position] != null;
+    }
+    
+    @Override
+    public Employee next() {
+        Employee employee = employees[position];
+        position++;
+        return employee;
+    }
+}
+```
+
+### FILE: EmployeeCollection.java
+```java
+package hr.system;
+
+import java.util.Iterator;
+
+public class EmployeeCollection implements Iterable<Employee> {
+    private Employee[] employees = new Employee[10];
+    private int size = 0;
+    
+    public void add(Employee employee) {
+        if (size < employees.length) {
+            employees[size++] = employee;
+        }
+    }
+    
+    @Override
+    public Iterator<Employee> iterator() {
+        return new EmployeeIterator(employees);
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    public static void main(String[] args) {
+        EmployeeCollection employees = new EmployeeCollection();
+        
+        employees.add(new Employee("E001", "John Doe", 50000));
+        employees.add(new Employee("E002", "Jane Smith", 60000));
+        employees.add(new Employee("E003", "Bob Johnson", 55000));
+        
+        // Using the iterator pattern to traverse employees
+        for (Employee employee : employees) {
+            if (employee != null) {
+                System.out.println("Processing payroll for: " + employee.getName());
+            }
+        }
+    }
+}
+```

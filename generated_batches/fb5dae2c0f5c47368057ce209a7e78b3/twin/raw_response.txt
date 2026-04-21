@@ -1,0 +1,130 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private String name;
+    private String code;
+    
+    public Course(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getCode() {
+        return code;
+    }
+}
+```
+
+### FILE: LessonModule.java
+```java
+package com.lms.model;
+
+public class LessonModule {
+    private String title;
+    private Course course;
+    
+    public LessonModule(String title, Course course) {
+        this.title = title;
+        this.course = course;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public Course getCourse() {
+        return course;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+public class Assignment {
+    private String title;
+    private LessonModule lessonModule;
+    
+    public Assignment(String title, LessonModule lessonModule) {
+        this.title = title;
+        this.lessonModule = lessonModule;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public LessonModule getLessonModule() {
+        return lessonModule;
+    }
+}
+```
+
+### FILE: Submission.java
+```java
+package com.lms.model;
+
+public class Submission {
+    private Assignment assignment;
+    private String studentId;
+    private String content;
+    
+    public Submission(Assignment assignment, String studentId, String content) {
+        this.assignment = assignment;
+        this.studentId = studentId;
+        this.content = content;
+    }
+    
+    public Assignment getAssignment() {
+        return assignment;
+    }
+    
+    public String getStudentId() {
+        return studentId;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+### FILE: Grade.java
+```java
+package com.lms.model;
+
+public class Grade {
+    private Submission submission;
+    private double score;
+    private String feedback;
+    
+    public Grade(Submission submission, double score, String feedback) {
+        this.submission = submission;
+        this.score = score;
+        this.feedback = feedback;
+    }
+    
+    public Submission getSubmission() {
+        return submission;
+    }
+    
+    public double getScore() {
+        return score;
+    }
+    
+    public String getFeedback() {
+        return feedback;
+    }
+}
+```
+
+### FILE: ProgressTracker.java
+```java
+package com.l

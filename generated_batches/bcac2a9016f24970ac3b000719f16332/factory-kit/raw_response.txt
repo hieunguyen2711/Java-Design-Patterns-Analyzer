@@ -1,0 +1,99 @@
+### FILE: RoomType.java
+```java
+public enum RoomType {
+    STANDARD,
+    DELUXE,
+    SUITE
+}
+```
+
+### FILE: Room.java
+```java
+public abstract class Room {
+    protected String roomId;
+    protected RoomType type;
+    protected double basePrice;
+    
+    public Room(String roomId, RoomType type, double basePrice) {
+        this.roomId = roomId;
+        this.type = type;
+        this.basePrice = basePrice;
+    }
+    
+    public abstract double calculateFinalPrice(int numberOfNights);
+    
+    public String getRoomId() {
+        return roomId;
+    }
+    
+    public RoomType getType() {
+        return type;
+    }
+}
+```
+
+### FILE: StandardRoom.java
+```java
+public class StandardRoom extends Room {
+    public StandardRoom(String roomId, double basePrice) {
+        super(roomId, RoomType.STANDARD, basePrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice(int numberOfNights) {
+        return basePrice * numberOfNights;
+    }
+}
+```
+
+### FILE: DeluxeRoom.java
+```java
+public class DeluxeRoom extends Room {
+    public DeluxeRoom(String roomId, double basePrice) {
+        super(roomId, RoomType.DELUXE, basePrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice(int numberOfNights) {
+        return basePrice * numberOfNights * 1.3;
+    }
+}
+```
+
+### FILE: SuiteRoom.java
+```java
+public class SuiteRoom extends Room {
+    public SuiteRoom(String roomId, double basePrice) {
+        super(roomId, RoomType.SUITE, basePrice);
+    }
+    
+    @Override
+    public double calculateFinalPrice(int numberOfNights) {
+        return basePrice * numberOfNights * 1.7;
+    }
+}
+```
+
+### FILE: RoomFactory.java
+```java
+public class RoomFactory {
+    public static Room createRoom(RoomType type, String roomId, double basePrice) {
+        switch (type) {
+            case STANDARD:
+                return new StandardRoom(roomId, basePrice);
+            case DELUXE:
+                return new DeluxeRoom(roomId, basePrice);
+            case SUITE:
+                return new SuiteRoom(roomId, basePrice);
+            default:
+                throw new IllegalArgumentException("Unknown room type: " + type);
+        }
+    }
+}
+```
+
+### FILE: RoomInventory.java
+```java
+import java.util.*;
+
+public class RoomInventory

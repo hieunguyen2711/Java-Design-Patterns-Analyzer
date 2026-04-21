@@ -1,0 +1,94 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private final String id;
+    private final String name;
+    private final String department;
+    private final double baseSalary;
+    private final String email;
+    
+    private Employee(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.department = builder.department;
+        this.baseSalary = builder.baseSalary;
+        this.email = builder.email;
+    }
+    
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getDepartment() { return department; }
+    public double getBaseSalary() { return baseSalary; }
+    public String getEmail() { return email; }
+    
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", department='" + department + '\'' +
+                ", baseSalary=" + baseSalary +
+                ", email='" + email + '\'' +
+                '}';
+    }
+    
+    public static class Builder {
+        private String id;
+        private String name;
+        private String department;
+        private double baseSalary;
+        private String email;
+        
+        public Builder setId(String id) {
+            this.id = id;
+            return this;
+        }
+        
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+        
+        public Builder setDepartment(String department) {
+            this.department = department;
+            return this;
+        }
+        
+        public Builder setBaseSalary(double baseSalary) {
+            this.baseSalary = baseSalary;
+            return this;
+        }
+        
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+        
+        public Employee build() {
+            return new Employee(this);
+        }
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    public static void main(String[] args) {
+        // Using the Builder pattern to create employee objects
+        Employee engineer = new Employee.Builder()
+                .setId("EMP001")
+                .setName("John Smith")
+                .setDepartment("Engineering")
+                .setBaseSalary(75000.0)
+                .setEmail("john.smith@company.com")
+                .build();
+        
+        Employee manager = new Employee.Builder()
+                .setId("EMP002")
+                .setName("Sarah Johnson")
+                .

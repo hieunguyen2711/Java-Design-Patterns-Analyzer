@@ -1,0 +1,74 @@
+### FILE: OrderService.java
+```java
+package com.restaurant.service;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+
+public class OrderService {
+    private static volatile OrderService instance;
+    private final Map<String, Order> activeOrders;
+    
+    private OrderService() {
+        this.activeOrders = new ConcurrentHashMap<>();
+    }
+    
+    public static OrderService getInstance() {
+        if (instance == null) {
+            synchronized (OrderService.class) {
+                if (instance == null) {
+                    instance = new OrderService();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void addOrder(Order order) {
+        activeOrders.put(order.getId(), order);
+    }
+    
+    public Order getOrder(String orderId) {
+        return activeOrders.get(orderId);
+    }
+}
+```
+
+### FILE: Order.java
+```java
+package com.restaurant.service;
+
+public class Order {
+    private final String id;
+    private OrderStatus status;
+    
+    public Order(String id) {
+        this.id = id;
+        this.status = OrderStatus.PENDING;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public OrderStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+package com.restaurant.service;
+
+public enum OrderStatus {
+    PENDING,
+    PREPARING,
+    READY,
+    DELIVERED
+}
+```

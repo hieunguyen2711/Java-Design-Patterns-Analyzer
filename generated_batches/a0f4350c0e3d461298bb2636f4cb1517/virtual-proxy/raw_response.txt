@@ -1,0 +1,97 @@
+### FILE: Book.java
+```java
+package library;
+
+public class Book {
+    private String isbn;
+    private String title;
+    private String author;
+    
+    public Book(String isbn, String title, String author) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+}
+```
+
+### FILE: BookService.java
+```java
+package library;
+
+import java.util.List;
+
+public interface BookService {
+    List<Book> searchBooks(String query);
+    Book getBookDetails(String isbn);
+}
+```
+
+### FILE: RealBookService.java
+```java
+package library;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class RealBookService implements BookService {
+    
+    @Override
+    public List<Book> searchBooks(String query) {
+        // Simulate expensive database operation
+        simulateDelay();
+        return Arrays.asList(
+            new Book("978-0134685991", "Effective Java", "Joshua Bloch"),
+            new Book("978-0201633610", "Design Patterns", "Gang of Four")
+        );
+    }
+    
+    @Override
+    public Book getBookDetails(String isbn) {
+        // Simulate expensive database operation
+        simulateDelay();
+        if ("978-0134685991".equals(isbn)) {
+            return new Book("978-0134685991", "Effective Java", "Joshua Bloch");
+        }
+        return null;
+    }
+    
+    private void simulateDelay() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+### FILE: BookServiceProxy.java
+```java
+package library;
+
+import java.util.List;
+
+public class BookServiceProxy implements BookService {
+    private RealBookService realBookService;
+    private List<Book> cachedSearchResults;
+    private Book cachedBookDetails;
+    
+    @Override
+    public List<Book> searchBooks(String query) {
+        if (cachedSearchResults == null) {
+            System.out.println("Loading books from database...");
+            realBookService = new RealBookService();
+           

@@ -1,0 +1,92 @@
+### FILE: AccountService.java
+```java
+package com.example.bank.service;
+
+public interface AccountService {
+    void deposit(String accountId, double amount);
+    void withdraw(String accountId, double amount);
+    void transfer(String fromAccountId, String toAccountId, double amount);
+    String generateStatement(String accountId);
+    void audit(String action, String accountId);
+}
+```
+
+### FILE: AccountServiceImpl.java
+```java
+package com.example.bank.service;
+
+public class AccountServiceImpl implements AccountService {
+    
+    @Override
+    public void deposit(String accountId, double amount) {
+        System.out.println("Depositing $" + amount + " into account " + accountId);
+    }
+    
+    @Override
+    public void withdraw(String accountId, double amount) {
+        System.out.println("Withdrawing $" + amount + " from account " + accountId);
+    }
+    
+    @Override
+    public void transfer(String fromAccountId, String toAccountId, double amount) {
+        System.out.println("Transferring $" + amount + " from " + fromAccountId + 
+                          " to " + toAccountId);
+    }
+    
+    @Override
+    public String generateStatement(String accountId) {
+        return "Statement for account " + accountId;
+    }
+    
+    @Override
+    public void audit(String action, String accountId) {
+        System.out.println("Auditing: " + action + " on account " + accountId);
+    }
+}
+```
+
+### FILE: AccountServiceStub.java
+```java
+package com.example.bank.service;
+
+public class AccountServiceStub implements AccountService {
+    
+    @Override
+    public void deposit(String accountId, double amount) {
+        // Stub implementation - does nothing
+    }
+    
+    @Override
+    public void withdraw(String accountId, double amount) {
+        // Stub implementation - does nothing
+    }
+    
+    @Override
+    public void transfer(String fromAccountId, String toAccountId, double amount) {
+        // Stub implementation - does nothing
+    }
+    
+    @Override
+    public String generateStatement(String accountId) {
+        return "Stub statement for account " + accountId;
+    }
+    
+    @Override
+    public void audit(String action, String accountId) {
+        // Stub implementation - does nothing
+    }
+}
+```
+
+### FILE: BankApplication.java
+```java
+package com.example.bank;
+
+import com.example.bank.service.AccountService;
+import com.example.bank.service.AccountServiceImpl;
+import com.example.bank.service.AccountServiceStub;
+
+public class BankApplication {
+    
+    public static void main(String[] args) {
+        // Using real

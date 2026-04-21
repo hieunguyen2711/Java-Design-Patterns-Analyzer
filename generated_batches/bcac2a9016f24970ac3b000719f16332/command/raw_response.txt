@@ -1,0 +1,127 @@
+### FILE: Command.java
+```java
+package com.hotel.command;
+
+public interface Command {
+    void execute();
+    void undo();
+}
+```
+
+### FILE: CheckInCommand.java
+```java
+package com.hotel.command;
+
+import com.hotel.Room;
+import com.hotel.Guest;
+
+public class CheckInCommand implements Command {
+    private Room room;
+    private Guest guest;
+    
+    public CheckInCommand(Room room, Guest guest) {
+        this.room = room;
+        this.guest = guest;
+    }
+    
+    @Override
+    public void execute() {
+        room.checkIn(guest);
+    }
+    
+    @Override
+    public void undo() {
+        room.checkOut();
+    }
+}
+```
+
+### FILE: CheckOutCommand.java
+```java
+package com.hotel.command;
+
+import com.hotel.Room;
+import com.hotel.Guest;
+
+public class CheckOutCommand implements Command {
+    private Room room;
+    private Guest guest;
+    
+    public CheckOutCommand(Room room, Guest guest) {
+        this.room = room;
+        this.guest = guest;
+    }
+    
+    @Override
+    public void execute() {
+        room.checkOut();
+    }
+    
+    @Override
+    public void undo() {
+        room.checkIn(guest);
+    }
+}
+```
+
+### FILE: HotelCommandProcessor.java
+```java
+package com.hotel.command;
+
+import java.util.Stack;
+
+public class HotelCommandProcessor {
+    private Stack<Command> commandHistory;
+    
+    public HotelCommandProcessor() {
+        this.commandHistory = new Stack<>();
+    }
+    
+    public void executeCommand(Command command) {
+        command.execute();
+        commandHistory.push(command);
+    }
+    
+    public void undoLastCommand() {
+        if (!commandHistory.isEmpty()) {
+            Command lastCommand = commandHistory.pop();
+            lastCommand.undo();
+        }
+    }
+}
+```
+
+### FILE: Guest.java
+```java
+package com.hotel;
+
+public class Guest {
+    private String name;
+    private String email;
+    
+    public Guest(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: Room.java
+```java
+package com.hotel;
+
+public class Room {
+    private int roomNumber;
+    private boolean isOccupied;
+    private Guest guest;
+    
+    public Room(int roomNumber) {
+        this.roomNumber =

@@ -1,0 +1,90 @@
+### FILE: Order.java
+```java
+public class Order {
+    private String orderId;
+    private String customerId;
+    private double totalAmount;
+    private OrderStatus status;
+
+    public Order(String orderId, String customerId, double totalAmount) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+        this.status = OrderStatus.PENDING;
+    }
+
+    // Getters and setters
+    public String getOrderId() { return orderId; }
+    public void setOrderId(String orderId) { this.orderId = orderId; }
+    
+    public String getCustomerId() { return customerId; }
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
+    
+    public double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    
+    public OrderStatus getStatus() { return status; }
+    public void setStatus(OrderStatus status) { this.status = status; }
+}
+```
+
+### FILE: OrderStatus.java
+```java
+public enum OrderStatus {
+    PENDING,
+    CONFIRMED,
+    PREPARING,
+    READY,
+    DELIVERING,
+    DELIVERED,
+    CANCELLED
+}
+```
+
+### FILE: EventHandler.java
+```java
+@FunctionalInterface
+public interface EventHandler<T> {
+    void handle(T event);
+}
+```
+
+### FILE: EventDispatcher.java
+```java
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+
+public class EventDispatcher {
+    private final Map<Class<?>, Set<EventHandler<?>>> handlers = new ConcurrentHashMap<>();
+
+    public <T> void registerHandler(Class<T> eventType, EventHandler<T> handler) {
+        handlers.computeIfAbsent(eventType, k -> new HashSet<>()).add(handler);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> void dispatch(T event) {
+        Set<EventHandler<?>> eventHandlers = handlers.get(event.getClass());
+        if (eventHandlers != null) {
+            for (EventHandler<?> handler : eventHandlers) {
+                ((EventHandler<T>) handler).handle(event);
+            }
+        }
+    }
+}
+```
+
+### FILE: OrderProcessor.java
+```java
+public class OrderProcessor {
+    private final EventDispatcher dispatcher;
+
+    public OrderProcessor(EventDispatcher dispatcher) {
+        this.dispatcher = dispatcher;
+        setupEventHandlers();
+    }
+
+    private void setupEventHandlers() {
+        // Handle order creation events
+        dispatcher.registerHandler(OrderCreatedEvent

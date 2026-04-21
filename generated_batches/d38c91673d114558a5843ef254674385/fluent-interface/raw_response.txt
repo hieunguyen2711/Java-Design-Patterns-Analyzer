@@ -1,0 +1,93 @@
+### FILE: Ticket.java
+```java
+package com.project.tracker;
+
+public class Ticket {
+    private String title;
+    private String description;
+    private String assignee;
+    private String status;
+    private int priority;
+    private String comment;
+    
+    public Ticket() {}
+    
+    public Ticket(String title) {
+        this.title = title;
+    }
+    
+    public Ticket setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+    
+    public Ticket setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+    
+    public Ticket setAssignee(String assignee) {
+        this.assignee = assignee;
+        return this;
+    }
+    
+    public Ticket setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+    
+    public Ticket setPriority(int priority) {
+        this.priority = priority;
+        return this;
+    }
+    
+    public Ticket addComment(String comment) {
+        this.comment = comment;
+        return this;
+    }
+    
+    // Getters
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public String getAssignee() { return assignee; }
+    public String getStatus() { return status; }
+    public int getPriority() { return priority; }
+    public String getComment() { return comment; }
+    
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", assignee='" + assignee + '\'' +
+                ", status='" + status + '\'' +
+                ", priority=" + priority +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: TicketBuilder.java
+```java
+package com.project.tracker;
+
+public class TicketBuilder {
+    
+    public static Ticket createTicket(String title) {
+        return new Ticket(title);
+    }
+    
+    public static void main(String[] args) {
+        // Fluent interface usage example
+        Ticket ticket = TicketBuilder.createTicket("Bug Fix")
+                .setDescription("Fix login page redirect issue")
+                .setAssignee("John Doe")
+                .setStatus("Open")
+                .setPriority(2)
+                .addComment("Initial report from QA team");
+        
+        System.out.println(ticket);
+    }
+}
+```

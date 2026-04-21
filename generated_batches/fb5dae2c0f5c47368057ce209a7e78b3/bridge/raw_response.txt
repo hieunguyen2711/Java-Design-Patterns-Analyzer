@@ -1,0 +1,122 @@
+### FILE: Course.java
+```java
+package com.lms.course;
+
+import com.lms.content.ContentManager;
+import com.lms.content.CourseContent;
+
+public class Course {
+    private String title;
+    private ContentManager contentManager;
+    
+    public Course(String title, ContentManager contentManager) {
+        this.title = title;
+        this.contentManager = contentManager;
+    }
+    
+    public void displayCourseInfo() {
+        System.out.println("Course: " + title);
+        contentManager.displayContent();
+    }
+}
+```
+
+### FILE: ContentManager.java
+```java
+package com.lms.content;
+
+public abstract class ContentManager {
+    protected CourseContent courseContent;
+    
+    public ContentManager(CourseContent courseContent) {
+        this.courseContent = courseContent;
+    }
+    
+    public abstract void displayContent();
+}
+```
+
+### FILE: TextContentManager.java
+```java
+package com.lms.content;
+
+public class TextContentManager extends ContentManager {
+    
+    public TextContentManager(CourseContent courseContent) {
+        super(courseContent);
+    }
+    
+    @Override
+    public void displayContent() {
+        System.out.println("Text content: " + courseContent.getContent());
+    }
+}
+```
+
+### FILE: VideoContentManager.java
+```java
+package com.lms.content;
+
+public class VideoContentManager extends ContentManager {
+    
+    public VideoContentManager(CourseContent courseContent) {
+        super(courseContent);
+    }
+    
+    @Override
+    public void displayContent() {
+        System.out.println("Video content: " + courseContent.getContent());
+    }
+}
+```
+
+### FILE: CourseContent.java
+```java
+package com.lms.content;
+
+public abstract class CourseContent {
+    protected String content;
+    
+    public CourseContent(String content) {
+        this.content = content;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+}
+```
+
+### FILE: TextCourseContent.java
+```java
+package com.lms.content;
+
+public class TextCourseContent extends CourseContent {
+    
+    public TextCourseContent(String content) {
+        super(content);
+    }
+}
+```
+
+### FILE: VideoCourseContent.java
+```java
+package com.lms.content;
+
+public class VideoCourseContent extends CourseContent {
+    
+    public VideoCourseContent(String content) {
+        super(content);
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+package com.lms;
+
+import com.lms.course.Course;
+import com.lms.content.*;
+
+public class LMSApplication {
+    public static

@@ -1,0 +1,88 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private int id;
+    private String title;
+    private String description;
+    private String status;
+    private String priority;
+    private String assignee;
+
+    public Ticket(int id, String title, String description, String status, String priority, String assignee) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+        this.assignee = assignee;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) { this.priority = priority; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: TicketDAO.java
+```java
+import java.util.List;
+
+public interface TicketDAO {
+    void createTicket(Ticket ticket);
+    Ticket getTicketById(int id);
+    List<Ticket> getAllTickets();
+    void updateTicket(Ticket ticket);
+    void deleteTicket(int id);
+}
+```
+
+### FILE: TicketDAOImpl.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class TicketDAOImpl implements TicketDAO {
+    private List<Ticket> tickets;
+    
+    public TicketDAOImpl() {
+        this.tickets = new ArrayList<>();
+    }
+    
+    @Override
+    public void createTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
+    
+    @Override
+    public Ticket getTicketById(int id) {
+        for (Ticket ticket : tickets) {
+            if (ticket.getId() == id) {
+                return ticket;
+            }
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Ticket> getAllTickets() {
+        return new ArrayList<>(tickets);
+    }
+    
+    @Override
+    public void updateTicket(Ticket ticketToUpdate) {
+        for (int i = 

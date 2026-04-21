@@ -1,0 +1,91 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private final String itemId;
+    private int quantity;
+    private final int reorderThreshold;
+    
+    public StockItem(String itemId, int quantity, int reorderThreshold) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public String getItemId() {
+        return itemId;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+}
+```
+
+### FILE: StockService.java
+```java
+package com.example.stock;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+public class StockService {
+    private final List<StockItem> inventory;
+    
+    public StockService(List<StockItem> inventory) {
+        this.inventory = inventory;
+    }
+    
+    // Monad-like operation: chain operations that might fail
+    public Optional<Integer> processStockMovement(String itemId, int quantityChange) {
+        return findItem(itemId)
+                .map(item -> updateQuantity(item, quantityChange))
+                .filter(item -> item.getQuantity() >= 0)
+                .map(this::checkReorderThreshold);
+    }
+    
+    private Optional<StockItem> findItem(String itemId) {
+        return inventory.stream()
+                .filter(item -> item.getItemId().equals(itemId))
+                .findFirst();
+    }
+    
+    private StockItem updateQuantity(StockItem item, int quantityChange) {
+        item.setQuantity(item.getQuantity() + quantityChange);
+        return item;
+    }
+    
+    private StockItem checkReorderThreshold(StockItem item) {
+        if (item.getQuantity() <= item.getReorderThreshold()) {
+            System.out.println("WARNING: Item " + item.getItemId() + 
+                             " below reorder threshold of " + item.getReorderThreshold());
+        }
+        return item;
+    }
+}
+```
+
+### FILE: StockMonad.java
+```java
+package com.example.stock;
+
+import java.util.Optional;
+import java.util.function.Function;
+
+public class StockMonad {
+    
+    public static void main(String[] args) {
+        // Create sample inventory
+        var stockService = new StockService(List.of(
+            new StockItem("LAPTOP-001", 15, 5),
+            new StockItem("MOUSE-0

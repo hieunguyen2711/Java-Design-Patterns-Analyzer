@@ -1,0 +1,107 @@
+### FILE: RoomInventory.java
+```java
+package com.hotel.inventory;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.function.Function;
+
+public class RoomInventory {
+    private List<Room> rooms = new ArrayList<>();
+    
+    public void addRoom(Room room) {
+        rooms.add(room);
+    }
+    
+    public Trampoline<List<Room>> findAvailableRooms(Function<Room, Boolean> filter) {
+        return new Trampoline<List<Room>>() {
+            @Override
+            protected Trampoline<List<Room>> compute() {
+                List<Room> available = new ArrayList<>();
+                for (Room room : rooms) {
+                    if (filter.apply(room)) {
+                        available.add(room);
+                    }
+                }
+                return done(available);
+            }
+        };
+    }
+    
+    public static class Room {
+        private String id;
+        private int capacity;
+        
+        public Room(String id, int capacity) {
+            this.id = id;
+            this.capacity = capacity;
+        }
+        
+        public String getId() { return id; }
+        public int getCapacity() { return capacity; }
+    }
+}
+```
+
+### FILE: Trampoline.java
+```java
+package com.hotel.inventory;
+
+public abstract class Trampoline<T> {
+    
+    protected abstract Trampoline<T> compute();
+    
+    public T result() {
+        Trampoline<T> current = this;
+        while (true) {
+            if (current instanceof Done) {
+                return ((Done<T>) current).value;
+            }
+            current = current.compute();
+        }
+    }
+    
+    public static <T> Trampoline<T> done(T value) {
+        return new Done<>(value);
+    }
+    
+    private static class Done<T> extends Trampoline<T> {
+        private final T value;
+        
+        public Done(T value) {
+            this.value = value;
+        }
+        
+        @Override
+        protected Trampoline<T> compute() {
+            return this;
+        }
+    }
+}
+```
+
+### FILE: BookingService.java
+```java
+package com.hotel.inventory;
+
+import java.util.List;
+import java.util.function.Function;
+
+public class BookingService {
+    
+    public List<RoomInventory.Room> findAvailableRooms(RoomInventory inventory, 
+                                                      Function<RoomInventory.Room, Boolean> filter) {
+        return inventory.findAvailableRooms(filter).result();
+    }
+}
+```
+
+### FILE: HotelApplication.java
+```java
+package com.hotel.inventory;
+
+import java.util.function.Function;
+
+public class HotelApplication {
+    
+    public static void main(String[]

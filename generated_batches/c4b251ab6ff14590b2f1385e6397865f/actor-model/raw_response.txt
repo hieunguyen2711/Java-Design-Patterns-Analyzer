@@ -1,0 +1,117 @@
+### FILE: Actor.java
+```java
+package restaurant.actor;
+
+public interface Actor<T> {
+    void receive(T message);
+}
+```
+
+### FILE: OrderActor.java
+```java
+package restaurant.actor;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class OrderActor implements Actor<OrderMessage> {
+    private final BlockingQueue<OrderMessage> mailbox = new LinkedBlockingQueue<>();
+    private volatile boolean running = true;
+    
+    public void start() {
+        Thread actorThread = new Thread(() -> {
+            while (running) {
+                try {
+                    OrderMessage message = mailbox.take();
+                    handleMessage(message);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+        actorThread.start();
+    }
+    
+    public void stop() {
+        running = false;
+    }
+    
+    @Override
+    public void receive(OrderMessage message) {
+        try {
+            mailbox.put(message);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    private void handleMessage(OrderMessage message) {
+        switch (message.getType()) {
+            case PLACE_ORDER:
+                System.out.println("Order placed: " + message.getOrder());
+                break;
+            case UPDATE_STATUS:
+                System.out.println("Status updated to: " + message.getStatus());
+                break;
+            case ASSIGN_DELIVERY:
+                System.out.println("Delivery assigned to: " + message.getDriver());
+                break;
+        }
+    }
+}
+```
+
+### FILE: OrderMessage.java
+```java
+package restaurant.actor;
+
+public class OrderMessage {
+    public enum MessageType {
+        PLACE_ORDER,
+        UPDATE_STATUS,
+        ASSIGN_DELIVERY
+    }
+    
+    private final MessageType type;
+    private final Object payload;
+    
+    public OrderMessage(MessageType type, Object payload) {
+        this.type = type;
+        this.payload = payload;
+    }
+    
+    public MessageType getType() {
+        return type;
+    }
+    
+    public Object getPayload() {
+        return payload;
+    }
+    
+    public String getOrder() {
+        return (String) payload;
+    }
+    
+    public String getStatus() {
+        return (String) payload;
+    }
+    
+    public String getDriver() {
+        return (String) payload;
+    }
+}
+```
+
+### FILE: RestaurantSystem.java
+```java
+package restaurant.actor;
+
+public class RestaurantSystem {
+    private final OrderActor orderActor = new OrderActor();
+    
+    public void start() {
+        orderActor.start();
+    }
+    
+    public void

@@ -1,0 +1,97 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public abstract class Employee {
+    protected String name;
+    protected int employeeId;
+    
+    public Employee(String name, int employeeId) {
+        this.name = name;
+        this.employeeId = employeeId;
+    }
+    
+    // Template method
+    public final double calculateSalary() {
+        double baseSalary = getBaseSalary();
+        double bonuses = calculateBonuses();
+        double deductions = calculateDeductions();
+        
+        return baseSalary + bonuses - deductions;
+    }
+    
+    protected abstract double getBaseSalary();
+    protected abstract double calculateBonuses();
+    protected abstract double calculateDeductions();
+}
+```
+
+### FILE: Manager.java
+```java
+package hr.system;
+
+public class Manager extends Employee {
+    private int teamSize;
+    
+    public Manager(String name, int employeeId, int teamSize) {
+        super(name, employeeId);
+        this.teamSize = teamSize;
+    }
+    
+    @Override
+    protected double getBaseSalary() {
+        return 7000.0;
+    }
+    
+    @Override
+    protected double calculateBonuses() {
+        return teamSize * 500.0;
+    }
+    
+    @Override
+    protected double calculateDeductions() {
+        return 1200.0;
+    }
+}
+```
+
+### FILE: Developer.java
+```java
+package hr.system;
+
+public class Developer extends Employee {
+    private int yearsOfExperience;
+    
+    public Developer(String name, int employeeId, int yearsOfExperience) {
+        super(name, employeeId);
+        this.yearsOfExperience = yearsOfExperience;
+    }
+    
+    @Override
+    protected double getBaseSalary() {
+        return 5000.0;
+    }
+    
+    @Override
+    protected double calculateBonuses() {
+        return yearsOfExperience * 300.0;
+    }
+    
+    @Override
+    protected double calculateDeductions() {
+        return 800.0;
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    public static void main(String[] args) {
+        Employee manager = new Manager("Alice Johnson", 101, 10);
+        Employee developer = new Developer("Bob Smith", 102, 5);
+        
+        System.out.println("Manager Salary: $" + String.format("%.2f", manager.calculateSalary()));
+       

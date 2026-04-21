@@ -1,0 +1,93 @@
+### FILE: LMSLogger.java
+```java
+public class LMSLogger {
+    private static LMSLogger instance;
+    private String logFile = "lms_system.log";
+    private boolean debugMode = false;
+    
+    // Private constructor to prevent instantiation
+    private LMSLogger() {}
+    
+    // Static method to get the single instance
+    public static synchronized LMSLogger getInstance() {
+        if (instance == null) {
+            instance = new LMSLogger();
+        }
+        return instance;
+    }
+    
+    public void setLogFile(String logFile) {
+        this.logFile = logFile;
+    }
+    
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+    }
+    
+    public String getLogFile() {
+        return logFile;
+    }
+    
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+    
+    public void log(String message) {
+        System.out.println("[" + logFile + "] " + message);
+    }
+    
+    public void debug(String message) {
+        if (debugMode) {
+            System.out.println("[DEBUG] " + message);
+        }
+    }
+}
+```
+
+### FILE: CourseManager.java
+```java
+public class CourseManager {
+    private LMSLogger logger;
+    
+    public CourseManager() {
+        this.logger = LMSLogger.getInstance();
+    }
+    
+    public void createCourse(String courseName) {
+        logger.log("Creating course: " + courseName);
+        logger.debug("Debug info - Creating new course");
+    }
+    
+    public void updateCourse(String courseName, String newName) {
+        logger.log("Updating course: " + courseName + " to " + newName);
+        logger.debug("Debug info - Course update operation");
+    }
+}
+```
+
+### FILE: UserManager.java
+```java
+public class UserManager {
+    private LMSLogger logger;
+    
+    public UserManager() {
+        this.logger = LMSLogger.getInstance();
+    }
+    
+    public void createUser(String username) {
+        logger.log("Creating user: " + username);
+        logger.debug("Debug info - User creation");
+    }
+    
+    public void updateUser(String username, String newEmail) {
+        logger.log("Updating user: " + username + " with email: " + newEmail);
+        logger.debug("Debug info - User update operation");
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+public class LMSApplication {
+    public static void main(String[] args) {
+        //

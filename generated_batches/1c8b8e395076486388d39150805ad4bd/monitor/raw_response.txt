@@ -1,0 +1,102 @@
+### FILE: Membership.java
+```java
+package com.gym.membership;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private MembershipType type;
+    
+    public Membership(String memberId, String name, MembershipType type) {
+        this.memberId = memberId;
+        this.name = name;
+        this.type = type;
+    }
+    
+    public String getMemberId() {
+        return memberId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public MembershipType getType() {
+        return type;
+    }
+}
+```
+
+### FILE: MembershipType.java
+```java
+package com.gym.membership;
+
+public enum MembershipType {
+    BASIC,
+    PREMIUM,
+    VIP
+}
+```
+
+### FILE: ScheduleManager.java
+```java
+package com.gym.schedule;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class ScheduleManager {
+    private final Map<String, List<TrainingClass>> schedule = new ConcurrentHashMap<>();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    
+    public void addClass(String day, TrainingClass trainingClass) {
+        lock.writeLock().lock();
+        try {
+            schedule.computeIfAbsent(day, k -> new ArrayList<>()).add(trainingClass);
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+    
+    public List<TrainingClass> getClassesForDay(String day) {
+        lock.readLock().lock();
+        try {
+            return new ArrayList<>(schedule.getOrDefault(day, Collections.emptyList()));
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+}
+```
+
+### FILE: TrainingClass.java
+```java
+package com.gym.schedule;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class TrainingClass {
+    private String className;
+    private LocalDateTime dateTime;
+    private List<String> enrolledMembers;
+    private int maxCapacity;
+    
+    public TrainingClass(String className, LocalDateTime dateTime, int maxCapacity) {
+        this.className = className;
+        this.dateTime = dateTime;
+        this.maxCapacity = maxCapacity;
+        this.enrolledMembers = new CopyOnWriteArrayList<>();
+    }
+    
+    public boolean enrollMember(String memberId) {
+        if (enrolledMembers.size() < maxCapacity && !enrolledMembers.contains(memberId)) {
+            enrolledMembers.add(memberId);
+            return true;
+        }
+        return false;
+    }
+    
+    public String getClassName

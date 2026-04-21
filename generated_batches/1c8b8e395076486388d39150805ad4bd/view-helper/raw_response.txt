@@ -1,0 +1,86 @@
+### FILE: Membership.java
+```java
+package com.membership.system;
+
+public class Membership {
+    private String memberId;
+    private String name;
+    private String email;
+    private MembershipType type;
+    
+    public Membership(String memberId, String name, String email, MembershipType type) {
+        this.memberId = memberId;
+        this.name = name;
+        this.email = email;
+        this.type = type;
+    }
+    
+    // Getters and setters
+    public String getMemberId() { return memberId; }
+    public void setMemberId(String memberId) { this.memberId = memberId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public MembershipType getType() { return type; }
+    public void setType(MembershipType type) { this.type = type; }
+}
+```
+
+### FILE: MembershipType.java
+```java
+package com.membership.system;
+
+public enum MembershipType {
+    BASIC, PREMIUM, VIP
+}
+```
+
+### FILE: ScheduleViewHelper.java
+```java
+package com.membership.system;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class ScheduleViewHelper {
+    
+    public String generateScheduleDisplay(List<TrainingClass> classes) {
+        StringBuilder display = new StringBuilder();
+        display.append("=== TRAINING SCHEDULE ===\n");
+        
+        for (TrainingClass cls : classes) {
+            display.append(String.format("%s - %s (%s)\n", 
+                cls.getName(), 
+                cls.getTimeSlot().toString(),
+                cls.getTrainer().getName()));
+        }
+        
+        return display.toString();
+    }
+    
+    public String generateMemberScheduleDisplay(List<TrainingClass> classes, Membership member) {
+        StringBuilder display = new StringBuilder();
+        display.append(String.format("=== %s'S SCHEDULE ===\n", member.getName()));
+        
+        List<TrainingClass> memberClasses = classes.stream()
+            .filter(cls -> cls.getEnrolledMembers().contains(member))
+            .collect(Collectors.toList());
+            
+        for (TrainingClass cls : memberClasses) {
+            display.append(String.format("%s - %s (%s)\n", 
+                cls.getName(), 
+                cls.getTimeSlot().toString(),
+                cls.getTrainer().getName()));
+        }
+        
+        return display.toString();
+    }
+}
+```
+
+### FILE: TrainingClass.java
+```java

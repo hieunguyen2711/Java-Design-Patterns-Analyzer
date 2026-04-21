@@ -1,0 +1,96 @@
+### FILE: Vehicle.java
+```java
+public abstract class Vehicle {
+    protected String make;
+    protected String model;
+    protected int year;
+    protected double basePrice;
+
+    public Vehicle(String make, String model, int year, double basePrice) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.basePrice = basePrice;
+    }
+
+    public abstract double calculatePrice();
+    
+    public String getDetails() {
+        return year + " " + make + " " + model;
+    }
+}
+```
+
+### FILE: Car.java
+```java
+public class Car extends Vehicle {
+    private boolean isConvertible;
+
+    public Car(String make, String model, int year, double basePrice, boolean isConvertible) {
+        super(make, model, year, basePrice);
+        this.isConvertible = isConvertible;
+    }
+
+    @Override
+    public double calculatePrice() {
+        return basePrice + (isConvertible ? 5000 : 0);
+    }
+}
+```
+
+### FILE: VehicleDecorator.java
+```java
+public abstract class VehicleDecorator extends Vehicle {
+    protected Vehicle vehicle;
+
+    public VehicleDecorator(Vehicle vehicle) {
+        super(vehicle.make, vehicle.model, vehicle.year, vehicle.basePrice);
+        this.vehicle = vehicle;
+    }
+
+    @Override
+    public double calculatePrice() {
+        return vehicle.calculatePrice();
+    }
+}
+```
+
+### FILE: LuxuryPackage.java
+```java
+public class LuxuryPackage extends VehicleDecorator {
+    private static final double LUXURY_PRICE = 10000;
+
+    public LuxuryPackage(Vehicle vehicle) {
+        super(vehicle);
+    }
+
+    @Override
+    public double calculatePrice() {
+        return vehicle.calculatePrice() + LUXURY_PRICE;
+    }
+}
+```
+
+### FILE: PremiumMaintenance.java
+```java
+public class PremiumMaintenance extends VehicleDecorator {
+    private static final double MAINTENANCE_PRICE = 2000;
+
+    public PremiumMaintenance(Vehicle vehicle) {
+        super(vehicle);
+    }
+
+    @Override
+    public double calculatePrice() {
+        return vehicle.calculatePrice() + MAINTENANCE_PRICE;
+    }
+}
+```
+
+### FILE: FleetManager.java
+```java
+public class FleetManager {
+    public static void main(String[] args) {
+        Vehicle car = new Car("Toyota", "Camry", 2023, 25000, false);
+        
+        System.out.println("Base price: $" + car.calculate

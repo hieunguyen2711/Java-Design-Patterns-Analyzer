@@ -1,0 +1,90 @@
+### FILE: Employee.java
+```java
+public abstract class Employee {
+    protected String name;
+    protected String employeeId;
+    protected double baseSalary;
+    
+    public Employee(String name, String employeeId, double baseSalary) {
+        this.name = name;
+        this.employeeId = employeeId;
+        this.baseSalary = baseSalary;
+    }
+    
+    public abstract double calculateSalary();
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmployeeId() {
+        return employeeId;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: Manager.java
+```java
+public class Manager extends Employee {
+    private int teamSize;
+    
+    public Manager(String name, String employeeId, double baseSalary, int teamSize) {
+        super(name, employeeId, baseSalary);
+        this.teamSize = teamSize;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (teamSize * 1000);
+    }
+}
+```
+
+### FILE: Developer.java
+```java
+public class Developer extends Employee {
+    private String programmingLanguage;
+    
+    public Developer(String name, String employeeId, double baseSalary, String programmingLanguage) {
+        super(name, employeeId, baseSalary);
+        this.programmingLanguage = programmingLanguage;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (programmingLanguage.equals("Java") ? 2000 : 1500);
+    }
+}
+```
+
+### FILE: EmployeeFactory.java
+```java
+public abstract class EmployeeFactory {
+    public abstract Employee createEmployee(String name, String employeeId, double baseSalary);
+    
+    public static EmployeeFactory getFactory(String type) {
+        if ("manager".equalsIgnoreCase(type)) {
+            return new ManagerFactory();
+        } else if ("developer".equalsIgnoreCase(type)) {
+            return new DeveloperFactory();
+        }
+        throw new IllegalArgumentException("Unknown employee type: " + type);
+    }
+}
+
+class ManagerFactory extends EmployeeFactory {
+    @Override
+    public Employee createEmployee(String name, String employeeId, double baseSalary) {
+        return new Manager(name, employeeId, baseSalary, 10);
+    }
+}
+
+class DeveloperFactory extends EmployeeFactory {
+    @Override
+    public Employee createEmployee(String name, String employeeId, double baseSalary) {
+        return new Developer(name, employeeId, baseSalary, "Java");
+    }

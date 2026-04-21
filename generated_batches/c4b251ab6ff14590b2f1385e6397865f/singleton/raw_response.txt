@@ -1,0 +1,71 @@
+### FILE: RestaurantManager.java
+```java
+public class RestaurantManager {
+    private static volatile RestaurantManager instance;
+    
+    private RestaurantManager() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static RestaurantManager getInstance() {
+        if (instance == null) {
+            synchronized (RestaurantManager.class) {
+                if (instance == null) {
+                    instance = new RestaurantManager();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void processOrder(Order order) {
+        System.out.println("Processing order: " + order.getId());
+        // Business logic for order processing
+    }
+}
+```
+
+### FILE: Order.java
+```java
+public class Order {
+    private String id;
+    private String customerId;
+    private double totalAmount;
+    
+    public Order(String id, String customerId, double totalAmount) {
+        this.id = id;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getCustomerId() {
+        return customerId;
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Get the singleton instance
+        RestaurantManager manager1 = RestaurantManager.getInstance();
+        RestaurantManager manager2 = RestaurantManager.getInstance();
+        
+        // Verify it's the same instance
+        System.out.println("Same instance: " + (manager1 == manager2));
+        
+        // Process an order using the singleton
+        Order order = new Order("ORD001", "CUST001", 45.99);
+        manager1.processOrder(order);
+    }
+}
+```

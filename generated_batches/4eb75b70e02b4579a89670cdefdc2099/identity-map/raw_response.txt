@@ -1,0 +1,101 @@
+### FILE: StockItem.java
+```java
+package com.example.inventory;
+
+public class StockItem {
+    private final String itemId;
+    private String name;
+    private int quantity;
+    private int reorderThreshold;
+    
+    public StockItem(String itemId, String name, int quantity, int reorderThreshold) {
+        this.itemId = itemId;
+        this.name = name;
+        this.quantity = quantity;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public String getItemId() {
+        return itemId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+    
+    public void setReorderThreshold(int reorderThreshold) {
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        StockItem stockItem = (StockItem) obj;
+        return itemId.equals(stockItem.itemId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return itemId.hashCode();
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+package com.example.inventory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class InventoryManager {
+    private static final Map<String, StockItem> identityMap = new HashMap<>();
+    
+    public static StockItem getStockItem(String itemId) {
+        return identityMap.computeIfAbsent(itemId, id -> new StockItem(id, "", 0, 0));
+    }
+    
+    public static void updateStockItem(StockItem item) {
+        identityMap.put(item.getItemId(), item);
+    }
+    
+    public static void removeStockItem(String itemId) {
+        identityMap.remove(itemId);
+    }
+    
+    public static boolean containsItem(String itemId) {
+        return identityMap.containsKey(itemId);
+    }
+}
+```
+
+### FILE: StockMovementLog.java
+```java
+package com.example.inventory;
+
+public class StockMovementLog {
+    private final String itemId;
+    private final String action;
+    private final int quantity;
+    private final String timestamp;
+    
+    public StockMovementLog(String itemId, String action, int quantity) {
+        this.itemId = itemId;
+        this

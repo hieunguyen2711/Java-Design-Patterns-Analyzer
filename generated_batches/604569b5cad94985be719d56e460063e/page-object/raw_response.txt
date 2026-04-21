@@ -1,0 +1,80 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private String department;
+    private double baseSalary;
+    
+    public Employee(String id, String name, String department, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
+    
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private String employeeId;
+    private String leaveType;
+    private int daysRequested;
+    private String status;
+    
+    public LeaveRequest(String employeeId, String leaveType, int daysRequested) {
+        this.employeeId = employeeId;
+        this.leaveType = leaveType;
+        this.daysRequested = daysRequested;
+        this.status = "PENDING";
+    }
+    
+    // Getters and setters
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    
+    public String getLeaveType() { return leaveType; }
+    public void setLeaveType(String leaveType) { this.leaveType = leaveType; }
+    
+    public int getDaysRequested() { return daysRequested; }
+    public void setDaysRequested(int daysRequested) { this.daysRequested = daysRequested; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+import java.util.*;
+
+public class PayrollSystem {
+    private Map<String, Employee> employees;
+    private List<LeaveRequest> leaveRequests;
+    
+    public PayrollSystem() {
+        this.employees = new HashMap<>();
+        this.leaveRequests = new ArrayList<>();
+    }
+    
+    public void addEmployee(Employee employee)

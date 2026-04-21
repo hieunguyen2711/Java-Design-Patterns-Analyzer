@@ -1,0 +1,95 @@
+### FILE: StockItem.java
+```java
+public class StockItem {
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    private Supplier supplier;
+    
+    public StockItem(String name, int currentStock, int reorderThreshold, Supplier supplier) {
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+        this.supplier = supplier;
+    }
+    
+    public void updateStock(int quantity) {
+        this.currentStock += quantity;
+        if (currentStock <= reorderThreshold) {
+            supplier.orderRestock(this);
+        }
+    }
+    
+    public String getName() { return name; }
+    public int getCurrentStock() { return currentStock; }
+    public int getReorderThreshold() { return reorderThreshold; }
+    public Supplier getSupplier() { return supplier; }
+}
+```
+
+### FILE: Supplier.java
+```java
+public abstract class Supplier {
+    protected String name;
+    
+    public Supplier(String name) {
+        this.name = name;
+    }
+    
+    public abstract void orderRestock(StockItem item);
+    
+    public String getName() { return name; }
+}
+```
+
+### FILE: PhysicalSupplier.java
+```java
+public class PhysicalSupplier extends Supplier {
+    
+    public PhysicalSupplier(String name) {
+        super(name);
+    }
+    
+    @Override
+    public void orderRestock(StockItem item) {
+        System.out.println("Physical supplier " + name + 
+                          " ordering restock for " + item.getName() + 
+                          ". Current stock: " + item.getCurrentStock());
+    }
+}
+```
+
+### FILE: DigitalSupplier.java
+```java
+public class DigitalSupplier extends Supplier {
+    
+    public DigitalSupplier(String name) {
+        super(name);
+    }
+    
+    @Override
+    public void orderRestock(StockItem item) {
+        System.out.println("Digital supplier " + name + 
+                          " placing digital order for " + item.getName() + 
+                          ". Current stock: " + item.getCurrentStock());
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+public class InventoryManager {
+    private StockItem[] items;
+    
+    public InventoryManager(StockItem[] items) {
+        this.items = items;
+    }
+    
+    public void updateInventory(String itemName, int quantity) {
+        for (StockItem item : items) {
+            if (item.getName().equals(itemName)) {
+                item.updateStock(quantity);
+                break;
+            }
+        }
+    }

@@ -1,0 +1,110 @@
+### FILE: RestaurantPage.java
+```java
+package com.restaurant.page;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class RestaurantPage {
+    private WebDriver driver;
+    
+    @FindBy(id = "restaurant-name")
+    private WebElement restaurantName;
+    
+    @FindBy(id = "menu-button")
+    private WebElement menuButton;
+    
+    @FindBy(id = "order-button")
+    private WebElement orderButton;
+    
+    public RestaurantPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+    
+    public String getRestaurantName() {
+        return restaurantName.getText();
+    }
+    
+    public MenuPage navigateToMenu() {
+        menuButton.click();
+        return new MenuPage(driver);
+    }
+    
+    public OrderPage navigateToOrder() {
+        orderButton.click();
+        return new OrderPage(driver);
+    }
+}
+```
+
+### FILE: MenuPage.java
+```java
+package com.restaurant.page;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class MenuPage {
+    private WebDriver driver;
+    
+    @FindBy(id = "menu-items")
+    private WebElement menuItemsContainer;
+    
+    @FindBy(id = "back-button")
+    private WebElement backButton;
+    
+    public MenuPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+    
+    public boolean isMenuLoaded() {
+        return menuItemsContainer.isDisplayed();
+    }
+    
+    public RestaurantPage navigateBack() {
+        backButton.click();
+        return new RestaurantPage(driver);
+    }
+}
+```
+
+### FILE: OrderPage.java
+```java
+package com.restaurant.page;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class OrderPage {
+    private WebDriver driver;
+    
+    @FindBy(id = "order-summary")
+    private WebElement orderSummary;
+    
+    @FindBy(id = "confirm-button")
+    private WebElement confirmButton;
+    
+    @FindBy(id = "cancel-button")
+    private WebElement cancelButton;
+    
+    public OrderPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+    
+    public boolean isOrderSummaryVisible() {
+        return orderSummary.isDisplayed();
+    }
+    
+    public void confirmOrder() {
+        confirmButton.click();
+    }
+    

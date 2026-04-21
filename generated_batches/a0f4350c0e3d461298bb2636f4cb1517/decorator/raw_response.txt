@@ -1,0 +1,128 @@
+### FILE: Book.java
+```java
+public class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getAuthor() {
+        return author;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+}
+```
+
+### FILE: LibraryItem.java
+```java
+public interface LibraryItem {
+    String getTitle();
+    String getAuthor();
+    String getIsbn();
+    boolean isAvailable();
+    void borrow();
+    void returnItem();
+}
+```
+
+### FILE: BookDecorator.java
+```java
+public abstract class BookDecorator implements LibraryItem {
+    protected LibraryItem item;
+    
+    public BookDecorator(LibraryItem item) {
+        this.item = item;
+    }
+    
+    @Override
+    public String getTitle() {
+        return item.getTitle();
+    }
+    
+    @Override
+    public String getAuthor() {
+        return item.getAuthor();
+    }
+    
+    @Override
+    public String getIsbn() {
+        return item.getIsbn();
+    }
+    
+    @Override
+    public boolean isAvailable() {
+        return item.isAvailable();
+    }
+    
+    @Override
+    public void borrow() {
+        item.borrow();
+    }
+    
+    @Override
+    public void returnItem() {
+        item.returnItem();
+    }
+}
+```
+
+### FILE: ConcreteBook.java
+```java
+public class ConcreteBook implements LibraryItem {
+    private Book book;
+    private boolean available;
+    
+    public ConcreteBook(Book book) {
+        this.book = book;
+        this.available = true;
+    }
+    
+    @Override
+    public String getTitle() {
+        return book.getTitle();
+    }
+    
+    @Override
+    public String getAuthor() {
+        return book.getAuthor();
+    }
+    
+    @Override
+    public String getIsbn() {
+        return book.getIsbn();
+    }
+    
+    @Override
+    public boolean isAvailable() {
+        return available;
+    }
+    
+    @Override
+    public void borrow() {
+        if (available) {
+            available = false;
+        } else {
+            throw new IllegalStateException("Book is already borrowed");
+        }
+    }
+    
+    @Override
+    public void returnItem() {
+        available = true;
+    }
+}
+```
+
+### FILE

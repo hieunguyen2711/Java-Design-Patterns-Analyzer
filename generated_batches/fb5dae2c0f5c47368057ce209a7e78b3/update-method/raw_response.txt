@@ -1,0 +1,94 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course {
+    private String courseId;
+    private String title;
+    private List<Module> modules;
+    
+    public Course(String courseId, String title) {
+        this.courseId = courseId;
+        this.title = title;
+        this.modules = new ArrayList<>();
+    }
+    
+    public void addModule(Module module) {
+        modules.add(module);
+    }
+    
+    public void updateCourseTitle(String newTitle) {
+        this.title = newTitle;
+        notifyObservers();
+    }
+    
+    private void notifyObservers() {
+        for (Module module : modules) {
+            module.update(this);
+        }
+    }
+    
+    // Getters
+    public String getCourseId() { return courseId; }
+    public String getTitle() { return title; }
+    public List<Module> getModules() { return modules; }
+}
+```
+
+### FILE: Module.java
+```java
+package com.lms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Module {
+    private String moduleId;
+    private String title;
+    private Course course;
+    private List<Assignment> assignments;
+    
+    public Module(String moduleId, String title) {
+        this.moduleId = moduleId;
+        this.title = title;
+        this.assignments = new ArrayList<>();
+    }
+    
+    public void update(Course updatedCourse) {
+        System.out.println("Module " + this.title + " notified of course update: " + updatedCourse.getTitle());
+        // Module can react to course updates here
+        this.title = updatedCourse.getTitle() + " - " + this.title;
+    }
+    
+    public void addAssignment(Assignment assignment) {
+        assignments.add(assignment);
+    }
+    
+    // Getters
+    public String getModuleId() { return moduleId; }
+    public String getTitle() { return title; }
+    public Course getCourse() { return course; }
+    public List<Assignment> getAssignments() { return assignments; }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.model;
+
+public class Assignment {
+    private String assignmentId;
+    private String title;
+    private Module module;
+    
+    public Assignment(String assignmentId, String title) {
+        this.assignmentId = assignmentId;
+        this.title = title;
+    }
+    
+    // Update method that demonstrates the pattern
+    public void update(AssignmentUpdateEvent event) {
+        System.out.println("Assignment " +

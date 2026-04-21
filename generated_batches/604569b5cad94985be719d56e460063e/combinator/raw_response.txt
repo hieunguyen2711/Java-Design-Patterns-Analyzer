@@ -1,0 +1,73 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private String employeeId;
+    private int daysRequested;
+    private String leaveType;
+    
+    public LeaveRequest(String employeeId, int daysRequested, String leaveType) {
+        this.employeeId = employeeId;
+        this.daysRequested = daysRequested;
+        this.leaveType = leaveType;
+    }
+    
+    // Getters and setters
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    public int getDaysRequested() { return daysRequested; }
+    public void setDaysRequested(int daysRequested) { this.daysRequested = daysRequested; }
+    public String getLeaveType() { return leaveType; }
+    public void setLeaveType(String leaveType) { this.leaveType = leaveType; }
+}
+```
+
+### FILE: PayrollCalculator.java
+```java
+package hr.system;
+
+public class PayrollCalculator {
+    
+    public static double calculateGrossSalary(Employee employee, LeaveRequest leaveRequest) {
+        // Base salary plus leave adjustment
+        double gross = employee.getBaseSalary();
+        
+        if (leaveRequest != null && "sick".equals(leaveRequest.getLeaveType())) {
+            // Sick leave reduces pay by 20%
+            gross *= 0.8;
+        } else if (leaveRequest != null && "vacation".equals(leaveRequest.getLeaveType())) {
+            // Vacation leave has no reduction
+            gross = gross;
+        }
+        
+        return gross;
+    }
+    
+    public static double calculateNetSalary(double grossSalary, boolean taxDeduction) {
+       

@@ -1,0 +1,107 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private String date;
+    private String time;
+    private Doctor doctor;
+    
+    public AppointmentSlot(String date, String time, Doctor doctor) {
+        this.date = date;
+        this.time = time;
+        this.doctor = doctor;
+    }
+    
+    public String getDate() {
+        return date;
+    }
+    
+    public String getTime() {
+        return time;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+}
+```
+
+### FILE: CheckInSystem.java
+```java
+public class CheckInSystem {
+    public void checkInPatient(Patient patient, AppointmentSlot slot) {
+        System.out.println("Checking in " + patient.getName() + 
+                          " for appointment with Dr. " + slot.getDoctor().getName());
+    }
+}
+```
+
+### FILE: VisitHistory.java
+```java
+public class VisitHistory {
+    public void recordVisit(Patient patient, Doctor doctor) {
+        System.out.println("Recording visit for " + patient.getName() + 
+                          " with Dr. " + doctor.getName());
+    }
+    
+    public void printHistory(Patient patient) {
+        System.out.println("Printing history for " + patient.getName());
+    }
+}
+```
+
+### FILE: ClinicFacade.java
+```java
+public class ClinicFacade {
+    private CheckInSystem checkInSystem;
+    private VisitHistory visitHistory;
+    
+    public ClinicFacade() {
+        this.checkInSystem = new CheckInSystem();
+        this.visitHistory = new VisitHistory();
+    }
+    
+    public void processPatientVisit(Patient patient, AppointmentSlot slot) {
+        checkInSystem.checkInPatient(patient, slot);
+        visitHistory.recordVisit(patient,

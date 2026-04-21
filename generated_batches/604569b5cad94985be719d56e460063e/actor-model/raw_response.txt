@@ -1,0 +1,90 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private final String id;
+    private final String name;
+    private final double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public double getBaseSalary() { return baseSalary; }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+package hr.system;
+
+public class LeaveRequest {
+    private final String employeeId;
+    private final int daysRequested;
+    private final String reason;
+    
+    public LeaveRequest(String employeeId, int daysRequested, String reason) {
+        this.employeeId = employeeId;
+        this.daysRequested = daysRequested;
+        this.reason = reason;
+    }
+    
+    public String getEmployeeId() { return employeeId; }
+    public int getDaysRequested() { return daysRequested; }
+    public String getReason() { return reason; }
+}
+```
+
+### FILE: PayrollActor.java
+```java
+package hr.system;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class PayrollActor {
+    private final BlockingQueue<Object> mailbox = new LinkedBlockingQueue<>();
+    private final Employee employee;
+    
+    public PayrollActor(Employee employee) {
+        this.employee = employee;
+        Thread actorThread = new Thread(this::processMessages);
+        actorThread.setDaemon(true);
+        actorThread.start();
+    }
+    
+    public void send(Object message) {
+        try {
+            mailbox.put(message);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    private void processMessages() {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                Object message = mailbox.take();
+                if (message instanceof LeaveRequest) {
+                    handleLeaveRequest((LeaveRequest) message);
+                } else if (message instanceof SalaryCalculation) {
+                    handleSalaryCalculation((SalaryCalculation) message);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+    
+    private void handleLeaveRequest(LeaveRequest request) {
+        System.out.println("Processing leave request for employee " + 
+                          employee.getName() + " (" + request.getDaysRequested() + " days)");
+    }
+    
+    private void

@@ -1,0 +1,65 @@
+### FILE: LibrarySystem.java
+```java
+public class LibrarySystem {
+    private final BookManager bookManager;
+    private final MemberManager memberManager;
+    
+    public LibrarySystem() {
+        this.bookManager = new BookManager();
+        this.memberManager = new MemberManager();
+    }
+    
+    public void borrowBook(String memberId, String isbn) throws Exception {
+        memberManager.borrowBook(memberId, isbn);
+    }
+    
+    public void returnBook(String memberId, String isbn) throws Exception {
+        memberManager.returnBook(memberId, isbn);
+    }
+    
+    public static void main(String[] args) {
+        LibrarySystem library = new LibrarySystem();
+        
+        try {
+            library.borrowBook("M001", "978-0-123456-78-9");
+            library.borrowBook("M002", "978-0-123456-78-9");
+            library.returnBook("M001", "978-0-123456-78-9");
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+### FILE: BookManager.java
+```java
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class BookManager {
+    private final ConcurrentHashMap<String, Book> books;
+    private final ReentrantReadWriteLock lock;
+    
+    public BookManager() {
+        this.books = new ConcurrentHashMap<>();
+        this.lock = new ReentrantReadWriteLock();
+        initializeBooks();
+    }
+    
+    private void initializeBooks() {
+        books.put("978-0-123456-78-9", new Book("978-0-123456-78-9", "Effective Java"));
+        books.put("978-0-987654-32-1", new Book("978-0-987654-32-1", "Design Patterns"));
+    }
+    
+    public boolean isBookAvailable(String isbn) {
+        lock.readLock().lock();
+        try {
+            Book book = books.get(isbn);
+            return book != null && !book.isBorrowed();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+    
+    public void borrowBook(String isbn) throws Exception {
+        lock.writeLock().

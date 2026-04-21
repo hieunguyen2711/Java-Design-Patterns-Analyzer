@@ -1,0 +1,115 @@
+### FILE: ServiceLocator.java
+```java
+public class ServiceLocator {
+    private static ServiceLocator instance;
+    private Map<String, Object> services;
+
+    private ServiceLocator() {
+        services = new HashMap<>();
+        loadServices();
+    }
+
+    public static synchronized ServiceLocator getInstance() {
+        if (instance == null) {
+            instance = new ServiceLocator();
+        }
+        return instance;
+    }
+
+    private void loadServices() {
+        services.put("OrderService", new OrderServiceImpl());
+        services.put("MenuService", new MenuServiceImpl());
+        services.put("DeliveryService", new DeliveryServiceImpl());
+    }
+
+    public Object getService(String serviceName) {
+        return services.get(serviceName);
+    }
+}
+```
+
+### FILE: OrderService.java
+```java
+public interface OrderService {
+    void processOrder(Order order);
+    Order getOrderById(String orderId);
+}
+```
+
+### FILE: MenuService.java
+```java
+public interface MenuService {
+    MenuItem getMenuItem(String itemId);
+    void updateMenuItem(MenuItem item);
+}
+```
+
+### FILE: DeliveryService.java
+```java
+public interface DeliveryService {
+    void assignDelivery(Delivery delivery);
+    Delivery getDeliveryById(String deliveryId);
+}
+```
+
+### FILE: OrderServiceImpl.java
+```java
+public class OrderServiceImpl implements OrderService {
+    @Override
+    public void processOrder(Order order) {
+        System.out.println("Processing order: " + order.getId());
+    }
+
+    @Override
+    public Order getOrderById(String orderId) {
+        return new Order(orderId);
+    }
+}
+```
+
+### FILE: MenuServiceImpl.java
+```java
+public class MenuServiceImpl implements MenuService {
+    @Override
+    public MenuItem getMenuItem(String itemId) {
+        return new MenuItem(itemId);
+    }
+
+    @Override
+    public void updateMenuItem(MenuItem item) {
+        System.out.println("Updating menu item: " + item.getId());
+    }
+}
+```
+
+### FILE: DeliveryServiceImpl.java
+```java
+public class DeliveryServiceImpl implements DeliveryService {
+    @Override
+    public void assignDelivery(Delivery delivery) {
+        System.out.println("Assigning delivery: " + delivery.getId());
+    }
+
+    @Override
+    public Delivery getDeliveryById(String deliveryId) {
+        return new Delivery(deliveryId);
+    }
+}
+```
+
+### FILE: Order.java
+```java
+public class Order {
+    private String id;
+
+    public Order(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+}
+```
+
+### FILE:

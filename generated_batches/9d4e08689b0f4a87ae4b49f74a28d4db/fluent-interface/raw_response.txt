@@ -1,0 +1,101 @@
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public class Vehicle {
+    private String make;
+    private String model;
+    private int year;
+    private double dailyRate;
+    private boolean isAvailable;
+    private String maintenanceStatus;
+    
+    public Vehicle(String make, String model, int year) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.isAvailable = true;
+        this.maintenanceStatus = "NONE";
+    }
+    
+    public Vehicle setDailyRate(double dailyRate) {
+        this.dailyRate = dailyRate;
+        return this;
+    }
+    
+    public Vehicle setIsAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+        return this;
+    }
+    
+    public Vehicle setMaintenanceStatus(String maintenanceStatus) {
+        this.maintenanceStatus = maintenanceStatus;
+        return this;
+    }
+    
+    // Getters
+    public String getMake() { return make; }
+    public String getModel() { return model; }
+    public int getYear() { return year; }
+    public double getDailyRate() { return dailyRate; }
+    public boolean isAvailable() { return isAvailable; }
+    public String getMaintenanceStatus() { return maintenanceStatus; }
+}
+```
+
+### FILE: FleetManager.java
+```java
+package fleet;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FleetManager {
+    private List<Vehicle> vehicles;
+    
+    public FleetManager() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public FleetManager addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+        return this;
+    }
+    
+    public FleetManager removeVehicle(Vehicle vehicle) {
+        vehicles.remove(vehicle);
+        return this;
+    }
+    
+    public List<Vehicle> getVehicles() {
+        return new ArrayList<>(vehicles);
+    }
+}
+```
+
+### FILE: Reservation.java
+```java
+package fleet;
+
+public class Reservation {
+    private Vehicle vehicle;
+    private String customerName;
+    private int rentalDays;
+    private double totalCost;
+    
+    public Reservation(Vehicle vehicle, String customerName) {
+        this.vehicle = vehicle;
+        this.customerName = customerName;
+    }
+    
+    public Reservation setRentalDays(int rentalDays) {
+        this.rentalDays = rentalDays;
+        return this;
+    }
+    
+    public Reservation calculateTotalCost() {
+        this.totalCost = vehicle.getDailyRate() * rentalDays;
+        return this;
+    }
+    
+    // Getters

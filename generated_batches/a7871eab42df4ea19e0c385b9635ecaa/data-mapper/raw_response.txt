@@ -1,0 +1,83 @@
+### FILE: Customer.java
+```java
+package banking;
+
+public class Customer {
+    private int customerId;
+    private String name;
+    private String email;
+    
+    public Customer(int customerId, String name, String email) {
+        this.customerId = customerId;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public int getCustomerId() { return customerId; }
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: Account.java
+```java
+package banking;
+
+public class Account {
+    private int accountId;
+    private int customerId;
+    private double balance;
+    private String accountType;
+    
+    public Account(int accountId, int customerId, double balance, String accountType) {
+        this.accountId = accountId;
+        this.customerId = customerId;
+        this.balance = balance;
+        this.accountType = accountType;
+    }
+    
+    // Getters and setters
+    public int getAccountId() { return accountId; }
+    public void setAccountId(int accountId) { this.accountId = accountId; }
+    
+    public int getCustomerId() { return customerId; }
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    
+    public double getBalance() { return balance; }
+    public void setBalance(double balance) { this.balance = balance; }
+    
+    public String getAccountType() { return accountType; }
+    public void setAccountType(String accountType) { this.accountType = accountType; }
+}
+```
+
+### FILE: Transaction.java
+```java
+package banking;
+
+public class Transaction {
+    private int transactionId;
+    private int accountId;
+    private String type;
+    private double amount;
+    private String timestamp;
+    
+    public Transaction(int transactionId, int accountId, String type, double amount, String timestamp) {
+        this.transactionId = transactionId;
+        this.accountId = accountId;
+        this.type = type;
+        this.amount = amount;
+        this.timestamp = timestamp;
+    }
+    
+    // Getters and setters
+    public int getTransactionId() { return transactionId; }
+    public void setTransactionId(int transactionId) { this.transactionId = transactionId; }
+    
+    public int getAccountId() {

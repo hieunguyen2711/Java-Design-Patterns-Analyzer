@@ -1,0 +1,105 @@
+### FILE: RoomInventoryService.java
+```java
+package com.hotel.inventory;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class RoomInventoryService {
+    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+    
+    public CompletableFuture<Room> findAvailableRoomAsync(String roomType) {
+        return CompletableFuture.supplyAsync(() -> {
+            // Simulate async database lookup
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return new Room(roomType, "ROOM-" + System.currentTimeMillis());
+        }, executor);
+    }
+    
+    public CompletableFuture<Booking> createBookingAsync(String guestName, String roomNumber) {
+        return findAvailableRoomAsync("DELUXE")
+            .thenCompose(room -> {
+                // Simulate booking creation
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                return CompletableFuture.completedFuture(
+                    new Booking(guestName, roomNumber, System.currentTimeMillis())
+                );
+            });
+    }
+    
+    public void shutdown() {
+        executor.shutdown();
+    }
+}
+```
+
+### FILE: Room.java
+```java
+package com.hotel.inventory;
+
+public class Room {
+    private final String type;
+    private final String number;
+    
+    public Room(String type, String number) {
+        this.type = type;
+        this.number = number;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public String getNumber() {
+        return number;
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package com.hotel.inventory;
+
+public class Booking {
+    private final String guestName;
+    private final String roomNumber;
+    private final long timestamp;
+    
+    public Booking(String guestName, String roomNumber, long timestamp) {
+        this.guestName = guestName;
+        this.roomNumber = roomNumber;
+        this.timestamp = timestamp;
+    }
+    
+    public String getGuestName() {
+        return guestName;
+    }
+    
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: HotelBookingSystem.java
+```java
+package com.hotel.inventory;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+public class HotelBookingSystem {
+    private final RoomInventoryService

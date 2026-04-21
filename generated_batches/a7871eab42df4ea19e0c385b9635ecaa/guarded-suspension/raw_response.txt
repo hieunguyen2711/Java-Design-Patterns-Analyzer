@@ -1,0 +1,84 @@
+### FILE: Account.java
+```java
+package banking;
+
+public class Account {
+    private final String accountNumber;
+    private double balance;
+    
+    public Account(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
+    
+    public synchronized void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+        balance += amount;
+        System.out.println("Deposited " + amount + ", new balance: " + balance);
+        notifyAll();
+    }
+    
+    public synchronized double withdraw(double amount) throws InterruptedException {
+        while (balance < amount) {
+            System.out.println("Insufficient funds. Waiting for deposit...");
+            wait(); // Guarded suspension - waiting until condition is met
+        }
+        
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive");
+        }
+        
+        balance -= amount;
+        System.out.println("Withdrew " + amount + ", new balance: " + balance);
+        return amount;
+    }
+    
+    public synchronized double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+}
+```
+
+### FILE: BankService.java
+```java
+package banking;
+
+public class BankService {
+    private final Account account1;
+    private final Account account2;
+    
+    public BankService() {
+        this.account1 = new Account("ACC001", 1000.0);
+        this.account2 = new Account("ACC002", 500.0);
+    }
+    
+    public void transfer(String fromAccount, String toAccount, double amount) 
+            throws InterruptedException {
+        if (fromAccount.equals(account1.getAccountNumber())) {
+            account1.withdraw(amount); // This will suspend if insufficient funds
+            account2.deposit(amount);
+        } else if (fromAccount.equals(account2.getAccountNumber())) {
+            account2.withdraw(amount); // This will suspend if insufficient funds
+            account1.deposit(amount);
+        }
+    }
+    
+    public void printBalances() {
+        System.out.println("Account 1 balance: " + account1.getBalance());
+        System.out.println("Account 2 balance: " + account2.getBalance());
+    }
+}
+```
+
+### FILE: Main.java
+```java
+package banking;
+
+public class Main {
+    public static void main(String[] args) {

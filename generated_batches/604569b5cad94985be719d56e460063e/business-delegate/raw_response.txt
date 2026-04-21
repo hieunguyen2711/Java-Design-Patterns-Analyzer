@@ -1,0 +1,93 @@
+### FILE: BusinessDelegate.java
+```java
+public class BusinessDelegate {
+    private EmployeeService employeeService;
+    private LeaveService leaveService;
+    private PayrollService payrollService;
+
+    public void setEmployeeService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    public void setLeaveService(LeaveService leaveService) {
+        this.leaveService = leaveService;
+    }
+
+    public void setPayrollService(PayrollService payrollService) {
+        this.payrollService = payrollService;
+    }
+
+    public void processEmployeeRecord(String employeeId) {
+        employeeService.getEmployeeDetails(employeeId);
+    }
+
+    public void processLeaveRequest(String employeeId, String leaveType) {
+        leaveService.submitLeaveRequest(employeeId, leaveType);
+    }
+
+    public void processPayroll(String employeeId) {
+        payrollService.calculateSalary(employeeId);
+    }
+}
+```
+
+### FILE: EmployeeService.java
+```java
+public interface EmployeeService {
+    void getEmployeeDetails(String employeeId);
+}
+```
+
+### FILE: LeaveService.java
+```java
+public interface LeaveService {
+    void submitLeaveRequest(String employeeId, String leaveType);
+}
+```
+
+### FILE: PayrollService.java
+```java
+public interface PayrollService {
+    void calculateSalary(String employeeId);
+}
+```
+
+### FILE: EmployeeServiceImpl.java
+```java
+public class EmployeeServiceImpl implements EmployeeService {
+    @Override
+    public void getEmployeeDetails(String employeeId) {
+        System.out.println("Retrieving employee details for ID: " + employeeId);
+    }
+}
+```
+
+### FILE: LeaveServiceImpl.java
+```java
+public class LeaveServiceImpl implements LeaveService {
+    @Override
+    public void submitLeaveRequest(String employeeId, String leaveType) {
+        System.out.println("Submitting " + leaveType + " leave request for employee ID: " + employeeId);
+    }
+}
+```
+
+### FILE: PayrollServiceImpl.java
+```java
+public class PayrollServiceImpl implements PayrollService {
+    @Override
+    public void calculateSalary(String employeeId) {
+        System.out.println("Calculating salary for employee ID: " + employeeId);
+    }
+}
+```
+
+### FILE: BusinessDelegatePatternDemo.java
+```java
+public class BusinessDelegatePatternDemo {
+    public static void main(String[] args) {
+        BusinessDelegate businessDelegate = new BusinessDelegate();
+        
+        businessDelegate.setEmployeeService(new EmployeeServiceImpl());
+        businessDelegate.setLeaveService(new LeaveServiceImpl());
+        businessDelegate.setPay

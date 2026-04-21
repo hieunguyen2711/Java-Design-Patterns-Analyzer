@@ -1,0 +1,76 @@
+### FILE: Expression.java
+```java
+public interface Expression {
+    int interpret();
+}
+```
+
+### FILE: NumberExpression.java
+```java
+public class NumberExpression implements Expression {
+    private int number;
+    
+    public NumberExpression(int number) {
+        this.number = number;
+    }
+    
+    @Override
+    public int interpret() {
+        return number;
+    }
+}
+```
+
+### FILE: AddExpression.java
+```java
+public class AddExpression implements Expression {
+    private Expression left;
+    private Expression right;
+    
+    public AddExpression(Expression left, Expression right) {
+        this.left = left;
+        this.right = right;
+    }
+    
+    @Override
+    public int interpret() {
+        return left.interpret() + right.interpret();
+    }
+}
+```
+
+### FILE: SubtractExpression.java
+```java
+public class SubtractExpression implements Expression {
+    private Expression left;
+    private Expression right;
+    
+    public SubtractExpression(Expression left, Expression right) {
+        this.left = left;
+        this.right = right;
+    }
+    
+    @Override
+    public int interpret() {
+        return left.interpret() - right.interpret();
+    }
+}
+```
+
+### FILE: SalaryCalculator.java
+```java
+public class SalaryCalculator {
+    public static void main(String[] args) {
+        // Calculate salary: base + bonus - tax
+        Expression expression = new SubtractExpression(
+            new AddExpression(
+                new NumberExpression(5000),
+                new NumberExpression(1000)
+            ),
+            new NumberExpression(500)
+        );
+        
+        System.out.println("Employee salary: " + expression.interpret());
+    }
+}
+```

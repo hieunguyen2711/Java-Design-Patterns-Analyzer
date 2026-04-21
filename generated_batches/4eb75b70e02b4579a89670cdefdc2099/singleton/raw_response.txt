@@ -1,0 +1,57 @@
+### FILE: StockManager.java
+```java
+public class StockManager {
+    private static volatile StockManager instance;
+    
+    private StockManager() {
+        // Private constructor to prevent instantiation
+    }
+    
+    public static StockManager getInstance() {
+        if (instance == null) {
+            synchronized (StockManager.class) {
+                if (instance == null) {
+                    instance = new StockManager();
+                }
+            }
+        }
+        return instance;
+    }
+    
+    public void processStockMovement(String item, int quantity, String location) {
+        System.out.println("Processing movement: " + quantity + " units of " + item + 
+                          " moved to " + location);
+    }
+}
+```
+
+### FILE: InventorySystem.java
+```java
+public class InventorySystem {
+    private StockManager stockManager;
+    
+    public InventorySystem() {
+        this.stockManager = StockManager.getInstance();
+    }
+    
+    public void addStock(String item, int quantity, String location) {
+        stockManager.processStockMovement(item, quantity, location);
+    }
+}
+```
+
+### FILE: Main.java
+```java
+public class Main {
+    public static void main(String[] args) {
+        InventorySystem system1 = new InventorySystem();
+        InventorySystem system2 = new InventorySystem();
+        
+        system1.addStock("Widget A", 100, "Aisle 5");
+        system2.addStock("Gadget B", 50, "Shelf 3");
+        
+        System.out.println("Singleton instance check: " + 
+                          (system1 == system2 ? "Same instance" : "Different instances"));
+    }
+}
+```

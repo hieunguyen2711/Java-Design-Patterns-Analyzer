@@ -1,0 +1,87 @@
+### FILE: AppointmentMediator.java
+```java
+public interface AppointmentMediator {
+    void scheduleAppointment(Patient patient, Doctor doctor, String slot);
+    void checkInPatient(Patient patient);
+    void recordVisit(Patient patient, Doctor doctor, String notes);
+}
+```
+
+### FILE: ClinicSystem.java
+```java
+import java.util.*;
+
+public class ClinicSystem implements AppointmentMediator {
+    private Map<String, List<Patient>> appointmentSlots;
+    private Set<Patient> checkedInPatients;
+    private Map<Patient, List<Visit>> visitHistory;
+    
+    public ClinicSystem() {
+        this.appointmentSlots = new HashMap<>();
+        this.checkedInPatients = new HashSet<>();
+        this.visitHistory = new HashMap<>();
+    }
+    
+    @Override
+    public void scheduleAppointment(Patient patient, Doctor doctor, String slot) {
+        appointmentSlots.putIfAbsent(slot, new ArrayList<>());
+        appointmentSlots.get(slot).add(patient);
+        System.out.println("Scheduled " + patient.getName() + " with " + doctor.getName() + 
+                          " at " + slot);
+    }
+    
+    @Override
+    public void checkInPatient(Patient patient) {
+        checkedInPatients.add(patient);
+        System.out.println(patient.getName() + " has been checked in");
+    }
+    
+    @Override
+    public void recordVisit(Patient patient, Doctor doctor, String notes) {
+        visitHistory.putIfAbsent(patient, new ArrayList<>());
+        Visit visit = new Visit(doctor, notes);
+        visitHistory.get(patient).add(visit);
+        System.out.println("Recorded visit for " + patient.getName() + 
+                          " with " + doctor.getName());
+    }
+    
+    public Map<String, List<Patient>> getAppointmentSlots() {
+        return appointmentSlots;
+    }
+    
+    public Set<Patient> getCheckedInPatients() {
+        return checkedInPatients;
+    }
+    
+    public Map<Patient, List<Visit>> getVisitHistory() {
+        return visitHistory;
+    }
+}
+```
+
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int

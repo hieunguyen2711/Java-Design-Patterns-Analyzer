@@ -1,0 +1,93 @@
+### FILE: Course.java
+```java
+package com.lms.model;
+
+public class Course {
+    private String courseId;
+    private String title;
+    private String description;
+    
+    public Course(String courseId, String title, String description) {
+        this.courseId = courseId;
+        this.title = title;
+        this.description = description;
+    }
+    
+    // Getters and setters
+    public String getCourseId() { return courseId; }
+    public void setCourseId(String courseId) { this.courseId = courseId; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+}
+```
+
+### FILE: CourseView.java
+```java
+package com.lms.view;
+
+import com.lms.model.Course;
+import java.util.List;
+
+public interface CourseView {
+    void displayCourses(List<Course> courses);
+    void showCourseDetails(Course course);
+    void showMessage(String message);
+    String getCourseIdInput();
+}
+```
+
+### FILE: CoursePresenter.java
+```java
+package com.lms.presenter;
+
+import com.lms.model.Course;
+import com.lms.service.CourseService;
+import com.lms.view.CourseView;
+import java.util.List;
+
+public class CoursePresenter {
+    private CourseService courseService;
+    private CourseView view;
+    
+    public CoursePresenter(CourseService courseService, CourseView view) {
+        this.courseService = courseService;
+        this.view = view;
+    }
+    
+    public void loadCourses() {
+        List<Course> courses = courseService.getAllCourses();
+        view.displayCourses(courses);
+    }
+    
+    public void showCourseDetails(String courseId) {
+        Course course = courseService.getCourseById(courseId);
+        if (course != null) {
+            view.showCourseDetails(course);
+        } else {
+            view.showMessage("Course not found");
+        }
+    }
+    
+    public void addNewCourse() {
+        String courseId = view.getCourseIdInput();
+        // In a real implementation, we would get more details from the view
+        Course newCourse = new Course(courseId, "New Course", "Description");
+        courseService.addCourse(newCourse);
+        loadCourses(); // Refresh the list
+    }
+}
+```
+
+### FILE: CourseServiceImpl.java
+```java
+package com.lms.service;
+
+import com.lms.model.Course;
+import java.util.ArrayList;
+import java.util.List;
+
+public class

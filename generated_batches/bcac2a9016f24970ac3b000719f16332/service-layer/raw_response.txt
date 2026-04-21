@@ -1,0 +1,86 @@
+### FILE: RoomInventoryService.java
+```java
+package com.hotel.service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.time.LocalDate;
+
+public interface RoomInventoryService {
+    List<Room> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate);
+    boolean isRoomAvailable(int roomId, LocalDate checkInDate, LocalDate checkOutDate);
+    void updateRoomAvailability(int roomId, LocalDate checkInDate, LocalDate checkOutDate, boolean available);
+}
+```
+
+### FILE: BookingService.java
+```java
+package com.hotel.service;
+
+import java.util.List;
+import java.time.LocalDate;
+
+public interface BookingService {
+    Booking createBooking(int guestId, int roomId, LocalDate checkInDate, LocalDate checkOutDate);
+    void cancelBooking(int bookingId);
+    List<Booking> getGuestBookings(int guestId);
+}
+```
+
+### FILE: PricingPlanService.java
+```java
+package com.hotel.service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+public interface PricingPlanService {
+    BigDecimal calculatePrice(int roomId, LocalDate checkInDate, LocalDate checkOutDate);
+    void updatePricingPlan(int roomId, BigDecimal baseRate, LocalDate effectiveDate);
+}
+```
+
+### FILE: GuestBillingService.java
+```java
+package com.hotel.service;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+public interface GuestBillingService {
+    BigDecimal calculateTotalBill(int guestId);
+    List<BillItem> getGuestBillItems(int guestId);
+    void processPayment(int guestId, BigDecimal amount);
+}
+```
+
+### FILE: Room.java
+```java
+package com.hotel.model;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.time.LocalDate;
+
+public class Room {
+    private int id;
+    private String roomType;
+    private BigDecimal baseRate;
+    private List<RoomAvailability> availability;
+    
+    public Room(int id, String roomType, BigDecimal baseRate) {
+        this.id = id;
+        this.roomType = roomType;
+        this.baseRate = baseRate;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getRoomType() { return roomType; }
+    public void setRoomType(String roomType) { this.roomType = roomType; }
+    
+    public BigDecimal getBaseRate() { return baseRate; }
+    public void setBaseRate(BigDecimal baseRate) { this.base

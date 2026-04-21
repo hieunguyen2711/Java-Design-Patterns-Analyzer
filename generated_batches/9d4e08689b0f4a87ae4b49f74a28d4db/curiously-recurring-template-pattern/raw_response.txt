@@ -1,0 +1,84 @@
+### FILE: Vehicle.java
+```java
+package fleet.inventory;
+
+public abstract class Vehicle {
+    protected String make;
+    protected String model;
+    protected int year;
+    protected double basePrice;
+    
+    public Vehicle(String make, String model, int year, double basePrice) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.basePrice = basePrice;
+    }
+    
+    public abstract double calculateValue();
+    
+    public String getMake() { return make; }
+    public String getModel() { return model; }
+    public int getYear() { return year; }
+    public double getBasePrice() { return basePrice; }
+}
+```
+
+### FILE: Car.java
+```java
+package fleet.inventory;
+
+public class Car extends Vehicle {
+    
+    public Car(String make, String model, int year, double basePrice) {
+        super(make, model, year, basePrice);
+    }
+    
+    @Override
+    public double calculateValue() {
+        return basePrice * 0.8;
+    }
+}
+```
+
+### FILE: Truck.java
+```java
+package fleet.inventory;
+
+public class Truck extends Vehicle {
+    
+    public Truck(String make, String model, int year, double basePrice) {
+        super(make, model, year, basePrice);
+    }
+    
+    @Override
+    public double calculateValue() {
+        return basePrice * 0.6;
+    }
+}
+```
+
+### FILE: FleetManager.java
+```java
+package fleet.inventory;
+
+public class FleetManager {
+    private static final int MAX_VEHICLES = 100;
+    private Vehicle[] vehicles = new Vehicle[MAX_VEHICLES];
+    private int vehicleCount = 0;
+    
+    public <T extends Vehicle> void addVehicle(T vehicle) {
+        if (vehicleCount < MAX_VEHICLES) {
+            vehicles[vehicleCount++] = vehicle;
+        }
+    }
+    
+    public double getTotalFleetValue() {
+        double totalValue = 0.0;
+        for (int i = 0; i < vehicleCount; i++) {
+            totalValue += vehicles[i].calculateValue();
+        }
+        return totalValue;
+    }
+}
+```

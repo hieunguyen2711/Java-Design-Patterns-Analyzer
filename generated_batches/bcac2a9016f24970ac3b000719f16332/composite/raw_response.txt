@@ -1,0 +1,107 @@
+### FILE: RoomInventoryItem.java
+```java
+package com.hotel.inventory;
+
+public abstract class RoomInventoryItem {
+    protected String name;
+    
+    public RoomInventoryItem(String name) {
+        this.name = name;
+    }
+    
+    public abstract double getPrice();
+    public abstract void add(RoomInventoryItem item);
+    public abstract void remove(RoomInventoryItem item);
+    public abstract boolean isComposite();
+}
+```
+
+### FILE: Furniture.java
+```java
+package com.hotel.inventory;
+
+public class Furniture extends RoomInventoryItem {
+    private double price;
+    
+    public Furniture(String name, double price) {
+        super(name);
+        this.price = price;
+    }
+    
+    @Override
+    public double getPrice() {
+        return price;
+    }
+    
+    @Override
+    public void add(RoomInventoryItem item) {
+        throw new UnsupportedOperationException("Cannot add items to furniture");
+    }
+    
+    @Override
+    public void remove(RoomInventoryItem item) {
+        throw new UnsupportedOperationException("Cannot remove items from furniture");
+    }
+    
+    @Override
+    public boolean isComposite() {
+        return false;
+    }
+}
+```
+
+### FILE: Room.java
+```java
+package com.hotel.inventory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Room extends RoomInventoryItem {
+    private List<RoomInventoryItem> items;
+    private double basePrice;
+    
+    public Room(String name, double basePrice) {
+        super(name);
+        this.basePrice = basePrice;
+        this.items = new ArrayList<>();
+    }
+    
+    @Override
+    public double getPrice() {
+        double total = basePrice;
+        for (RoomInventoryItem item : items) {
+            total += item.getPrice();
+        }
+        return total;
+    }
+    
+    @Override
+    public void add(RoomInventoryItem item) {
+        items.add(item);
+    }
+    
+    @Override
+    public void remove(RoomInventoryItem item) {
+        items.remove(item);
+    }
+    
+    @Override
+    public boolean isComposite() {
+        return true;
+    }
+}
+```
+
+### FILE: HotelSystem.java
+```java
+package com.hotel.inventory;
+
+public class HotelSystem {
+    public static void main(String[] args) {
+        // Create a room with base price
+        Room suite = new Room("Deluxe Suite", 200.0);
+        
+        // Add furniture to the room (leaf nodes)
+        Furniture bed = new Furniture("King Size Bed", 50.0);
+        Furniture desk = new

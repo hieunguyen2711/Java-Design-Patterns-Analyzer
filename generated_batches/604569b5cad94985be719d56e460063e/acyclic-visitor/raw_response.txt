@@ -1,0 +1,111 @@
+### FILE: Employee.java
+```java
+public class Employee {
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: LeaveRequest.java
+```java
+public class LeaveRequest {
+    private Employee employee;
+    private int daysRequested;
+    
+    public LeaveRequest(Employee employee, int daysRequested) {
+        this.employee = employee;
+        this.daysRequested = daysRequested;
+    }
+    
+    public Employee getEmployee() {
+        return employee;
+    }
+    
+    public int getDaysRequested() {
+        return daysRequested;
+    }
+}
+```
+
+### FILE: TaxDeduction.java
+```java
+public class TaxDeduction {
+    private Employee employee;
+    private double amount;
+    
+    public TaxDeduction(Employee employee, double amount) {
+        this.employee = employee;
+        this.amount = amount;
+    }
+    
+    public Employee getEmployee() {
+        return employee;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+}
+```
+
+### FILE: PaySlip.java
+```java
+public class PaySlip {
+    private Employee employee;
+    private double grossSalary;
+    private double netSalary;
+    
+    public PaySlip(Employee employee, double grossSalary, double netSalary) {
+        this.employee = employee;
+        this.grossSalary = grossSalary;
+        this.netSalary = netSalary;
+    }
+    
+    public Employee getEmployee() {
+        return employee;
+    }
+    
+    public double getGrossSalary() {
+        return grossSalary;
+    }
+    
+    public double getNetSalary() {
+        return netSalary;
+    }
+}
+```
+
+### FILE: Visitor.java
+```java
+public interface Visitor {
+    void visit(Employee employee);
+    void visit(LeaveRequest leaveRequest);
+    void visit(TaxDeduction taxDeduction);
+    void visit(PaySlip paySlip);
+}
+```
+
+### FILE: ReportVisitor.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReportVisitor implements Visitor {
+    private List<String> reports = new ArrayList<>();
+    
+    @Override
+    public void visit(Employee employee) {
+        reports.add("Employee: " + employee.getName() + ", Salary: $" + employee.get

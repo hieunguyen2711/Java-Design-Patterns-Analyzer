@@ -1,0 +1,131 @@
+### FILE: Element.java
+```java
+package com.lms.visitor;
+
+public interface Element {
+    void accept(Visitor visitor);
+}
+```
+
+### FILE: Visitor.java
+```java
+package com.lms.visitor;
+
+public interface Visitor {
+    void visit(Course course);
+    void visit(Module module);
+    void visit(Assignment assignment);
+    void visit(Submissions submissions);
+}
+```
+
+### FILE: Course.java
+```java
+package com.lms.visitor;
+
+public class Course implements Element {
+    private String name;
+    
+    public Course(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Module.java
+```java
+package com.lms.visitor;
+
+public class Module implements Element {
+    private String title;
+    
+    public Module(String title) {
+        this.title = title;
+    }
+    
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+}
+```
+
+### FILE: Assignment.java
+```java
+package com.lms.visitor;
+
+public class Assignment implements Element {
+    private String description;
+    
+    public Assignment(String description) {
+        this.description = description;
+    }
+    
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+}
+```
+
+### FILE: Submissions.java
+```java
+package com.lms.visitor;
+
+public class Submissions implements Element {
+    private int count;
+    
+    public Submissions(int count) {
+        this.count = count;
+    }
+    
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+    
+    public int getCount() {
+        return count;
+    }
+}
+```
+
+### FILE: ProgressTracker.java
+```java
+package com.lms.visitor;
+
+public class ProgressTracker implements Visitor {
+    private int courseCount = 0;
+    private int moduleCount = 0;
+    private int assignmentCount = 0;
+    private int submissionCount = 0;
+    
+    @Override
+    public void visit(Course course) {
+        courseCount++;
+    }
+    
+    @Override
+    public void visit(Module module) {
+        moduleCount++;
+    }
+    
+    @Override
+    public void

@@ -1,0 +1,95 @@
+### FILE: FleetInventoryApp.java
+```java
+public class FleetInventoryApp {
+    public static void main(String[] args) {
+        // Create the model
+        VehicleModel model = new VehicleModel();
+        
+        // Create views
+        VehicleListView listView = new VehicleListView();
+        VehicleDetailsView detailsView = new VehicleDetailsView();
+        
+        // Create controller
+        FleetController controller = new FleetController(model, listView, detailsView);
+        
+        // Initialize with some data
+        controller.addVehicle("Toyota Camry", "Sedan", 2020);
+        controller.addVehicle("Ford F-150", "Truck", 2019);
+        controller.addVehicle("Honda Civic", "Sedan", 2021);
+        
+        // Display all vehicles
+        controller.displayAllVehicles();
+        
+        // Show details of first vehicle
+        controller.showVehicleDetails(0);
+    }
+}
+```
+
+### FILE: VehicleModel.java
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class VehicleModel {
+    private List<Vehicle> vehicles;
+    
+    public VehicleModel() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(String make, String type, int year) {
+        vehicles.add(new Vehicle(make, type, year));
+    }
+    
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+    
+    public Vehicle getVehicle(int index) {
+        return vehicles.get(index);
+    }
+    
+    public int getVehicleCount() {
+        return vehicles.size();
+    }
+}
+```
+
+### FILE: Vehicle.java
+```java
+public class Vehicle {
+    private String make;
+    private String type;
+    private int year;
+    
+    public Vehicle(String make, String type, int year) {
+        this.make = make;
+        this.type = type;
+        this.year = year;
+    }
+    
+    public String getMake() {
+        return make;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public int getYear() {
+        return year;
+    }
+}
+```
+
+### FILE: VehicleListView.java
+```java
+import java.util.List;
+
+public class VehicleListView {
+    public void displayVehicles(List<Vehicle> vehicles) {
+        System.out.println("=== Fleet Inventory ===");
+        for (int i = 0; i < vehicles.size(); i++) {
+            Vehicle vehicle = vehicles.get(i);
+            System.out.printf("%d. %

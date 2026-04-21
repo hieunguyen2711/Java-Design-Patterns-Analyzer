@@ -1,0 +1,90 @@
+### FILE: StockItem.java
+```java
+public class StockItem {
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    
+    public StockItem(String name, int currentStock, int reorderThreshold) {
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public void updateStock(int quantity) {
+        this.currentStock += quantity;
+        System.out.println("Updated " + name + " stock to: " + currentStock);
+    }
+    
+    public int getCurrentStock() {
+        return currentStock;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+}
+```
+
+### FILE: StockService.java
+```java
+public interface StockService {
+    void updateStock(String itemName, int quantity);
+    int getCurrentStock(String itemName);
+    boolean needsRestock(String itemName);
+}
+```
+
+### FILE: StockServiceImpl.java
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class StockServiceImpl implements StockService {
+    private Map<String, StockItem> inventory = new HashMap<>();
+    
+    public StockServiceImpl() {
+        inventory.put("Laptop", new StockItem("Laptop", 15, 5));
+        inventory.put("Mouse", new StockItem("Mouse", 30, 10));
+        inventory.put("Keyboard", new StockItem("Keyboard", 20, 8));
+    }
+    
+    @Override
+    public void updateStock(String itemName, int quantity) {
+        if (inventory.containsKey(itemName)) {
+            inventory.get(itemName).updateStock(quantity);
+        } else {
+            System.out.println("Item " + itemName + " not found in inventory");
+        }
+    }
+    
+    @Override
+    public int getCurrentStock(String itemName) {
+        return inventory.containsKey(itemName) ? 
+               inventory.get(itemName).getCurrentStock() : 0;
+    }
+    
+    @Override
+    public boolean needsRestock(String itemName) {
+        if (inventory.containsKey(itemName)) {
+            StockItem item = inventory.get(itemName);
+            return item.getCurrentStock() <= item.getReorderThreshold();
+        }
+        return false;
+    }
+}
+```
+
+### FILE: LoggingHandler.java
+```java
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
+public class LoggingHandler implements InvocationHandler {
+    private final Object target;
+    
+    public Logging

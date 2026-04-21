@@ -1,0 +1,97 @@
+### FILE: Room.java
+```java
+public abstract class Room {
+    protected RoomType type;
+    protected PricingStrategy pricingStrategy;
+    
+    public Room(RoomType type, PricingStrategy pricingStrategy) {
+        this.type = type;
+        this.pricingStrategy = pricingStrategy;
+    }
+    
+    public abstract double calculatePrice(int nights);
+    public abstract String getRoomDetails();
+}
+```
+
+### FILE: StandardRoom.java
+```java
+public class StandardRoom extends Room {
+    public StandardRoom(PricingStrategy pricingStrategy) {
+        super(RoomType.STANDARD, pricingStrategy);
+    }
+    
+    @Override
+    public double calculatePrice(int nights) {
+        return pricingStrategy.calculatePrice(100.0, nights);
+    }
+    
+    @Override
+    public String getRoomDetails() {
+        return "Standard Room";
+    }
+}
+```
+
+### FILE: SuiteRoom.java
+```java
+public class SuiteRoom extends Room {
+    public SuiteRoom(PricingStrategy pricingStrategy) {
+        super(RoomType.SUITE, pricingStrategy);
+    }
+    
+    @Override
+    public double calculatePrice(int nights) {
+        return pricingStrategy.calculatePrice(250.0, nights);
+    }
+    
+    @Override
+    public String getRoomDetails() {
+        return "Suite Room";
+    }
+}
+```
+
+### FILE: PricingStrategy.java
+```java
+public interface PricingStrategy {
+    double calculatePrice(double basePrice, int nights);
+}
+```
+
+### FILE: RegularPricing.java
+```java
+public class RegularPricing implements PricingStrategy {
+    @Override
+    public double calculatePrice(double basePrice, int nights) {
+        return basePrice * nights;
+    }
+}
+```
+
+### FILE: WeekendPricing.java
+```java
+public class WeekendPricing implements PricingStrategy {
+    @Override
+    public double calculatePrice(double basePrice, int nights) {
+        double weekendNights = Math.ceil(nights / 7.0) * 2;
+        double weekdayNights = nights - weekendNights;
+        return (basePrice * 1.2 * weekendNights) + (basePrice * weekdayNights);
+    }
+}
+```
+
+### FILE: RoomType.java
+```java
+public enum RoomType {
+    STANDARD,
+    SUITE
+}
+```
+
+### FILE: HotelBookingSystem.java
+```java
+public class HotelBookingSystem {
+    public static void main(String[] args) {
+        // Using regular pricing strategy
+        Room standardRoom = new

@@ -1,0 +1,95 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+}
+```
+
+### FILE: SalaryCalculator.java
+```java
+package hr.system;
+
+@FunctionalInterface
+public interface SalaryCalculator {
+    double calculate(Employee employee);
+}
+```
+
+### FILE: BonusCalculator.java
+```java
+package hr.system;
+
+public class BonusCalculator implements SalaryCalculator {
+    private final SalaryCalculator baseCalculator;
+    private final double bonusPercentage;
+    
+    public BonusCalculator(SalaryCalculator baseCalculator, double bonusPercentage) {
+        this.baseCalculator = baseCalculator;
+        this.bonusPercentage = bonusPercentage;
+    }
+    
+    @Override
+    public double calculate(Employee employee) {
+        double baseSalary = baseCalculator.calculate(employee);
+        return baseSalary + (baseSalary * bonusPercentage / 100);
+    }
+}
+```
+
+### FILE: TaxDeductionCalculator.java
+```java
+package hr.system;
+
+public class TaxDeductionCalculator implements SalaryCalculator {
+    private final SalaryCalculator baseCalculator;
+    private final double taxRate;
+    
+    public TaxDeductionCalculator(SalaryCalculator baseCalculator, double taxRate) {
+        this.baseCalculator = baseCalculator;
+        this.taxRate = taxRate;
+    }
+    
+    @Override
+    public double calculate(Employee employee) {
+        double grossSalary = baseCalculator.calculate(employee);
+        return grossSalary - (grossSalary * taxRate / 100);
+    }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package hr.system;
+
+public class PayrollService {
+    
+    public static void main(String[] args) {
+        Employee employee = new Employee("John Doe", 50000.0);
+        
+        // Function composition: calculate salary with bonus and tax deduction
+        SalaryCalculator finalCalculator = new TaxDeductionCalculator(
+            new BonusCalculator(employee -> employee.getBaseSalary(), 10.0),
+            20.0
+        );
+        
+        double netSalary = finalCalculator.calculate(employee);
+        System.out.println("Net salary for " + employee.getName() + ": $" + netSalary);
+    }
+}
+```

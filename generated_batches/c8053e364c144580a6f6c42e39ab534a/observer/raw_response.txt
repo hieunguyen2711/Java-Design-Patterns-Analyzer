@@ -1,0 +1,126 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Doctor {
+    private String name;
+    private List<Observer> observers;
+    
+    public Doctor(String name) {
+        this.name = name;
+        this.observers = new ArrayList<>();
+    }
+    
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+    
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+    
+    public void notifyObservers(Appointment appointment) {
+        for (Observer observer : observers) {
+            observer.update(appointment);
+        }
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+public class Patient {
+    private String name;
+    private String email;
+    
+    public Patient(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+}
+```
+
+### FILE: Appointment.java
+```java
+package clinic;
+
+public class Appointment {
+    private Doctor doctor;
+    private Patient patient;
+    private String dateTime;
+    private boolean isCheckedIn;
+    
+    public Appointment(Doctor doctor, Patient patient, String dateTime) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.dateTime = dateTime;
+        this.isCheckedIn = false;
+    }
+    
+    public void checkIn() {
+        this.isCheckedIn = true;
+        doctor.notifyObservers(this);
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public String getDateTime() {
+        return dateTime;
+    }
+    
+    public boolean isCheckedIn() {
+        return isCheckedIn;
+    }
+}
+```
+
+### FILE: Observer.java
+```java
+package clinic;
+
+public interface Observer {
+    void update(Appointment appointment);
+}
+```
+
+### FILE: VisitHistoryObserver.java
+```java
+package clinic;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VisitHistoryObserver implements Observer {
+    private List<String> visitHistory;
+    
+    public VisitHistoryObserver() {
+        this.visitHistory = new ArrayList<>();
+    }
+    
+    @Override
+    public void update(Appointment appointment) {
+        if (appointment.isCheckedIn()) {
+            String record = String.format("Patient %s checked in for appointment with Dr. %

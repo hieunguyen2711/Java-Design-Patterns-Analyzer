@@ -1,0 +1,98 @@
+### FILE: ServiceLocator.java
+```java
+public class ServiceLocator {
+    private static ServiceLocator instance;
+    private Map<String, Object> services;
+
+    private ServiceLocator() {
+        services = new HashMap<>();
+        loadServices();
+    }
+
+    public static synchronized ServiceLocator getInstance() {
+        if (instance == null) {
+            instance = new ServiceLocator();
+        }
+        return instance;
+    }
+
+    private void loadServices() {
+        services.put("RoomInventoryService", new RoomInventoryServiceImpl());
+        services.put("BookingService", new BookingServiceImpl());
+        services.put("PricingPlanService", new PricingPlanServiceImpl());
+        services.put("GuestBillingService", new GuestBillingServiceImpl());
+    }
+
+    public Object getService(String serviceName) {
+        return services.get(serviceName);
+    }
+}
+```
+
+### FILE: RoomInventoryService.java
+```java
+public interface RoomInventoryService {
+    int getAvailableRooms();
+    void updateRoomAvailability(int roomId, boolean isAvailable);
+}
+```
+
+### FILE: BookingService.java
+```java
+public interface BookingService {
+    String createBooking(String guestName, int roomId);
+    boolean cancelBooking(String bookingId);
+}
+```
+
+### FILE: PricingPlanService.java
+```java
+public interface PricingPlanService {
+    double calculatePrice(int roomId, int numberOfNights);
+    void updatePricingPlan(int roomId, double newRate);
+}
+```
+
+### FILE: GuestBillingService.java
+```java
+public interface GuestBillingService {
+    double generateBill(String bookingId);
+    boolean processPayment(String guestName, double amount);
+}
+```
+
+### FILE: RoomInventoryServiceImpl.java
+```java
+public class RoomInventoryServiceImpl implements RoomInventoryService {
+    private Map<Integer, Boolean> roomAvailability;
+
+    public RoomInventoryServiceImpl() {
+        roomAvailability = new HashMap<>();
+        roomAvailability.put(101, true);
+        roomAvailability.put(102, false);
+        roomAvailability.put(103, true);
+    }
+
+    @Override
+    public int getAvailableRooms() {
+        return (int) roomAvailability.values().stream()
+                .filter(Boolean::booleanValue)
+                .count();
+    }
+
+    @Override
+    public void updateRoomAvailability(int roomId, boolean isAvailable) {
+        roomAvailability.put(roomId, isAvailable);
+    }
+}
+```
+
+### FILE: BookingServiceImpl.java
+```java
+public class BookingServiceImpl implements BookingService {
+    private Map<String, String> bookings;
+
+    public BookingServiceImpl() {
+        bookings = new HashMap<>();
+    }
+

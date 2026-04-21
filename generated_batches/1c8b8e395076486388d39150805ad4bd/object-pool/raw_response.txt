@@ -1,0 +1,84 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private String id;
+    private String name;
+    private String email;
+    
+    public Membership(String id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    @Override
+    public String toString() {
+        return "Membership{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+}
+```
+
+### FILE: MembershipPool.java
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class MembershipPool {
+    private static MembershipPool instance;
+    private Deque<Membership> pool;
+    private int maxSize;
+    
+    private MembershipPool(int maxSize) {
+        this.maxSize = maxSize;
+        this.pool = new ArrayDeque<>(maxSize);
+        initializePool();
+    }
+    
+    public static synchronized MembershipPool getInstance() {
+        if (instance == null) {
+            instance = new MembershipPool(10);
+        }
+        return instance;
+    }
+    
+    private void initializePool() {
+        for (int i = 0; i < maxSize; i++) {
+            pool.push(new Membership("MEM-" + i, "Member " + i, "member" + i + "@gym.com"));
+        }
+    }
+    
+    public synchronized Membership acquireMembership() {
+        if (pool.isEmpty()) {
+            return new Membership("TEMP-" + System.currentTimeMillis(), 
+                                "Temporary Member", "temp@gym.com");
+        }
+        return pool.pop();
+    }
+    
+    public synchronized void releaseMembership(Membership membership) {
+        if (membership != null && pool.size() < maxSize) {
+            // Reset membership to default state
+            membership.setId("MEM-" + System.currentTimeMillis());
+            membership.setName("Member " + System.currentTimeMillis());
+            membership.setEmail("member" + System.currentTimeMillis() + "@gym.com");
+            pool.push(membership);
+        }
+    }
+}
+```
+
+### FILE: GymSystem.java
+```java
+public class

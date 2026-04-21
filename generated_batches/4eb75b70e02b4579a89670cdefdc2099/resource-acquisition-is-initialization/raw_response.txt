@@ -1,0 +1,101 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private String itemId;
+    private int currentStock;
+    private int reorderThreshold;
+    
+    public StockItem(String itemId, int initialStock, int reorderThreshold) {
+        this.itemId = itemId;
+        this.currentStock = initialStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public void addStock(int quantity) {
+        this.currentStock += quantity;
+    }
+    
+    public boolean removeStock(int quantity) {
+        if (this.currentStock >= quantity) {
+            this.currentStock -= quantity;
+            return true;
+        }
+        return false;
+    }
+    
+    public String getItemId() {
+        return itemId;
+    }
+    
+    public int getCurrentStock() {
+        return currentStock;
+    }
+    
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+}
+```
+
+### FILE: InventoryManager.java
+```java
+package com.example.stock;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class InventoryManager {
+    private Map<String, StockItem> inventory;
+    
+    public InventoryManager() {
+        this.inventory = new HashMap<>();
+    }
+    
+    public void addItem(String itemId, int initialStock, int reorderThreshold) {
+        inventory.put(itemId, new StockItem(itemId, initialStock, reorderThreshold));
+    }
+    
+    public boolean addStock(String itemId, int quantity) {
+        StockItem item = inventory.get(itemId);
+        if (item != null) {
+            item.addStock(quantity);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean removeStock(String itemId, int quantity) {
+        StockItem item = inventory.get(itemId);
+        if (item != null) {
+            return item.removeStock(quantity);
+        }
+        return false;
+    }
+    
+    public StockItem getItem(String itemId) {
+        return inventory.get(itemId);
+    }
+}
+```
+
+### FILE: ReorderManager.java
+```java
+package com.example.stock;
+
+public class ReorderManager {
+    private InventoryManager inventoryManager;
+    
+    public ReorderManager(InventoryManager inventoryManager) {
+        this.inventoryManager = inventoryManager;
+    }
+    
+    public boolean shouldReorder(String itemId) {
+        StockItem item = inventoryManager.getItem(itemId);
+        return item != null && item.getCurrentStock() <= item.getReorderThreshold();
+    }
+    
+    public void processReorder(String itemId, int reorderQuantity) {
+        if (shouldReorder(itemId)) {
+            inventoryManager.add

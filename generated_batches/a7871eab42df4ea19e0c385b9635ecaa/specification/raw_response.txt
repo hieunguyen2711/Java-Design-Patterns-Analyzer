@@ -1,0 +1,122 @@
+### FILE: Account.java
+```java
+package banking;
+
+public class Account {
+    private String accountNumber;
+    private double balance;
+    
+    public Account(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+    
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+}
+```
+
+### FILE: Transaction.java
+```java
+package banking;
+
+public class Transaction {
+    private String transactionId;
+    private String type;
+    private double amount;
+    private String fromAccount;
+    private String toAccount;
+    private long timestamp;
+    
+    public Transaction(String transactionId, String type, double amount, 
+                      String fromAccount, String toAccount) {
+        this.transactionId = transactionId;
+        this.type = type;
+        this.amount = amount;
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+        this.timestamp = System.currentTimeMillis();
+    }
+    
+    public String getTransactionId() {
+        return transactionId;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public double getAmount() {
+        return amount;
+    }
+    
+    public String getFromAccount() {
+        return fromAccount;
+    }
+    
+    public String getToAccount() {
+        return toAccount;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
+    }
+}
+```
+
+### FILE: TransactionHistory.java
+```java
+package banking;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TransactionHistory {
+    private List<Transaction> transactions;
+    
+    public TransactionHistory() {
+        this.transactions = new ArrayList<>();
+    }
+    
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
+    
+    public List<Transaction> getTransactions() {
+        return new ArrayList<>(transactions);
+    }
+}
+```
+
+### FILE: BankService.java
+```java
+package banking;
+
+public class BankService {
+    private TransactionHistory history;
+    
+    public BankService() {
+        this.history = new TransactionHistory();
+    }
+    
+    public void deposit(Account account, double amount) {
+       

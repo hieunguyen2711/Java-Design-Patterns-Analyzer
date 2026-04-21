@@ -1,0 +1,92 @@
+### FILE: Vehicle.java
+```java
+package fleetmanagement;
+
+public class Vehicle {
+    private String id;
+    private String make;
+    private String model;
+    private int year;
+    private double dailyRate;
+    
+    public Vehicle(String id, String make, String model, int year, double dailyRate) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.dailyRate = dailyRate;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getMake() { return make; }
+    public void setMake(String make) { this.make = make; }
+    
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
+    
+    public int getYear() { return year; }
+    public void setYear(int year) { this.year = year; }
+    
+    public double getDailyRate() { return dailyRate; }
+    public void setDailyRate(double dailyRate) { this.dailyRate = dailyRate; }
+}
+```
+
+### FILE: VehicleConverter.java
+```java
+package fleetmanagement;
+
+public interface VehicleConverter {
+    String convertToString(Vehicle vehicle);
+    Vehicle convertFromString(String vehicleString);
+}
+```
+
+### FILE: JsonVehicleConverter.java
+```java
+package fleetmanagement;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+public class JsonVehicleConverter implements VehicleConverter {
+    private final Gson gson;
+    
+    public JsonVehicleConverter() {
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
+    }
+    
+    @Override
+    public String convertToString(Vehicle vehicle) {
+        return gson.toJson(vehicle);
+    }
+    
+    @Override
+    public Vehicle convertFromString(String vehicleString) {
+        return gson.fromJson(vehicleString, Vehicle.class);
+    }
+}
+```
+
+### FILE: CsvVehicleConverter.java
+```java
+package fleetmanagement;
+
+public class CsvVehicleConverter implements VehicleConverter {
+    
+    @Override
+    public String convertToString(Vehicle vehicle) {
+        return String.format("%s,%s,%s,%d,%.2f", 
+            vehicle.getId(),
+            vehicle.getMake(), 
+            vehicle.getModel(),
+            vehicle.getYear(),
+            vehicle.getDailyRate());
+    }
+    
+    @Override
+    public Vehicle convertFromString(String vehicleString) {
+        String[] parts = vehicleString.split

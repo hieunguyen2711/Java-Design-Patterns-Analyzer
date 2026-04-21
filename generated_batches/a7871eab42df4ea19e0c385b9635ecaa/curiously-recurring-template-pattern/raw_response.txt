@@ -1,0 +1,90 @@
+### FILE: Account.java
+```java
+package com.example.bank;
+
+public abstract class Account<T extends Account<T>> {
+    protected String accountId;
+    protected double balance;
+    
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+    
+    public T deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            audit("Deposit", amount);
+        }
+        return self();
+    }
+    
+    public T withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            audit("Withdrawal", amount);
+        }
+        return self();
+    }
+    
+    protected abstract void audit(String operation, double amount);
+    
+    @SuppressWarnings("unchecked")
+    private T self() {
+        return (T) this;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+}
+```
+
+### FILE: CheckingAccount.java
+```java
+package com.example.bank;
+
+public class CheckingAccount extends Account<CheckingAccount> {
+    private String accountNumber;
+    
+    public CheckingAccount(String accountId, String accountNumber, double initialBalance) {
+        super(accountId, initialBalance);
+        this.accountNumber = accountNumber;
+    }
+    
+    @Override
+    protected void audit(String operation, double amount) {
+        System.out.println("Audit: " + operation + " of $" + amount + 
+                          " on account " + accountNumber + ", balance: $" + balance);
+    }
+}
+```
+
+### FILE: SavingsAccount.java
+```java
+package com.example.bank;
+
+public class SavingsAccount extends Account<SavingsAccount> {
+    private String accountNumber;
+    
+    public SavingsAccount(String accountId, String accountNumber, double initialBalance) {
+        super(accountId, initialBalance);
+        this.accountNumber = accountNumber;
+    }
+    
+    @Override
+    protected void audit(String operation, double amount) {
+        System.out.println("Audit: " + operation + " of $" + amount + 
+                          " on savings account " + accountNumber + ", balance: $" + balance);
+    }
+}
+```
+
+### FILE: BankApplication.java
+```java
+package com.example.bank;
+
+public class BankApplication {
+    public static void main(String[] args) {
+        CheckingAccount checking = new CheckingAccount("CHK001", "123456789", 1000.0);
+        SavingsAccount savings = new SavingsAccount("

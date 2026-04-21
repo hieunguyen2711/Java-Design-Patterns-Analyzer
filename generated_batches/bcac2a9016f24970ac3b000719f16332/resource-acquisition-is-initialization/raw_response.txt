@@ -1,0 +1,106 @@
+### FILE: Room.java
+```java
+package hotel;
+
+public class Room {
+    private final int roomId;
+    private boolean isAvailable;
+    
+    public Room(int roomId) {
+        this.roomId = roomId;
+        this.isAvailable = true;
+    }
+    
+    public int getRoomId() {
+        return roomId;
+    }
+    
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+}
+```
+
+### FILE: Booking.java
+```java
+package hotel;
+
+public class Booking {
+    private final Room room;
+    private final String guestName;
+    
+    public Booking(Room room, String guestName) {
+        this.room = room;
+        this.guestName = guestName;
+        // Resource acquisition - booking the room
+        if (!room.isAvailable()) {
+            throw new IllegalStateException("Room not available");
+        }
+        room.setAvailable(false);
+    }
+    
+    public Room getRoom() {
+        return room;
+    }
+    
+    public String getGuestName() {
+        return guestName;
+    }
+    
+    // Resource release - when booking is closed
+    public void close() {
+        room.setAvailable(true);
+    }
+}
+```
+
+### FILE: BookingManager.java
+```java
+package hotel;
+
+public class BookingManager {
+    private final Room[] rooms;
+    
+    public BookingManager(int numberOfRooms) {
+        rooms = new Room[numberOfRooms];
+        for (int i = 0; i < numberOfRooms; i++) {
+            rooms[i] = new Room(i + 1);
+        }
+    }
+    
+    public Booking bookRoom(String guestName) throws IllegalStateException {
+        // RAII pattern: acquire resource at construction
+        for (Room room : rooms) {
+            if (room.isAvailable()) {
+                return new Booking(room, guestName);
+            }
+        }
+        throw new IllegalStateException("No available rooms");
+    }
+    
+    public Room[] getRooms() {
+        return rooms;
+    }
+}
+```
+
+### FILE: HotelSystem.java
+```java
+package hotel;
+
+public class HotelSystem {
+    private final BookingManager bookingManager;
+    
+    public HotelSystem(int numberOfRooms) {
+        this.bookingManager = new BookingManager(numberOfRooms);
+    }
+    
+    public void demonstrateRAII() {
+        try (Booking booking1 = bookingManager.bookRoom("John Doe");
+             Booking booking2 = bookingManager.bookRoom("Jane Smith")) {
+            
+            System.out.println("Booked room "

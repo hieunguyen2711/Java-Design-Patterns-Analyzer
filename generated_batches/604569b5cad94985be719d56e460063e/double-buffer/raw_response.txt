@@ -1,0 +1,84 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String id;
+    private String name;
+    private double baseSalary;
+    
+    public Employee(String id, String name, double baseSalary) {
+        this.id = id;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+    
+    // Getters and setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public double getBaseSalary() { return baseSalary; }
+    public void setBaseSalary(double baseSalary) { this.baseSalary = baseSalary; }
+}
+```
+
+### FILE: PayrollService.java
+```java
+package hr.system;
+
+import java.util.*;
+
+public class PayrollService {
+    private final Map<String, Employee> employeeBuffer1;
+    private final Map<String, Employee> employeeBuffer2;
+    private volatile boolean currentBuffer = false; // false = buffer1, true = buffer2
+    
+    public PayrollService() {
+        this.employeeBuffer1 = new HashMap<>();
+        this.employeeBuffer2 = new HashMap<>();
+    }
+    
+    public void addEmployee(Employee employee) {
+        Map<String, Employee> buffer = getCurrentBuffer();
+        buffer.put(employee.getId(), employee);
+    }
+    
+    public void updateEmployee(String id, String name, double salary) {
+        Map<String, Employee> buffer = getCurrentBuffer();
+        Employee emp = buffer.get(id);
+        if (emp != null) {
+            emp.setName(name);
+            emp.setBaseSalary(salary);
+        }
+    }
+    
+    public Employee getEmployee(String id) {
+        // Read from current buffer
+        Map<String, Employee> buffer = getCurrentBuffer();
+        return buffer.get(id);
+    }
+    
+    public void swapBuffers() {
+        // Double buffering: switch to the other buffer for writing
+        currentBuffer = !currentBuffer;
+    }
+    
+    private Map<String, Employee> getCurrentBuffer() {
+        return currentBuffer ? employeeBuffer2 : employeeBuffer1;
+    }
+    
+    public Collection<Employee> getAllEmployees() {
+        // Return all employees from both buffers (for processing)
+        List<Employee> result = new ArrayList<>();
+        result.addAll(employeeBuffer1.values());
+        result.addAll(employeeBuffer2.values());
+        return result;
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java

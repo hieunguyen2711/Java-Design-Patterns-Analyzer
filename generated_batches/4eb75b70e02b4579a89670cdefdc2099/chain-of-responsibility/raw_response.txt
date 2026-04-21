@@ -1,0 +1,97 @@
+### FILE: StockIntakeHandler.java
+```java
+public abstract class StockIntakeHandler {
+    protected StockIntakeHandler nextHandler;
+    
+    public void setNext(StockIntakeHandler handler) {
+        this.nextHandler = handler;
+    }
+    
+    public abstract boolean handleRequest(StockItem item);
+}
+```
+
+### FILE: ReorderThresholdHandler.java
+```java
+public class ReorderThresholdHandler extends StockIntakeHandler {
+    @Override
+    public boolean handleRequest(StockItem item) {
+        if (item.getQuantity() <= item.getReorderThreshold()) {
+            System.out.println("Alert: " + item.getName() + " is below reorder threshold. Current quantity: " + item.getQuantity());
+            return true;
+        }
+        
+        if (nextHandler != null) {
+            return nextHandler.handleRequest(item);
+        }
+        
+        return false;
+    }
+}
+```
+
+### FILE: SupplierRestockHandler.java
+```java
+public class SupplierRestockHandler extends StockIntakeHandler {
+    @Override
+    public boolean handleRequest(StockItem item) {
+        if (item.getQuantity() <= 0) {
+            System.out.println("Contacting supplier for " + item.getName());
+            return true;
+        }
+        
+        if (nextHandler != null) {
+            return nextHandler.handleRequest(item);
+        }
+        
+        return false;
+    }
+}
+```
+
+### FILE: MovementLogHandler.java
+```java
+public class MovementLogHandler extends StockIntakeHandler {
+    @Override
+    public boolean handleRequest(StockItem item) {
+        System.out.println("Logging movement for " + item.getName() + ". New quantity: " + item.getQuantity());
+        
+        if (nextHandler != null) {
+            return nextHandler.handleRequest(item);
+        }
+        
+        return true;
+    }
+}
+```
+
+### FILE: StockItem.java
+```java
+public class StockItem {
+    private String name;
+    private int quantity;
+    private int reorderThreshold;
+    
+    public StockItem(String name, int quantity, int reorderThreshold) {
+        this.name = name;
+        this.quantity = quantity;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getQuantity() {
+        return quantity;
+    }
+    
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
+    public int getReorderThreshold() {
+        return reorderThreshold;
+    }
+}
+``

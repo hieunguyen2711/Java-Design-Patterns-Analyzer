@@ -1,0 +1,92 @@
+### FILE: MembershipManager.java
+```java
+package com.membership;
+
+public class MembershipManager {
+    private static MembershipManager instance;
+    
+    // Private constructor to prevent instantiation
+    private MembershipManager() {}
+    
+    // Static method to get the single instance
+    public static synchronized MembershipManager getInstance() {
+        if (instance == null) {
+            instance = new MembershipManager();
+        }
+        return instance;
+    }
+    
+    // Shared state - all instances will have access to this
+    private int totalMembers = 0;
+    private int activeMembers = 0;
+    
+    public void addMember() {
+        totalMembers++;
+        activeMembers++;
+        System.out.println("New member added. Total: " + totalMembers + ", Active: " + activeMembers);
+    }
+    
+    public void removeMember() {
+        if (activeMembers > 0) {
+            activeMembers--;
+            System.out.println("Member removed. Total: " + totalMembers + ", Active: " + activeMembers);
+        }
+    }
+    
+    public int getTotalMembers() {
+        return totalMembers;
+    }
+    
+    public int getActiveMembers() {
+        return activeMembers;
+    }
+}
+```
+
+### FILE: TrainerScheduler.java
+```java
+package com.membership;
+
+public class TrainerScheduler {
+    private static TrainerScheduler instance;
+    
+    // Private constructor to prevent instantiation
+    private TrainerScheduler() {}
+    
+    // Static method to get the single instance
+    public static synchronized TrainerScheduler getInstance() {
+        if (instance == null) {
+            instance = new TrainerScheduler();
+        }
+        return instance;
+    }
+    
+    // Shared state - all instances will have access to this
+    private int totalTrainers = 0;
+    private int availableTrainers = 0;
+    
+    public void addTrainer() {
+        totalTrainers++;
+        availableTrainers++;
+        System.out.println("New trainer added. Total: " + totalTrainers + ", Available: " + availableTrainers);
+    }
+    
+    public void removeTrainer() {
+        if (availableTrainers > 0) {
+            availableTrainers--;
+            System.out.println("Trainer removed. Total: " + totalTrainers + ", Available: " + availableTrainers);
+        }
+    }
+    
+    public int getTotalTrainers() {
+        return totalTrainers;
+    }
+    
+    public int getAvailableTrainers() {
+        return availableTrainers;
+    }
+}
+```
+
+### FILE: AttendanceTracker.java
+```java

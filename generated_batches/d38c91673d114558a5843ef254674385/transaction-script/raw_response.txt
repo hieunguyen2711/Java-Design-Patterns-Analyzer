@@ -1,0 +1,76 @@
+### FILE: Ticket.java
+```java
+public class Ticket {
+    private int id;
+    private String title;
+    private String description;
+    private String status;
+    private String priority;
+    private String assignee;
+
+    public Ticket(int id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = "OPEN";
+        this.priority = "MEDIUM";
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) { this.priority = priority; }
+    
+    public String getAssignee() { return assignee; }
+    public void setAssignee(String assignee) { this.assignee = assignee; }
+}
+```
+
+### FILE: TicketService.java
+```java
+public class TicketService {
+    private TicketRepository ticketRepository;
+    
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
+    
+    // Transaction script for creating a new ticket
+    public void createTicket(int id, String title, String description) {
+        Ticket ticket = new Ticket(id, title, description);
+        ticketRepository.save(ticket);
+    }
+    
+    // Transaction script for assigning a ticket
+    public void assignTicket(int ticketId, String assignee) {
+        Ticket ticket = ticketRepository.findById(ticketId);
+        if (ticket != null) {
+            ticket.setAssignee(assignee);
+            ticketRepository.update(ticket);
+        }
+    }
+    
+    // Transaction script for updating ticket status
+    public void updateTicketStatus(int ticketId, String newStatus) {
+        Ticket ticket = ticketRepository.findById(ticketId);
+        if (ticket != null) {
+            ticket.setStatus(newStatus);
+            ticketRepository.update(ticket);
+        }
+    }
+    
+    // Transaction script for adding comment to a ticket
+    public void addComment(int ticketId, String comment) {
+        Ticket ticket = ticketRepository.findById(ticketId);
+        if (ticket != null

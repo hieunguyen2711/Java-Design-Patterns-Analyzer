@@ -1,0 +1,95 @@
+### FILE: RoomInventoryService.java
+```java
+package hotel.inventory;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public interface RoomInventoryService {
+    List<Room> getAvailableRooms();
+    void bookRoom(int roomId);
+    void checkIn(int roomId);
+    void checkOut(int roomId);
+}
+```
+
+### FILE: RealRoomInventoryService.java
+```java
+package hotel.inventory;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+public class RealRoomInventoryService implements RoomInventoryService {
+    private List<Room> rooms;
+    
+    public RealRoomInventoryService() {
+        // Simulate expensive initialization
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        this.rooms = new ArrayList<>();
+        initializeRooms();
+    }
+    
+    private void initializeRooms() {
+        rooms.add(new Room(1, "Single", 100.0));
+        rooms.add(new Room(2, "Double", 150.0));
+        rooms.add(new Room(3, "Suite", 300.0));
+        rooms.add(new Room(4, "Deluxe", 250.0));
+    }
+    
+    @Override
+    public List<Room> getAvailableRooms() {
+        return new ArrayList<>(rooms);
+    }
+    
+    @Override
+    public void bookRoom(int roomId) {
+        for (Room room : rooms) {
+            if (room.getId() == roomId && !room.isBooked()) {
+                room.setBooked(true);
+                break;
+            }
+        }
+    }
+    
+    @Override
+    public void checkIn(int roomId) {
+        for (Room room : rooms) {
+            if (room.getId() == roomId && room.isBooked()) {
+                room.setCheckedIn(true);
+                break;
+            }
+        }
+    }
+    
+    @Override
+    public void checkOut(int roomId) {
+        for (Room room : rooms) {
+            if (room.getId() == roomId && room.isCheckedIn()) {
+                room.setBooked(false);
+                room.setCheckedIn(false);
+                break;
+            }
+        }
+    }
+}
+```
+
+### FILE: RoomInventoryProxy.java
+```java
+package hotel.inventory;
+
+import java.util.List;
+
+public class RoomInventoryProxy implements RoomInventoryService {
+    private RealRoomInventoryService realService;
+    private boolean serviceLoaded = false;
+    
+    @Override
+    public List<Room> getAvailableRooms()

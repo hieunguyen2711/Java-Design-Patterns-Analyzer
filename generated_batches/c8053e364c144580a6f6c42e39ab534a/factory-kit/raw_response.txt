@@ -1,0 +1,122 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private String name;
+    private String specialty;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private String name;
+    private int age;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private String date;
+    private String time;
+    private Doctor doctor;
+    
+    public AppointmentSlot(String date, String time, Doctor doctor) {
+        this.date = date;
+        this.time = time;
+        this.doctor = doctor;
+    }
+    
+    public String getDate() {
+        return date;
+    }
+    
+    public String getTime() {
+        return time;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+}
+```
+
+### FILE: CheckIn.java
+```java
+public class CheckIn {
+    private Patient patient;
+    private AppointmentSlot slot;
+    private boolean isCheckedIn;
+    
+    public CheckIn(Patient patient, AppointmentSlot slot) {
+        this.patient = patient;
+        this.slot = slot;
+        this.isCheckedIn = false;
+    }
+    
+    public void checkIn() {
+        this.isCheckedIn = true;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public AppointmentSlot getSlot() {
+        return slot;
+    }
+    
+    public boolean isCheckedIn() {
+        return isCheckedIn;
+    }
+}
+```
+
+### FILE: VisitHistory.java
+```java
+public class VisitHistory {
+    private Patient patient;
+    private Doctor doctor;
+    private String visitDate;
+    private String notes;
+    
+    public VisitHistory(Patient patient, Doctor doctor, String visitDate, String notes) {
+        this.patient = patient;
+        this.doctor = doctor;
+        this.visitDate = visitDate;
+        this.notes = notes;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }

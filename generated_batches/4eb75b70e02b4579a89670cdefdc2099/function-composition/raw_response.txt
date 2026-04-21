@@ -1,0 +1,78 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private String itemId;
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    
+    public StockItem(String itemId, String name, int currentStock, int reorderThreshold) {
+        this.itemId = itemId;
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    // Getters and setters
+    public String getItemId() { return itemId; }
+    public void setItemId(String itemId) { this.itemId = itemId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+}
+```
+
+### FILE: Supplier.java
+```java
+package com.example.stock;
+
+public class Supplier {
+    private String supplierId;
+    private String name;
+    
+    public Supplier(String supplierId, String name) {
+        this.supplierId = supplierId;
+        this.name = name;
+    }
+    
+    // Getters and setters
+    public String getSupplierId() { return supplierId; }
+    public void setSupplierId(String supplierId) { this.supplierId = supplierId; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}
+```
+
+### FILE: StockMovement.java
+```java
+package com.example.stock;
+
+public class StockMovement {
+    private String movementId;
+    private String itemId;
+    private int quantity;
+    private String fromLocation;
+    private String toLocation;
+    
+    public StockMovement(String movementId, String itemId, int quantity, String fromLocation, String toLocation) {
+        this.movementId = movementId;
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.fromLocation = fromLocation;
+        this.toLocation = toLocation;
+    }
+    
+    // Getters and setters
+    public String getMovementId() { return movementId; }
+    public void setMovementId(String movementId) { this.movementId = movementId; }
+    
+    public String getItemId() { return itemId

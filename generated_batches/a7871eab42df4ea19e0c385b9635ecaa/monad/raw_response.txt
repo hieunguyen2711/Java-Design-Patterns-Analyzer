@@ -1,0 +1,110 @@
+### FILE: Account.java
+```java
+package com.example.bank;
+
+public class Account {
+    private final String accountId;
+    private double balance;
+
+    public Account(String accountId, double initialBalance) {
+        this.accountId = accountId;
+        this.balance = initialBalance;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountId='" + accountId + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
+}
+```
+
+### FILE: Result.java
+```java
+package com.example.bank;
+
+import java.util.Optional;
+import java.util.function.Function;
+
+public class Result<T> {
+    private final Optional<T> value;
+    private final String errorMessage;
+
+    private Result(Optional<T> value, String errorMessage) {
+        this.value = value;
+        this.errorMessage = errorMessage;
+    }
+
+    public static <T> Result<T> success(T value) {
+        return new Result<>(Optional.of(value), null);
+    }
+
+    public static <T> Result<T> failure(String errorMessage) {
+        return new Result<>(Optional.empty(), errorMessage);
+    }
+
+    public Optional<T> getValue() {
+        return value;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public boolean isSuccess() {
+        return value.isPresent();
+    }
+
+    public <U> Result<U> map(Function<T, U> mapper) {
+        if (isSuccess()) {
+            return Result.success(mapper.apply(value.get()));
+        } else {
+            @SuppressWarnings("unchecked")
+            Result<U> empty = (Result<U>) this;
+            return empty;
+        }
+    }
+
+    public <U> Result<U> flatMap(Function<T, Result<U>> mapper) {
+        if (isSuccess()) {
+            return mapper.apply(value.get());
+        } else {
+            @SuppressWarnings("unchecked")
+            Result<U> empty = (Result<U>) this;
+            return empty;
+        }
+    }
+}
+```
+
+### FILE: AccountService.java
+```java
+package com.example.bank;
+
+public class AccountService {
+    
+    public Result<Account> createAccount(String accountId, double

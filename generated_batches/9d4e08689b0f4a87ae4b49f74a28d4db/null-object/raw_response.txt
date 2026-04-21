@@ -1,0 +1,106 @@
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public abstract class Vehicle {
+    protected String id;
+    protected String make;
+    protected String model;
+    protected int year;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+    }
+    
+    public abstract double calculateRentalCost(int days);
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getMake() {
+        return make;
+    }
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public int getYear() {
+        return year;
+    }
+}
+```
+
+### FILE: Car.java
+```java
+package fleet;
+
+public class Car extends Vehicle {
+    private boolean isElectric;
+    
+    public Car(String id, String make, String model, int year, boolean isElectric) {
+        super(id, make, model, year);
+        this.isElectric = isElectric;
+    }
+    
+    @Override
+    public double calculateRentalCost(int days) {
+        return isElectric ? days * 40.0 : days * 35.0;
+    }
+    
+    public boolean isElectric() {
+        return isElectric;
+    }
+}
+```
+
+### FILE: Truck.java
+```java
+package fleet;
+
+public class Truck extends Vehicle {
+    private double cargoCapacity;
+    
+    public Truck(String id, String make, String model, int year, double cargoCapacity) {
+        super(id, make, model, year);
+        this.cargoCapacity = cargoCapacity;
+    }
+    
+    @Override
+    public double calculateRentalCost(int days) {
+        return days * 50.0 + (cargoCapacity > 2000 ? 100 : 50);
+    }
+    
+    public double getCargoCapacity() {
+        return cargoCapacity;
+    }
+}
+```
+
+### FILE: NullVehicle.java
+```java
+package fleet;
+
+public class NullVehicle extends Vehicle {
+    
+    public NullVehicle() {
+        super("NULL", "Unknown", "Unknown", 0);
+    }
+    
+    @Override
+    public double calculateRentalCost(int days) {
+        return 0.0;
+    }
+}
+```
+
+### FILE: VehicleFactory.java
+```java
+package fleet;
+
+public class VehicleFactory {
+    private static final String[] CAR_TYPES = {"SEDAN", "SUV", "H

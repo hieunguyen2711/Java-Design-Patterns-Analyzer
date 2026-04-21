@@ -1,0 +1,108 @@
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public abstract class Vehicle {
+    protected String id;
+    protected String make;
+    protected String model;
+    protected int year;
+    
+    public Vehicle(String id, String make, String model, int year) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+    }
+    
+    public abstract double calculateRentalRate();
+    
+    public String getId() {
+        return id;
+    }
+    
+    public String getMake() {
+        return make;
+    }
+    
+    public String getModel() {
+        return model;
+    }
+    
+    public int getYear() {
+        return year;
+    }
+}
+```
+
+### FILE: Car.java
+```java
+package fleet;
+
+public class Car extends Vehicle {
+    private boolean isElectric;
+    
+    public Car(String id, String make, String model, int year, boolean isElectric) {
+        super(id, make, model, year);
+        this.isElectric = isElectric;
+    }
+    
+    @Override
+    public double calculateRentalRate() {
+        return isElectric ? 45.0 : 35.0;
+    }
+    
+    public boolean isElectric() {
+        return isElectric;
+    }
+}
+```
+
+### FILE: Truck.java
+```java
+package fleet;
+
+public class Truck extends Vehicle {
+    private int cargoCapacity;
+    
+    public Truck(String id, String make, String model, int year, int cargoCapacity) {
+        super(id, make, model, year);
+        this.cargoCapacity = cargoCapacity;
+    }
+    
+    @Override
+    public double calculateRentalRate() {
+        return 50.0 + (cargoCapacity * 0.5);
+    }
+    
+    public int getCargoCapacity() {
+        return cargoCapacity;
+    }
+}
+```
+
+### FILE: SpecialCaseVehicle.java
+```java
+package fleet;
+
+public class SpecialCaseVehicle extends Vehicle {
+    private String specialDescription;
+    
+    public SpecialCaseVehicle(String id, String make, String model, int year, String specialDescription) {
+        super(id, make, model, year);
+        this.specialDescription = specialDescription;
+    }
+    
+    @Override
+    public double calculateRentalRate() {
+        return 100.0; // Fixed rate for special cases
+    }
+    
+    public String getSpecialDescription() {
+        return specialDescription;
+    }
+}
+```
+
+### FILE: VehicleFactory.java
+```

@@ -1,0 +1,90 @@
+### FILE: Membership.java
+```java
+public class Membership {
+    private int id;
+    private String memberName;
+    private String email;
+    private String membershipType;
+    
+    public Membership(int id, String memberName, String email, String membershipType) {
+        this.id = id;
+        this.memberName = memberName;
+        this.email = email;
+        this.membershipType = membershipType;
+    }
+    
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getMemberName() { return memberName; }
+    public void setMemberName(String memberName) { this.memberName = memberName; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public String getMembershipType() { return membershipType; }
+    public void setMembershipType(String membershipType) { this.membershipType = membershipType; }
+}
+```
+
+### FILE: MembershipRepository.java
+```java
+import java.util.*;
+
+public interface MembershipRepository {
+    Membership save(Membership membership);
+    Optional<Membership> findById(int id);
+    List<Membership> findAll();
+    void deleteById(int id);
+}
+```
+
+### FILE: InMemoryMembershipRepository.java
+```java
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class InMemoryMembershipRepository implements MembershipRepository {
+    private final Map<Integer, Membership> memberships = new ConcurrentHashMap<>();
+    private int nextId = 1;
+    
+    @Override
+    public Membership save(Membership membership) {
+        if (membership.getId() == 0) {
+            membership.setId(nextId++);
+        }
+        memberships.put(membership.getId(), membership);
+        return membership;
+    }
+    
+    @Override
+    public Optional<Membership> findById(int id) {
+        return Optional.ofNullable(memberships.get(id));
+    }
+    
+    @Override
+    public List<Membership> findAll() {
+        return new ArrayList<>(memberships.values());
+    }
+    
+    @Override
+    public void deleteById(int id) {
+        memberships.remove(id);
+    }
+}
+```
+
+### FILE: MembershipService.java
+```java
+import java.util.List;
+import java.util.Optional;
+
+public class MembershipService {
+    private final MembershipRepository repository;
+    
+    public MembershipService(MembershipRepository repository) {
+        this.repository = repository;
+    }
+    
+    public Membership createMembership(String name, String email

@@ -1,0 +1,78 @@
+### FILE: StockItem.java
+```java
+package com.example.stock;
+
+public class StockItem {
+    private String name;
+    private int currentStock;
+    private int reorderThreshold;
+    
+    public StockItem(String name, int currentStock, int reorderThreshold) {
+        this.name = name;
+        this.currentStock = currentStock;
+        this.reorderThreshold = reorderThreshold;
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
+    public int getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(int reorderThreshold) { this.reorderThreshold = reorderThreshold; }
+    
+    @Override
+    public String toString() {
+        return "StockItem{name='" + name + "', currentStock=" + currentStock + 
+               ", reorderThreshold=" + reorderThreshold + '}';
+    }
+}
+```
+
+### FILE: Location.java
+```java
+package com.example.stock;
+
+public class Location {
+    private String aisle;
+    private String shelf;
+    private String bin;
+    
+    public Location(String aisle, String shelf, String bin) {
+        this.aisle = aisle;
+        this.shelf = shelf;
+        this.bin = bin;
+    }
+    
+    // Getters and setters
+    public String getAisle() { return aisle; }
+    public void setAisle(String aisle) { this.aisle = aisle; }
+    public String getShelf() { return shelf; }
+    public void setShelf(String shelf) { this.shelf = shelf; }
+    public String getBin() { return bin; }
+    public void setBin(String bin) { this.bin = bin; }
+    
+    @Override
+    public String toString() {
+        return aisle + "-" + shelf + "-" + bin;
+    }
+}
+```
+
+### FILE: Supplier.java
+```java
+package com.example.stock;
+
+public class Supplier {
+    private String name;
+    private String contactInfo;
+    
+    public Supplier(String name, String contactInfo) {
+        this.name = name;
+        this.contactInfo = contactInfo;
+    }
+    
+    // Getters and setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getContactInfo() { return contact

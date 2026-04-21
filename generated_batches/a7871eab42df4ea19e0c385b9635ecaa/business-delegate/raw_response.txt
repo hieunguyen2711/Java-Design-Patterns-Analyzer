@@ -1,0 +1,106 @@
+### FILE: BusinessDelegate.java
+```java
+public class BusinessDelegate {
+    private BusinessService businessService;
+    private String serviceType;
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public void doTask() {
+        if (businessService == null) {
+            businessService = ServiceLookup.getService(serviceType);
+        }
+        businessService.doProcessing();
+    }
+}
+```
+
+### FILE: BusinessService.java
+```java
+public interface BusinessService {
+    void doProcessing();
+}
+```
+
+### FILE: CustomerAccountService.java
+```java
+public class CustomerAccountService implements BusinessService {
+    @Override
+    public void doProcessing() {
+        System.out.println("Processing customer account service");
+    }
+}
+```
+
+### FILE: DepositService.java
+```java
+public class DepositService implements BusinessService {
+    @Override
+    public void doProcessing() {
+        System.out.println("Processing deposit service");
+    }
+}
+```
+
+### FILE: TransferService.java
+```java
+public class TransferService implements BusinessService {
+    @Override
+    public void doProcessing() {
+        System.out.println("Processing transfer service");
+    }
+}
+```
+
+### FILE: ServiceLookup.java
+```java
+public class ServiceLookup {
+    public static BusinessService getService(String serviceType) {
+        if (serviceType.equalsIgnoreCase("CUSTOMER_ACCOUNT")) {
+            return new CustomerAccountService();
+        } else if (serviceType.equalsIgnoreCase("DEPOSIT")) {
+            return new DepositService();
+        } else if (serviceType.equalsIgnoreCase("TRANSFER")) {
+            return new TransferService();
+        }
+        return null;
+    }
+}
+```
+
+### FILE: Client.java
+```java
+public class Client {
+    private BusinessDelegate businessDelegate;
+
+    public Client(BusinessDelegate businessDelegate) {
+        this.businessDelegate = businessDelegate;
+    }
+
+    public void doTask() {
+        businessDelegate.doTask();
+    }
+}
+```
+
+### FILE: BankApplication.java
+```java
+public class BankApplication {
+    public static void main(String[] args) {
+        BusinessDelegate delegate = new BusinessDelegate();
+        
+        Client client = new Client(delegate);
+        
+        delegate.setServiceType("CUSTOMER_ACCOUNT");
+        client.doTask();
+        
+        delegate.setServiceType("DEPOSIT");
+        client.doTask();
+        
+        delegate.setServiceType("TRANSFER");
+        client.doTask();
+    }
+}
+```

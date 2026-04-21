@@ -1,0 +1,122 @@
+### FILE: Doctor.java
+```java
+package clinic;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class Doctor {
+    private final String name;
+    private final String specialty;
+    private final List<Patient> patients;
+    
+    public Doctor(String name, String specialty) {
+        this.name = name;
+        this.specialty = specialty;
+        this.patients = new ArrayList<>();
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getSpecialty() {
+        return specialty;
+    }
+    
+    public List<Patient> getPatients() {
+        // Return unmodifiable view to protect internal state
+        return List.copyOf(patients);
+    }
+    
+    public void addPatient(Patient patient) {
+        patients.add(patient);
+    }
+}
+```
+
+### FILE: Patient.java
+```java
+package clinic;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+
+public class Patient {
+    private final String name;
+    private final int age;
+    private final List<Visit> visits;
+    
+    public Patient(String name, int age) {
+        this.name = name;
+        this.age = age;
+        this.visits = new ArrayList<>();
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+    
+    public List<Visit> getVisits() {
+        // Return unmodifiable view to protect internal state
+        return List.copyOf(visits);
+    }
+    
+    public void addVisit(Visit visit) {
+        visits.add(visit);
+    }
+}
+```
+
+### FILE: Visit.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
+
+public class Visit {
+    private final LocalDateTime dateTime;
+    private final Doctor doctor;
+    private final Patient patient;
+    private final String notes;
+    
+    public Visit(Doctor doctor, Patient patient, LocalDateTime dateTime, String notes) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.dateTime = dateTime;
+        this.notes = notes;
+    }
+    
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+    
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    
+    public Patient getPatient() {
+        return patient;
+    }
+    
+    public String getNotes() {
+        return notes;
+    }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+package clinic;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+public class

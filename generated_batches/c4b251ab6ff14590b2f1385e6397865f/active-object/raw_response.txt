@@ -1,0 +1,83 @@
+### FILE: ActiveObject.java
+```java
+public interface ActiveObject {
+    void submitOrder(String orderId, String customerId);
+    void updateOrderStatus(String orderId, String status);
+    void assignDelivery(String orderId, String driverId);
+}
+```
+
+### FILE: OrderProcessingService.java
+```java
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class OrderProcessingService implements ActiveObject {
+    private final BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
+    private final Thread workerThread;
+    
+    public OrderProcessingService() {
+        this.workerThread = new Thread(this::processTasks);
+        this.workerThread.start();
+    }
+    
+    @Override
+    public void submitOrder(String orderId, String customerId) {
+        queue.add(() -> {
+            System.out.println("Processing order: " + orderId + " for customer: " + customerId);
+            try {
+                Thread.sleep(1000); // Simulate processing time
+                System.out.println("Order " + orderId + " submitted successfully");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    @Override
+    public void updateOrderStatus(String orderId, String status) {
+        queue.add(() -> {
+            System.out.println("Updating order " + orderId + " status to: " + status);
+            try {
+                Thread.sleep(500); // Simulate processing time
+                System.out.println("Order " + orderId + " status updated");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    @Override
+    public void assignDelivery(String orderId, String driverId) {
+        queue.add(() -> {
+            System.out.println("Assigning order " + orderId + " to driver: " + driverId);
+            try {
+                Thread.sleep(800); // Simulate processing time
+                System.out.println("Order " + orderId + " assigned to driver " + driverId);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+    }
+    
+    private void processTasks() {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                Runnable task = queue.take();
+                task.run();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+    
+    public void shutdown() {
+        workerThread.interrupt();
+    }
+}
+```
+
+### FILE: RestaurantBackend.java
+```java
+public

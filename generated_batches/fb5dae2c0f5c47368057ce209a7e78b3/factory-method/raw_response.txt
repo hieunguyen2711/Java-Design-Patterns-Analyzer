@@ -1,0 +1,104 @@
+### FILE: Course.java
+```java
+public abstract class Course {
+    protected String title;
+    protected String description;
+    
+    public Course(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+    
+    public abstract void enrollStudent();
+    public abstract void startCourse();
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+}
+```
+
+### FILE: ProgrammingCourse.java
+```java
+public class ProgrammingCourse extends Course {
+    
+    public ProgrammingCourse(String title, String description) {
+        super(title, description);
+    }
+    
+    @Override
+    public void enrollStudent() {
+        System.out.println("Enrolling student in " + title + " programming course");
+    }
+    
+    @Override
+    public void startCourse() {
+        System.out.println("Starting " + title + " programming course with coding assignments");
+    }
+}
+```
+
+### FILE: ArtCourse.java
+```java
+public class ArtCourse extends Course {
+    
+    public ArtCourse(String title, String description) {
+        super(title, description);
+    }
+    
+    @Override
+    public void enrollStudent() {
+        System.out.println("Enrolling student in " + title + " art course");
+    }
+    
+    @Override
+    public void startCourse() {
+        System.out.println("Starting " + title + " art course with creative projects");
+    }
+}
+```
+
+### FILE: CourseFactory.java
+```java
+public abstract class CourseFactory {
+    public abstract Course createCourse(String title, String description);
+    
+    public Course getCourse(String type, String title, String description) {
+        return createCourse(title, description);
+    }
+}
+```
+
+### FILE: ProgrammingCourseFactory.java
+```java
+public class ProgrammingCourseFactory extends CourseFactory {
+    
+    @Override
+    public Course createCourse(String title, String description) {
+        return new ProgrammingCourse(title, description);
+    }
+}
+```
+
+### FILE: ArtCourseFactory.java
+```java
+public class ArtCourseFactory extends CourseFactory {
+    
+    @Override
+    public Course createCourse(String title, String description) {
+        return new ArtCourse(title, description);
+    }
+}
+```
+
+### FILE: LMSApplication.java
+```java
+public class LMSApplication {
+    public static void main(String[] args) {
+        // Using factory method to create different types of courses
+        CourseFactory programmingFactory = new ProgrammingCourseFactory();
+        CourseFactory artFactory

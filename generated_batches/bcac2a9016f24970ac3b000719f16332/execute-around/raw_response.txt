@@ -1,0 +1,119 @@
+### FILE: RoomInventoryService.java
+```java
+package hotel.inventory;
+
+import java.util.concurrent.atomic.AtomicLong;
+
+public class RoomInventoryService {
+    private final AtomicLong availableRooms = new AtomicLong(100);
+    
+    public long getAvailableRooms() {
+        return availableRooms.get();
+    }
+    
+    public boolean bookRoom() {
+        long current;
+        do {
+            current = availableRooms.get();
+            if (current <= 0) {
+                return false;
+            }
+        } while (!availableRooms.compareAndSet(current, current - 1));
+        return true;
+    }
+}
+```
+
+### FILE: BillingService.java
+```java
+package hotel.billing;
+
+import java.math.BigDecimal;
+import java.util.concurrent.atomic.AtomicLong;
+
+public class BillingService {
+    private final AtomicLong totalRevenue = new AtomicLong(0);
+    
+    public void processPayment(BigDecimal amount) {
+        totalRevenue.addAndGet(amount.longValue());
+    }
+    
+    public long getTotalRevenue() {
+        return totalRevenue.get();
+    }
+}
+```
+
+### FILE: Guest.java
+```java
+package hotel.guest;
+
+import java.util.UUID;
+
+public class Guest {
+    private final UUID id;
+    private final String name;
+    
+    public Guest(String name) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+    }
+    
+    public UUID getId() {
+        return id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: RoomBooking.java
+```java
+package hotel.booking;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public class RoomBooking {
+    private final UUID id;
+    private final LocalDateTime checkIn;
+    private final LocalDateTime checkOut;
+    
+    public RoomBooking(LocalDateTime checkIn, LocalDateTime checkOut) {
+        this.id = UUID.randomUUID();
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+    }
+    
+    public UUID getId() {
+        return id;
+    }
+    
+    public LocalDateTime getCheckIn() {
+        return checkIn;
+    }
+    
+    public LocalDateTime getCheckOut() {
+        return checkOut;
+    }
+}
+```
+
+### FILE: ExecuteAroundPatternDemo.java
+```java
+package hotel.demo;
+
+import hotel.booking.RoomBooking;
+import hotel.guest.Guest;
+import hotel.inventory.RoomInventoryService;
+import hotel.billing.BillingService;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicLong;
+
+public class ExecuteAroundPatternDemo {
+    
+    public static void main(String

@@ -1,0 +1,96 @@
+### FILE: Employee.java
+```java
+package hr.system;
+
+public class Employee {
+    private String name;
+    private double baseSalary;
+    private EmployeeState state;
+    
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
+        this.state = new ActiveEmployeeState();
+    }
+    
+    public void setState(EmployeeState state) {
+        this.state = state;
+    }
+    
+    public double calculatePay() {
+        return state.calculatePay(this);
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+```
+
+### FILE: EmployeeState.java
+```java
+package hr.system;
+
+public interface EmployeeState {
+    double calculatePay(Employee employee);
+}
+```
+
+### FILE: ActiveEmployeeState.java
+```java
+package hr.system;
+
+public class ActiveEmployeeState implements EmployeeState {
+    @Override
+    public double calculatePay(Employee employee) {
+        return employee.getBaseSalary() * 1.0;
+    }
+}
+```
+
+### FILE: OnLeaveEmployeeState.java
+```java
+package hr.system;
+
+public class OnLeaveEmployeeState implements EmployeeState {
+    @Override
+    public double calculatePay(Employee employee) {
+        return employee.getBaseSalary() * 0.8;
+    }
+}
+```
+
+### FILE: TerminatedEmployeeState.java
+```java
+package hr.system;
+
+public class TerminatedEmployeeState implements EmployeeState {
+    @Override
+    public double calculatePay(Employee employee) {
+        return 0.0;
+    }
+}
+```
+
+### FILE: PayrollSystem.java
+```java
+package hr.system;
+
+public class PayrollSystem {
+    public static void main(String[] args) {
+        Employee emp = new Employee("John Doe", 50000);
+        
+        System.out.println("Active employee pay: " + emp.calculatePay());
+        
+        emp.setState(new OnLeaveEmployeeState());
+        System.out.println("On leave employee pay: " + emp.calculatePay());
+        
+        emp.setState(new TerminatedEmployeeState());
+        System.out.println("Terminated employee pay: " + emp.calculatePay());
+    }
+}
+```

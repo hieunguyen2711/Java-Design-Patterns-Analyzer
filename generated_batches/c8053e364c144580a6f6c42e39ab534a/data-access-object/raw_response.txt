@@ -1,0 +1,83 @@
+### FILE: Doctor.java
+```java
+public class Doctor {
+    private int id;
+    private String name;
+    private String specialty;
+
+    public Doctor(int id, String name, String specialty) {
+        this.id = id;
+        this.name = name;
+        this.specialty = specialty;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getSpecialty() { return specialty; }
+    public void setSpecialty(String specialty) { this.specialty = specialty; }
+}
+```
+
+### FILE: Patient.java
+```java
+public class Patient {
+    private int id;
+    private String name;
+    private String email;
+
+    public Patient(int id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+}
+```
+
+### FILE: AppointmentSlot.java
+```java
+public class AppointmentSlot {
+    private int id;
+    private int doctorId;
+    private String date;
+    private String time;
+
+    public AppointmentSlot(int id, int doctorId, String date, String time) {
+        this.id = id;
+        this.doctorId = doctorId;
+        this.date = date;
+        this.time = time;
+    }
+
+    // Getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    
+    public int getDoctorId() { return doctorId; }
+    public void setDoctorId(int doctorId) { this.doctorId = doctorId; }
+    
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
+    
+    public String getTime() { return time; }
+    public void setTime(String time) { this.time = time; }
+}
+```
+
+### FILE: CheckIn.java
+```java
+public class CheckIn

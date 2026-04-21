@@ -1,0 +1,110 @@
+### FILE: FleetManager.java
+```java
+package fleet;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FleetManager {
+    private List<Vehicle> vehicles;
+    
+    public FleetManager() {
+        this.vehicles = new ArrayList<>();
+    }
+    
+    public void addVehicle(Vehicle vehicle) {
+        vehicles.add(vehicle);
+    }
+    
+    public Vehicle findAvailableVehicle(String type) {
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getType().equals(type) && vehicle.isAvailable()) {
+                return vehicle;
+            }
+        }
+        return null;
+    }
+    
+    public void executeWithMaintenanceCheck(Vehicle vehicle, MaintenanceTask task) {
+        try {
+            System.out.println("Checking maintenance status for " + vehicle.getLicensePlate());
+            if (vehicle.hasPendingMaintenance()) {
+                System.out.println("Vehicle requires maintenance - cannot proceed");
+                return;
+            }
+            task.execute(vehicle);
+        } finally {
+            System.out.println("Maintenance check completed for " + vehicle.getLicensePlate());
+        }
+    }
+}
+```
+
+### FILE: MaintenanceTask.java
+```java
+package fleet;
+
+public interface MaintenanceTask {
+    void execute(Vehicle vehicle);
+}
+```
+
+### FILE: Vehicle.java
+```java
+package fleet;
+
+public class Vehicle {
+    private String licensePlate;
+    private String type;
+    private boolean available;
+    private boolean pendingMaintenance;
+    
+    public Vehicle(String licensePlate, String type) {
+        this.licensePlate = licensePlate;
+        this.type = type;
+        this.available = true;
+        this.pendingMaintenance = false;
+    }
+    
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public boolean isAvailable() {
+        return available;
+    }
+    
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+    
+    public boolean hasPendingMaintenance() {
+        return pendingMaintenance;
+    }
+    
+    public void setPendingMaintenance(boolean pendingMaintenance) {
+        this.pendingMaintenance = pendingMaintenance;
+    }
+}
+```
+
+### FILE: ReservationService.java
+```java
+package fleet;
+
+public class ReservationService {
+    private FleetManager fleetManager;
+    
+    public ReservationService(FleetManager fleetManager) {
+        this.fleetManager = fleetManager;
+    }
+    
+    public void reserveVehicle(String type, String customerName) {
+        Vehicle vehicle = fleetManager.findAvailableVehicle(type);
+        
+        if (vehicle != null) {
+            fleetManager.executeWith
