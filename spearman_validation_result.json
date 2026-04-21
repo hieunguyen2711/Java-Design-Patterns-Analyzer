@@ -1,0 +1,172 @@
+{
+  "generated_at_utc": "2026-04-21T00:00:00Z",
+  "source_file": "generated_evaluation_scores.json",
+  "row_count": 70,
+  "patterns": [
+    "composite",
+    "factory-method",
+    "observer",
+    "singleton",
+    "strategy"
+  ],
+  "score_distributions": {
+    "cqs": {
+      "min": 46.78,
+      "max": 84.69,
+      "avg": 69.16,
+      "std": 8.8
+    },
+    "compqs": {
+      "min": 44.33,
+      "max": 92.02,
+      "avg": 73.8,
+      "std": 11.71
+    }
+  },
+  "correlation": {
+    "spearman_rho": 0.6057,
+    "spearman_p_value": 2.7775041156658825e-08,
+    "pearson_r": 0.6314,
+    "pearson_p_value": 4.6182596497035885e-09,
+    "verdict": "MODERATE (ideal)"
+  },
+  "top_divergences": {
+    "compqs_much_lower_than_cqs": [
+      {
+        "pattern": "composite",
+        "batch_name": "a-ticket-booking-system",
+        "job_id": "65a094a1c13f4c769dc4645f6ee9f364",
+        "cqs_score": 71.79,
+        "compqs_score": 54.35,
+        "piqs_score": 41.14,
+        "delta_score": -17.44
+      },
+      {
+        "pattern": "composite",
+        "batch_name": "a-java-hr-payroll-system-for-employee-records-leave-requests-salary-calculation-payslips-and-tax-deductions",
+        "job_id": "604569b5cad94985be719d56e460063e",
+        "cqs_score": 66.73,
+        "compqs_score": 52.4,
+        "piqs_score": 41.14,
+        "delta_score": -14.33
+      },
+      {
+        "pattern": "composite",
+        "batch_name": "an-e-commerce-order-management-system-in-java",
+        "job_id": "62228803bce3467485110b20965a5d30",
+        "cqs_score": 65.38,
+        "compqs_score": 51.86,
+        "piqs_score": 41.14,
+        "delta_score": -13.52
+      },
+      {
+        "pattern": "observer",
+        "batch_name": "a-java-application-to-manage-fleet-inventory-reservations-vehicle-pickup-return-pricing-and-maintenance-status",
+        "job_id": "9d4e08689b0f4a87ae4b49f74a28d4db",
+        "cqs_score": 72.08,
+        "compqs_score": 61.12,
+        "piqs_score": 51.82,
+        "delta_score": -10.96
+      },
+      {
+        "pattern": "observer",
+        "batch_name": "a-java-hr-payroll-system-for-employee-records-leave-requests-salary-calculation-payslips-and-tax-deductions",
+        "job_id": "604569b5cad94985be719d56e460063e",
+        "cqs_score": 71.81,
+        "compqs_score": 61.0,
+        "piqs_score": 51.82,
+        "delta_score": -10.81
+      }
+    ],
+    "compqs_much_higher_than_cqs": [
+      {
+        "pattern": "singleton",
+        "batch_name": "a-java-application-for-customer-accounts-deposits-withdrawals-transfers-statement-generation-and-audit-history",
+        "job_id": "a7871eab42df4ea19e0c385b9635ecaa",
+        "cqs_score": 59.53,
+        "compqs_score": 77.15,
+        "piqs_score": 100.0,
+        "delta_score": 17.62
+      },
+      {
+        "pattern": "singleton",
+        "batch_name": "a-java-lms-for-courses-lesson-modules-assignments-submissions-grading-and-progress-tracking",
+        "job_id": "fb5dae2c0f5c47368057ce209a7e78b3",
+        "cqs_score": 58.28,
+        "compqs_score": 76.34,
+        "piqs_score": 100.0,
+        "delta_score": 18.06
+      },
+      {
+        "pattern": "singleton",
+        "batch_name": "a-java-system-for-memberships-class-schedules-trainer-booking-attendance-check-ins-and-payment-tracking",
+        "job_id": "1c8b8e395076486388d39150805ad4bd",
+        "cqs_score": 56.98,
+        "compqs_score": 75.49,
+        "piqs_score": 100.0,
+        "delta_score": 18.51
+      },
+      {
+        "pattern": "singleton",
+        "batch_name": "a-java-platform-for-student-enrollment-class-scheduling-grades-attendance-and-teacher-course-assignments",
+        "job_id": "1104d03d94ef494ea38e5fb8f755286e",
+        "cqs_score": 53.03,
+        "compqs_score": 72.82,
+        "piqs_score": 100.0,
+        "delta_score": 19.79
+      },
+      {
+        "pattern": "singleton",
+        "batch_name": "a-java-hr-payroll-system-for-employee-records-leave-requests-salary-calculation-payslips-and-tax-deductions",
+        "job_id": "604569b5cad94985be719d56e460063e",
+        "cqs_score": 49.35,
+        "compqs_score": 70.25,
+        "piqs_score": 100.0,
+        "delta_score": 20.9
+      }
+    ]
+  },
+  "per_pattern_summary": [
+    {
+      "pattern": "strategy",
+      "count": 14,
+      "avg_cqs_score": 76.34,
+      "avg_compqs_score": 83.67,
+      "avg_piqs_score": 92.05,
+      "avg_delta_score": 7.33
+    },
+    {
+      "pattern": "singleton",
+      "count": 14,
+      "avg_cqs_score": 62.39,
+      "avg_compqs_score": 78.88,
+      "avg_piqs_score": 100.0,
+      "avg_delta_score": 16.49
+    },
+    {
+      "pattern": "factory-method",
+      "count": 14,
+      "avg_cqs_score": 73.71,
+      "avg_compqs_score": 76.14,
+      "avg_piqs_score": 78.82,
+      "avg_delta_score": 2.43
+    },
+    {
+      "pattern": "observer",
+      "count": 14,
+      "avg_cqs_score": 71.83,
+      "avg_compqs_score": 71.81,
+      "avg_piqs_score": 72.18,
+      "avg_delta_score": -0.02
+    },
+    {
+      "pattern": "composite",
+      "count": 14,
+      "avg_cqs_score": 61.52,
+      "avg_compqs_score": 58.49,
+      "avg_piqs_score": 57.55,
+      "avg_delta_score": -3.03
+    }
+  ],
+  "paper_text": "Spearman correlation between CQS and CompQS across n = 70 evaluations yielded rho = 0.606 (p < 0.001), indicating a moderate positive relationship. The two tiers share sufficient information to be interpretable as related quality dimensions while diverging meaningfully where pattern correctness differs from code quality."
+}
