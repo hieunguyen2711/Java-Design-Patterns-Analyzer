@@ -2,7 +2,7 @@
 spearman_correlation.py
 
 Computes the Spearman correlation matrix for all metrics
-in generated_common_projects_pipeline_results.json.
+in data/outputs/generated_common_projects_pipeline_results.json.
 
 This determines which metrics are redundant (|ρ| > 0.7)
 and should be excluded from the composite formula.
@@ -22,7 +22,7 @@ from pathlib import Path
 
 def main():
     # ── Load data ───────────────────────────────────────────────
-    input_file = Path("generated_common_projects_pipeline_results.json")
+    input_file = Path("data/outputs/generated_common_projects_pipeline_results.json")
     if not input_file.exists():
         print(f"ERROR: {input_file} not found. Place it in the same directory.")
         return

@@ -9,8 +9,8 @@ import json
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
-RESULTS_FILE = ROOT_DIR / "results.json"
-OUTPUT_FILE = ROOT_DIR / "pass.json"
+RESULTS_FILE = ROOT_DIR / "data" / "input" / "results.json"
+OUTPUT_FILE = ROOT_DIR / "data" / "input" / "pass.json"
 
 
 def main() -> None:

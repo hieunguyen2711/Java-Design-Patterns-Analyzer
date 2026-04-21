@@ -1,0 +1,424 @@
+{
+  "generated_at_utc": "2026-04-12T21:13:54.512070+00:00",
+  "workspace": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend",
+  "source_file": "data/outputs/generated_batches_cqs_results.json",
+  "total_evaluations": 1162,
+  "pattern_count": 83,
+  "patterns": [
+    {
+      "pattern": "service-locator",
+      "avg_cqs_score": 79.86,
+      "evaluations": 14
+    },
+    {
+      "pattern": "abstract-factory",
+      "avg_cqs_score": 77.64,
+      "evaluations": 14
+    },
+    {
+      "pattern": "business-delegate",
+      "avg_cqs_score": 77.14,
+      "evaluations": 14
+    },
+    {
+      "pattern": "strategy",
+      "avg_cqs_score": 76.34,
+      "evaluations": 14
+    },
+    {
+      "pattern": "dependency-injection",
+      "avg_cqs_score": 75.79,
+      "evaluations": 14
+    },
+    {
+      "pattern": "bridge",
+      "avg_cqs_score": 75.62,
+      "evaluations": 14
+    },
+    {
+      "pattern": "interpreter",
+      "avg_cqs_score": 75.56,
+      "evaluations": 14
+    },
+    {
+      "pattern": "command",
+      "avg_cqs_score": 73.99,
+      "evaluations": 14
+    },
+    {
+      "pattern": "dynamic-proxy",
+      "avg_cqs_score": 73.77,
+      "evaluations": 14
+    },
+    {
+      "pattern": "adapter",
+      "avg_cqs_score": 73.76,
+      "evaluations": 14
+    },
+    {
+      "pattern": "state",
+      "avg_cqs_score": 73.74,
+      "evaluations": 14
+    },
+    {
+      "pattern": "factory-method",
+      "avg_cqs_score": 73.71,
+      "evaluations": 14
+    },
+    {
+      "pattern": "facade",
+      "avg_cqs_score": 73.22,
+      "evaluations": 14
+    },
+    {
+      "pattern": "marker-interface",
+      "avg_cqs_score": 72.78,
+      "evaluations": 14
+    },
+    {
+      "pattern": "decorator",
+      "avg_cqs_score": 72.61,
+      "evaluations": 14
+    },
+    {
+      "pattern": "service-stub",
+      "avg_cqs_score": 72.37,
+      "evaluations": 14
+    },
+    {
+      "pattern": "factory",
+      "avg_cqs_score": 72.21,
+      "evaluations": 14
+    },
+    {
+      "pattern": "observer",
+      "avg_cqs_score": 71.83,
+      "evaluations": 14
+    },
+    {
+      "pattern": "page-controller",
+      "avg_cqs_score": 71.2,
+      "evaluations": 14
+    },
+    {
+      "pattern": "curiously-recurring-template-pattern",
+      "avg_cqs_score": 69.68,
+      "evaluations": 14
+    },
+    {
+      "pattern": "proxy",
+      "avg_cqs_score": 69.62,
+      "evaluations": 14
+    },
+    {
+      "pattern": "template-method",
+      "avg_cqs_score": 69.6,
+      "evaluations": 14
+    },
+    {
+      "pattern": "trampoline",
+      "avg_cqs_score": 68.56,
+      "evaluations": 14
+    },
+    {
+      "pattern": "iterator",
+      "avg_cqs_score": 68.53,
+      "evaluations": 14
+    },
+    {
+      "pattern": "active-object",
+      "avg_cqs_score": 68.36,
+      "evaluations": 14
+    },
+    {
+      "pattern": "servant",
+      "avg_cqs_score": 68.25,
+      "evaluations": 14
+    },
+    {
+      "pattern": "acyclic-visitor",
+      "avg_cqs_score": 68.24,
+      "evaluations": 14
+    },
+    {
+      "pattern": "execute-around",
+      "avg_cqs_score": 68.24,
+      "evaluations": 14
+    },
+    {
+      "pattern": "converter",
+      "avg_cqs_score": 67.89,
+      "evaluations": 14
+    },
+    {
+      "pattern": "specification",
+      "avg_cqs_score": 67.46,
+      "evaluations": 14
+    },
+    {
+      "pattern": "balking",
+      "avg_cqs_score": 67.31,
+      "evaluations": 14
+    },
+    {
+      "pattern": "chain-of-responsibility",
+      "avg_cqs_score": 67.22,
+      "evaluations": 14
+    },
+    {
+      "pattern": "special-case",
+      "avg_cqs_score": 67.22,
+      "evaluations": 14
+    },
+    {
+      "pattern": "factory-kit",
+      "avg_cqs_score": 67.11,
+      "evaluations": 14
+    },
+    {
+      "pattern": "identity-map",
+      "avg_cqs_score": 66.97,
+      "evaluations": 14
+    },
+    {
+      "pattern": "flyweight",
+      "avg_cqs_score": 66.72,
+      "evaluations": 14
+    },
+    {
+      "pattern": "thread-pool-executor",
+      "avg_cqs_score": 66.0,
+      "evaluations": 14
+    },
+    {
+      "pattern": "null-object",
+      "avg_cqs_score": 65.92,
+      "evaluations": 14
+    },
+    {
+      "pattern": "single-table-inheritance",
+      "avg_cqs_score": 65.34,
+      "evaluations": 14
+    },
+    {
+      "pattern": "function-composition",
+      "avg_cqs_score": 65.19,
+      "evaluations": 14
+    },
+    {
+      "pattern": "double-buffer",
+      "avg_cqs_score": 65.16,
+      "evaluations": 14
+    },
+    {
+      "pattern": "transaction-script",
+      "avg_cqs_score": 64.69,
+      "evaluations": 14
+    },
+    {
+      "pattern": "twin",
+      "avg_cqs_score": 64.69,
+      "evaluations": 14
+    },
+    {
+      "pattern": "role-object",
+      "avg_cqs_score": 64.62,
+      "evaluations": 14
+    },
+    {
+      "pattern": "combinator",
+      "avg_cqs_score": 64.42,
+      "evaluations": 14
+    },
+    {
+      "pattern": "model-view-controller",
+      "avg_cqs_score": 63.76,
+      "evaluations": 14
+    },
+    {
+      "pattern": "table-module",
+      "avg_cqs_score": 63.67,
+      "evaluations": 14
+    },
+    {
+      "pattern": "table-inheritance",
+      "avg_cqs_score": 63.4,
+      "evaluations": 14
+    },
+    {
+      "pattern": "actor-model",
+      "avg_cqs_score": 63.26,
+      "evaluations": 14
+    },
+    {
+      "pattern": "mediator",
+      "avg_cqs_score": 63.16,
+      "evaluations": 14
+    },
+    {
+      "pattern": "promise",
+      "avg_cqs_score": 63.15,
+      "evaluations": 14
+    },
+    {
+      "pattern": "resource-acquisition-is-initialization",
+      "avg_cqs_score": 63.04,
+      "evaluations": 14
+    },
+    {
+      "pattern": "data-access-object",
+      "avg_cqs_score": 62.82,
+      "evaluations": 14
+    },
+    {
+      "pattern": "guarded-suspension",
+      "avg_cqs_score": 62.63,
+      "evaluations": 14
+    },
+    {
+      "pattern": "virtual-proxy",
+      "avg_cqs_score": 62.44,
+      "evaluations": 14
+    },
+    {
+      "pattern": "service-layer",
+      "avg_cqs_score": 62.4,
+      "evaluations": 14
+    },
+    {
+      "pattern": "singleton",
+      "avg_cqs_score": 62.39,
+      "evaluations": 14
+    },
+    {
+      "pattern": "ambassador",
+      "avg_cqs_score": 62.15,
+      "evaluations": 14
+    },
+    {
+      "pattern": "update-method",
+      "avg_cqs_score": 62.11,
+      "evaluations": 14
+    },
+    {
+      "pattern": "reactor",
+      "avg_cqs_score": 62.08,
+      "evaluations": 14
+    },
+    {
+      "pattern": "repository",
+      "avg_cqs_score": 62.0,
+      "evaluations": 14
+    },
+    {
+      "pattern": "composite",
+      "avg_cqs_score": 61.52,
+      "evaluations": 14
+    },
+    {
+      "pattern": "monad",
+      "avg_cqs_score": 61.21,
+      "evaluations": 14
+    },
+    {
+      "pattern": "dirty-flag",
+      "avg_cqs_score": 61.06,
+      "evaluations": 14
+    },
+    {
+      "pattern": "monitor",
+      "avg_cqs_score": 61.06,
+      "evaluations": 14
+    },
+    {
+      "pattern": "model-view-presenter",
+      "avg_cqs_score": 60.65,
+      "evaluations": 14
+    },
+    {
+      "pattern": "multiton",
+      "avg_cqs_score": 60.41,
+      "evaluations": 14
+    },
+    {
+      "pattern": "double-checked-locking",
+      "avg_cqs_score": 60.36,
+      "evaluations": 14
+    },
+    {
+      "pattern": "collection-pipeline",
+      "avg_cqs_score": 60.06,
+      "evaluations": 14
+    },
+    {
+      "pattern": "monostate",
+      "avg_cqs_score": 59.56,
+      "evaluations": 14
+    },
+    {
+      "pattern": "memento",
+      "avg_cqs_score": 59.55,
+      "evaluations": 14
+    },
+    {
+      "pattern": "event-sourcing",
+      "avg_cqs_score": 59.01,
+      "evaluations": 14
+    },
+    {
+      "pattern": "view-helper",
+      "avg_cqs_score": 58.44,
+      "evaluations": 14
+    },
+    {
+      "pattern": "unit-of-work",
+      "avg_cqs_score": 58.27,
+      "evaluations": 14
+    },
+    {
+      "pattern": "fluent-interface",
+      "avg_cqs_score": 57.91,
+      "evaluations": 14
+    },
+    {
+      "pattern": "private-class-data",
+      "avg_cqs_score": 57.85,
+      "evaluations": 14
+    },
+    {
+      "pattern": "object-pool",
+      "avg_cqs_score": 56.21,
+      "evaluations": 14
+    },
+    {
+      "pattern": "page-object",
+      "avg_cqs_score": 56.2,
+      "evaluations": 14
+    },
+    {
+      "pattern": "data-mapper",
+      "avg_cqs_score": 54.02,
+      "evaluations": 14
+    },
+    {
+      "pattern": "prototype",
+      "avg_cqs_score": 52.51,
+      "evaluations": 14
+    },
+    {
+      "pattern": "value-object",
+      "avg_cqs_score": 52.46,
+      "evaluations": 14
+    },
+    {
+      "pattern": "data-transfer-object",
+      "avg_cqs_score": 52.45,
+      "evaluations": 14
+    },
+    {
+      "pattern": "builder",
+      "avg_cqs_score": 45.3,
+      "evaluations": 14
+    }
+  ]
+}

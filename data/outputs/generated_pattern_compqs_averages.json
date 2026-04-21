@@ -1,0 +1,44 @@
+{
+  "generated_at_utc": "2026-04-12T21:13:54.512070+00:00",
+  "workspace": "/Users/hieunguyen/Documents/Coding Projects/DP Recognition Backend",
+  "source_file": "data/outputs/generated_batches_quality_results.json",
+  "formula": "CompQS = d_PIQS^0.5 * d_MI^0.25 * CK_q^0.25 * 100",
+  "supported_patterns": [
+    "composite",
+    "factory-method",
+    "observer",
+    "singleton",
+    "strategy"
+  ],
+  "supported_pattern_count": 5,
+  "total_supported_evaluations": 70,
+  "pattern_count": 5,
+  "excluded_unsupported_patterns": 1092,
+  "patterns": [
+    {
+      "pattern": "strategy",
+      "avg_compqs_score": 83.67,
+      "evaluations": 14
+    },
+    {
+      "pattern": "singleton",
+      "avg_compqs_score": 78.88,
+      "evaluations": 14
+    },
+    {
+      "pattern": "factory-method",
+      "avg_compqs_score": 76.14,
+      "evaluations": 14
+    },
+    {
+      "pattern": "observer",
+      "avg_compqs_score": 71.81,
+      "evaluations": 14
+    },
+    {
+      "pattern": "composite",
+      "avg_compqs_score": 58.49,
+      "evaluations": 14
+    }
+  ]
+}

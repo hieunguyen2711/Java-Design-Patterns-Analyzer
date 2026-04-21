@@ -14,7 +14,7 @@ Optional environment variables:
     CONCURRENCY=2
     PATTERNS_LIMIT=83
     POLL_SECONDS=2
-    OUTPUT_FILE=generated_common_projects_pipeline_results.json
+    OUTPUT_FILE=data/outputs/generated_common_projects_pipeline_results.json
 """
 
 from __future__ import annotations
@@ -33,15 +33,15 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from llm.client import OllamaClient
-from services.batch_generation_service import BatchGenerationService
-from services.batch_metrics_service import BatchMetricsService
-from services.file_service import FileService
-from services.piqs_service import PIQSService
-from services.prompt_service import PromptService
+from app.llm.client import OllamaClient
+from app.services.batch_generation_service import BatchGenerationService
+from app.services.batch_metrics_service import BatchMetricsService
+from app.services.file_service import FileService
+from app.services.piqs_service import PIQSService
+from app.services.prompt_service import PromptService
 
-COMMON_PROJECTS_FILE = ROOT_DIR / "common_java_projects.json"
-DEFAULT_OUTPUT = ROOT_DIR / "generated_common_projects_pipeline_results.json"
+COMMON_PROJECTS_FILE = ROOT_DIR / "data" / "input" / "common_java_projects.json"
+DEFAULT_OUTPUT = ROOT_DIR / "data" / "outputs" / "generated_common_projects_pipeline_results.json"
 
 PIQS_SUPPORTED_PATTERNS = {
     "factory-method",

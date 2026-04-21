@@ -1,0 +1,49 @@
+from typing import Set
+
+from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    """Application configuration loaded from environment variables or defaults."""
+
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+    OLLAMA_BASE_URL: str = "http://127.0.0.1:1234"
+    USE_OPEN_ROUTER: bool = False
+    OPEN_ROUTER_BASE_URL: str = "https://openrouter.ai/api"
+    OPEN_ROUTER_API_KEY: str = ""
+    OPEN_ROUTER_SITE_URL: str = "http://localhost"
+    OPEN_ROUTER_APP_NAME: str = "dp-recognition-backend"
+    DEFAULT_MODEL: str = "qwen3-coder-30b-a3b-instruct"
+    LLM_TEMPERATURE: float = 0.1
+    LLM_TIMEOUT: int = 600
+    NUM_CTX: int = 8192
+    MAX_OUTPUT_TOKENS: int = 2048
+    MAX_FILE_SIZE_MB: int = 50
+    MAX_JAVA_FILES: int = 300
+    MAX_CHARS_PER_CHUNK: int = 12000
+    MAX_MERGE_CHARS: int = 12000  # cap merged partial results sent to LLM
+    UPLOAD_DIR: str = "temp_uploads"
+    PASS_PATTERNS_FILE: str = "data/input/pass.json"
+    BATCH_OUTPUT_DIR: str = "generated_batches"
+    EXPECTED_PASS_PATTERN_COUNT: int = 83
+    BATCH_MAX_CONCURRENCY: int = 2
+    BATCH_RETRY_COUNT: int = 2
+    BATCH_RETRY_DELAY_SECONDS: float = 1.0
+    SKIP_DIRS: Set[str] = {
+        ".git",
+        "target",
+        "build",
+        ".idea",
+        "node_modules",
+        "__pycache__",
+        ".gradle",
+        ".mvn",
+        "out",
+        "bin",
+        "dist",
+    }
+
+
+settings = Settings()

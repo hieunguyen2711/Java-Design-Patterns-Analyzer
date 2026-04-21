@@ -10,7 +10,7 @@ Expected result: rho approx 0.4-0.7 (moderate correlation)
 Usage:
     python3 validate_spearman.py
 
-Input: generated_evaluation_scores.json (same directory)
+Input: data/outputs/generated_evaluation_scores.json
        This file must have a "rows" array where each row has
        cqs_score and compqs_score fields.
 
@@ -27,10 +27,10 @@ from scipy import stats
 
 def main():
     # Load data
-    input_file = Path("generated_evaluation_scores.json")
+    input_file = Path("data/outputs/generated_evaluation_scores.json")
     if not input_file.exists():
         print(f"ERROR: {input_file} not found")
-        print("Place generated_evaluation_scores.json in the same directory.")
+        print("Place generated_evaluation_scores.json in data/outputs/.")
         return
 
     with input_file.open() as file_handle:

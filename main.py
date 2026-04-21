@@ -3,16 +3,14 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from config import settings
+from app.api import analyze_router, metrics_router, models_router
+from app.core import settings
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
-from routes.analyze import router as analyze_router
-from routes.models import router as models_router
-from routes.metrics import router as metrics_router
-from llm.client import OllamaClient
+from app.llm.client import OllamaClient
 
 
 app = FastAPI(title="Java Design Pattern Analyzer")

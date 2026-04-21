@@ -26,6 +26,6 @@ def backfill(path: Path) -> None:
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-backfill(ROOT / "generated_batches_recognition_results.json")
+backfill(ROOT / "data" / "outputs" / "generated_batches_recognition_results.json")
 backfill(ROOT / "recognizer_correctness_only.json")
 print("Backfilled project_title in recognition JSON files.")

@@ -1,0 +1,1 @@
+"""Application category package for API, core config, schemas, and services."""

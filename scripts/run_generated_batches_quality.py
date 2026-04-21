@@ -24,13 +24,13 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from services.analysis_pipeline import analyze_project
-from services.file_service import FileService
-from services.piqs_service import PIQSService
+from app.services.analysis_pipeline import analyze_project
+from app.services.file_service import FileService
+from app.services.piqs_service import PIQSService
 
 BATCHES_DIR = ROOT_DIR / "generated_batches"
 GENERATED_PIQS_DIR = ROOT_DIR / "generated_batches_piqs"
-OUTPUT_FILE = ROOT_DIR / "generated_batches_quality_results.json"
+OUTPUT_FILE = ROOT_DIR / "data" / "outputs" / "generated_batches_quality_results.json"
 
 PIQS_SUPPORTED_PATTERNS = {
     "factory-method",

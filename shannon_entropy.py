@@ -11,8 +11,8 @@ discriminating information about which projects are better or worse.
 Usage:
     python3 shannon_entropy_weights.py
 
-Input:  generated_common_projects_pipeline_results.json (same directory)
-Output: prints weights + saves to entropy_weights.json
+Input:  data/outputs/generated_common_projects_pipeline_results.json
+Output: prints weights + saves to data/config/entropy_weights.json
 
 Requires: numpy
     pip install numpy
@@ -125,7 +125,7 @@ def compute_entropy_weights(normalized: list[dict], metric_names: list[str]) -> 
 
 def main():
     # Load data
-    input_file = Path("generated_common_projects_pipeline_results.json")
+    input_file = Path("data/outputs/generated_common_projects_pipeline_results.json")
     if not input_file.exists():
         print(f"ERROR: {input_file} not found")
         return
@@ -197,7 +197,7 @@ def main():
         },
         "weights": {k: round(v, 4) for k, v in clean_weights.items()},
     }
-    output_file = Path("entropy_weights.json")
+    output_file = Path("data/config/entropy_weights.json")
     output_file.write_text(json.dumps(output, indent=2))
     print(f"\nSaved weights to {output_file}")
 

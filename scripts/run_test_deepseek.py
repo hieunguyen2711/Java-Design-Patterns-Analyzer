@@ -10,7 +10,7 @@ import requests
 API_URL = os.getenv("API_URL", "http://localhost:8000/analyze")
 ROOT_DIR = Path(__file__).resolve().parent.parent
 ZIPPED_DIR = ROOT_DIR / "datasets_zipped"
-OUTPUT_FILE = ROOT_DIR / os.getenv("RESULTS_FILE", "results_code_deepseek.json")
+OUTPUT_FILE = ROOT_DIR / "data" / "outputs" / os.getenv("RESULTS_FILE", "results_code_deepseek.json")
 MODEL = os.getenv("MODEL_NAME", "qwen3-coder-30b-a3b-instruct")
 REQUEST_TIMEOUT_SECONDS = int(os.getenv("REQUEST_TIMEOUT_SECONDS", "1800"))
 

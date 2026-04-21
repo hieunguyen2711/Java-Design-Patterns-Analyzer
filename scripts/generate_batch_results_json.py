@@ -21,7 +21,7 @@ from typing import Any
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 BATCHES_DIR = ROOT_DIR / "generated_batches"
-OUTPUT_FILE = ROOT_DIR / "batch_generation_details.json"
+OUTPUT_FILE = ROOT_DIR / "data" / "outputs" / "batch_generation_details.json"
 
 
 def ts_to_iso(ts: float | None) -> str | None:

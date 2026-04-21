@@ -17,15 +17,15 @@ import pytest
 # Ensure the project root is on sys.path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from services.halstead import compute_halstead, strip_comments_and_strings, tokenize_java
-from services.mi_calculator import (
+from app.services.halstead import compute_halstead, strip_comments_and_strings, tokenize_java
+from app.services.mi_calculator import (
     compute_mi,
     compute_cyclomatic_complexity,
     count_sloc,
     analyze_directory_mi,
 )
-from services.ck_metrics import compute_class_quality
-from services.analysis_pipeline import analyze_project
+from app.services.ck_metrics import compute_class_quality
+from app.services.analysis_pipeline import analyze_project
 
 
 # ---------------------------------------------------------------------------
@@ -346,7 +346,7 @@ class TestFullPipeline:
 
     def test_mi_only_analysis(self):
         """Test MI analysis without CK (mock CK as unavailable)."""
-        with patch("services.analysis_pipeline.run_ck", side_effect=FileNotFoundError("no CK")):
+        with patch("app.services.analysis_pipeline.run_ck", side_effect=FileNotFoundError("no CK")):
             result = analyze_project(self.project_dir, "strategy")
 
         assert "summary" in result
@@ -392,7 +392,7 @@ class TestFullPipeline:
 
     def test_no_duplicate_classes(self):
         """Verify no duplicate class entries when CK is unavailable."""
-        with patch("services.analysis_pipeline.run_ck", side_effect=FileNotFoundError("no CK")):
+        with patch("app.services.analysis_pipeline.run_ck", side_effect=FileNotFoundError("no CK")):
             result = analyze_project(self.project_dir, "strategy")
 
         names = [c["class_name"] for c in result["classes"]]
@@ -411,7 +411,7 @@ class TestGracefulDegradation:
 
     def test_missing_java_runtime(self):
         """Simulate java not found -> MI-only results."""
-        with patch("services.analysis_pipeline.run_ck",
+        with patch("app.services.analysis_pipeline.run_ck",
                     side_effect=RuntimeError("Java runtime not found")):
             result = analyze_project(self.project_dir)
 
@@ -422,7 +422,7 @@ class TestGracefulDegradation:
 
     def test_missing_ck_jar(self):
         """Simulate CK JAR not found -> MI-only results."""
-        with patch("services.analysis_pipeline.run_ck",
+        with patch("app.services.analysis_pipeline.run_ck",
                     side_effect=FileNotFoundError("CK JAR not found")):
             result = analyze_project(self.project_dir)
 
@@ -431,7 +431,7 @@ class TestGracefulDegradation:
 
     def test_timeout(self):
         """Simulate CK timeout -> MI-only results."""
-        with patch("services.analysis_pipeline.run_ck",
+        with patch("app.services.analysis_pipeline.run_ck",
                     side_effect=TimeoutError("CK timed out")):
             result = analyze_project(self.project_dir)
 

@@ -17,7 +17,7 @@ import requests
 API_URL = "http://localhost:8000/api/v1/analyze-metrics"
 ROOT_DIR = Path(__file__).resolve().parent.parent
 ZIPPED_DIR = ROOT_DIR / "datasets_obfuscated"
-OUTPUT_FILE = ROOT_DIR / "obfuscated_metrics_results.json"
+OUTPUT_FILE = ROOT_DIR / "data" / "outputs" / "obfuscated_metrics_results.json"
 
 
 def main():

@@ -17,7 +17,7 @@ API_URL = "http://127.0.0.1:8000/analyze"
 MODEL = "qwen3-coder-30b-a3b-instruct"
 ROOT_DIR = Path(__file__).resolve().parent.parent
 BATCHES_DIR = ROOT_DIR / "generated_batches"
-OUTPUT_FILE = ROOT_DIR / "generated_batches_recognition_results.json"
+OUTPUT_FILE = ROOT_DIR / "data" / "outputs" / "generated_batches_recognition_results.json"
 
 PATTERN_ALIASES: dict[str, list[str]] = {
     "abstract-factory": ["abstract factory"],
