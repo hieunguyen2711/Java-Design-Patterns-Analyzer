@@ -1,0 +1,1217 @@
+{
+  "metadata": {
+    "generated_at": "2026-04-25T10:23:42.130764+00:00",
+    "total_pairs": 25,
+    "judges": [
+      "openai/gpt-4o",
+      "anthropic/claude-sonnet-4",
+      "mistralai/codestral-2508"
+    ],
+    "api_provider": "OpenRouter",
+    "total_calls": 75,
+    "successful_calls": 75,
+    "parse_errors": 0,
+    "checkpoint_file": "data/reports/judge_results_checkpoint.jsonl",
+    "input_prompts_file": "data/reports/judge_pairs.json",
+    "token_usage": {
+      "prompt_tokens": 89882,
+      "completion_tokens": 4071
+    },
+    "estimated_cost_usd": 0.2175
+  },
+  "summary": {
+    "overall_agreement_pct": 84.0,
+    "by_category": {
+      "cqs_validation": {
+        "total_judgments": 30,
+        "agreed": 29,
+        "agreement_pct": 96.7
+      },
+      "compqs_validation": {
+        "total_judgments": 30,
+        "agreed": 24,
+        "agreement_pct": 80.0
+      },
+      "domain_sensitivity": {
+        "total_judgments": 15,
+        "agreed": 10,
+        "agreement_pct": 66.7
+      }
+    },
+    "by_judge": {
+      "openai/gpt-4o": {
+        "total": 25,
+        "agreed": 21,
+        "agreement_pct": 84.0
+      },
+      "anthropic/claude-sonnet-4": {
+        "total": 25,
+        "agreed": 21,
+        "agreement_pct": 84.0
+      },
+      "mistralai/codestral-2508": {
+        "total": 25,
+        "agreed": 21,
+        "agreement_pct": 84.0
+      }
+    },
+    "inter_judge_unanimity": {
+      "total_pairs": 25,
+      "all_3_agree": 21,
+      "unanimity_pct": 84.0
+    }
+  },
+  "detailed_results": [
+    {
+      "pair_id": 1,
+      "category": "cqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 37.91,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better class cohesion, clear separation of concerns, and consistent naming conventions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 912,
+          "completion_tokens": 38,
+          "estimated_cost_usd": 0.00266
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B has complete, compilable code with consistent structure and clear separation of concerns, while Project A contains incomplete code with syntax errors and mixed abstraction levels.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1180,
+          "completion_tokens": 52,
+          "estimated_cost_usd": 0.00432
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better separation of concerns, clear interface implementation, and consistent naming conventions while Project A shows incomplete code and less structured relationships between classes",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 961,
+          "completion_tokens": 51,
+          "estimated_cost_usd": 0.000334
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 2,
+      "category": "cqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 35.34,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better class cohesion and coupling with clear separation of concerns and consistent naming conventions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 880,
+          "completion_tokens": 39,
+          "estimated_cost_usd": 0.00259
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A has better structural design with proper interface abstraction, lower coupling, and complete implementation, while Project B has incomplete code (truncated LeaveRequest class) and mixed responsibilities in the PayrollSystem class.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1174,
+          "completion_tokens": 63,
+          "estimated_cost_usd": 0.004467
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better separation of concerns, cleaner interfaces, and more consistent naming conventions than Project B",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 941,
+          "completion_tokens": 42,
+          "estimated_cost_usd": 0.00032
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 3,
+      "category": "cqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 34.41,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A demonstrates better class cohesion and coupling with clear interfaces and consistent naming conventions, while Project B has incomplete code and potential cohesion issues.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 898,
+          "completion_tokens": 48,
+          "estimated_cost_usd": 0.002725
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A has complete, well-structured code with clear separation of concerns, proper naming conventions, and low coupling, while Project B contains incomplete code with structural issues like LibraryCollection inappropriately extending LibraryItem instead of using composition.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1190,
+          "completion_tokens": 70,
+          "estimated_cost_usd": 0.00462
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better separation of concerns, cleaner interfaces, and more consistent naming conventions than Project B's overly complex inheritance hierarchy",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 944,
+          "completion_tokens": 47,
+          "estimated_cost_usd": 0.000325
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 4,
+      "category": "cqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 33.37,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A demonstrates better class cohesion and coupling with clear naming conventions and complete implementations, whereas Project B has incomplete code and potential issues with class cohesion.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 870,
+          "completion_tokens": 51,
+          "estimated_cost_usd": 0.002685
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A has complete, compilable code with consistent structure and clear separation of concerns, while Project B contains an incomplete class (CompositeAccount) that would prevent compilation.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1128,
+          "completion_tokens": 55,
+          "estimated_cost_usd": 0.004209
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better encapsulation, cleaner separation of concerns, and more consistent naming conventions than Project B",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 922,
+          "completion_tokens": 42,
+          "estimated_cost_usd": 0.000314
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 5,
+      "category": "cqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 33.13,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better class cohesion, clear separation of concerns, and consistent naming conventions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1102,
+          "completion_tokens": 35,
+          "estimated_cost_usd": 0.003105
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B has complete, compilable code with proper encapsulation, clear separation of concerns, and consistent structure, while Project A contains incomplete code with a truncated method that prevents compilation.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1411,
+          "completion_tokens": 58,
+          "estimated_cost_usd": 0.005103
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better separation of concerns, clear interface usage, and more flexible design with strategy pattern implementation",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1151,
+          "completion_tokens": 43,
+          "estimated_cost_usd": 0.000384
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 6,
+      "category": "cqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 32.66,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better class cohesion, clear separation of concerns, and consistent naming conventions, while Project A has incomplete code and potential issues with class coupling.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1133,
+          "completion_tokens": 51,
+          "estimated_cost_usd": 0.003342
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B has complete, compilable code with proper encapsulation, clear separation of concerns, and consistent structure, while Project A contains incomplete code with a truncated method that prevents compilation.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1429,
+          "completion_tokens": 58,
+          "estimated_cost_usd": 0.005157
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better encapsulation, clearer separation of concerns, and more consistent naming conventions than Project A",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1181,
+          "completion_tokens": 42,
+          "estimated_cost_usd": 0.000392
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 7,
+      "category": "cqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 32.05,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better cohesion and lower coupling with clear separation of concerns and consistent naming conventions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 909,
+          "completion_tokens": 40,
+          "estimated_cost_usd": 0.002672
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B has better code quality with complete, syntactically correct code, clear separation of concerns, proper interface usage, and consistent naming conventions, while Project A has incomplete code with syntax errors and mixed responsibilities in its abstract class.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1172,
+          "completion_tokens": 66,
+          "estimated_cost_usd": 0.004506
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better separation of concerns, clear interfaces, and more consistent naming conventions with higher cohesion and lower coupling.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 947,
+          "completion_tokens": 46,
+          "estimated_cost_usd": 0.000326
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 8,
+      "category": "cqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 31.99,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A demonstrates better class cohesion and clear implementation of the strategy pattern, while Project B has incomplete code and lacks clarity in class responsibilities.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1062,
+          "completion_tokens": 48,
+          "estimated_cost_usd": 0.003135
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A has complete, compilable code with clear class responsibilities and proper interface implementation, while Project B contains incomplete code with a truncated method that would not compile.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1372,
+          "completion_tokens": 53,
+          "estimated_cost_usd": 0.004911
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better encapsulation, clear separation of concerns, and more consistent naming conventions than Project B",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1102,
+          "completion_tokens": 42,
+          "estimated_cost_usd": 0.000368
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 9,
+      "category": "cqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 31.79,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A demonstrates better class cohesion and naming conventions, although it has incomplete code, while Project B lacks structural soundness with missing parts and less cohesive class design.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1102,
+          "completion_tokens": 53,
+          "estimated_cost_usd": 0.003285
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "medium",
+          "reason": "Project B has complete, compilable classes with proper encapsulation using private fields and consistent getter/setter patterns, while Project A has incomplete code with a truncated factory class and uses protected fields reducing encapsulation.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1414,
+          "completion_tokens": 64,
+          "estimated_cost_usd": 0.005202
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better class cohesion, proper use of inheritance, and consistent naming conventions while Project B shows more boilerplate code and less structural organization",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1165,
+          "completion_tokens": 51,
+          "estimated_cost_usd": 0.000395
+        }
+      },
+      "unanimous": false,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 10,
+      "category": "cqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 31.78,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A demonstrates better class cohesion and coupling with clear interfaces and observer pattern implementation, while Project B has incomplete code and lacks clarity in class responsibilities.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1069,
+          "completion_tokens": 50,
+          "estimated_cost_usd": 0.003173
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A has complete, compilable code with consistent structure and clear separation of concerns, while Project B contains incomplete code with a truncated BorrowingRecord class that would not compile.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1387,
+          "completion_tokens": 58,
+          "estimated_cost_usd": 0.005031
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better class cohesion, lower coupling, and more consistent naming conventions than Project B",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1116,
+          "completion_tokens": 41,
+          "estimated_cost_usd": 0.000372
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 11,
+      "category": "compqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 35.19,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the strategy pattern with clear separation of payment strategies, while Project B lacks complete implementation details for the composite pattern.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1054,
+          "completion_tokens": 44,
+          "estimated_cost_usd": 0.003075
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the Strategy pattern with clean separation of concerns and proper encapsulation, while Project B violates the Interface Segregation Principle by forcing leaf nodes to implement composite-only methods with exceptions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1367,
+          "completion_tokens": 63,
+          "estimated_cost_usd": 0.005046
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better code quality with cleaner separation of concerns and more appropriate use of the Strategy pattern, while Project B's Composite implementation has unnecessary operations in leaf nodes and less clear structure.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1113,
+          "completion_tokens": 60,
+          "estimated_cost_usd": 0.000388
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 12,
+      "category": "compqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 35.04,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the strategy pattern with clear separation of concerns and dynamic strategy switching, while Project A has a correct composite pattern but with slightly higher coupling due to casting.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1143,
+          "completion_tokens": 56,
+          "estimated_cost_usd": 0.003417
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the Strategy pattern with clean, cohesive code and proper encapsulation, while Project A violates the Composite pattern by forcing leaf nodes to implement composite operations that throw exceptions, creating poor design and unnecessary coupling.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1522,
+          "completion_tokens": 68,
+          "estimated_cost_usd": 0.005586
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better code quality with cleaner separation of concerns and more flexible strategy pattern implementation",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1190,
+          "completion_tokens": 40,
+          "estimated_cost_usd": 0.000393
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 13,
+      "category": "compqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 34.4,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the strategy pattern with clear separation of strategies and good code quality, while Project B has unnecessary casting and lacks clarity in its composite implementation.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1097,
+          "completion_tokens": 52,
+          "estimated_cost_usd": 0.003263
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the Strategy pattern with clean separation of concerns and proper encapsulation, while Project B violates the Interface Segregation Principle by forcing leaf nodes to implement unsupported operations, creating poor code quality and an incorrect Composite implementation.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1476,
+          "completion_tokens": 72,
+          "estimated_cost_usd": 0.005508
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better code quality with cleaner separation of concerns and more appropriate use of the Strategy pattern, while Project B's Composite implementation has unnecessary complexity in its leaf nodes and less clear pattern adherence.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1135,
+          "completion_tokens": 62,
+          "estimated_cost_usd": 0.000396
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 14,
+      "category": "compqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 34.23,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the strategy pattern with clear separation of payment strategies, while Project B's composite pattern implementation is correct but has higher coupling and less clarity in handling ticket components.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1089,
+          "completion_tokens": 57,
+          "estimated_cost_usd": 0.003292
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the Strategy pattern with clean separation of concerns and proper encapsulation, while Project B violates the Interface Segregation Principle by forcing leaf nodes to implement unsupported operations with exceptions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1476,
+          "completion_tokens": 63,
+          "estimated_cost_usd": 0.005373
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better code quality with proper separation of concerns, clear interfaces, and maintainable structure, while Project B's composite implementation has some unnecessary complexity and less clean handling of leaf vs composite operations",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1139,
+          "completion_tokens": 62,
+          "estimated_cost_usd": 0.000398
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 15,
+      "category": "compqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 33.88,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A correctly implements the composite pattern with clear separation of components, while Project B fails to enforce singleton pattern usage in Main.java, leading to potential misuse.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 951,
+          "completion_tokens": 53,
+          "estimated_cost_usd": 0.002908
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "medium",
+          "reason": "Project B correctly implements the singleton pattern with proper thread-safe double-checked locking and good code quality, while Project A has incomplete code (missing FleetGroup.calculateValue method) and structural issues that prevent proper composite pattern functionality.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1194,
+          "completion_tokens": 68,
+          "estimated_cost_usd": 0.004602
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A properly implements the composite pattern with clear structure and separation of concerns, while Project B's singleton implementation is correct but lacks proper encapsulation and reflection-based validation",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 997,
+          "completion_tokens": 54,
+          "estimated_cost_usd": 0.000348
+        }
+      },
+      "unanimous": false,
+      "majority_agreed": false
+    },
+    {
+      "pair_id": 16,
+      "category": "compqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 33.61,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "medium",
+          "reason": "Project B correctly implements the strategy pattern with clear separation of strategies, while Project A lacks a clear composite structure due to missing TicketGroup implementation details.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1137,
+          "completion_tokens": 51,
+          "estimated_cost_usd": 0.003353
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the Strategy pattern with proper encapsulation and clean separation of concerns, while Project A violates the Interface Segregation Principle by forcing leaf nodes to implement unsupported operations with exceptions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1561,
+          "completion_tokens": 63,
+          "estimated_cost_usd": 0.005628
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better code quality with proper encapsulation, clear separation of concerns, and correct composite pattern implementation, while Project B's strategy pattern implementation is correct but shows some code quality issues like incomplete main method and less cohesive strategy classes.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1180,
+          "completion_tokens": 69,
+          "estimated_cost_usd": 0.000416
+        }
+      },
+      "unanimous": false,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 17,
+      "category": "compqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 33.24,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the strategy pattern with clear separation of payment strategies and maintains good code quality, while Project B's composite pattern implementation is correct but has slightly higher complexity and coupling.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1120,
+          "completion_tokens": 57,
+          "estimated_cost_usd": 0.00337
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A correctly implements the Strategy pattern with clean separation of concerns and proper encapsulation, while Project B violates the Interface Segregation Principle by forcing leaf nodes to implement unsupported operations with exceptions.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1502,
+          "completion_tokens": 63,
+          "estimated_cost_usd": 0.005451
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better code quality with cleaner separation of concerns and more appropriate pattern implementation, while Project B has some unnecessary complexity in its composite implementation",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1168,
+          "completion_tokens": 51,
+          "estimated_cost_usd": 0.000396
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 18,
+      "category": "compqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 33.19,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the composite pattern with clear structure and good code quality, while Project B has incomplete strategy pattern implementation and lacks maintainability.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1482,
+          "completion_tokens": 50,
+          "estimated_cost_usd": 0.004205
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the composite pattern with proper tree structure and uniform interface, while Project B has incomplete code and violates strategy pattern principles by having the context choose strategies based on string parameters.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1853,
+          "completion_tokens": 58,
+          "estimated_cost_usd": 0.006429
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better code quality with higher cohesion, proper separation of concerns, and more accurate composite pattern implementation",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1529,
+          "completion_tokens": 44,
+          "estimated_cost_usd": 0.000498
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": false
+    },
+    {
+      "pair_id": 19,
+      "category": "compqs_validation",
+      "expected_winner": "B",
+      "metric_gap": 33.04,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "medium",
+          "reason": "Project B correctly implements the singleton pattern with thread safety, while Project A lacks the complete implementation of the composite pattern.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 937,
+          "completion_tokens": 45,
+          "estimated_cost_usd": 0.002792
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the singleton pattern with proper thread-safety and demonstrates good code quality, while Project A has incomplete code (truncated CompositeAccount class) and fails to properly implement the composite pattern structure.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1207,
+          "completion_tokens": 63,
+          "estimated_cost_usd": 0.004566
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B implements the Singleton pattern correctly with thread-safe initialization and demonstrates better code quality through proper encapsulation and clear separation of concerns",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 982,
+          "completion_tokens": 47,
+          "estimated_cost_usd": 0.000337
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 20,
+      "category": "compqs_validation",
+      "expected_winner": "A",
+      "metric_gap": 33.0,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A correctly implements the strategy pattern with good code quality, while Project B misuses the composite pattern by allowing OrderItem to have children, which is not typical for a leaf node.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1461,
+          "completion_tokens": 59,
+          "estimated_cost_usd": 0.004243
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A correctly implements the Strategy pattern with proper separation of concerns and clean delegation, while Project B violates the Composite pattern by forcing leaf nodes to implement meaningless composite operations and lacks a true leaf-composite distinction.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1818,
+          "completion_tokens": 64,
+          "estimated_cost_usd": 0.006414
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better code quality with proper separation of concerns and cleaner implementation of the Strategy pattern, while Project B's Composite pattern implementation has some redundant methods in leaf nodes and less clear separation of responsibilities.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1519,
+          "completion_tokens": 63,
+          "estimated_cost_usd": 0.000512
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 21,
+      "category": "domain_sensitivity",
+      "expected_winner": "B",
+      "metric_gap": 38.5,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "medium",
+          "reason": "Project B correctly implements the composite pattern with a clear hierarchy and consistent interface usage, while Project A is incomplete and lacks the composite structure.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1081,
+          "completion_tokens": 48,
+          "estimated_cost_usd": 0.003182
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B properly implements the composite pattern with a common interface, uniform treatment of leaf and composite nodes, and proper hierarchical structure, while Project A appears incomplete and doesn't demonstrate the composite pattern's key characteristics.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1405,
+          "completion_tokens": 62,
+          "estimated_cost_usd": 0.005145
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B demonstrates better adherence to the composite pattern with proper interface implementation and consistent component handling, while Project A has incomplete implementation and less clear structural properties",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1132,
+          "completion_tokens": 52,
+          "estimated_cost_usd": 0.000386
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 22,
+      "category": "domain_sensitivity",
+      "expected_winner": "B",
+      "metric_gap": 36.3,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the composite pattern with clear structure and low coupling, while Project A lacks a complete implementation of the composite structure.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1073,
+          "completion_tokens": 47,
+          "estimated_cost_usd": 0.003152
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the composite pattern with a proper tree structure where composites (Course/Module) can contain other components and aggregate their behavior, while Project A appears to be an incomplete inheritance hierarchy that doesn't demonstrate the composite pattern's key characteristic of treating individual objects and compositions uniformly.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1368,
+          "completion_tokens": 78,
+          "estimated_cost_usd": 0.005274
+        },
+        "mistralai/codestral-2508": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the composite pattern with proper component-leaf structure and recursive operations, while Project A's CompositeAccount class is incomplete and lacks proper implementation of composite operations",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1128,
+          "completion_tokens": 56,
+          "estimated_cost_usd": 0.000389
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 23,
+      "category": "domain_sensitivity",
+      "expected_winner": "A",
+      "metric_gap": 36.29,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B correctly implements the composite pattern with clear separation between composite (Category) and leaf (Product) components, while Project A lacks a clear composite structure and has incomplete code.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1120,
+          "completion_tokens": 56,
+          "estimated_cost_usd": 0.00336
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "B",
+          "confidence": "high",
+          "reason": "Project B properly implements the composite pattern with uniform treatment of leaf and composite nodes through a common interface, while Project A violates the pattern by having type-specific relationships and inconsistent child management.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1449,
+          "completion_tokens": 59,
+          "estimated_cost_usd": 0.005232
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A has better separation of concerns with distinct component types and proper composite implementation, while Project B's inheritance-based approach is less flexible and violates the composite pattern's structural properties",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1157,
+          "completion_tokens": 58,
+          "estimated_cost_usd": 0.000399
+        }
+      },
+      "unanimous": false,
+      "majority_agreed": false
+    },
+    {
+      "pair_id": 24,
+      "category": "domain_sensitivity",
+      "expected_winner": "A",
+      "metric_gap": 34.09,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A correctly implements the composite pattern with clear separation of components and cohesive methods, while Project B has a less clear structure and uses exceptions for unsupported operations, which reduces maintainability.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1112,
+          "completion_tokens": 57,
+          "estimated_cost_usd": 0.00335
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A properly implements the composite pattern with a clean interface-based design where composites and leaves are treated uniformly, while Project B violates the pattern by forcing leaf nodes to throw exceptions for composite operations and uses inheritance inappropriately.",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1412,
+          "completion_tokens": 68,
+          "estimated_cost_usd": 0.005256
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A has better separation of concerns, more complete pattern implementation, and cleaner structure with proper leaf and composite classes",
+          "agreed": true,
+          "status": "agreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1153,
+          "completion_tokens": 45,
+          "estimated_cost_usd": 0.000386
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": true
+    },
+    {
+      "pair_id": 25,
+      "category": "domain_sensitivity",
+      "expected_winner": "B",
+      "metric_gap": 33.98,
+      "judgments": {
+        "openai/gpt-4o": {
+          "pick": "A",
+          "confidence": "medium",
+          "reason": "Project A correctly implements the composite pattern with clear hierarchy and operations, while Project B lacks a unified structure and has missing composite operations.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1102,
+          "completion_tokens": 48,
+          "estimated_cost_usd": 0.003235
+        },
+        "anthropic/claude-sonnet-4": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A properly implements the composite pattern with a unified interface for both composite and leaf nodes, while Project B breaks the pattern by having inconsistent interfaces and type-specific methods that violate the pattern's core principle of treating all components uniformly.",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1439,
+          "completion_tokens": 69,
+          "estimated_cost_usd": 0.005352
+        },
+        "mistralai/codestral-2508": {
+          "pick": "A",
+          "confidence": "high",
+          "reason": "Project A demonstrates better adherence to the composite pattern with proper leaf and composite classes, while Project B has inconsistent method names and incomplete composite implementation",
+          "agreed": false,
+          "status": "disagreed",
+          "parse_error": null,
+          "api_error": null,
+          "prompt_tokens": 1128,
+          "completion_tokens": 50,
+          "estimated_cost_usd": 0.000383
+        }
+      },
+      "unanimous": true,
+      "majority_agreed": false
+    }
+  ],
+  "paper_ready_text": "LLM judges (openai/gpt-4o, anthropic/claude-sonnet-4, mistralai/codestral-2508) evaluated 25 project pairs via OpenRouter. CQS validation: 96.7% agreement. CompQS validation: 80.0% agreement. Domain sensitivity: 66.7%. Inter-judge unanimity: 84.0%."
+}
