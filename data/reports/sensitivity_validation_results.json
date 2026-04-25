@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "analysis": "Monte Carlo sensitivity analysis for CompQS weights",
+    "generated_at_utc": "2026-04-25T07:14:42.125477+00:00",
+    "input_file": "data/outputs/generated_evaluation_scores.json",
+    "source_file": "data/outputs/generated_batches_quality_results.json",
+    "formula_compqs": "CompQS = d_PIQS^w_piqs * d_MI^w_mi * CK_q^w_ck * 100",
+    "trials": 1000,
+    "perturbation_range": "\u00b125%",
+    "random_seed": 42,
+    "total_evaluations": 70,
+    "patterns": [
+      "composite",
+      "factory-method",
+      "observer",
+      "singleton",
+      "strategy"
+    ]
+  },
+  "base_case": {
+    "weights": {
+      "piqs": 0.5,
+      "mi": 0.25,
+      "ck_q": 0.25
+    },
+    "ranking": [
+      "strategy",
+      "singleton",
+      "factory-method",
+      "observer",
+      "composite"
+    ],
+    "pattern_average_compqs": {
+      "strategy": 83.67,
+      "singleton": 78.88,
+      "factory-method": 76.14,
+      "observer": 71.81,
+      "composite": 58.49
+    }
+  },
+  "stability": {
+    "full_ranking_stable_trials": 968,
+    "full_ranking_stability_pct": 96.8,
+    "top3_stable_trials": 968,
+    "top3_stability_pct": 96.8,
+    "verdict": "VERY ROBUST",
+    "verdict_explanation": "Rankings are highly stable under \u00b125% weight perturbation."
+  },
+  "rank_distribution_pct": {
+    "strategy": {
+      "rank_1": 100.0,
+      "rank_2": 0.0,
+      "rank_3": 0.0,
+      "rank_4": 0.0,
+      "rank_5": 0.0
+    },
+    "singleton": {
+      "rank_1": 0.0,
+      "rank_2": 96.8,
+      "rank_3": 3.2,
+      "rank_4": 0.0,
+      "rank_5": 0.0
+    },
+    "factory-method": {
+      "rank_1": 0.0,
+      "rank_2": 3.2,
+      "rank_3": 96.8,
+      "rank_4": 0.0,
+      "rank_5": 0.0
+    },
+    "observer": {
+      "rank_1": 0.0,
+      "rank_2": 0.0,
+      "rank_3": 0.0,
+      "rank_4": 100.0,
+      "rank_5": 0.0
+    },
+    "composite": {
+      "rank_1": 0.0,
+      "rank_2": 0.0,
+      "rank_3": 0.0,
+      "rank_4": 0.0,
+      "rank_5": 100.0
+    }
+  },
+  "most_common_rank": {
+    "strategy": 1,
+    "singleton": 2,
+    "factory-method": 3,
+    "observer": 4,
+    "composite": 5
+  },
+  "instability_analysis": {
+    "unstable_trials": 32,
+    "unstable_pct": 3.2,
+    "adjacent_swaps": {
+      "singleton<->factory-method": 32
+    }
+  },
+  "paper_ready_summary": "Monte Carlo sensitivity analysis with 1000 trials of \u00b125% CompQS weight perturbation shows the full 5-pattern ranking remains stable in 96.8% of simulations (top-3 stable: 96.8%), indicating very robust ranking robustness."
+}
