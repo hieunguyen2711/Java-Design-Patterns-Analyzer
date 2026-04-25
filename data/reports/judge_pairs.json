@@ -1,0 +1,665 @@
+{
+  "metadata": {
+    "generated_at": "2026-04-25T08:42:28.334414+00:00",
+    "total_pairs": 25,
+    "categories": {
+      "cqs_validation": 10,
+      "compqs_validation": 10,
+      "domain_sensitivity": 5
+    },
+    "random_seed": 42,
+    "input_file": "data/outputs/generated_evaluation_scores.json"
+  },
+  "pairs": [
+    {
+      "pair_id": 1,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "factory-method",
+        "project_context": "A Java system for managing books, members, borrowing/returns, due dates, and late fees in a public library.",
+        "batch_name": "a-java-system-for-managing-books-members-borrowing-returns-due-dates-and-late-fees-in-a-public-library",
+        "piqs_score": 60.62,
+        "cqs_score": 46.78,
+        "compqs_score": 53.25
+      },
+      "project_b": {
+        "pattern": "strategy",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 100.0,
+        "cqs_score": 84.69,
+        "compqs_score": 92.02
+      },
+      "expected_winner": "B",
+      "metric_used": "cqs_score",
+      "metric_gap": 37.91,
+      "winner_score": 84.69,
+      "loser_score": 46.78,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 2,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 100.0,
+        "cqs_score": 84.69,
+        "compqs_score": 92.02
+      },
+      "project_b": {
+        "pattern": "singleton",
+        "project_context": "A Java HR/payroll system for employee records, leave requests, salary calculation, payslips, and tax deductions.",
+        "batch_name": "a-java-hr-payroll-system-for-employee-records-leave-requests-salary-calculation-payslips-and-tax-deductions",
+        "piqs_score": 100.0,
+        "cqs_score": 49.35,
+        "compqs_score": 70.25
+      },
+      "expected_winner": "A",
+      "metric_used": "cqs_score",
+      "metric_gap": 35.34,
+      "winner_score": 84.69,
+      "loser_score": 49.35,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 3,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 100.0,
+        "cqs_score": 84.69,
+        "compqs_score": 92.02
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java system for managing books, members, borrowing/returns, due dates, and late fees in a public library.",
+        "batch_name": "a-java-system-for-managing-books-members-borrowing-returns-due-dates-and-late-fees-in-a-public-library",
+        "piqs_score": 79.43,
+        "cqs_score": 50.28,
+        "compqs_score": 63.2
+      },
+      "expected_winner": "A",
+      "metric_used": "cqs_score",
+      "metric_gap": 34.41,
+      "winner_score": 84.69,
+      "loser_score": 50.28,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 4,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 100.0,
+        "cqs_score": 84.69,
+        "compqs_score": 92.02
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java application for customer accounts, deposits, withdrawals, transfers, statement generation, and audit history.",
+        "batch_name": "a-java-application-for-customer-accounts-deposits-withdrawals-transfers-statement-generation-and-audit-history",
+        "piqs_score": 38.29,
+        "cqs_score": 51.32,
+        "compqs_score": 44.33
+      },
+      "expected_winner": "A",
+      "metric_used": "cqs_score",
+      "metric_gap": 33.37,
+      "winner_score": 84.69,
+      "loser_score": 51.32,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 5,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "factory-method",
+        "project_context": "A Java system for managing books, members, borrowing/returns, due dates, and late fees in a public library.",
+        "batch_name": "a-java-system-for-managing-books-members-borrowing-returns-due-dates-and-late-fees-in-a-public-library",
+        "piqs_score": 60.62,
+        "cqs_score": 46.78,
+        "compqs_score": 53.25
+      },
+      "project_b": {
+        "pattern": "strategy",
+        "project_context": "A Java LMS for courses, lesson modules, assignments, submissions, grading, and progress tracking.",
+        "batch_name": "a-java-lms-for-courses-lesson-modules-assignments-submissions-grading-and-progress-tracking",
+        "piqs_score": 100.0,
+        "cqs_score": 79.91,
+        "compqs_score": 89.39
+      },
+      "expected_winner": "B",
+      "metric_used": "cqs_score",
+      "metric_gap": 33.13,
+      "winner_score": 79.91,
+      "loser_score": 46.78,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 6,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "factory-method",
+        "project_context": "A Java system for managing books, members, borrowing/returns, due dates, and late fees in a public library.",
+        "batch_name": "a-java-system-for-managing-books-members-borrowing-returns-due-dates-and-late-fees-in-a-public-library",
+        "piqs_score": 60.62,
+        "cqs_score": 46.78,
+        "compqs_score": 53.25
+      },
+      "project_b": {
+        "pattern": "observer",
+        "project_context": "A Java project tracker for ticket creation, assignment, status workflow, comments, and priority handling.",
+        "batch_name": "a-java-project-tracker-for-ticket-creation-assignment-status-workflow-comments-and-priority-handling",
+        "piqs_score": 77.73,
+        "cqs_score": 79.44,
+        "compqs_score": 78.58
+      },
+      "expected_winner": "B",
+      "metric_used": "cqs_score",
+      "metric_gap": 32.66,
+      "winner_score": 79.44,
+      "loser_score": 46.78,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 7,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java solution for stock intake, item locations, reorder thresholds, supplier restocking, and movement logs.",
+        "batch_name": "a-java-solution-for-stock-intake-item-locations-reorder-thresholds-supplier-restocking-and-movement-logs",
+        "piqs_score": 41.14,
+        "cqs_score": 52.64,
+        "compqs_score": 46.54
+      },
+      "project_b": {
+        "pattern": "strategy",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 100.0,
+        "cqs_score": 84.69,
+        "compqs_score": 92.02
+      },
+      "expected_winner": "B",
+      "metric_used": "cqs_score",
+      "metric_gap": 32.05,
+      "winner_score": 84.69,
+      "loser_score": 52.64,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 8,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "A Java system for room inventory, bookings, check-in/check-out, pricing plans, and guest billing.",
+        "batch_name": "a-java-system-for-room-inventory-bookings-check-in-check-out-pricing-plans-and-guest-billing",
+        "piqs_score": 100.0,
+        "cqs_score": 78.77,
+        "compqs_score": 88.75
+      },
+      "project_b": {
+        "pattern": "factory-method",
+        "project_context": "A Java system for managing books, members, borrowing/returns, due dates, and late fees in a public library.",
+        "batch_name": "a-java-system-for-managing-books-members-borrowing-returns-due-dates-and-late-fees-in-a-public-library",
+        "piqs_score": 60.62,
+        "cqs_score": 46.78,
+        "compqs_score": 53.25
+      },
+      "expected_winner": "A",
+      "metric_used": "cqs_score",
+      "metric_gap": 31.99,
+      "winner_score": 78.77,
+      "loser_score": 46.78,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 9,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "factory-method",
+        "project_context": "A Java application for customer accounts, deposits, withdrawals, transfers, statement generation, and audit history.",
+        "batch_name": "a-java-application-for-customer-accounts-deposits-withdrawals-transfers-statement-generation-and-audit-history",
+        "piqs_score": 81.85,
+        "cqs_score": 81.14,
+        "compqs_score": 81.49
+      },
+      "project_b": {
+        "pattern": "singleton",
+        "project_context": "A Java HR/payroll system for employee records, leave requests, salary calculation, payslips, and tax deductions.",
+        "batch_name": "a-java-hr-payroll-system-for-employee-records-leave-requests-salary-calculation-payslips-and-tax-deductions",
+        "piqs_score": 100.0,
+        "cqs_score": 49.35,
+        "compqs_score": 70.25
+      },
+      "expected_winner": "A",
+      "metric_used": "cqs_score",
+      "metric_gap": 31.79,
+      "winner_score": 81.14,
+      "loser_score": 49.35,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 10,
+      "category": "cqs_validation",
+      "project_a": {
+        "pattern": "observer",
+        "project_context": "An e-commerce order management system in Java",
+        "batch_name": "an-e-commerce-order-management-system-in-java",
+        "piqs_score": 77.73,
+        "cqs_score": 78.56,
+        "compqs_score": 78.14
+      },
+      "project_b": {
+        "pattern": "factory-method",
+        "project_context": "A Java system for managing books, members, borrowing/returns, due dates, and late fees in a public library.",
+        "batch_name": "a-java-system-for-managing-books-members-borrowing-returns-due-dates-and-late-fees-in-a-public-library",
+        "piqs_score": 60.62,
+        "cqs_score": 46.78,
+        "compqs_score": 53.25
+      },
+      "expected_winner": "A",
+      "metric_used": "cqs_score",
+      "metric_gap": 31.78,
+      "winner_score": 78.56,
+      "loser_score": 46.78,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 11,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "An e-commerce order management system in Java",
+        "batch_name": "an-e-commerce-order-management-system-in-java",
+        "piqs_score": 100.0,
+        "cqs_score": 76.72,
+        "compqs_score": 87.59
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java HR/payroll system for employee records, leave requests, salary calculation, payslips, and tax deductions.",
+        "batch_name": "a-java-hr-payroll-system-for-employee-records-leave-requests-salary-calculation-payslips-and-tax-deductions",
+        "piqs_score": 41.14,
+        "cqs_score": 66.73,
+        "compqs_score": 52.4
+      },
+      "expected_winner": "A",
+      "metric_used": "compqs_score",
+      "metric_gap": 35.19,
+      "winner_score": 87.59,
+      "loser_score": 52.4,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 12,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 41.14,
+        "cqs_score": 71.79,
+        "compqs_score": 54.35
+      },
+      "project_b": {
+        "pattern": "strategy",
+        "project_context": "A Java LMS for courses, lesson modules, assignments, submissions, grading, and progress tracking.",
+        "batch_name": "a-java-lms-for-courses-lesson-modules-assignments-submissions-grading-and-progress-tracking",
+        "piqs_score": 100.0,
+        "cqs_score": 79.91,
+        "compqs_score": 89.39
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 35.04,
+      "winner_score": 89.39,
+      "loser_score": 54.35,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 13,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "A Java system for room inventory, bookings, check-in/check-out, pricing plans, and guest billing.",
+        "batch_name": "a-java-system-for-room-inventory-bookings-check-in-check-out-pricing-plans-and-guest-billing",
+        "piqs_score": 100.0,
+        "cqs_score": 78.77,
+        "compqs_score": 88.75
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 41.14,
+        "cqs_score": 71.79,
+        "compqs_score": 54.35
+      },
+      "expected_winner": "A",
+      "metric_used": "compqs_score",
+      "metric_gap": 34.4,
+      "winner_score": 88.75,
+      "loser_score": 54.35,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 14,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "A Java system for memberships, class schedules, trainer booking, attendance check-ins, and payment tracking.",
+        "batch_name": "a-java-system-for-memberships-class-schedules-trainer-booking-attendance-check-ins-and-payment-tracking",
+        "piqs_score": 100.0,
+        "cqs_score": 78.46,
+        "compqs_score": 88.58
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 41.14,
+        "cqs_score": 71.79,
+        "compqs_score": 54.35
+      },
+      "expected_winner": "A",
+      "metric_used": "compqs_score",
+      "metric_gap": 34.23,
+      "winner_score": 88.58,
+      "loser_score": 54.35,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 15,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java application to manage fleet inventory, reservations, vehicle pickup/return, pricing, and maintenance status.",
+        "batch_name": "a-java-application-to-manage-fleet-inventory-reservations-vehicle-pickup-return-pricing-and-maintenance-status",
+        "piqs_score": 41.14,
+        "cqs_score": 59.6,
+        "compqs_score": 49.52
+      },
+      "project_b": {
+        "pattern": "singleton",
+        "project_context": "An e-commerce order management system in Java",
+        "batch_name": "an-e-commerce-order-management-system-in-java",
+        "piqs_score": 100.0,
+        "cqs_score": 69.56,
+        "compqs_score": 83.4
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 33.88,
+      "winner_score": 83.4,
+      "loser_score": 49.52,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 16,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 41.14,
+        "cqs_score": 71.79,
+        "compqs_score": 54.35
+      },
+      "project_b": {
+        "pattern": "strategy",
+        "project_context": "A Java HR/payroll system for employee records, leave requests, salary calculation, payslips, and tax deductions.",
+        "batch_name": "a-java-hr-payroll-system-for-employee-records-leave-requests-salary-calculation-payslips-and-tax-deductions",
+        "piqs_score": 100.0,
+        "cqs_score": 77.37,
+        "compqs_score": 87.96
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 33.61,
+      "winner_score": 87.96,
+      "loser_score": 54.35,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 17,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "An e-commerce order management system in Java",
+        "batch_name": "an-e-commerce-order-management-system-in-java",
+        "piqs_score": 100.0,
+        "cqs_score": 76.72,
+        "compqs_score": 87.59
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "a ticket booking system",
+        "batch_name": "a-ticket-booking-system",
+        "piqs_score": 41.14,
+        "cqs_score": 71.79,
+        "compqs_score": 54.35
+      },
+      "expected_winner": "A",
+      "metric_used": "compqs_score",
+      "metric_gap": 33.24,
+      "winner_score": 87.59,
+      "loser_score": 54.35,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 18,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "An e-commerce order management system in Java",
+        "batch_name": "an-e-commerce-order-management-system-in-java",
+        "piqs_score": 41.14,
+        "cqs_score": 65.38,
+        "compqs_score": 51.86
+      },
+      "project_b": {
+        "pattern": "strategy",
+        "project_context": "A Java solution for stock intake, item locations, reorder thresholds, supplier restocking, and movement logs.",
+        "batch_name": "a-java-solution-for-stock-intake-item-locations-reorder-thresholds-supplier-restocking-and-movement-logs",
+        "piqs_score": 100.0,
+        "cqs_score": 72.33,
+        "compqs_score": 85.05
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 33.19,
+      "winner_score": 85.05,
+      "loser_score": 51.86,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 19,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java application for customer accounts, deposits, withdrawals, transfers, statement generation, and audit history.",
+        "batch_name": "a-java-application-for-customer-accounts-deposits-withdrawals-transfers-statement-generation-and-audit-history",
+        "piqs_score": 38.29,
+        "cqs_score": 51.32,
+        "compqs_score": 44.33
+      },
+      "project_b": {
+        "pattern": "singleton",
+        "project_context": "A Java application to manage doctors, patients, appointment slots, check-ins, and visit history for a clinic.",
+        "batch_name": "a-java-application-to-manage-doctors-patients-appointment-slots-check-ins-and-visit-history-for-a-clinic",
+        "piqs_score": 100.0,
+        "cqs_score": 59.87,
+        "compqs_score": 77.37
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 33.04,
+      "winner_score": 77.37,
+      "loser_score": 44.33,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 20,
+      "category": "compqs_validation",
+      "project_a": {
+        "pattern": "strategy",
+        "project_context": "A Java application to manage doctors, patients, appointment slots, check-ins, and visit history for a clinic.",
+        "batch_name": "a-java-application-to-manage-doctors-patients-appointment-slots-check-ins-and-visit-history-for-a-clinic",
+        "piqs_score": 100.0,
+        "cqs_score": 72.01,
+        "compqs_score": 84.86
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "An e-commerce order management system in Java",
+        "batch_name": "an-e-commerce-order-management-system-in-java",
+        "piqs_score": 41.14,
+        "cqs_score": 65.38,
+        "compqs_score": 51.86
+      },
+      "expected_winner": "A",
+      "metric_used": "compqs_score",
+      "metric_gap": 33.0,
+      "winner_score": 84.86,
+      "loser_score": 51.86,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 21,
+      "category": "domain_sensitivity",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java application for customer accounts, deposits, withdrawals, transfers, statement generation, and audit history.",
+        "batch_name": "a-java-application-for-customer-accounts-deposits-withdrawals-transfers-statement-generation-and-audit-history",
+        "piqs_score": 38.29,
+        "cqs_score": 51.32,
+        "compqs_score": 44.33
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java application to manage doctors, patients, appointment slots, check-ins, and visit history for a clinic.",
+        "batch_name": "a-java-application-to-manage-doctors-patients-appointment-slots-check-ins-and-visit-history-for-a-clinic",
+        "piqs_score": 100.0,
+        "cqs_score": 68.62,
+        "compqs_score": 82.83
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 38.5,
+      "winner_score": 82.83,
+      "loser_score": 44.33,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 22,
+      "category": "domain_sensitivity",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java application for customer accounts, deposits, withdrawals, transfers, statement generation, and audit history.",
+        "batch_name": "a-java-application-for-customer-accounts-deposits-withdrawals-transfers-statement-generation-and-audit-history",
+        "piqs_score": 38.29,
+        "cqs_score": 51.32,
+        "compqs_score": 44.33
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java LMS for courses, lesson modules, assignments, submissions, grading, and progress tracking.",
+        "batch_name": "a-java-lms-for-courses-lesson-modules-assignments-submissions-grading-and-progress-tracking",
+        "piqs_score": 100.0,
+        "cqs_score": 65.01,
+        "compqs_score": 80.63
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 36.3,
+      "winner_score": 80.63,
+      "loser_score": 44.33,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 23,
+      "category": "domain_sensitivity",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java application to manage doctors, patients, appointment slots, check-ins, and visit history for a clinic.",
+        "batch_name": "a-java-application-to-manage-doctors-patients-appointment-slots-check-ins-and-visit-history-for-a-clinic",
+        "piqs_score": 100.0,
+        "cqs_score": 68.62,
+        "compqs_score": 82.83
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java solution for stock intake, item locations, reorder thresholds, supplier restocking, and movement logs.",
+        "batch_name": "a-java-solution-for-stock-intake-item-locations-reorder-thresholds-supplier-restocking-and-movement-logs",
+        "piqs_score": 41.14,
+        "cqs_score": 52.64,
+        "compqs_score": 46.54
+      },
+      "expected_winner": "A",
+      "metric_used": "compqs_score",
+      "metric_gap": 36.29,
+      "winner_score": 82.83,
+      "loser_score": 46.54,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 24,
+      "category": "domain_sensitivity",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java LMS for courses, lesson modules, assignments, submissions, grading, and progress tracking.",
+        "batch_name": "a-java-lms-for-courses-lesson-modules-assignments-submissions-grading-and-progress-tracking",
+        "piqs_score": 100.0,
+        "cqs_score": 65.01,
+        "compqs_score": 80.63
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java solution for stock intake, item locations, reorder thresholds, supplier restocking, and movement logs.",
+        "batch_name": "a-java-solution-for-stock-intake-item-locations-reorder-thresholds-supplier-restocking-and-movement-logs",
+        "piqs_score": 41.14,
+        "cqs_score": 52.64,
+        "compqs_score": 46.54
+      },
+      "expected_winner": "A",
+      "metric_used": "compqs_score",
+      "metric_gap": 34.09,
+      "winner_score": 80.63,
+      "loser_score": 46.54,
+      "presentation_order": "randomized_seed_42"
+    },
+    {
+      "pair_id": 25,
+      "category": "domain_sensitivity",
+      "project_a": {
+        "pattern": "composite",
+        "project_context": "A Java platform for student enrollment, class scheduling, grades, attendance, and teacher-course assignments.",
+        "batch_name": "a-java-platform-for-student-enrollment-class-scheduling-grades-attendance-and-teacher-course-assignments",
+        "piqs_score": 41.14,
+        "cqs_score": 58.01,
+        "compqs_score": 48.85
+      },
+      "project_b": {
+        "pattern": "composite",
+        "project_context": "A Java application to manage doctors, patients, appointment slots, check-ins, and visit history for a clinic.",
+        "batch_name": "a-java-application-to-manage-doctors-patients-appointment-slots-check-ins-and-visit-history-for-a-clinic",
+        "piqs_score": 100.0,
+        "cqs_score": 68.62,
+        "compqs_score": 82.83
+      },
+      "expected_winner": "B",
+      "metric_used": "compqs_score",
+      "metric_gap": 33.98,
+      "winner_score": 82.83,
+      "loser_score": 48.85,
+      "presentation_order": "randomized_seed_42"
+    }
+  ]
+}
