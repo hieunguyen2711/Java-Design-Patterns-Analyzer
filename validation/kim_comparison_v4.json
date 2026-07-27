@@ -1,10 +1,10 @@
 {
   "headline": {
     "total_property_judgments": 160,
-    "agreed": 146,
-    "agreement_pct": 91.2,
+    "agreed": 141,
+    "agreement_pct": 88.1,
     "score_units": 40,
-    "units_exact_match_all3": 30
+    "units_exact_match_all3": 26
   },
   "arithmetic_check": [
     {
@@ -1538,8 +1538,8 @@
       "pattern": "factory-method",
       "property": "F4",
       "kim": "satisfied",
-      "mine": "satisfied",
-      "match": true
+      "mine": "not satisfied",
+      "match": false
     },
     {
       "case_study": "SWS",
@@ -1664,8 +1664,8 @@
       "pattern": "factory-method",
       "property": "F4",
       "kim": "satisfied",
-      "mine": "satisfied",
-      "match": true
+      "mine": "not satisfied",
+      "match": false
     },
     {
       "case_study": "SWS",
@@ -1718,8 +1718,8 @@
       "pattern": "singleton",
       "property": "G1",
       "kim": "satisfied",
-      "mine": "satisfied",
-      "match": true
+      "mine": "not satisfied",
+      "match": false
     },
     {
       "case_study": "SWS",
@@ -1790,8 +1790,8 @@
       "pattern": "factory-method",
       "property": "F4",
       "kim": "satisfied",
-      "mine": "satisfied",
-      "match": true
+      "mine": "not satisfied",
+      "match": false
     },
     {
       "case_study": "SWS",
@@ -1916,8 +1916,8 @@
       "pattern": "factory-method",
       "property": "F4",
       "kim": "satisfied",
-      "mine": "satisfied",
-      "match": true
+      "mine": "not satisfied",
+      "match": false
     },
     {
       "case_study": "SWS",
@@ -2354,12 +2354,12 @@
       "kim_psr": 80.0,
       "kim_cpc": 84.62,
       "kim_piqs": 81.85,
-      "my_psr": 80.0,
-      "my_cpc": 84.62,
-      "my_piqs": 81.85,
-      "d_psr": 0.0,
-      "d_cpc": 0.0,
-      "d_piqs": 0.0
+      "my_psr": 60.0,
+      "my_cpc": 61.54,
+      "my_piqs": 60.62,
+      "d_psr": 20.0,
+      "d_cpc": 23.08,
+      "d_piqs": 21.23
     },
     {
       "case_study": "SWS",
@@ -2410,12 +2410,12 @@
       "kim_psr": 60.0,
       "kim_cpc": 69.23,
       "kim_piqs": 63.69,
-      "my_psr": 80.0,
-      "my_cpc": 84.62,
-      "my_piqs": 81.85,
-      "d_psr": 20.0,
-      "d_cpc": 15.39,
-      "d_piqs": 18.16
+      "my_psr": 60.0,
+      "my_cpc": 61.54,
+      "my_piqs": 60.62,
+      "d_psr": 0.0,
+      "d_cpc": 7.69,
+      "d_piqs": 3.07
     },
     {
       "case_study": "SWS",
@@ -2438,12 +2438,12 @@
       "kim_psr": 100.0,
       "kim_cpc": 100.0,
       "kim_piqs": 100.0,
-      "my_psr": 100.0,
-      "my_cpc": 100.0,
-      "my_piqs": 100.0,
-      "d_psr": 0.0,
-      "d_cpc": 0.0,
-      "d_piqs": 0.0
+      "my_psr": 0.0,
+      "my_cpc": 0.0,
+      "my_piqs": 0.0,
+      "d_psr": 100.0,
+      "d_cpc": 100.0,
+      "d_piqs": 100.0
     },
     {
       "case_study": "SWS",
@@ -2466,12 +2466,12 @@
       "kim_psr": 80.0,
       "kim_cpc": 84.62,
       "kim_piqs": 81.85,
-      "my_psr": 80.0,
-      "my_cpc": 84.62,
-      "my_piqs": 81.85,
-      "d_psr": 0.0,
-      "d_cpc": 0.0,
-      "d_piqs": 0.0
+      "my_psr": 60.0,
+      "my_cpc": 61.54,
+      "my_piqs": 60.62,
+      "d_psr": 20.0,
+      "d_cpc": 23.08,
+      "d_piqs": 21.23
     },
     {
       "case_study": "SWS",
@@ -2522,12 +2522,12 @@
       "kim_psr": 60.0,
       "kim_cpc": 69.23,
       "kim_piqs": 63.69,
-      "my_psr": 60.0,
-      "my_cpc": 69.23,
-      "my_piqs": 63.69,
-      "d_psr": 0.0,
-      "d_cpc": 0.0,
-      "d_piqs": 0.0
+      "my_psr": 40.0,
+      "my_cpc": 46.15,
+      "my_piqs": 42.46,
+      "d_psr": 20.0,
+      "d_cpc": 23.08,
+      "d_piqs": 21.23
     },
     {
       "case_study": "SWS",
@@ -2593,9 +2593,9 @@
     },
     "F4": {
       "tested": 10,
-      "agreed": 9,
-      "agreement_pct": 90.0,
-      "reliable": true
+      "agreed": 5,
+      "agreement_pct": 50.0,
+      "reliable": false
     },
     "F5": {
       "tested": 10,
@@ -2683,8 +2683,8 @@
     },
     "G1": {
       "tested": 5,
-      "agreed": 5,
-      "agreement_pct": 100.0,
+      "agreed": 4,
+      "agreement_pct": 80.0,
       "reliable": true
     }
   }

@@ -15,7 +15,7 @@ _PATTERN_WEIGHTS = {
 }
 
 _DECL_RE = re.compile(
-    r"\b(public\s+)?(?P<abs>abstract\s+)?(?P<kind>class|interface)\s+"
+    r"\b(public\s+)?(?P<abs>abstract\s+)?(?P<kind>class|interface|enum)\s+"
     r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)"
     r"(?:\s+extends\s+(?P<extends>[A-Za-z_][A-Za-z0-9_\.]*))?"
     r"(?:\s+implements\s+(?P<implements>[^\{]+))?\s*\{",
@@ -251,6 +251,34 @@ class PIQSService:
             return bool(rest) and (rest[0].isupper() or rest[0].isdigit() or rest[0] == "_")
         return False
 
+    @staticmethod
+    def _enum_constant_count(body: str) -> int:
+        """Count an enum's constants -- the comma-separated identifiers before the first
+        top-level ';' (or the whole body if there is none). Nested parens/braces
+        (constant arguments or bodies) are flattened so they don't inflate the count.
+        A single-constant enum is the canonical enum-singleton (one instance)."""
+        depth = 0
+        seg: list[str] = []
+        for ch in body:
+            if ch in "{(":
+                depth += 1
+            elif ch in "})":
+                if depth > 0:
+                    depth -= 1
+            elif ch == ";" and depth == 0:
+                break
+            else:
+                seg.append(ch if depth == 0 else " ")
+        count = 0
+        for part in "".join(seg).split(","):
+            part = part.strip()
+            if not part:
+                continue
+            first = part.split()[0]
+            if re.match(r"[A-Za-z_][A-Za-z0-9_]*$", first):
+                count += 1
+        return count
+
     def _extract_fields(self, body: str) -> list[JavaField]:
         fields: list[JavaField] = []
         # Fix F: parse field declarations only at class-body scope; local variables inside
@@ -401,7 +429,59 @@ class PIQSService:
             for t in types.values()
         )
         f3 = overrides_exists
-        f4 = creates_exists
+
+        # Change 2: F4 -- factory methods create products of the correct type.
+        #   A factory method is a non-constructor method that instantiates via `new` and
+        #   returns a project-defined type (the product).
+        #   * in-hierarchy: the returned type is abstract, or implements/extends an abstract
+        #     type -> F4 passes (unchanged, classic behaviour).
+        #   * single concrete product: the returned type is a concrete standalone type AND the
+        #     program has no abstract product hierarchy that the factory bypasses (no factory
+        #     returns an abstract product, and no concrete type created inside a factory method
+        #     implements/extends an abstract type) -> accept the concrete product (single-
+        #     product domain, e.g. one concrete Wallet with no abstract wallet type).
+        #   * if an abstract product hierarchy DOES exist but the factory returns a concrete
+        #     type outside it -> F4 still fails.
+        _new_call_re = re.compile(r"\bnew\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(")
+
+        def _returns_in_hierarchy(rname):
+            rt = types.get(rname)
+            if rt is None:
+                return False
+            if rt.is_abstract:
+                return True
+            for sup in list(rt.implements) + ([rt.extends] if rt.extends else []):
+                st = types.get(sup)
+                if st is not None and st.is_abstract:
+                    return True
+            return False
+
+        factory_methods = [
+            m
+            for t in types.values()
+            for m in t.methods
+            if not m.is_constructor and m.return_type in known_type_names and _new_call_re.search(m.body)
+        ]
+
+        abstract_product_exists = False
+        for m in factory_methods:
+            if _returns_in_hierarchy(m.return_type) and types[m.return_type].is_abstract:
+                abstract_product_exists = True
+            for xname in _new_call_re.findall(m.body):
+                xt = types.get(xname)
+                if xt is None:
+                    continue
+                for sup in list(xt.implements) + ([xt.extends] if xt.extends else []):
+                    st = types.get(sup)
+                    if st is not None and st.is_abstract:
+                        abstract_product_exists = True
+
+        f4_in_hierarchy = any(_returns_in_hierarchy(m.return_type) for m in factory_methods)
+        f4_concrete = (
+            any(not _returns_in_hierarchy(m.return_type) for m in factory_methods)
+            and not abstract_product_exists
+        )
+        f4 = f4_in_hierarchy or f4_concrete
         f5 = is_product_exists
 
         rows = [
@@ -762,6 +842,7 @@ class PIQSService:
 
     def _evaluate_singleton(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
         classes = [t for t in types.values() if t.kind == "class"]
+        enums = [t for t in types.values() if t.kind == "enum"]
 
         has_private_ctor = False
         has_static_instance = False
@@ -777,35 +858,61 @@ class PIQSService:
         returns = False
         calls = False
 
+        # A static instance of `cname` may be declared in the singleton class itself OR in a
+        # nested static holder class (Bill Pugh idiom) -- so look across ALL classes for a
+        # static field whose type is the singleton's type.
+        def static_instance_of(cname: str) -> bool:
+            return any(
+                "static" in f.modifiers and f.field_type == cname
+                for other in classes
+                for f in other.fields
+            )
+
         for c in classes:
             ctors = [m for m in c.methods if m.is_constructor]
             has_constructor = has_constructor or bool(ctors)
-            if ctors and all("private" in m.modifiers for m in ctors):
+            priv_ctor = bool(ctors) and all("private" in m.modifiers for m in ctors)
+            # Accessor: a static method returning the class's own type (a private ctor makes
+            # any such method the single access point). Name-independent.
+            accessor = [
+                m for m in c.methods
+                if not m.is_constructor and "static" in m.modifiers and m.return_type == c.name
+            ]
+            has_inst = static_instance_of(c.name)
+
+            if priv_ctor:
                 has_private_ctor = True
                 is_private = True
-
-            static_fields = [f for f in c.fields if "static" in f.modifiers and f.field_type == c.name]
-            if static_fields:
+            if has_inst:
                 has_static_instance = True
                 is_static = True
                 field_type = True
                 belongs_to = True
-
-            get_instance = [
-                m for m in c.methods if m.name == "getInstance" and "static" in m.modifiers and m.return_type == c.name
-            ]
-            if get_instance:
+            if accessor:
                 has_instance_method = True
                 returns = True
-                for m in get_instance:
-                    # Fix G: whole-token field reference, not substring containment.
-                    if any(self._mentions_token(m.body, f.name) for f in static_fields):
+                for m in accessor:
+                    if any(self._mentions_token(m.body, f.name) for c2 in classes for f in c2.fields
+                           if "static" in f.modifiers and f.field_type == c.name):
                         accesses_field = True
                     if re.search(rf"\bnew\s+{c.name}\s*\(", m.body):
                         calls = True
 
-            if has_private_ctor and has_static_instance and has_instance_method:
+            # Change 1 (idiom i & ii): classic in-class field singleton AND Bill Pugh holder
+            # idiom -- both require a private ctor, a static accessor returning the type, and a
+            # static instance of the type (in the class or a nested static holder).
+            if priv_ctor and accessor and has_inst:
                 has_singleton = True
+
+        # Change 1 (idiom iii): an enum with exactly ONE constant is a singleton -- the single
+        # constant is the sole instance, and an enum's constructor is implicitly private.
+        enum_singleton = any(self._enum_constant_count(e.body) == 1 for e in enums)
+        if enum_singleton:
+            has_singleton = True
+            has_private_ctor = True
+            has_static_instance = True
+            has_instance_method = True
+            is_private = is_static = True
 
         base = {
             "isPrivate(x)": is_private,
@@ -829,8 +936,8 @@ class PIQSService:
             self._row(
                 "G1",
                 3,
-                has_private_ctor and has_static_instance and has_instance_method,
-                "Singleton has private constructor with static instance and accessor method.",
+                has_singleton,
+                "Singleton exists (classic in-class field, Bill Pugh holder, or single-constant enum).",
             )
         ]
         return base, derived, rows

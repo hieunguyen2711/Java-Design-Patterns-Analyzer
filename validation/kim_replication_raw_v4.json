@@ -1650,7 +1650,7 @@
           "weight": 3,
           "satisfaction": 1,
           "satisfied": true,
-          "justification": "Singleton exists (classic in-class field, Bill Pugh holder, or single-constant enum)."
+          "justification": "Singleton has private constructor with static instance and accessor method."
         }
       },
       "psr": 100.0,
@@ -1765,8 +1765,8 @@
         },
         "F4": {
           "weight": 3,
-          "satisfaction": 1,
-          "satisfied": true,
+          "satisfaction": 0,
+          "satisfied": false,
           "justification": "Factory method creates product of correct abstract type."
         },
         "F5": {
@@ -1776,12 +1776,12 @@
           "justification": "Concrete products implement abstract product interfaces."
         }
       },
-      "psr": 80.0,
-      "cpc": 84.62,
-      "piqs": 81.85,
-      "psr_formula": "(4/5)*100",
-      "cpc_formula": "(11/13)*100",
-      "piqs_formula": "(80.0*0.6)+(84.62*0.4)",
+      "psr": 60.0,
+      "cpc": 61.54,
+      "piqs": 60.62,
+      "psr_formula": "(3/5)*100",
+      "cpc_formula": "(8/13)*100",
+      "piqs_formula": "(60.0*0.6)+(61.54*0.4)",
       "base_predicates": {
         "isAbstract(x)": true,
         "isConcrete(x)": true,
@@ -1797,7 +1797,7 @@
         "isProduct(x)": false,
         "isCreator(c)": false
       },
-      "grade": "Good"
+      "grade": "Moderate"
     },
     {
       "case_study": "SWS",
@@ -1866,7 +1866,7 @@
           "weight": 3,
           "satisfaction": 1,
           "satisfied": true,
-          "justification": "Singleton exists (classic in-class field, Bill Pugh holder, or single-constant enum)."
+          "justification": "Singleton has private constructor with static instance and accessor method."
         }
       },
       "psr": 100.0,
@@ -1981,8 +1981,8 @@
         },
         "F4": {
           "weight": 3,
-          "satisfaction": 1,
-          "satisfied": true,
+          "satisfaction": 0,
+          "satisfied": false,
           "justification": "Factory method creates product of correct abstract type."
         },
         "F5": {
@@ -1992,12 +1992,12 @@
           "justification": "Concrete products implement abstract product interfaces."
         }
       },
-      "psr": 80.0,
-      "cpc": 84.62,
-      "piqs": 81.85,
-      "psr_formula": "(4/5)*100",
-      "cpc_formula": "(11/13)*100",
-      "piqs_formula": "(80.0*0.6)+(84.62*0.4)",
+      "psr": 60.0,
+      "cpc": 61.54,
+      "piqs": 60.62,
+      "psr_formula": "(3/5)*100",
+      "cpc_formula": "(8/13)*100",
+      "piqs_formula": "(60.0*0.6)+(61.54*0.4)",
       "base_predicates": {
         "isAbstract(x)": true,
         "isConcrete(x)": true,
@@ -2013,7 +2013,7 @@
         "isProduct(x)": false,
         "isCreator(c)": false
       },
-      "grade": "Good"
+      "grade": "Moderate"
     },
     {
       "case_study": "SWS",
@@ -2080,34 +2080,34 @@
       "properties": {
         "G1": {
           "weight": 3,
-          "satisfaction": 1,
-          "satisfied": true,
-          "justification": "Singleton exists (classic in-class field, Bill Pugh holder, or single-constant enum)."
+          "satisfaction": 0,
+          "satisfied": false,
+          "justification": "Singleton has private constructor with static instance and accessor method."
         }
       },
-      "psr": 100.0,
-      "cpc": 100.0,
-      "piqs": 100.0,
-      "psr_formula": "(1/1)*100",
-      "cpc_formula": "(3/3)*100",
-      "piqs_formula": "(100.0*0.6)+(100.0*0.4)",
+      "psr": 0.0,
+      "cpc": 0.0,
+      "piqs": 0.0,
+      "psr_formula": "(0/1)*100",
+      "cpc_formula": "(0/3)*100",
+      "piqs_formula": "(0.0*0.6)+(0.0*0.4)",
       "base_predicates": {
         "isPrivate(x)": true,
-        "isStatic(x)": true,
-        "fieldType(f,t)": true,
-        "belongsTo(f,c)": true,
+        "isStatic(x)": false,
+        "fieldType(f,t)": false,
+        "belongsTo(f,c)": false,
         "hasConstructor(c,m)": true,
-        "accessesField(m,f)": true,
+        "accessesField(m,f)": false,
         "returns(m,t)": true,
         "calls(m1,m2)": false
       },
       "derived_predicates": {
-        "isSingleton(x)": true,
+        "isSingleton(x)": false,
         "hasPrivateConstructor(x)": true,
         "hasInstanceMethod(x)": true,
-        "hasStaticInstance(x,f)": true
+        "hasStaticInstance(x,f)": false
       },
-      "grade": "Excellent"
+      "grade": "Poor"
     },
     {
       "case_study": "SWS",
@@ -2197,8 +2197,8 @@
         },
         "F4": {
           "weight": 3,
-          "satisfaction": 1,
-          "satisfied": true,
+          "satisfaction": 0,
+          "satisfied": false,
           "justification": "Factory method creates product of correct abstract type."
         },
         "F5": {
@@ -2208,12 +2208,12 @@
           "justification": "Concrete products implement abstract product interfaces."
         }
       },
-      "psr": 80.0,
-      "cpc": 84.62,
-      "piqs": 81.85,
-      "psr_formula": "(4/5)*100",
-      "cpc_formula": "(11/13)*100",
-      "piqs_formula": "(80.0*0.6)+(84.62*0.4)",
+      "psr": 60.0,
+      "cpc": 61.54,
+      "piqs": 60.62,
+      "psr_formula": "(3/5)*100",
+      "cpc_formula": "(8/13)*100",
+      "piqs_formula": "(60.0*0.6)+(61.54*0.4)",
       "base_predicates": {
         "isAbstract(x)": true,
         "isConcrete(x)": true,
@@ -2229,7 +2229,7 @@
         "isProduct(x)": false,
         "isCreator(c)": false
       },
-      "grade": "Good"
+      "grade": "Moderate"
     },
     {
       "case_study": "SWS",
@@ -2298,7 +2298,7 @@
           "weight": 3,
           "satisfaction": 1,
           "satisfied": true,
-          "justification": "Singleton exists (classic in-class field, Bill Pugh holder, or single-constant enum)."
+          "justification": "Singleton has private constructor with static instance and accessor method."
         }
       },
       "psr": 100.0,
@@ -2413,8 +2413,8 @@
         },
         "F4": {
           "weight": 3,
-          "satisfaction": 1,
-          "satisfied": true,
+          "satisfaction": 0,
+          "satisfied": false,
           "justification": "Factory method creates product of correct abstract type."
         },
         "F5": {
@@ -2424,12 +2424,12 @@
           "justification": "Concrete products implement abstract product interfaces."
         }
       },
-      "psr": 60.0,
-      "cpc": 69.23,
-      "piqs": 63.69,
-      "psr_formula": "(3/5)*100",
-      "cpc_formula": "(9/13)*100",
-      "piqs_formula": "(60.0*0.6)+(69.23*0.4)",
+      "psr": 40.0,
+      "cpc": 46.15,
+      "piqs": 42.46,
+      "psr_formula": "(2/5)*100",
+      "cpc_formula": "(6/13)*100",
+      "piqs_formula": "(40.0*0.6)+(46.15*0.4)",
       "base_predicates": {
         "isAbstract(x)": true,
         "isConcrete(x)": true,
@@ -2445,7 +2445,7 @@
         "isProduct(x)": false,
         "isCreator(c)": false
       },
-      "grade": "Moderate"
+      "grade": "Poor"
     },
     {
       "case_study": "SWS",
@@ -2514,7 +2514,7 @@
           "weight": 3,
           "satisfaction": 1,
           "satisfied": true,
-          "justification": "Singleton exists (classic in-class field, Bill Pugh holder, or single-constant enum)."
+          "justification": "Singleton has private constructor with static instance and accessor method."
         }
       },
       "psr": 100.0,
