@@ -1,0 +1,109 @@
+diff --git a/app/services/piqs_service.py b/app/services/piqs_service.py
+index 5a1b524..ba26456 100644
+--- a/app/services/piqs_service.py
++++ b/app/services/piqs_service.py
+@@ -222,12 +222,25 @@ class PIQSService:
+         has_method_exists = any(t.methods for t in types.values())
+         returns_exists = any(m.return_type for t in types.values() for m in t.methods if not m.is_constructor)
+ 
++        # A concrete type's abstract parents are the project types it extends OR
++        # implements. An interface parent counts exactly like an abstract-class parent:
++        # implementing an interface establishes the same abstract-parent relationship
++        # that extending an abstract class does.
++        def _declared_parents(t):
++            parents = []
++            if t.extends and t.extends in types:
++                parents.append(t.extends)
++            for iface in t.implements:
++                if iface in types:
++                    parents.append(iface)
++            return parents
++
+         overrides_exists = False
+         for t in concrete_types:
+-            if not t.extends or t.extends not in types:
+-                continue
+-            parent_methods = {m.name for m in types[t.extends].methods}
+-            if parent_methods.intersection({m.name for m in t.methods}):
++            parent_method_names = set()
++            for parent in _declared_parents(t):
++                parent_method_names |= {m.name for m in types[parent].methods}
++            if parent_method_names & {m.name for m in t.methods}:
+                 overrides_exists = True
+                 break
+ 
+@@ -253,8 +266,8 @@ class PIQSService:
+                 is_product_exists = True
+ 
+         for c in concrete_types:
+-            if c.extends and c.extends in types:
+-                parent_methods = {m.name: m for m in types[c.extends].methods}
++            for parent in _declared_parents(c):
++                parent_methods = {m.name: m for m in types[parent].methods}
+                 for m in c.methods:
+                     if m.name in parent_methods and (m.return_type in product_names or parent_methods[m.name].return_type in product_names):
+                         is_creator_exists = True
+@@ -276,8 +289,46 @@ class PIQSService:
+             "isCreator(c)": is_creator_exists,
+         }
+ 
+-        f1 = any(t.kind == "class" and t.is_abstract for t in types.values())
+-        f2 = any(t.kind == "class" and not t.is_abstract and t.extends for t in types.values())
++        # --- Abstract creator detection (Factory Method F1) ------------------------
++        # An abstract creator is an abstract TYPE -- a Java `interface` OR an
++        # `abstract class` -- that plays the creator role: it declares a factory method
++        # (a non-constructor method whose return type is a project-defined product type)
++        # and is implemented/extended by at least one concrete class.
++        #
++        # DESIGN DECISION (interface-as-abstract-role; see Kim replication study):
++        #   * Interface creators ARE accepted as the abstract creator, exactly like an
++        #     abstract class. A concrete class that `implements` the creator interface
++        #     counts the same as one that `extends` an abstract creator class.
++        #   * A static/switch "simple factory" -- a single CONCRETE class exposing a
++        #     static create() method, with no abstract creator type -- is DELIBERATELY
++        #     REJECTED as NOT GoF Factory Method: it has no abstract creator, so F1 is
++        #     false by construction. This is an intentional, documented distinction, not
++        #     an oversight.
++        known_type_names = set(types.keys())
++        abstract_creators = []
++        for t in types.values():
++            if not t.is_abstract:
++                continue
++            declares_factory = any(
++                (not m.is_constructor) and m.return_type in known_type_names
++                for m in t.methods
++            )
++            has_concrete_impl = any(
++                (not c.is_abstract) and c.kind == "class"
++                and (c.extends == t.name or t.name in c.implements)
++                for c in types.values()
++            )
++            if declares_factory and has_concrete_impl:
++                abstract_creators.append(t)
++
++        f1 = bool(abstract_creators)
++        f2 = any(
++            t.kind == "class" and not t.is_abstract and (
++                (t.extends in types and types[t.extends].is_abstract)
++                or any(i in types and types[i].is_abstract for i in t.implements)
++            )
++            for t in types.values()
++        )
+         f3 = overrides_exists
+         f4 = creates_exists
+         f5 = is_product_exists
+@@ -454,10 +505,13 @@ class PIQSService:
+         observer_types = [t for t in types.values() if t.kind == "interface" and any(m.name == "update" for m in t.methods)]
+         observer_names = {t.name for t in observer_types}
+ 
++        # A subject may be declared as an `interface` (abstract subject) as well as a
++        # concrete class: an interface counts as fulfilling the "abstract subject" role
++        # for O1, exactly like an abstract class.
+         subject_candidates = [
+             t
+             for t in types.values()
+-            if t.kind == "class"
++            if t.kind in {"class", "interface"}
+             and any(
+                 m.name in {"attach", "detach", "notifyObservers", "register", "remove", "notify"}
+                 for m in t.methods

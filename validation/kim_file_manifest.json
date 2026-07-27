@@ -1,0 +1,1778 @@
+{
+  "note": "Kim evaluated the 10 'refactored' programs (5 LLMs x 2 case studies). The two 'original_base' programs (POS, SmartWallet) are the pre-refactoring source and were NOT scored in Kim's tables; they are listed for completeness. A design pattern is NOT a per-file attribute: each refactored program embodies all four patterns for its case study simultaneously, so files map to (case_study, LLM) and patterns are evaluated at the program level. The unit of scoring is therefore (case_study, LLM, pattern) = 40 units.",
+  "case_studies": {
+    "POSS": {
+      "description": "Point of Sale System",
+      "patterns": [
+        "factory-method",
+        "strategy",
+        "composite",
+        "observer"
+      ]
+    },
+    "SWS": {
+      "description": "Smart Wallet System",
+      "patterns": [
+        "factory-method",
+        "strategy",
+        "singleton",
+        "observer"
+      ]
+    }
+  },
+  "llms": [
+    "ChatGPT",
+    "Claude",
+    "Copilot",
+    "Gemini",
+    "Meta"
+  ],
+  "num_programs": 12,
+  "num_refactored_programs": 10,
+  "num_scoring_units": 40,
+  "programs": [
+    {
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/POS.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/POS",
+      "num_java_files": 12,
+      "java_files": [
+        "POS/src/pointofsale/ByCash.java",
+        "POS/src/pointofsale/ByCreditCard.java",
+        "POS/src/pointofsale/Item.java",
+        "POS/src/pointofsale/ItemInventory.java",
+        "POS/src/pointofsale/POS.java",
+        "POS/src/pointofsale/Payment.java",
+        "POS/src/pointofsale/PointOfSale.java",
+        "POS/src/pointofsale/Receipt.java",
+        "POS/src/pointofsale/Register.java",
+        "POS/src/pointofsale/Sale.java",
+        "POS/src/pointofsale/SaleLineItem.java",
+        "POS/src/pointofsale/itemDescription.java"
+      ],
+      "patterns_evaluated": []
+    },
+    {
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredPOSChatGPT.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredPOSChatGPT",
+      "num_java_files": 14,
+      "java_files": [
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/ByCash.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/ByCreditCard.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/InventoryObserver.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/InventorySubject.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/Item.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/ItemInventory.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/PaymentFactory.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/PaymentStrategy.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/Receipt.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/RefactoredPOSChatGPT.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/Sale.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/SaleComponent.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/SaleLineItem.java",
+        "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/StockAlert.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "composite",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredPOSClaude.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredPOSClaude",
+      "num_java_files": 16,
+      "java_files": [
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CashPayment.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CashPaymentFactory.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CreditCardPayment.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CreditCardPaymentFactory.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/InventoryAlert.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/InventoryObserver.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/Item.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/ItemInventory.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/POS.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/PaymentFactory.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/PaymentStrategy.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/RefactoredPOSClaude.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/Register.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/Sale.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/SaleComponent.java",
+        "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/SaleLineItem.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "composite",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredPOSCopilot.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredPOSCopilot",
+      "num_java_files": 13,
+      "java_files": [
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/ByCash.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/ByCreditCard.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/InventoryObserver.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Item.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/ItemInventory.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/POS.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Payment.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/PaymentFactory.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Receipt.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/RefactoredPOSCopilot.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Register.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Sale.java",
+        "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/SaleLineItem.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "composite",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredPOSGemini.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredPOSGemini",
+      "num_java_files": 12,
+      "java_files": [
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/ByCash.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/ByCreditCard.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/CashPaymentFactory.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/CreditCardPaymentFactory.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/InventoryObserver.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/ItemInventory.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/Payment.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/PaymentFactory.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/RefactoredPOSGemini.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/Register.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/Sale.java",
+        "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/SaleLineItem.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "composite",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredPOSMeta.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredPOSMeta",
+      "num_java_files": 15,
+      "java_files": [
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/ByCash.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/ByCreditCard.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/InventoryLogger.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/InventoryObserver.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/InventorySubject.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/Item.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/ItemInventory.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/Payment.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/PaymentFactory.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/PaymentFactoryImpl.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/PaymentProcessor.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/RefactoredPOSMeta.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/Sale.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/SaleComponent.java",
+        "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/SaleLineItem.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "composite",
+        "observer"
+      ]
+    },
+    {
+      "program": "SmartWallet",
+      "case_study": "SWS",
+      "llm": null,
+      "role": "original_base",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/SmartWallet.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/SmartWallet",
+      "num_java_files": 6,
+      "java_files": [
+        "SmartWallet/src/main/java/com/mycompany/smartwallet/AuditLog.java",
+        "SmartWallet/src/main/java/com/mycompany/smartwallet/CurrencyConverter.java",
+        "SmartWallet/src/main/java/com/mycompany/smartwallet/SmartWallet.java",
+        "SmartWallet/src/main/java/com/mycompany/smartwallet/Transaction.java",
+        "SmartWallet/src/main/java/com/mycompany/smartwallet/User.java",
+        "SmartWallet/src/main/java/com/mycompany/smartwallet/Wallet.java"
+      ],
+      "patterns_evaluated": []
+    },
+    {
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredSWSChatGPT.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredSWSChatGPT",
+      "num_java_files": 10,
+      "java_files": [
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/AddFundsStrategy.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/AuditLog.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/CurrencyConverter.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/MakePaymentStrategy.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/Observer.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/RefactoredSWSChatGPT.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/Transaction.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/TransactionStrategy.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/User.java",
+        "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/Wallet.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "singleton",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredSWSClaude.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredSWSClaude",
+      "num_java_files": 13,
+      "java_files": [
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/AuditLog.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/CurrencyConverter.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/DepositStrategy.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Observer.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/PaymentStrategy.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/RefactoredSWSClaude.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/StandardWalletFactory.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Subject.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Transaction.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/TransactionStrategy.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/User.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Wallet.java",
+        "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/WalletFactory.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "singleton",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredSWSCopilot.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredSWSCopilot",
+      "num_java_files": 12,
+      "java_files": [
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/AddFundsStrategy.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/AuditLog.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/ConcreteWalletFactory.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/CurrencyConverter.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/MakePaymentStrategy.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/RefactoredSWSCopilot.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/Transaction.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/TransactionObserver.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/TransactionStrategy.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/User.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/Wallet.java",
+        "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/WalletFactory.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "singleton",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredSWSGemini.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredSWSGemini",
+      "num_java_files": 13,
+      "java_files": [
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/AuditLog.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/AuditLogObserver.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/ConsoleLogger.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/CurrencyConverter.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/DefaultWalletFactory.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/DepositStrategy.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/PaymentStrategy.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/RefactoredSWSGemini.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/Transaction.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/TransactionStrategy.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/User.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/Wallet.java",
+        "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/WalletFactory.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "singleton",
+        "observer"
+      ]
+    },
+    {
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored",
+      "source_zip": "/Users/hieunguyen/Documents/Coding Projects/Design-Pattern-Applications/RefactoredSWSMeta.zip",
+      "extracted_root": "/private/tmp/claude-501/-Users-hieunguyen-Documents-Coding-Projects-DP-Recognition-Backend/b2027f2a-5c76-45e6-9d65-d2cce82eb528/scratchpad/kim_extracted/RefactoredSWSMeta",
+      "num_java_files": 9,
+      "java_files": [
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/AuditLog.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/CurrencyConverter.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/DepositStrategy.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/PaymentStrategy.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/RefactoredSWSMeta.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/Transaction.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/TransactionStrategy.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/User.java",
+        "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/Wallet.java"
+      ],
+      "patterns_evaluated": [
+        "factory-method",
+        "strategy",
+        "singleton",
+        "observer"
+      ]
+    }
+  ],
+  "scoring_units": [
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "program": "RefactoredPOSChatGPT"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "program": "RefactoredPOSChatGPT"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "composite",
+      "program": "RefactoredPOSChatGPT"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "program": "RefactoredPOSChatGPT"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "program": "RefactoredPOSClaude"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "program": "RefactoredPOSClaude"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "composite",
+      "program": "RefactoredPOSClaude"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "program": "RefactoredPOSClaude"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "program": "RefactoredPOSCopilot"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "program": "RefactoredPOSCopilot"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "composite",
+      "program": "RefactoredPOSCopilot"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "program": "RefactoredPOSCopilot"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "program": "RefactoredPOSGemini"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "program": "RefactoredPOSGemini"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "composite",
+      "program": "RefactoredPOSGemini"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "program": "RefactoredPOSGemini"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "program": "RefactoredPOSMeta"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "program": "RefactoredPOSMeta"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "composite",
+      "program": "RefactoredPOSMeta"
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "program": "RefactoredPOSMeta"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "program": "RefactoredSWSChatGPT"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "program": "RefactoredSWSChatGPT"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "singleton",
+      "program": "RefactoredSWSChatGPT"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "program": "RefactoredSWSChatGPT"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "program": "RefactoredSWSClaude"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "program": "RefactoredSWSClaude"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "singleton",
+      "program": "RefactoredSWSClaude"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "program": "RefactoredSWSClaude"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "program": "RefactoredSWSCopilot"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "program": "RefactoredSWSCopilot"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "singleton",
+      "program": "RefactoredSWSCopilot"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "program": "RefactoredSWSCopilot"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "program": "RefactoredSWSGemini"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "program": "RefactoredSWSGemini"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "singleton",
+      "program": "RefactoredSWSGemini"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "program": "RefactoredSWSGemini"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "program": "RefactoredSWSMeta"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "program": "RefactoredSWSMeta"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "singleton",
+      "program": "RefactoredSWSMeta"
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "program": "RefactoredSWSMeta"
+    }
+  ],
+  "files": [
+    {
+      "file": "ByCash.java",
+      "relative_path": "POS/src/pointofsale/ByCash.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "ByCreditCard.java",
+      "relative_path": "POS/src/pointofsale/ByCreditCard.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "Item.java",
+      "relative_path": "POS/src/pointofsale/Item.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "ItemInventory.java",
+      "relative_path": "POS/src/pointofsale/ItemInventory.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "POS.java",
+      "relative_path": "POS/src/pointofsale/POS.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "Payment.java",
+      "relative_path": "POS/src/pointofsale/Payment.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "PointOfSale.java",
+      "relative_path": "POS/src/pointofsale/PointOfSale.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "Receipt.java",
+      "relative_path": "POS/src/pointofsale/Receipt.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "Register.java",
+      "relative_path": "POS/src/pointofsale/Register.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "Sale.java",
+      "relative_path": "POS/src/pointofsale/Sale.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "SaleLineItem.java",
+      "relative_path": "POS/src/pointofsale/SaleLineItem.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "itemDescription.java",
+      "relative_path": "POS/src/pointofsale/itemDescription.java",
+      "program": "POS",
+      "case_study": "POSS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "ByCash.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/ByCash.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "ByCreditCard.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/ByCreditCard.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "InventoryObserver.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/InventoryObserver.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "InventorySubject.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/InventorySubject.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "Item.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/Item.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "ItemInventory.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/ItemInventory.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentFactory.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/PaymentFactory.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentStrategy.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/PaymentStrategy.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "Receipt.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/Receipt.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredPOSChatGPT.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/RefactoredPOSChatGPT.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "Sale.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/Sale.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleComponent.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/SaleComponent.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleLineItem.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/SaleLineItem.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "StockAlert.java",
+      "relative_path": "RefactoredPOSChatGPT/src/main/java/com/mycompany/refactoredposchatgpt/StockAlert.java",
+      "program": "RefactoredPOSChatGPT",
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "CashPayment.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CashPayment.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "CashPaymentFactory.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CashPaymentFactory.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "CreditCardPayment.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CreditCardPayment.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "CreditCardPaymentFactory.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/CreditCardPaymentFactory.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "InventoryAlert.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/InventoryAlert.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "InventoryObserver.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/InventoryObserver.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "Item.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/Item.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "ItemInventory.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/ItemInventory.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "POS.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/POS.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentFactory.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/PaymentFactory.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentStrategy.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/PaymentStrategy.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredPOSClaude.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/RefactoredPOSClaude.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "Register.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/Register.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "Sale.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/Sale.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleComponent.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/SaleComponent.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleLineItem.java",
+      "relative_path": "RefactoredPOSClaude/src/main/java/com/mycompany/refactoredposclaude/SaleLineItem.java",
+      "program": "RefactoredPOSClaude",
+      "case_study": "POSS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "ByCash.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/ByCash.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "ByCreditCard.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/ByCreditCard.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "InventoryObserver.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/InventoryObserver.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "Item.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Item.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "ItemInventory.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/ItemInventory.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "POS.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/POS.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "Payment.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Payment.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentFactory.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/PaymentFactory.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "Receipt.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Receipt.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredPOSCopilot.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/RefactoredPOSCopilot.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "Register.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Register.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "Sale.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/Sale.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleLineItem.java",
+      "relative_path": "RefactoredPOSCopilot/src/main/java/com/mycompany/refactoredposcopilot/SaleLineItem.java",
+      "program": "RefactoredPOSCopilot",
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "ByCash.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/ByCash.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "ByCreditCard.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/ByCreditCard.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "CashPaymentFactory.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/CashPaymentFactory.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "CreditCardPaymentFactory.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/CreditCardPaymentFactory.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "InventoryObserver.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/InventoryObserver.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "ItemInventory.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/ItemInventory.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "Payment.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/Payment.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentFactory.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/PaymentFactory.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredPOSGemini.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/RefactoredPOSGemini.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "Register.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/Register.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "Sale.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/Sale.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleLineItem.java",
+      "relative_path": "RefactoredPOSGemini/src/main/java/com/mycompany/refactoredposgemini/SaleLineItem.java",
+      "program": "RefactoredPOSGemini",
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "ByCash.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/ByCash.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "ByCreditCard.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/ByCreditCard.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "InventoryLogger.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/InventoryLogger.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "InventoryObserver.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/InventoryObserver.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "InventorySubject.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/InventorySubject.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "Item.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/Item.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "ItemInventory.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/ItemInventory.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "Payment.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/Payment.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentFactory.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/PaymentFactory.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentFactoryImpl.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/PaymentFactoryImpl.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentProcessor.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/PaymentProcessor.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredPOSMeta.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/RefactoredPOSMeta.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "Sale.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/Sale.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleComponent.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/SaleComponent.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "SaleLineItem.java",
+      "relative_path": "RefactoredPOSMeta/src/main/java/com/mycompany/refactoredposmeta/SaleLineItem.java",
+      "program": "RefactoredPOSMeta",
+      "case_study": "POSS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "AuditLog.java",
+      "relative_path": "SmartWallet/src/main/java/com/mycompany/smartwallet/AuditLog.java",
+      "program": "SmartWallet",
+      "case_study": "SWS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "CurrencyConverter.java",
+      "relative_path": "SmartWallet/src/main/java/com/mycompany/smartwallet/CurrencyConverter.java",
+      "program": "SmartWallet",
+      "case_study": "SWS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "SmartWallet.java",
+      "relative_path": "SmartWallet/src/main/java/com/mycompany/smartwallet/SmartWallet.java",
+      "program": "SmartWallet",
+      "case_study": "SWS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "Transaction.java",
+      "relative_path": "SmartWallet/src/main/java/com/mycompany/smartwallet/Transaction.java",
+      "program": "SmartWallet",
+      "case_study": "SWS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "User.java",
+      "relative_path": "SmartWallet/src/main/java/com/mycompany/smartwallet/User.java",
+      "program": "SmartWallet",
+      "case_study": "SWS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "Wallet.java",
+      "relative_path": "SmartWallet/src/main/java/com/mycompany/smartwallet/Wallet.java",
+      "program": "SmartWallet",
+      "case_study": "SWS",
+      "llm": null,
+      "role": "original_base"
+    },
+    {
+      "file": "AddFundsStrategy.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/AddFundsStrategy.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "AuditLog.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/AuditLog.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "CurrencyConverter.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/CurrencyConverter.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "MakePaymentStrategy.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/MakePaymentStrategy.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "Observer.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/Observer.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredSWSChatGPT.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/RefactoredSWSChatGPT.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "Transaction.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/Transaction.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "TransactionStrategy.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/TransactionStrategy.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "User.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/User.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "Wallet.java",
+      "relative_path": "RefactoredSWSChatGPT/src/main/java/com/mycompany/refactoredswschatgpt/Wallet.java",
+      "program": "RefactoredSWSChatGPT",
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "role": "refactored"
+    },
+    {
+      "file": "AuditLog.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/AuditLog.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "CurrencyConverter.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/CurrencyConverter.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "DepositStrategy.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/DepositStrategy.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "Observer.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Observer.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentStrategy.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/PaymentStrategy.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredSWSClaude.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/RefactoredSWSClaude.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "StandardWalletFactory.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/StandardWalletFactory.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "Subject.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Subject.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "Transaction.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Transaction.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "TransactionStrategy.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/TransactionStrategy.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "User.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/User.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "Wallet.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/Wallet.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "WalletFactory.java",
+      "relative_path": "RefactoredSWSClaude/src/main/java/com/mycompany/refactoredswsclaude/WalletFactory.java",
+      "program": "RefactoredSWSClaude",
+      "case_study": "SWS",
+      "llm": "Claude",
+      "role": "refactored"
+    },
+    {
+      "file": "AddFundsStrategy.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/AddFundsStrategy.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "AuditLog.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/AuditLog.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "ConcreteWalletFactory.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/ConcreteWalletFactory.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "CurrencyConverter.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/CurrencyConverter.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "MakePaymentStrategy.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/MakePaymentStrategy.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredSWSCopilot.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/RefactoredSWSCopilot.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "Transaction.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/Transaction.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "TransactionObserver.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/TransactionObserver.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "TransactionStrategy.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/TransactionStrategy.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "User.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/User.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "Wallet.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/Wallet.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "WalletFactory.java",
+      "relative_path": "RefactoredSWSCopilot/src/main/java/com/mycompany/refactoredswscopilot/WalletFactory.java",
+      "program": "RefactoredSWSCopilot",
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "role": "refactored"
+    },
+    {
+      "file": "AuditLog.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/AuditLog.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "AuditLogObserver.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/AuditLogObserver.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "ConsoleLogger.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/ConsoleLogger.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "CurrencyConverter.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/CurrencyConverter.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "DefaultWalletFactory.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/DefaultWalletFactory.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "DepositStrategy.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/DepositStrategy.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentStrategy.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/PaymentStrategy.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredSWSGemini.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/RefactoredSWSGemini.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "Transaction.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/Transaction.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "TransactionStrategy.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/TransactionStrategy.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "User.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/User.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "Wallet.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/Wallet.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "WalletFactory.java",
+      "relative_path": "RefactoredSWSGemini/src/main/java/com/mycompany/refactoredswsgemini/WalletFactory.java",
+      "program": "RefactoredSWSGemini",
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "role": "refactored"
+    },
+    {
+      "file": "AuditLog.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/AuditLog.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "CurrencyConverter.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/CurrencyConverter.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "DepositStrategy.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/DepositStrategy.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "PaymentStrategy.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/PaymentStrategy.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "RefactoredSWSMeta.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/RefactoredSWSMeta.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "Transaction.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/Transaction.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "TransactionStrategy.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/TransactionStrategy.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "User.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/User.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    },
+    {
+      "file": "Wallet.java",
+      "relative_path": "RefactoredSWSMeta/src/main/java/com/mycompany/refactoredswsmeta/Wallet.java",
+      "program": "RefactoredSWSMeta",
+      "case_study": "SWS",
+      "llm": "Meta",
+      "role": "refactored"
+    }
+  ]
+}

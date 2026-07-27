@@ -1,0 +1,2691 @@
+{
+  "headline": {
+    "total_property_judgments": 160,
+    "agreed": 128,
+    "agreement_pct": 80.0,
+    "score_units": 40,
+    "units_exact_match_all3": 21
+  },
+  "arithmetic_check": [
+    {
+      "unit": "POSS/ChatGPT/factory-method",
+      "published": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "recomputed_from_failset": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/ChatGPT/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/ChatGPT/composite",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/ChatGPT/observer",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Claude/factory-method",
+      "published": [
+        80.0,
+        76.92,
+        78.77
+      ],
+      "recomputed_from_failset": [
+        80.0,
+        76.92,
+        78.77
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Claude/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Claude/composite",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Claude/observer",
+      "published": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "recomputed_from_failset": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Copilot/factory-method",
+      "published": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "recomputed_from_failset": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Copilot/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Copilot/composite",
+      "published": [
+        40.0,
+        35.71,
+        38.29
+      ],
+      "recomputed_from_failset": [
+        40.0,
+        35.71,
+        38.29
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Copilot/observer",
+      "published": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "recomputed_from_failset": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Gemini/factory-method",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Gemini/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Gemini/composite",
+      "published": [
+        40.0,
+        35.71,
+        38.29
+      ],
+      "recomputed_from_failset": [
+        40.0,
+        35.71,
+        38.29
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Gemini/observer",
+      "published": [
+        25.0,
+        18.18,
+        22.27
+      ],
+      "recomputed_from_failset": [
+        25.0,
+        18.18,
+        22.27
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Meta/factory-method",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Meta/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Meta/composite",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "POSS/Meta/observer",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/ChatGPT/factory-method",
+      "published": [
+        40.0,
+        46.15,
+        42.46
+      ],
+      "recomputed_from_failset": [
+        40.0,
+        46.15,
+        42.46
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/ChatGPT/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/ChatGPT/singleton",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/ChatGPT/observer",
+      "published": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "recomputed_from_failset": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Claude/factory-method",
+      "published": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "recomputed_from_failset": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Claude/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Claude/singleton",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Claude/observer",
+      "published": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "recomputed_from_failset": [
+        75.0,
+        81.82,
+        77.73
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Copilot/factory-method",
+      "published": [
+        60.0,
+        69.23,
+        63.69
+      ],
+      "recomputed_from_failset": [
+        60.0,
+        69.23,
+        63.69
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Copilot/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Copilot/singleton",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Copilot/observer",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Gemini/factory-method",
+      "published": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "recomputed_from_failset": [
+        80.0,
+        84.62,
+        81.85
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Gemini/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Gemini/singleton",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Gemini/observer",
+      "published": [
+        25.0,
+        27.27,
+        25.91
+      ],
+      "recomputed_from_failset": [
+        25.0,
+        27.27,
+        25.91
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Meta/factory-method",
+      "published": [
+        60.0,
+        69.23,
+        63.69
+      ],
+      "recomputed_from_failset": [
+        60.0,
+        69.23,
+        63.69
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Meta/strategy",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Meta/singleton",
+      "published": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "recomputed_from_failset": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "consistent": true
+    },
+    {
+      "unit": "SWS/Meta/observer",
+      "published": [
+        50.0,
+        45.45,
+        48.18
+      ],
+      "recomputed_from_failset": [
+        50.0,
+        45.45,
+        48.18
+      ],
+      "consistent": true
+    }
+  ],
+  "property_comparison": [
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "composite",
+      "property": "C1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "composite",
+      "property": "C2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "composite",
+      "property": "C3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "composite",
+      "property": "C4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "composite",
+      "property": "C5",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "composite",
+      "property": "C1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "composite",
+      "property": "C2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "composite",
+      "property": "C3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "composite",
+      "property": "C4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "composite",
+      "property": "C5",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "composite",
+      "property": "C1",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "composite",
+      "property": "C2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "composite",
+      "property": "C3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "composite",
+      "property": "C4",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "composite",
+      "property": "C5",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "composite",
+      "property": "C1",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "composite",
+      "property": "C2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "composite",
+      "property": "C3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "composite",
+      "property": "C4",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "composite",
+      "property": "C5",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "composite",
+      "property": "C1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "composite",
+      "property": "C2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "composite",
+      "property": "C3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "composite",
+      "property": "C4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "composite",
+      "property": "C5",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "singleton",
+      "property": "G1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "singleton",
+      "property": "G1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "singleton",
+      "property": "G1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "singleton",
+      "property": "G1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F1",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F4",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "property": "F5",
+      "kim": "not satisfied",
+      "mine": "satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S2",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S3",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "property": "S4",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "singleton",
+      "property": "G1",
+      "kim": "satisfied",
+      "mine": "satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O1",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O2",
+      "kim": "satisfied",
+      "mine": "not satisfied",
+      "match": false
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O3",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "property": "O4",
+      "kim": "not satisfied",
+      "mine": "not satisfied",
+      "match": true
+    }
+  ],
+  "score_comparison": [
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "kim_psr": 80.0,
+      "kim_cpc": 84.62,
+      "kim_piqs": 81.85,
+      "my_psr": 80.0,
+      "my_cpc": 84.62,
+      "my_piqs": 81.85,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 75.0,
+      "my_cpc": 81.82,
+      "my_piqs": 77.73,
+      "d_psr": 25.0,
+      "d_cpc": 18.18,
+      "d_piqs": 22.27
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "composite",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 80.0,
+      "my_cpc": 78.57,
+      "my_piqs": 79.43,
+      "d_psr": 20.0,
+      "d_cpc": 21.43,
+      "d_piqs": 20.57
+    },
+    {
+      "case_study": "POSS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "kim_psr": 80.0,
+      "kim_cpc": 76.92,
+      "kim_piqs": 78.77,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 20.0,
+      "d_cpc": 23.08,
+      "d_piqs": 21.23
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "composite",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 80.0,
+      "my_cpc": 78.57,
+      "my_piqs": 79.43,
+      "d_psr": 20.0,
+      "d_cpc": 21.43,
+      "d_piqs": 20.57
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "kim_psr": 75.0,
+      "kim_cpc": 81.82,
+      "kim_piqs": 77.73,
+      "my_psr": 75.0,
+      "my_cpc": 81.82,
+      "my_piqs": 77.73,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "kim_psr": 80.0,
+      "kim_cpc": 84.62,
+      "kim_piqs": 81.85,
+      "my_psr": 60.0,
+      "my_cpc": 61.54,
+      "my_piqs": 60.62,
+      "d_psr": 20.0,
+      "d_cpc": 23.08,
+      "d_piqs": 21.23
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "composite",
+      "kim_psr": 40.0,
+      "kim_cpc": 35.71,
+      "kim_piqs": 38.29,
+      "my_psr": 80.0,
+      "my_cpc": 78.57,
+      "my_piqs": 79.43,
+      "d_psr": 40.0,
+      "d_cpc": 42.86,
+      "d_piqs": 41.14
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "kim_psr": 75.0,
+      "kim_cpc": 81.82,
+      "kim_piqs": 77.73,
+      "my_psr": 75.0,
+      "my_cpc": 81.82,
+      "my_piqs": 77.73,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "composite",
+      "kim_psr": 40.0,
+      "kim_cpc": 35.71,
+      "kim_piqs": 38.29,
+      "my_psr": 80.0,
+      "my_cpc": 78.57,
+      "my_piqs": 79.43,
+      "d_psr": 40.0,
+      "d_cpc": 42.86,
+      "d_piqs": 41.14
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "kim_psr": 25.0,
+      "kim_cpc": 18.18,
+      "kim_piqs": 22.27,
+      "my_psr": 75.0,
+      "my_cpc": 81.82,
+      "my_piqs": 77.73,
+      "d_psr": 50.0,
+      "d_cpc": 63.64,
+      "d_piqs": 55.46
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "composite",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 80.0,
+      "my_cpc": 78.57,
+      "my_piqs": 79.43,
+      "d_psr": 20.0,
+      "d_cpc": 21.43,
+      "d_piqs": 20.57
+    },
+    {
+      "case_study": "POSS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "factory-method",
+      "kim_psr": 40.0,
+      "kim_cpc": 46.15,
+      "kim_piqs": 42.46,
+      "my_psr": 60.0,
+      "my_cpc": 61.54,
+      "my_piqs": 60.62,
+      "d_psr": 20.0,
+      "d_cpc": 15.39,
+      "d_piqs": 18.16
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "singleton",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "ChatGPT",
+      "pattern": "observer",
+      "kim_psr": 75.0,
+      "kim_cpc": 81.82,
+      "kim_piqs": 77.73,
+      "my_psr": 50.0,
+      "my_cpc": 54.55,
+      "my_piqs": 51.82,
+      "d_psr": 25.0,
+      "d_cpc": 27.27,
+      "d_piqs": 25.91
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "factory-method",
+      "kim_psr": 80.0,
+      "kim_cpc": 84.62,
+      "kim_piqs": 81.85,
+      "my_psr": 80.0,
+      "my_cpc": 76.92,
+      "my_piqs": 78.77,
+      "d_psr": 0.0,
+      "d_cpc": 7.7,
+      "d_piqs": 3.08
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "singleton",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Claude",
+      "pattern": "observer",
+      "kim_psr": 75.0,
+      "kim_cpc": 81.82,
+      "kim_piqs": 77.73,
+      "my_psr": 75.0,
+      "my_cpc": 81.82,
+      "my_piqs": 77.73,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "factory-method",
+      "kim_psr": 60.0,
+      "kim_cpc": 69.23,
+      "kim_piqs": 63.69,
+      "my_psr": 80.0,
+      "my_cpc": 76.92,
+      "my_piqs": 78.77,
+      "d_psr": 20.0,
+      "d_cpc": 7.69,
+      "d_piqs": 15.08
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 75.0,
+      "my_cpc": 81.82,
+      "my_piqs": 77.73,
+      "d_psr": 25.0,
+      "d_cpc": 18.18,
+      "d_piqs": 22.27
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "singleton",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Copilot",
+      "pattern": "observer",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 25.0,
+      "my_cpc": 18.18,
+      "my_piqs": 22.27,
+      "d_psr": 75.0,
+      "d_cpc": 81.82,
+      "d_piqs": 77.73
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "factory-method",
+      "kim_psr": 80.0,
+      "kim_cpc": 84.62,
+      "kim_piqs": 81.85,
+      "my_psr": 80.0,
+      "my_cpc": 76.92,
+      "my_piqs": 78.77,
+      "d_psr": 0.0,
+      "d_cpc": 7.7,
+      "d_piqs": 3.08
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "singleton",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Gemini",
+      "pattern": "observer",
+      "kim_psr": 25.0,
+      "kim_cpc": 27.27,
+      "kim_piqs": 25.91,
+      "my_psr": 0.0,
+      "my_cpc": 0.0,
+      "my_piqs": 0.0,
+      "d_psr": 25.0,
+      "d_cpc": 27.27,
+      "d_piqs": 25.91
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "factory-method",
+      "kim_psr": 60.0,
+      "kim_cpc": 69.23,
+      "kim_piqs": 63.69,
+      "my_psr": 60.0,
+      "my_cpc": 61.54,
+      "my_piqs": 60.62,
+      "d_psr": 0.0,
+      "d_cpc": 7.69,
+      "d_piqs": 3.07
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "strategy",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "singleton",
+      "kim_psr": 100.0,
+      "kim_cpc": 100.0,
+      "kim_piqs": 100.0,
+      "my_psr": 100.0,
+      "my_cpc": 100.0,
+      "my_piqs": 100.0,
+      "d_psr": 0.0,
+      "d_cpc": 0.0,
+      "d_piqs": 0.0
+    },
+    {
+      "case_study": "SWS",
+      "llm": "Meta",
+      "pattern": "observer",
+      "kim_psr": 50.0,
+      "kim_cpc": 45.45,
+      "kim_piqs": 48.18,
+      "my_psr": 0.0,
+      "my_cpc": 0.0,
+      "my_piqs": 0.0,
+      "d_psr": 50.0,
+      "d_cpc": 45.45,
+      "d_piqs": 48.18
+    }
+  ],
+  "reliability": {
+    "F1": {
+      "tested": 10,
+      "agreed": 9,
+      "agreement_pct": 90.0,
+      "reliable": true
+    },
+    "F2": {
+      "tested": 10,
+      "agreed": 10,
+      "agreement_pct": 100.0,
+      "reliable": true
+    },
+    "F3": {
+      "tested": 10,
+      "agreed": 10,
+      "agreement_pct": 100.0,
+      "reliable": true
+    },
+    "F4": {
+      "tested": 10,
+      "agreed": 4,
+      "agreement_pct": 40.0,
+      "reliable": false
+    },
+    "F5": {
+      "tested": 10,
+      "agreed": 5,
+      "agreement_pct": 50.0,
+      "reliable": false
+    },
+    "S1": {
+      "tested": 10,
+      "agreed": 10,
+      "agreement_pct": 100.0,
+      "reliable": true
+    },
+    "S2": {
+      "tested": 10,
+      "agreed": 10,
+      "agreement_pct": 100.0,
+      "reliable": true
+    },
+    "S3": {
+      "tested": 10,
+      "agreed": 8,
+      "agreement_pct": 80.0,
+      "reliable": true
+    },
+    "S4": {
+      "tested": 10,
+      "agreed": 10,
+      "agreement_pct": 100.0,
+      "reliable": true
+    },
+    "C1": {
+      "tested": 5,
+      "agreed": 3,
+      "agreement_pct": 60.0,
+      "reliable": false
+    },
+    "C2": {
+      "tested": 5,
+      "agreed": 5,
+      "agreement_pct": 100.0,
+      "reliable": true
+    },
+    "C3": {
+      "tested": 5,
+      "agreed": 5,
+      "agreement_pct": 100.0,
+      "reliable": true
+    },
+    "C4": {
+      "tested": 5,
+      "agreed": 3,
+      "agreement_pct": 60.0,
+      "reliable": false
+    },
+    "C5": {
+      "tested": 5,
+      "agreed": 2,
+      "agreement_pct": 40.0,
+      "reliable": false
+    },
+    "O1": {
+      "tested": 10,
+      "agreed": 8,
+      "agreement_pct": 80.0,
+      "reliable": true
+    },
+    "O2": {
+      "tested": 10,
+      "agreed": 6,
+      "agreement_pct": 60.0,
+      "reliable": false
+    },
+    "O3": {
+      "tested": 10,
+      "agreed": 7,
+      "agreement_pct": 70.0,
+      "reliable": false
+    },
+    "O4": {
+      "tested": 10,
+      "agreed": 8,
+      "agreement_pct": 80.0,
+      "reliable": true
+    },
+    "G1": {
+      "tested": 5,
+      "agreed": 5,
+      "agreement_pct": 100.0,
+      "reliable": true
+    }
+  }
+}

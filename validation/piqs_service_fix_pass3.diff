@@ -1,0 +1,113 @@
+--- /var/folders/00/6cj4dj1973n124h52k15vjww0000gn/T//p3/f.py	2026-07-26 21:26:54
++++ app/services/piqs_service.py	2026-07-26 21:17:12
+@@ -208,9 +208,54 @@
+ 
+         return methods
+ 
++    @staticmethod
++    def _class_scope_only(body: str) -> str:
++        """Fix F: return only the class-body text at brace-depth 0 -- every method,
++        constructor, initialiser and nested-type body (and anything deeper) is stripped.
++        Fields are declared at class scope; anything inside those removed blocks is a
++        local variable and must not be captured as a field."""
++        out: list[str] = []
++        depth = 0
++        for ch in body:
++            if ch == "{":
++                depth += 1
++                continue
++            if ch == "}":
++                if depth > 0:
++                    depth -= 1
++                continue
++            if depth == 0:
++                out.append(ch)
++        return "".join(out)
++
++    @staticmethod
++    def _calls_method(body: str, name: str) -> bool:
++        """Fix G: True if `body` invokes a method named exactly `name` -- a whole
++        identifier followed by '(' (so `pay` does not match inside `payment`)."""
++        return re.search(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"\s*\(", body) is not None
++
++    @staticmethod
++    def _mentions_token(body: str, name: str) -> bool:
++        """Fix G: True if `name` occurs in `body` as a whole identifier, not a substring."""
++        return re.search(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])", body) is not None
++
++    @staticmethod
++    def _has_verb_prefix(name: str, verb: str) -> bool:
++        """Fix G: True if `name` is exactly `verb`, or a camelCase method that begins with
++        it (add -> add, addChild, addObserver, add_child) -- but NOT a word that merely
++        starts with those letters (add -> address is False)."""
++        if name == verb:
++            return True
++        if name.startswith(verb):
++            rest = name[len(verb):]
++            return bool(rest) and (rest[0].isupper() or rest[0].isdigit() or rest[0] == "_")
++        return False
++
+     def _extract_fields(self, body: str) -> list[JavaField]:
+         fields: list[JavaField] = []
+-        for m in _FIELD_RE.finditer(body):
++        # Fix F: parse field declarations only at class-body scope; local variables inside
++        # method/constructor bodies must not be captured as fields.
++        for m in _FIELD_RE.finditer(self._class_scope_only(body)):
+             field_type = self._base_name(m.group("type") or "")
+             if not field_type:
+                 continue
+@@ -403,9 +448,10 @@
+ 
+         for c in concrete_classes:
+             field_strategy = any(f.field_type in strategy_ifaces for f in c.fields)
+-            setter = any(m.name.lower().startswith("set") and any(pt in strategy_ifaces for pt in m.param_types) for m in c.methods)
++            setter = any(self._has_verb_prefix(m.name, "set") and any(pt in strategy_ifaces for pt in m.param_types) for m in c.methods)
++            # Fix G: invoke-by-whole-token, not `"pay" in body` (which matched "payment").
+             execute = any(
+-                any(name in m.body for name in strategy_method_names) and re.search(r"\.[A-Za-z_][A-Za-z0-9_]*\s*\(", m.body)
++                any(self._calls_method(m.body, name) for name in strategy_method_names)
+                 for m in c.methods
+             )
+ 
+@@ -466,13 +512,17 @@
+             if t.kind == "class" and not t.is_abstract and (t.extends in component_names or any(i in component_names for i in t.implements))
+         ]
+ 
+-        is_add = any(m.name.lower().startswith("add") for t in concrete_components for m in t.methods)
+-        is_remove = any(m.name.lower().startswith("remove") for t in concrete_components for m in t.methods)
++        # Fix G: recognise add/remove operations by whole-token camelCase verb prefix
++        # (add, addChild, addComponent) -- not by substring ("add" also occurs in "address").
++        is_add = any(self._has_verb_prefix(m.name, "add") for t in concrete_components for m in t.methods)
++        is_remove = any(self._has_verb_prefix(m.name, "remove") for t in concrete_components for m in t.methods)
+ 
+         accepts_exists = any(any(pt in component_names for pt in m.param_types) for t in concrete_components for m in t.methods)
+ 
+         composites = [
+-            t for t in concrete_components if any("add" in m.name.lower() or "remove" in m.name.lower() for m in t.methods)
++            t
++            for t in concrete_components
++            if any(self._has_verb_prefix(m.name, "add") or self._has_verb_prefix(m.name, "remove") for m in t.methods)
+         ]
+         leaves = [t for t in concrete_components if t not in composites]
+ 
+@@ -481,8 +531,8 @@
+             any(pt in component_names for m in t.methods for pt in m.param_types)
+             for t in composites
+         )
+-        is_add_child = any(any(m.name.lower().startswith("add") for m in t.methods) for t in composites)
+-        is_remove_child = any(any(m.name.lower().startswith("remove") for m in t.methods) for t in composites)
++        is_add_child = any(any(self._has_verb_prefix(m.name, "add") for m in t.methods) for t in composites)
++        is_remove_child = any(any(self._has_verb_prefix(m.name, "remove") for m in t.methods) for t in composites)
+ 
+         base = {
+             "isAbstract(x)": bool(abstract_components),
+@@ -748,7 +798,8 @@
+                 has_instance_method = True
+                 returns = True
+                 for m in get_instance:
+-                    if any(f.name in m.body for f in static_fields):
++                    # Fix G: whole-token field reference, not substring containment.
++                    if any(self._mentions_token(m.body, f.name) for f in static_fields):
+                         accesses_field = True
+                     if re.search(rf"\bnew\s+{c.name}\s*\(", m.body):
+                         calls = True

@@ -1,0 +1,288 @@
+--- /var/folders/00/6cj4dj1973n124h52k15vjww0000gn/T//pass1_piqs.py	2026-07-26 21:01:38
++++ app/services/piqs_service.py	2026-07-26 20:36:47
+@@ -22,10 +22,15 @@
+     re.MULTILINE,
+ )
+ 
++# Fix E: an optional `throws <exceptions>` clause may sit between the parameter list and
++# the opening brace/semicolon. Without this, methods like `create(...) throws IOException {`
++# were not matched at all and their return type became invisible (breaking Factory F4).
+ _METHOD_SIG_RE = re.compile(
+     r"(?P<mods>(?:(?:public|protected|private|static|final|abstract|synchronized)\s+)*)"
+     r"(?:(?P<ret>[A-Za-z_][A-Za-z0-9_<>\[\]\.]*?)\s+)?"
+-    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s*\((?P<params>[^)]*)\)\s*(?P<tail>\{|;)",
++    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s*\((?P<params>[^)]*)\)\s*"
++    r"(?:throws\s+[A-Za-z_][A-Za-z0-9_,.\s]*?\s*)?"
++    r"(?P<tail>\{|;)",
+     re.MULTILINE,
+ )
+ 
+@@ -216,6 +221,7 @@
+     def _evaluate_factory_method(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
+         abstract_types = [t for t in types.values() if t.is_abstract]
+         concrete_types = [t for t in types.values() if not t.is_abstract and t.kind == "class"]
++        known_type_names = set(types.keys())
+ 
+         extends_exists = any(t.extends for t in concrete_types)
+         implements_exists = any(t.implements for t in concrete_types)
+@@ -261,9 +267,30 @@
+                     if re.search(r"\bnew\s+[A-Za-z_][A-Za-z0-9_]*\s*\(", m.body):
+                         creates_exists = True
+ 
+-        for c in concrete_types:
+-            if any(i in product_names for i in c.implements):
+-                is_product_exists = True
++        # Fix C: a PRODUCT is the type RETURNED by a factory method (the creates/returns
++        # relationship), not any type that merely implements some unrelated interface.
++        # factory_product_types = return types of factory methods (declared by an abstract
++        # creator, or a method that instantiates via `new`). F5 then fires only when a
++        # concrete class implements/extends an ABSTRACT product interface that a factory
++        # actually returns -- so Strategy/Observer implementers no longer count as products.
++        factory_product_types = set()
++        for t in types.values():
++            for m in t.methods:
++                if m.is_constructor:
++                    continue
++                if m.return_type in known_type_names and (
++                    t.is_abstract or re.search(r"\bnew\s+[A-Za-z_]", m.body)
++                ):
++                    factory_product_types.add(m.return_type)
++        is_product_exists = any(
++            (not c.is_abstract)
++            and c.kind == "class"
++            and any(
++                (p in c.implements or c.extends == p) and p in types and types[p].is_abstract
++                for p in factory_product_types
++            )
++            for c in types.values()
++        )
+ 
+         for c in concrete_types:
+             for parent in _declared_parents(c):
+@@ -304,7 +331,6 @@
+         #     REJECTED as NOT GoF Factory Method: it has no abstract creator, so F1 is
+         #     false by construction. This is an intentional, documented distinction, not
+         #     an oversight.
+-        known_type_names = set(types.keys())
+         abstract_creators = []
+         for t in types.values():
+             if not t.is_abstract:
+@@ -478,20 +504,47 @@
+             "isLeaf(x)": bool(leaves),
+         }
+ 
+-        uniform = False
+-        if composites and leaves and abstract_components:
+-            api = set(m.name for m in abstract_components[0].methods)
+-            if api:
+-                uniform = all(name in {m.name for m in composites[0].methods} for name in api) and all(
+-                    name in {m.name for m in leaves[0].methods} for name in api
+-                )
++        # Fix D: a REAL Composite requires an actual part-whole hierarchy, not merely the
++        # presence of some interface. For each abstract component, a COMPOSITE is a concrete
++        # implementor that HOLDS A COLLECTION of that component type; a LEAF is a concrete
++        # implementor that does not. C1/C4/C5 fire only when such a real hierarchy exists,
++        # so programs whose only interfaces are Strategy/Observer (no part-whole structure)
++        # no longer produce spurious component/composite detections. C2/C3 keep their prior
++        # (already-100%-agreeing) behaviour.
++        elem_re = re.compile(
++            r"\b(?:List|Set|Collection|ArrayList|LinkedList|HashSet|CopyOnWriteArrayList|Vector)"
++            r"\s*<\s*([A-Za-z_][A-Za-z0-9_]*)\s*>"
++        )
++        real_components = []
++        for comp in abstract_components:
++            impls = [
++                t
++                for t in types.values()
++                if t.kind == "class"
++                and not t.is_abstract
++                and (t.extends == comp.name or comp.name in t.implements)
++            ]
++            comp_composites = [t for t in impls if comp.name in elem_re.findall(t.body)]
++            comp_leaves = [t for t in impls if t not in comp_composites]
++            if comp_composites:
++                real_components.append((comp, comp_composites, comp_leaves))
+ 
+-        c1 = bool(component_names)
+-        c2 = bool(leaves)
+-        c3 = bool(composites)
+-        c4 = bool(composites and leaves)
+-        c5 = uniform
++        real_c5 = False
++        for comp, comp_composites, comp_leaves in real_components:
++            if comp_composites and comp_leaves:
++                api = {m.name for m in comp.methods}
++                if api and all(api <= {m.name for m in x.methods} for x in comp_composites) and all(
++                    api <= {m.name for m in x.methods} for x in comp_leaves
++                ):
++                    real_c5 = True
++                    break
+ 
++        c1 = bool(real_components)                                        # real abstract component
++        c2 = bool(leaves)                                                 # unchanged
++        c3 = bool(composites)                                             # unchanged
++        c4 = any(cc and lv for (_, cc, lv) in real_components)            # real composite AND leaf
++        c5 = real_c5                                                      # uniform over the ACTUAL component API
++
+         rows = [
+             self._row("C1", 3, c1, "Abstract component exists."),
+             self._row("C2", 2, c2, "Leaf type exists."),
+@@ -502,12 +555,75 @@
+         return base, derived, rows
+ 
+     def _evaluate_observer(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
+-        observer_types = [t for t in types.values() if t.kind == "interface" and any(m.name == "update" for m in t.methods)]
+-        observer_names = {t.name for t in observer_types}
++        class_types = [t for t in types.values() if t.kind == "class"]
+ 
+-        # A subject may be declared as an `interface` (abstract subject) as well as a
+-        # concrete class: an interface counts as fulfilling the "abstract subject" role
+-        # for O1, exactly like an abstract class.
++        # --- Fix B: JDK Observer framework (java.util.Observable / java.util.Observer).
++        # These are abstract framework types not declared in the project. A class that
++        # `extends Observable` fills the (abstract) subject role; a class that
++        # `implements Observer` fills the (abstract) observer role. Keyed off the framework
++        # type names, never off the user's class names.
++        jdk_subjects = [t for t in class_types if t.extends == "Observable"]
++        jdk_observers = [t for t in class_types if "Observer" in t.implements]
++
++        # --- Fix A: detect the observer callback by STRUCTURE, not by the name `update`.
++        # A subject notifies either (a) by iterating a collection of observers and invoking
++        # a method on each element, or (b) by invoking a method on a single held observer
++        # reference. The invoked method is the callback (ANY name -- update, notify,
++        # onLogEvent, ...); the element/field type is the observer type.
++        elem_field_re = re.compile(
++            r"\b(?:List|Set|Collection|ArrayList|LinkedList|HashSet|CopyOnWriteArrayList|Vector)"
++            r"\s*<\s*([A-Za-z_][A-Za-z0-9_]*)\s*>\s+([A-Za-z_][A-Za-z0-9_]*)"
++        )
++        foreach_re = re.compile(
++            r"for\s*\(\s*(?:final\s+)?[A-Za-z_][A-Za-z0-9_<>\[\]]*\s+"
++            r"([A-Za-z_][A-Za-z0-9_]*)\s*:\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)"
++        )
++
++        observer_type_names = set()
++        callback_names = set()
++        notifies_loop = False
++        notifies_single = False
++
++        for t in class_types:
++            coll_fields = {name: elem for (elem, name) in elem_field_re.findall(t.body)}
++            single_obs_fields = {
++                f.name: f.field_type
++                for f in t.fields
++                if f.field_type in types and types[f.field_type].is_abstract
++            }
++            for m in t.methods:
++                body = m.body
++                # (a) loop-based notification: for (X v : coll) { v.callback(...) }
++                for (var, coll) in foreach_re.findall(body):
++                    elem = coll_fields.get(coll)
++                    if not elem or elem not in types:
++                        continue
++                    calls = re.findall(r"\b" + re.escape(var) + r"\.([A-Za-z_][A-Za-z0-9_]*)\s*\(", body)
++                    if calls:
++                        observer_type_names.add(elem)
++                        callback_names.update(calls)
++                        notifies_loop = True
++                # (b) single held observer of an abstract type that has a concrete impl
++                for fname, ftype in single_obs_fields.items():
++                    has_impl = any(
++                        (not c.is_abstract) and c.kind == "class"
++                        and (c.extends == ftype or ftype in c.implements)
++                        for c in class_types
++                    )
++                    if not has_impl:
++                        continue
++                    calls = re.findall(r"\b" + re.escape(fname) + r"\.([A-Za-z_][A-Za-z0-9_]*)\s*\(", body)
++                    if calls:
++                        observer_type_names.add(ftype)
++                        callback_names.update(calls)
++                        notifies_single = True
++
++        observer_type_objs = [types[n] for n in observer_type_names if n in types]
++        observer_names = set(observer_type_names) | {o.name for o in jdk_observers}
++
++        # Subject candidates (registration/notification role): interface or class declaring
++        # registration/notification methods (unchanged from prior behaviour), augmented with
++        # JDK Observable subclasses.
+         subject_candidates = [
+             t
+             for t in types.values()
+@@ -525,11 +641,7 @@
+             for t in subject_candidates
+             for m in t.methods
+         )
+-        traverses_collection = any(
+-            re.search(r"for\s*\(.*:.*\)", m.body)
+-            for t in subject_candidates
+-            for m in t.methods
+-        )
++        traverses_collection = notifies_loop
+         increases = any(re.search(r"\.add\s*\(", m.body) for t in subject_candidates for m in t.methods)
+         decreases = any(re.search(r"\.remove\s*\(", m.body) for t in subject_candidates for m in t.methods)
+ 
+@@ -539,18 +651,20 @@
+         is_unregister = any(m.name in {"detach", "remove"} for t in subject_candidates for m in t.methods)
+         is_notify = any(m.name in {"notifyObservers", "notify"} for t in subject_candidates for m in t.methods)
+ 
+-        notify_calls_update = any(
+-            m.name in {"notifyObservers", "notify"} and re.search(r"\.update\s*\(", m.body)
+-            for t in subject_candidates
+-            for m in t.methods
+-        )
++        notifies_observers = notifies_loop or notifies_single
+ 
+         concrete_observers = [
+             t
+-            for t in types.values()
+-            if t.kind == "class" and any(obs in t.implements for obs in observer_names)
++            for t in class_types
++            if any(obs == t.extends or obs in t.implements for obs in observer_names)
+         ]
+ 
++        # O4: every concrete observer implements the callback (ANY name), or the JDK Observer.
++        observers_update = bool(concrete_observers) and all(
++            bool(callback_names & {m.name for m in t.methods}) or ("Observer" in t.implements)
++            for t in concrete_observers
++        )
++
+         base = {
+             "isAbstract(x)": any(t.is_abstract for t in types.values()),
+             "isConcrete(x)": any(t.kind == "class" and not t.is_abstract for t in types.values()),
+@@ -566,20 +680,27 @@
+         }
+ 
+         derived = {
+-            "isObserver(x)": bool(observer_types),
+-            "isUpdate(m)": any(m.name == "update" for t in types.values() for m in t.methods),
+-            "isSubject(x)": bool(subject_candidates),
++            "isObserver(x)": bool(observer_type_objs) or bool(jdk_observers),
++            "isUpdate(m)": bool(callback_names),
++            "isSubject(x)": bool(subject_candidates) or bool(jdk_subjects),
+             "isRegisterObserver(m)": is_register,
+             "isUnregisterObserver(m)": is_unregister,
+             "isNotify(m)": is_notify,
+-            "notifies(s,o)": notify_calls_update,
+-            "updates(o,s)": bool(concrete_observers) and all(any(m.name == "update" for m in t.methods) for t in concrete_observers),
++            "notifies(s,o)": notifies_observers,
++            "updates(o,s)": observers_update,
+         }
+ 
+-        o1 = any(t.is_abstract and t.kind in {"class", "interface"} for t in subject_candidates)
+-        o2 = bool(observer_types)
+-        o3 = notify_calls_update and traverses_collection
+-        o4 = derived["updates(o,s)"]
++        # O1: an ABSTRACT subject exists -- an interface/abstract-class subject, OR a class
++        #     extending the abstract JDK Observable (Fix B).
++        o1 = any(t.is_abstract for t in subject_candidates) or bool(jdk_subjects)
++        # O2: an ABSTRACT observer exists -- a structurally-detected observer interface/
++        #     abstract class, OR a class implementing the abstract JDK Observer (Fix B).
++        o2 = any(t.is_abstract for t in observer_type_objs) or bool(jdk_observers)
++        # O3: the subject actually notifies observers -- collection loop or single held
++        #     observer -- regardless of the callback's name (Fix A).
++        o3 = notifies_observers
++        # O4: concrete observers implement the callback (any name) / the JDK Observer.
++        o4 = observers_update
+ 
+         rows = [
+             self._row("O1", 2, o1, "At least one abstract subject exists."),

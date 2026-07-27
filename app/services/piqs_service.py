@@ -22,10 +22,15 @@ _DECL_RE = re.compile(
     re.MULTILINE,
 )
 
+# Fix E: an optional `throws <exceptions>` clause may sit between the parameter list and
+# the opening brace/semicolon. Without this, methods like `create(...) throws IOException {`
+# were not matched at all and their return type became invisible (breaking Factory F4).
 _METHOD_SIG_RE = re.compile(
     r"(?P<mods>(?:(?:public|protected|private|static|final|abstract|synchronized)\s+)*)"
     r"(?:(?P<ret>[A-Za-z_][A-Za-z0-9_<>\[\]\.]*?)\s+)?"
-    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s*\((?P<params>[^)]*)\)\s*(?P<tail>\{|;)",
+    r"(?P<name>[A-Za-z_][A-Za-z0-9_]*)\s*\((?P<params>[^)]*)\)\s*"
+    r"(?:throws\s+[A-Za-z_][A-Za-z0-9_,.\s]*?\s*)?"
+    r"(?P<tail>\{|;)",
     re.MULTILINE,
 )
 
@@ -203,9 +208,54 @@ class PIQSService:
 
         return methods
 
+    @staticmethod
+    def _class_scope_only(body: str) -> str:
+        """Fix F: return only the class-body text at brace-depth 0 -- every method,
+        constructor, initialiser and nested-type body (and anything deeper) is stripped.
+        Fields are declared at class scope; anything inside those removed blocks is a
+        local variable and must not be captured as a field."""
+        out: list[str] = []
+        depth = 0
+        for ch in body:
+            if ch == "{":
+                depth += 1
+                continue
+            if ch == "}":
+                if depth > 0:
+                    depth -= 1
+                continue
+            if depth == 0:
+                out.append(ch)
+        return "".join(out)
+
+    @staticmethod
+    def _calls_method(body: str, name: str) -> bool:
+        """Fix G: True if `body` invokes a method named exactly `name` -- a whole
+        identifier followed by '(' (so `pay` does not match inside `payment`)."""
+        return re.search(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"\s*\(", body) is not None
+
+    @staticmethod
+    def _mentions_token(body: str, name: str) -> bool:
+        """Fix G: True if `name` occurs in `body` as a whole identifier, not a substring."""
+        return re.search(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])", body) is not None
+
+    @staticmethod
+    def _has_verb_prefix(name: str, verb: str) -> bool:
+        """Fix G: True if `name` is exactly `verb`, or a camelCase method that begins with
+        it (add -> add, addChild, addObserver, add_child) -- but NOT a word that merely
+        starts with those letters (add -> address is False)."""
+        if name == verb:
+            return True
+        if name.startswith(verb):
+            rest = name[len(verb):]
+            return bool(rest) and (rest[0].isupper() or rest[0].isdigit() or rest[0] == "_")
+        return False
+
     def _extract_fields(self, body: str) -> list[JavaField]:
         fields: list[JavaField] = []
-        for m in _FIELD_RE.finditer(body):
+        # Fix F: parse field declarations only at class-body scope; local variables inside
+        # method/constructor bodies must not be captured as fields.
+        for m in _FIELD_RE.finditer(self._class_scope_only(body)):
             field_type = self._base_name(m.group("type") or "")
             if not field_type:
                 continue
@@ -216,18 +266,32 @@ class PIQSService:
     def _evaluate_factory_method(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
         abstract_types = [t for t in types.values() if t.is_abstract]
         concrete_types = [t for t in types.values() if not t.is_abstract and t.kind == "class"]
+        known_type_names = set(types.keys())
 
         extends_exists = any(t.extends for t in concrete_types)
         implements_exists = any(t.implements for t in concrete_types)
         has_method_exists = any(t.methods for t in types.values())
         returns_exists = any(m.return_type for t in types.values() for m in t.methods if not m.is_constructor)
 
+        # A concrete type's abstract parents are the project types it extends OR
+        # implements. An interface parent counts exactly like an abstract-class parent:
+        # implementing an interface establishes the same abstract-parent relationship
+        # that extending an abstract class does.
+        def _declared_parents(t):
+            parents = []
+            if t.extends and t.extends in types:
+                parents.append(t.extends)
+            for iface in t.implements:
+                if iface in types:
+                    parents.append(iface)
+            return parents
+
         overrides_exists = False
         for t in concrete_types:
-            if not t.extends or t.extends not in types:
-                continue
-            parent_methods = {m.name for m in types[t.extends].methods}
-            if parent_methods.intersection({m.name for m in t.methods}):
+            parent_method_names = set()
+            for parent in _declared_parents(t):
+                parent_method_names |= {m.name for m in types[parent].methods}
+            if parent_method_names & {m.name for m in t.methods}:
                 overrides_exists = True
                 break
 
@@ -248,13 +312,34 @@ class PIQSService:
                     if re.search(r"\bnew\s+[A-Za-z_][A-Za-z0-9_]*\s*\(", m.body):
                         creates_exists = True
 
-        for c in concrete_types:
-            if any(i in product_names for i in c.implements):
-                is_product_exists = True
+        # Fix C: a PRODUCT is the type RETURNED by a factory method (the creates/returns
+        # relationship), not any type that merely implements some unrelated interface.
+        # factory_product_types = return types of factory methods (declared by an abstract
+        # creator, or a method that instantiates via `new`). F5 then fires only when a
+        # concrete class implements/extends an ABSTRACT product interface that a factory
+        # actually returns -- so Strategy/Observer implementers no longer count as products.
+        factory_product_types = set()
+        for t in types.values():
+            for m in t.methods:
+                if m.is_constructor:
+                    continue
+                if m.return_type in known_type_names and (
+                    t.is_abstract or re.search(r"\bnew\s+[A-Za-z_]", m.body)
+                ):
+                    factory_product_types.add(m.return_type)
+        is_product_exists = any(
+            (not c.is_abstract)
+            and c.kind == "class"
+            and any(
+                (p in c.implements or c.extends == p) and p in types and types[p].is_abstract
+                for p in factory_product_types
+            )
+            for c in types.values()
+        )
 
         for c in concrete_types:
-            if c.extends and c.extends in types:
-                parent_methods = {m.name: m for m in types[c.extends].methods}
+            for parent in _declared_parents(c):
+                parent_methods = {m.name: m for m in types[parent].methods}
                 for m in c.methods:
                     if m.name in parent_methods and (m.return_type in product_names or parent_methods[m.name].return_type in product_names):
                         is_creator_exists = True
@@ -276,8 +361,45 @@ class PIQSService:
             "isCreator(c)": is_creator_exists,
         }
 
-        f1 = any(t.kind == "class" and t.is_abstract for t in types.values())
-        f2 = any(t.kind == "class" and not t.is_abstract and t.extends for t in types.values())
+        # --- Abstract creator detection (Factory Method F1) ------------------------
+        # An abstract creator is an abstract TYPE -- a Java `interface` OR an
+        # `abstract class` -- that plays the creator role: it declares a factory method
+        # (a non-constructor method whose return type is a project-defined product type)
+        # and is implemented/extended by at least one concrete class.
+        #
+        # DESIGN DECISION (interface-as-abstract-role; see Kim replication study):
+        #   * Interface creators ARE accepted as the abstract creator, exactly like an
+        #     abstract class. A concrete class that `implements` the creator interface
+        #     counts the same as one that `extends` an abstract creator class.
+        #   * A static/switch "simple factory" -- a single CONCRETE class exposing a
+        #     static create() method, with no abstract creator type -- is DELIBERATELY
+        #     REJECTED as NOT GoF Factory Method: it has no abstract creator, so F1 is
+        #     false by construction. This is an intentional, documented distinction, not
+        #     an oversight.
+        abstract_creators = []
+        for t in types.values():
+            if not t.is_abstract:
+                continue
+            declares_factory = any(
+                (not m.is_constructor) and m.return_type in known_type_names
+                for m in t.methods
+            )
+            has_concrete_impl = any(
+                (not c.is_abstract) and c.kind == "class"
+                and (c.extends == t.name or t.name in c.implements)
+                for c in types.values()
+            )
+            if declares_factory and has_concrete_impl:
+                abstract_creators.append(t)
+
+        f1 = bool(abstract_creators)
+        f2 = any(
+            t.kind == "class" and not t.is_abstract and (
+                (t.extends in types and types[t.extends].is_abstract)
+                or any(i in types and types[i].is_abstract for i in t.implements)
+            )
+            for t in types.values()
+        )
         f3 = overrides_exists
         f4 = creates_exists
         f5 = is_product_exists
@@ -326,9 +448,10 @@ class PIQSService:
 
         for c in concrete_classes:
             field_strategy = any(f.field_type in strategy_ifaces for f in c.fields)
-            setter = any(m.name.lower().startswith("set") and any(pt in strategy_ifaces for pt in m.param_types) for m in c.methods)
+            setter = any(self._has_verb_prefix(m.name, "set") and any(pt in strategy_ifaces for pt in m.param_types) for m in c.methods)
+            # Fix G: invoke-by-whole-token, not `"pay" in body` (which matched "payment").
             execute = any(
-                any(name in m.body for name in strategy_method_names) and re.search(r"\.[A-Za-z_][A-Za-z0-9_]*\s*\(", m.body)
+                any(self._calls_method(m.body, name) for name in strategy_method_names)
                 for m in c.methods
             )
 
@@ -389,13 +512,17 @@ class PIQSService:
             if t.kind == "class" and not t.is_abstract and (t.extends in component_names or any(i in component_names for i in t.implements))
         ]
 
-        is_add = any(m.name.lower().startswith("add") for t in concrete_components for m in t.methods)
-        is_remove = any(m.name.lower().startswith("remove") for t in concrete_components for m in t.methods)
+        # Fix G: recognise add/remove operations by whole-token camelCase verb prefix
+        # (add, addChild, addComponent) -- not by substring ("add" also occurs in "address").
+        is_add = any(self._has_verb_prefix(m.name, "add") for t in concrete_components for m in t.methods)
+        is_remove = any(self._has_verb_prefix(m.name, "remove") for t in concrete_components for m in t.methods)
 
         accepts_exists = any(any(pt in component_names for pt in m.param_types) for t in concrete_components for m in t.methods)
 
         composites = [
-            t for t in concrete_components if any("add" in m.name.lower() or "remove" in m.name.lower() for m in t.methods)
+            t
+            for t in concrete_components
+            if any(self._has_verb_prefix(m.name, "add") or self._has_verb_prefix(m.name, "remove") for m in t.methods)
         ]
         leaves = [t for t in concrete_components if t not in composites]
 
@@ -404,8 +531,8 @@ class PIQSService:
             any(pt in component_names for m in t.methods for pt in m.param_types)
             for t in composites
         )
-        is_add_child = any(any(m.name.lower().startswith("add") for m in t.methods) for t in composites)
-        is_remove_child = any(any(m.name.lower().startswith("remove") for m in t.methods) for t in composites)
+        is_add_child = any(any(self._has_verb_prefix(m.name, "add") for m in t.methods) for t in composites)
+        is_remove_child = any(any(self._has_verb_prefix(m.name, "remove") for m in t.methods) for t in composites)
 
         base = {
             "isAbstract(x)": bool(abstract_components),
@@ -427,19 +554,46 @@ class PIQSService:
             "isLeaf(x)": bool(leaves),
         }
 
-        uniform = False
-        if composites and leaves and abstract_components:
-            api = set(m.name for m in abstract_components[0].methods)
-            if api:
-                uniform = all(name in {m.name for m in composites[0].methods} for name in api) and all(
-                    name in {m.name for m in leaves[0].methods} for name in api
-                )
+        # Fix D: a REAL Composite requires an actual part-whole hierarchy, not merely the
+        # presence of some interface. For each abstract component, a COMPOSITE is a concrete
+        # implementor that HOLDS A COLLECTION of that component type; a LEAF is a concrete
+        # implementor that does not. C1/C4/C5 fire only when such a real hierarchy exists,
+        # so programs whose only interfaces are Strategy/Observer (no part-whole structure)
+        # no longer produce spurious component/composite detections. C2/C3 keep their prior
+        # (already-100%-agreeing) behaviour.
+        elem_re = re.compile(
+            r"\b(?:List|Set|Collection|ArrayList|LinkedList|HashSet|CopyOnWriteArrayList|Vector)"
+            r"\s*<\s*([A-Za-z_][A-Za-z0-9_]*)\s*>"
+        )
+        real_components = []
+        for comp in abstract_components:
+            impls = [
+                t
+                for t in types.values()
+                if t.kind == "class"
+                and not t.is_abstract
+                and (t.extends == comp.name or comp.name in t.implements)
+            ]
+            comp_composites = [t for t in impls if comp.name in elem_re.findall(t.body)]
+            comp_leaves = [t for t in impls if t not in comp_composites]
+            if comp_composites:
+                real_components.append((comp, comp_composites, comp_leaves))
 
-        c1 = bool(component_names)
-        c2 = bool(leaves)
-        c3 = bool(composites)
-        c4 = bool(composites and leaves)
-        c5 = uniform
+        real_c5 = False
+        for comp, comp_composites, comp_leaves in real_components:
+            if comp_composites and comp_leaves:
+                api = {m.name for m in comp.methods}
+                if api and all(api <= {m.name for m in x.methods} for x in comp_composites) and all(
+                    api <= {m.name for m in x.methods} for x in comp_leaves
+                ):
+                    real_c5 = True
+                    break
+
+        c1 = bool(real_components)                                        # real abstract component
+        c2 = bool(leaves)                                                 # unchanged
+        c3 = bool(composites)                                             # unchanged
+        c4 = any(cc and lv for (_, cc, lv) in real_components)            # real composite AND leaf
+        c5 = real_c5                                                      # uniform over the ACTUAL component API
 
         rows = [
             self._row("C1", 3, c1, "Abstract component exists."),
@@ -451,13 +605,79 @@ class PIQSService:
         return base, derived, rows
 
     def _evaluate_observer(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
-        observer_types = [t for t in types.values() if t.kind == "interface" and any(m.name == "update" for m in t.methods)]
-        observer_names = {t.name for t in observer_types}
+        class_types = [t for t in types.values() if t.kind == "class"]
 
+        # --- Fix B: JDK Observer framework (java.util.Observable / java.util.Observer).
+        # These are abstract framework types not declared in the project. A class that
+        # `extends Observable` fills the (abstract) subject role; a class that
+        # `implements Observer` fills the (abstract) observer role. Keyed off the framework
+        # type names, never off the user's class names.
+        jdk_subjects = [t for t in class_types if t.extends == "Observable"]
+        jdk_observers = [t for t in class_types if "Observer" in t.implements]
+
+        # --- Fix A: detect the observer callback by STRUCTURE, not by the name `update`.
+        # A subject notifies either (a) by iterating a collection of observers and invoking
+        # a method on each element, or (b) by invoking a method on a single held observer
+        # reference. The invoked method is the callback (ANY name -- update, notify,
+        # onLogEvent, ...); the element/field type is the observer type.
+        elem_field_re = re.compile(
+            r"\b(?:List|Set|Collection|ArrayList|LinkedList|HashSet|CopyOnWriteArrayList|Vector)"
+            r"\s*<\s*([A-Za-z_][A-Za-z0-9_]*)\s*>\s+([A-Za-z_][A-Za-z0-9_]*)"
+        )
+        foreach_re = re.compile(
+            r"for\s*\(\s*(?:final\s+)?[A-Za-z_][A-Za-z0-9_<>\[\]]*\s+"
+            r"([A-Za-z_][A-Za-z0-9_]*)\s*:\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)"
+        )
+
+        observer_type_names = set()
+        callback_names = set()
+        notifies_loop = False
+        notifies_single = False
+
+        for t in class_types:
+            coll_fields = {name: elem for (elem, name) in elem_field_re.findall(t.body)}
+            single_obs_fields = {
+                f.name: f.field_type
+                for f in t.fields
+                if f.field_type in types and types[f.field_type].is_abstract
+            }
+            for m in t.methods:
+                body = m.body
+                # (a) loop-based notification: for (X v : coll) { v.callback(...) }
+                for (var, coll) in foreach_re.findall(body):
+                    elem = coll_fields.get(coll)
+                    if not elem or elem not in types:
+                        continue
+                    calls = re.findall(r"\b" + re.escape(var) + r"\.([A-Za-z_][A-Za-z0-9_]*)\s*\(", body)
+                    if calls:
+                        observer_type_names.add(elem)
+                        callback_names.update(calls)
+                        notifies_loop = True
+                # (b) single held observer of an abstract type that has a concrete impl
+                for fname, ftype in single_obs_fields.items():
+                    has_impl = any(
+                        (not c.is_abstract) and c.kind == "class"
+                        and (c.extends == ftype or ftype in c.implements)
+                        for c in class_types
+                    )
+                    if not has_impl:
+                        continue
+                    calls = re.findall(r"\b" + re.escape(fname) + r"\.([A-Za-z_][A-Za-z0-9_]*)\s*\(", body)
+                    if calls:
+                        observer_type_names.add(ftype)
+                        callback_names.update(calls)
+                        notifies_single = True
+
+        observer_type_objs = [types[n] for n in observer_type_names if n in types]
+        observer_names = set(observer_type_names) | {o.name for o in jdk_observers}
+
+        # Subject candidates (registration/notification role): interface or class declaring
+        # registration/notification methods (unchanged from prior behaviour), augmented with
+        # JDK Observable subclasses.
         subject_candidates = [
             t
             for t in types.values()
-            if t.kind == "class"
+            if t.kind in {"class", "interface"}
             and any(
                 m.name in {"attach", "detach", "notifyObservers", "register", "remove", "notify"}
                 for m in t.methods
@@ -471,11 +691,7 @@ class PIQSService:
             for t in subject_candidates
             for m in t.methods
         )
-        traverses_collection = any(
-            re.search(r"for\s*\(.*:.*\)", m.body)
-            for t in subject_candidates
-            for m in t.methods
-        )
+        traverses_collection = notifies_loop
         increases = any(re.search(r"\.add\s*\(", m.body) for t in subject_candidates for m in t.methods)
         decreases = any(re.search(r"\.remove\s*\(", m.body) for t in subject_candidates for m in t.methods)
 
@@ -485,17 +701,19 @@ class PIQSService:
         is_unregister = any(m.name in {"detach", "remove"} for t in subject_candidates for m in t.methods)
         is_notify = any(m.name in {"notifyObservers", "notify"} for t in subject_candidates for m in t.methods)
 
-        notify_calls_update = any(
-            m.name in {"notifyObservers", "notify"} and re.search(r"\.update\s*\(", m.body)
-            for t in subject_candidates
-            for m in t.methods
-        )
+        notifies_observers = notifies_loop or notifies_single
 
         concrete_observers = [
             t
-            for t in types.values()
-            if t.kind == "class" and any(obs in t.implements for obs in observer_names)
+            for t in class_types
+            if any(obs == t.extends or obs in t.implements for obs in observer_names)
         ]
+
+        # O4: every concrete observer implements the callback (ANY name), or the JDK Observer.
+        observers_update = bool(concrete_observers) and all(
+            bool(callback_names & {m.name for m in t.methods}) or ("Observer" in t.implements)
+            for t in concrete_observers
+        )
 
         base = {
             "isAbstract(x)": any(t.is_abstract for t in types.values()),
@@ -512,20 +730,27 @@ class PIQSService:
         }
 
         derived = {
-            "isObserver(x)": bool(observer_types),
-            "isUpdate(m)": any(m.name == "update" for t in types.values() for m in t.methods),
-            "isSubject(x)": bool(subject_candidates),
+            "isObserver(x)": bool(observer_type_objs) or bool(jdk_observers),
+            "isUpdate(m)": bool(callback_names),
+            "isSubject(x)": bool(subject_candidates) or bool(jdk_subjects),
             "isRegisterObserver(m)": is_register,
             "isUnregisterObserver(m)": is_unregister,
             "isNotify(m)": is_notify,
-            "notifies(s,o)": notify_calls_update,
-            "updates(o,s)": bool(concrete_observers) and all(any(m.name == "update" for m in t.methods) for t in concrete_observers),
+            "notifies(s,o)": notifies_observers,
+            "updates(o,s)": observers_update,
         }
 
-        o1 = any(t.is_abstract and t.kind in {"class", "interface"} for t in subject_candidates)
-        o2 = bool(observer_types)
-        o3 = notify_calls_update and traverses_collection
-        o4 = derived["updates(o,s)"]
+        # O1: an ABSTRACT subject exists -- an interface/abstract-class subject, OR a class
+        #     extending the abstract JDK Observable (Fix B).
+        o1 = any(t.is_abstract for t in subject_candidates) or bool(jdk_subjects)
+        # O2: an ABSTRACT observer exists -- a structurally-detected observer interface/
+        #     abstract class, OR a class implementing the abstract JDK Observer (Fix B).
+        o2 = any(t.is_abstract for t in observer_type_objs) or bool(jdk_observers)
+        # O3: the subject actually notifies observers -- collection loop or single held
+        #     observer -- regardless of the callback's name (Fix A).
+        o3 = notifies_observers
+        # O4: concrete observers implement the callback (any name) / the JDK Observer.
+        o4 = observers_update
 
         rows = [
             self._row("O1", 2, o1, "At least one abstract subject exists."),
@@ -573,7 +798,8 @@ class PIQSService:
                 has_instance_method = True
                 returns = True
                 for m in get_instance:
-                    if any(f.name in m.body for f in static_fields):
+                    # Fix G: whole-token field reference, not substring containment.
+                    if any(self._mentions_token(m.body, f.name) for f in static_fields):
                         accesses_field = True
                     if re.search(rf"\bnew\s+{c.name}\s*\(", m.body):
                         calls = True
