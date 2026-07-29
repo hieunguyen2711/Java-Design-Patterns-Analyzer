@@ -1,0 +1,606 @@
+diff --git a/app/services/piqs_service.py b/app/services/piqs_service.py
+index 7b9fce4..39f954a 100644
+--- a/app/services/piqs_service.py
++++ b/app/services/piqs_service.py
+@@ -12,6 +12,27 @@ _PATTERN_WEIGHTS = {
+     "composite": {"C1": 3, "C2": 2, "C3": 3, "C4": 3, "C5": 3},
+     "observer": {"O1": 2, "O2": 3, "O3": 3, "O4": 3},
+     "singleton": {"G1": 3},
++    # --- New patterns (Builder / Decorator / Template Method). Weights follow Kim's Table 9
++    # philosophy (RULE 2): weight 3 = the enabling relationship/behaviour that makes the
++    # pattern work (also the CRITICAL set); weight 2 = existence-of-a-role / interaction;
++    # weight 1 = supporting/peripheral. See validation/bdt_property_spec.md.
++    "builder": {"B1": 3, "B2": 3, "B3": 2, "B4": 2, "B5": 1, "B6": 1},
++    "decorator": {"D1": 2, "D2": 3, "D3": 3, "D4": 2, "D5": 1, "D6": 1},
++    "template-method": {"T1": 2, "T2": 2, "T3": 3, "T4": 2, "T5": 2},
++}
++
++# The critical property set per pattern -- the weight-3 relationship/behaviour properties.
++# A program is recognised AS the pattern only when ALL of its critical properties hold; the
++# BDT mutation battery keys its MUST-PASS / MUST-FAIL verdicts off exactly this set.
++_CRITICAL_PROPERTIES = {
++    "factory-method": {"F2", "F3", "F4"},
++    "strategy": {"S1", "S2", "S4"},
++    "composite": {"C1", "C3", "C4", "C5"},
++    "observer": {"O2", "O3", "O4"},
++    "singleton": {"G1"},
++    "builder": {"B1", "B2"},
++    "decorator": {"D2", "D3"},
++    "template-method": {"T3"},
+ }
+ 
+ _DECL_RE = re.compile(
+@@ -74,6 +95,12 @@ class JavaMethod:
+     modifiers: set[str]
+     body: str
+     is_constructor: bool
++    # True when the declaration carried a brace body ("{ ... }"); False for a `;`-terminated
++    # declaration (an abstract-class abstract method or a bodyless interface method). This is
++    # the ONLY reliable way to tell an abstract primitive (`void step();`) from an
++    # empty-bodied concrete method (`void step() {}`) -- both leave `body == ""`. Template
++    # Method (T1/T2/T3) needs this distinction; the five original patterns never read it.
++    has_body: bool = True
+ 
+ 
+ @dataclass
+@@ -95,7 +122,7 @@ class PIQSService:
+         if normalized not in _PATTERN_WEIGHTS:
+             raise ValueError(
+                 "Unsupported pattern_name. Use one of: factory-method, strategy, "
+-                "composite, observer, singleton."
++                "composite, observer, singleton, builder, decorator, template-method."
+             )
+ 
+         types = self._extract_types(java_files)
+@@ -108,8 +135,14 @@ class PIQSService:
+             base, derived, assessments = self._evaluate_composite(types)
+         elif normalized == "observer":
+             base, derived, assessments = self._evaluate_observer(types)
+-        else:
++        elif normalized == "singleton":
+             base, derived, assessments = self._evaluate_singleton(types)
++        elif normalized == "builder":
++            base, derived, assessments = self._evaluate_builder(types)
++        elif normalized == "decorator":
++            base, derived, assessments = self._evaluate_decorator(types)
++        else:
++            base, derived, assessments = self._evaluate_template_method(types)
+ 
+         weights = _PATTERN_WEIGHTS[normalized]
+         total_properties = len(assessments)
+@@ -190,7 +223,8 @@ class PIQSService:
+             param_types, param_names = self._parse_params(params)
+ 
+             method_body = ""
+-            if m.group("tail") == "{":
++            has_body = m.group("tail") == "{"
++            if has_body:
+                 method_body = self._extract_block(body, m.end() - 1)
+ 
+             methods.append(
+@@ -203,6 +237,7 @@ class PIQSService:
+                     modifiers=mods,
+                     body=method_body,
+                     is_constructor=is_ctor,
++                    has_body=has_body,
+                 )
+             )
+ 
+@@ -279,6 +314,95 @@ class PIQSService:
+                 count += 1
+         return count
+ 
++    # ------------------------------------------------------------------ #
++    # New AST helpers (RULE 1): the only two base predicates the codebase lacked.
++    # ------------------------------------------------------------------ #
++    @classmethod
++    def _calls_within(cls, method: "JavaMethod", target: str) -> bool:
++        """callsWithin(method, target): does `method`'s body invoke a method named exactly
++        `target`? Whole-token match (reuses the pass-3 precision rule via _calls_method), so
++        `read` never matches inside `readLine`. Used by D3 (delegation) and T3 (inversion of
++        control)."""
++        return cls._calls_method(method.body, target)
++
++    @staticmethod
++    def _field_of_type(jtype: "JavaType", type_name: str) -> bool:
++        """fieldOfType(class, type): does `jtype` hold a class-scope field whose (base) type is
++        `type_name`? Reuses the pass-3 class-scope-only field extraction (no method-local
++        variables). Used by D2 (decorator holds a component-typed reference)."""
++        return any(f.field_type == type_name for f in jtype.fields)
++
++    @staticmethod
++    def _delegates_to_field(body: str, field_name: str) -> bool:
++        """True if `body` invokes a method on the reference `field_name` -- `field.op(...)` or
++        `this.field.op(...)` as a whole token. The structural signature of delegation (D3)."""
++        return re.search(
++            r"(?<![A-Za-z0-9_])(?:this\s*\.\s*)?" + re.escape(field_name) + r"\s*\.\s*[A-Za-z_]\w*\s*\(",
++            body,
++        ) is not None
++
++    @staticmethod
++    def _assigns_field(body: str, field_name: str) -> bool:
++        """True if `body` assigns to the field `field_name` (`field = ...` or `this.field = ...`),
++        not an equality test. Signals a configuration/build-part step that populates state."""
++        return re.search(
++            r"(?<![A-Za-z0-9_])(?:this\s*\.\s*)?" + re.escape(field_name) + r"\s*=(?!=)",
++            body,
++        ) is not None
++
++    def _effective_methods(self, t: "JavaType", types: dict[str, "JavaType"]) -> list["JavaMethod"]:
++        """`t`'s own methods plus those inherited from its project-defined `extends` ancestors.
++        The Builder role is frequently split across an abstract Builder (declares the terminal
++        getResult()) and a ConcreteBuilder (defines the void build-part steps); reasoning over
++        the effective method set lets one detection see the whole builder family."""
++        methods = list(t.methods)
++        seen = {t.name}
++        cur = t
++        while cur.extends and cur.extends in types and cur.extends not in seen:
++            parent = types[cur.extends]
++            methods.extend(parent.methods)
++            seen.add(parent.name)
++            cur = parent
++        return methods
++
++    def _effective_fields(self, t: "JavaType", types: dict[str, "JavaType"]) -> list["JavaField"]:
++        """`t`'s own class-scope fields plus those inherited from project-defined ancestors."""
++        fields = list(t.fields)
++        seen = {t.name}
++        cur = t
++        while cur.extends and cur.extends in types and cur.extends not in seen:
++            parent = types[cur.extends]
++            fields.extend(parent.fields)
++            seen.add(parent.name)
++            cur = parent
++        return fields
++
++    def _conforms_to(self, t: "JavaType", target: str, types: dict[str, "JavaType"]) -> bool:
++        """True if `t` is-a `target` -- implements/extends it directly or transitively through
++        project-defined supertypes. An interface parent counts exactly like an abstract-class
++        parent (the interface-as-abstract-role rule already used by the five patterns)."""
++        seen = set()
++        stack = [t]
++        while stack:
++            cur = stack.pop()
++            if cur.name in seen:
++                continue
++            seen.add(cur.name)
++            supers = list(cur.implements) + ([cur.extends] if cur.extends else [])
++            if target in supers:
++                return True
++            for s in supers:
++                if s in types:
++                    stack.append(types[s])
++        return False
++
++    @staticmethod
++    def _component_type_names(types: dict[str, "JavaType"]) -> set[str]:
++        """The abstract component types: every interface and every abstract class. A Decorator
++        component and a Template-Method abstract type are both 'abstract types' in this sense
++        (RULE 1: a Java interface counts as an abstract type)."""
++        return {t.name for t in types.values() if t.is_abstract}
++
+     def _extract_fields(self, body: str) -> list[JavaField]:
+         fields: list[JavaField] = []
+         # Fix F: parse field declarations only at class-body scope; local variables inside
+@@ -942,6 +1066,421 @@ class PIQSService:
+         ]
+         return base, derived, rows
+ 
++    # ================================================================== #
++    # Builder
++    # ================================================================== #
++    def _evaluate_builder(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
++        """Builder: a builder object assembles a distinct product through step/configuration
++        methods, replacing a telescoping constructor.
++
++        Derived roles (structural, never name-keyed):
++          isBuilder(T)        -- T has configuration step methods (fluent return-this OR
++                                 void build-part) over its effective (inherited) method set.
++          isTerminalMethod(m) -- a concrete instance method of a builder whose return type is a
++                                 type DISTINCT from the builder (the built product).
++          isProduct(P)        -- the return type of a terminal method.
++          isStepMethod(m)     -- fluent step (returns the builder type) OR void build-part
++                                 (a void method that populates state: assigns a field or mutates
++                                 a held field via a method call).
++
++        Accepted variants (RULE 3): interface / abstract-class / concrete static-nested builder;
++        builder() static factory OR public constructor; mutable OR immutable product (B5 weight
++        handles the difference); fluent chaining OR Director orchestration.
++        """
++        classes = [t for t in types.values() if t.kind in {"class", "enum"}]
++
++        # Per-candidate role analysis over the EFFECTIVE (inherited) method/field set, so a
++        # classic GoF builder -- abstract Builder.getResult() + ConcreteBuilder void steps -- is
++        # seen as one builder family.
++        builder_infos = []  # (type, fluent_steps, void_steps, terminals, step_names)
++        for t in classes:
++            em = self._effective_methods(t, types)
++            ef = self._effective_fields(t, types)
++            field_names = {f.name for f in ef}
++
++            fluent_steps, void_steps, terminals = [], [], []
++            for m in em:
++                if m.is_constructor:
++                    continue
++                # Fluent step: "return this;" chaining. The returned type is the builder's own
++                # concrete type OR an ABSTRACTION the builder conforms to -- an interface/superclass
++                # Builder that the concrete implementor returns `this` as (idiomatic fluent
++                # *interface* builders). Keying only on the own concrete type would miss those.
++                if m.return_type == t.name or (
++                    m.return_type not in (None, "void")
++                    and self._conforms_to(t, m.return_type, types)
++                ):
++                    fluent_steps.append(m)
++                    continue
++                # Void build-part: a void concrete method that populates the product's state
++                # (assigns a field, or mutates a held field through a call on it).
++                if m.return_type == "void" and m.has_body:
++                    if any(self._assigns_field(m.body, fn) or self._delegates_to_field(m.body, fn) for fn in field_names):
++                        void_steps.append(m)
++                    continue
++                # Terminal: a concrete method returning a type distinct from the builder (and not
++                # void / not a constructor) -- this is the build() output, the product. It must
++                # actually CONSUME the builder's configured state -- its body references a builder
++                # (effective) field OR passes `this` to the product constructor. Without this, a
++                # method that returns some distinct type while IGNORING every configured field
++                # (a hollow builder: `build() { return new Gadget(); }` with defaults) would be
++                # mistaken for a genuine terminal.
++                if (
++                    m.has_body
++                    and m.return_type not in (None, "void", t.name)
++                    and (self._mentions_token(m.body, "this")
++                         or any(self._mentions_token(m.body, fn) for fn in field_names))
++                ):
++                    terminals.append(m)
++
++            if fluent_steps or void_steps or terminals:
++                step_names = {m.name for m in fluent_steps + void_steps}
++                builder_infos.append((t, fluent_steps, void_steps, terminals, step_names))
++
++        # A builder is a candidate that has configuration steps AND a terminal producing a
++        # distinct product. (isBuilder ∧ isTerminalMethod)
++        real_builders = [
++            info for info in builder_infos
++            if (info[1] or info[2]) and info[3]
++        ]
++
++        # B1 -- build() returns a product distinct from the builder (the enabling behaviour).
++        b1 = bool(real_builders)
++
++        # B2 -- step/configuration methods assemble the product: fluent-return-this, XOR
++        # void-build-part paired with a terminal getResult(). (The two idiomatic assembly forms.)
++        b2 = any(
++            bool(info[1]) or (bool(info[2]) and bool(info[3]))
++            for info in builder_infos
++        )
++
++        # Product = the return type of a real builder's terminal method.
++        product_names = {m.return_type for info in real_builders for m in info[3]}
++        builder_names = {info[0].name for info in real_builders}
++
++        # B3 -- builder type and product type are distinct (true by construction of a terminal).
++        b3 = any(
++            m.return_type != info[0].name
++            for info in real_builders for m in info[3]
++        )
++
++        # B4 -- telescoping-constructor avoidance / staged construction: a fluent chain, or >= 2
++        # discrete configuration step methods (build the product incrementally, not in one ctor).
++        b4 = any(
++            bool(info[1]) or (len(info[1]) + len(info[2]) >= 2)
++            for info in real_builders
++        )
++
++        # B5 -- product effectively immutable: the product type exposes no public mutator for a
++        # built field. A product that is a JDK/non-project type (e.g. String) is treated as
++        # immutable. (Weight 1: mutable products still score, just lower.)
++        def _product_immutable(pname: str) -> bool:
++            pt = types.get(pname)
++            if pt is None:
++                return True  # non-project product (e.g. String) -- treat as immutable
++            for m in pt.methods:
++                if m.is_constructor:
++                    continue
++                if "public" in m.modifiers and self._has_verb_prefix(m.name, "set"):
++                    return False
++            return True
++
++        b5 = bool(product_names) and any(_product_immutable(p) for p in product_names)
++
++        # B6 -- Director orchestrates XOR client drives the fluent chain. Fluent steps => the
++        # client drives the chain; else look for a Director: a non-builder/non-product type whose
++        # method invokes a builder's step method (callsWithin a step name).
++        all_step_names = {n for info in real_builders for n in info[4]}
++        fluent_exists = any(info[1] for info in real_builders)
++        director_exists = False
++        for t in types.values():
++            if t.name in builder_names or t.name in product_names:
++                continue
++            for m in t.methods:
++                if any(self._calls_within(m, sn) for sn in all_step_names):
++                    director_exists = True
++                    break
++            if director_exists:
++                break
++        b6 = fluent_exists or director_exists
++
++        base = {
++            "isAbstract(x)": any(t.is_abstract for t in types.values()),
++            "isConcrete(x)": any(t.kind == "class" and not t.is_abstract for t in types.values()),
++            "hasMethod(c,m)": any(t.methods for t in types.values()),
++            "returns(m,t)": any(m.return_type for t in types.values() for m in t.methods if not m.is_constructor),
++            "modifies(m,f)": any(
++                self._assigns_field(m.body, f.name)
++                for t in types.values() for m in t.methods for f in t.fields
++            ),
++            "callsWithin(m,t)": bool(all_step_names) and director_exists,
++        }
++
++        derived = {
++            "isBuilder(x)": bool(real_builders),
++            "isProduct(x)": bool(product_names),
++            "isTerminalMethod(m)": any(info[3] for info in real_builders),
++            "isStepMethod(m)": any(info[1] or info[2] for info in builder_infos),
++            "hasFluentChain(x)": fluent_exists,
++            "hasDirector(x)": director_exists,
++        }
++
++        rows = [
++            self._row("B1", 3, b1, "build() returns a product distinct from the builder."),
++            self._row("B2", 3, b2, "Step/configuration methods assemble the product (fluent-return-this XOR void build-part + getResult)."),
++            self._row("B3", 2, b3, "Builder type and product type are distinct."),
++            self._row("B4", 2, b4, "Telescoping-constructor avoidance / staged construction."),
++            self._row("B5", 1, b5, "Product effectively immutable (no public mutators for built fields)."),
++            self._row("B6", 1, b6, "Director orchestrates XOR client drives the fluent chain."),
++        ]
++        return base, derived, rows
++
++    # ================================================================== #
++    # Decorator
++    # ================================================================== #
++    def _evaluate_decorator(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
++        """Decorator: a wrapper that IS-A component and HAS-A component, forwarding the
++        component's operations to the wrapped instance while adding behaviour.
++
++        KNOWN LIMITATION (RULE 4 -- encoded, NOT fixed): Decorator and Proxy are STRUCTURALLY
++        IDENTICAL under static analysis -- both conform to the component interface, hold a
++        component-typed reference, and delegate to it. "Adds behaviour" (Decorator) vs "controls
++        access" (Proxy) is a semantic intent that is NOT statically decidable. This checker does
++        NOT attempt to distinguish them: any structurally-conforming wrapper is accepted as a
++        Decorator. This is disclosed in the paper's threats to validity.
++
++        Derived roles (structural, never name-keyed):
++          isComponent(C) -- an abstract type (interface or abstract class).
++          isDecorator(W) -- a class that conforms to a component C AND holds a field of type C.
++          wraps(W,C)     -- W's held reference is of the component type C it conforms to.
++          delegatesTo(W) -- a method of W invokes an operation on the wrapped reference.
++        """
++        component_names = self._component_type_names(types)
++        classes = [t for t in types.values() if t.kind == "class"]
++
++        # A decorator conforms to a component AND holds a field of a component type.
++        # decorators: list of (W, conformed_components, wrapped_fields[(field, comp_type)])
++        decorators = []
++        for w in classes:
++            conformed = {c for c in component_names if self._conforms_to(w, c, types)}
++            if not conformed:
++                continue
++            wrapped_fields = [
++                (f, f.field_type)
++                for f in w.fields
++                if f.field_type in component_names
++            ]
++            if wrapped_fields:
++                decorators.append((w, conformed, wrapped_fields))
++
++        # D2 -- decorator holds a component-typed reference (composition). CRITICAL.
++        d2 = bool(decorators)
++
++        # D3 -- decorator delegates to the wrapped reference in its component methods. CRITICAL.
++        d3 = any(
++            any(
++                self._delegates_to_field(m.body, f.name)
++                for m in w.methods
++                for (f, _c) in wrapped_fields
++            )
++            for (w, _conf, wrapped_fields) in decorators
++        )
++
++        # D1 -- decorator conforms to the SAME component type it wraps (is-a matches has-a).
++        d1 = any(
++            any(ctype in conformed for (_f, ctype) in wrapped_fields)
++            for (w, conformed, wrapped_fields) in decorators
++        )
++
++        # D4 -- transparent enhancement, no interface conversion (distinguishes from Adapter):
++        # the decorator exposes the wrapped component's whole operation set (its method names are
++        # a subset of the decorator's effective methods) -- calls pass straight through, no
++        # conversion to a different interface. (An Adapter would expose a DIFFERENT interface.)
++        def _transparent(w, wrapped_fields):
++            wnames = {m.name for m in self._effective_methods(w, types) if not m.is_constructor}
++            for (_f, ctype) in wrapped_fields:
++                comp = types.get(ctype)
++                if comp is None:
++                    continue
++                comp_ops = {m.name for m in comp.methods if not m.is_constructor}
++                if comp_ops and comp_ops <= wnames:
++                    return True
++            return False
++
++        d4 = any(_transparent(w, wf) for (w, _conf, wf) in decorators)
++
++        # D5 -- abstract decorator base / recursive composability. An abstract decorator base is
++        # an ABSTRACT decorator (abstract class that conforms-to and holds the component). Failing
++        # that, a collapsed single decorator is still ACCEPTED (RULE 3): because it wraps the
++        # component type itself, it can wrap another decorator -> recursive composability holds.
++        abstract_decorator_base = any(w.is_abstract for (w, _c, _wf) in decorators)
++        d5 = abstract_decorator_base or d2
++
++        # D6 -- full/transparent delegation (NON-CRITICAL diagnostic, weight 1). D3 (critical)
++        # only requires that AT LEAST ONE component method delegates -- this is deliberate:
++        # a legitimate method-suppressing decorator (a read-only view whose mutators throw)
++        # forwards some operations and not others, and must still be accepted. D6 adds VISIBILITY
++        # without changing recognition: it is satisfied only when the decorator forwards EVERY
++        # component operation it implements to the wrapped reference. A partial-delegation wrapper
++        # (delegates some methods, hard-codes others) keeps D2=D3=1 (still recognised) but D6=0,
++        # flagging the incomplete forwarding. Recognition stays keyed to the critical {D2,D3} set.
++        def _fully_delegates(w, wrapped_fields):
++            # Consider only REAL bodied methods of the wrapper (skip the bodyless pseudo-methods the
++            # signature regex harvests from call expressions inside other bodies -- e.g. `inner.add(s)`
++            # yields a spurious bodyless `add`; without this guard it would overwrite the real `add`
++            # and hide its delegation).
++            w_ops = {}
++            for m in w.methods:
++                if m.is_constructor or not m.has_body:
++                    continue
++                w_ops.setdefault(m.name, m)
++            for (f, ctype) in wrapped_fields:
++                comp = types.get(ctype)
++                if comp is None:
++                    continue
++                comp_ops = {m.name for m in comp.methods if not m.is_constructor and m.return_type is not None}
++                implemented = [op for op in comp_ops if op in w_ops]
++                if implemented and all(
++                    self._delegates_to_field(w_ops[op].body, f.name) for op in implemented
++                ):
++                    return True
++            return False
++
++        d6 = any(_fully_delegates(w, wf) for (w, _conf, wf) in decorators)
++
++        base = {
++            "isAbstract(x)": bool(component_names),
++            "isConcrete(x)": any(t.kind == "class" and not t.is_abstract for t in types.values()),
++            "hasMethod(c,m)": any(t.methods for t in types.values()),
++            "implements(x,y)": any(t.implements for t in classes),
++            "extends(x,y)": any(t.extends for t in classes),
++            "fieldOfType(c,t)": any(
++                self._field_of_type(w, c) for w in classes for c in component_names
++            ),
++            "callsWithin(m,t)": d3,
++        }
++
++        derived = {
++            "isComponent(x)": bool(component_names),
++            "isDecorator(x)": bool(decorators),
++            "wraps(d,c)": d1,
++            "delegatesTo(d,c)": d3,
++            "isTransparent(d)": d4,
++            "hasAbstractDecoratorBase(x)": abstract_decorator_base,
++            "fullyDelegates(d)": d6,
++        }
++
++        rows = [
++            self._row("D1", 2, d1, "Decorator conforms to the same component type as what it wraps."),
++            self._row("D2", 3, d2, "Decorator holds a component-typed reference (composition)."),
++            self._row("D3", 3, d3, "Decorator delegates to the wrapped reference in its component methods."),
++            self._row("D4", 2, d4, "Transparent enhancement -- no interface conversion (distinguishes from Adapter; NOT from Proxy)."),
++            self._row("D5", 1, d5, "Abstract decorator base / recursive composability (collapsed single decorator accepted)."),
++            self._row("D6", 1, d6, "Full delegation -- every implemented component operation forwards to the wrapped reference (non-critical diagnostic; partial delegation still recognised)."),
++        ]
++        return base, derived, rows
++
++    # ================================================================== #
++    # Template Method
++    # ================================================================== #
++    def _evaluate_template_method(self, types: dict[str, JavaType]) -> tuple[dict[str, bool], dict[str, bool], list[dict]]:
++        """Template Method: an abstract type fixes an algorithm skeleton in a concrete method
++        that calls primitive/hook operations deferred to subclasses (inversion of control).
++
++        Derived roles (structural, never name-keyed):
++          isAbstractClassType(A) -- an abstract type (abstract class or interface).
++          isTemplateMethod(m)    -- a CONCRETE method of A that invokes >=1 deferred operation.
++          isPrimitiveOp(m)       -- an abstract method of A (no body) implemented by subclasses.
++          isHook(m)              -- a concrete overridable method of A that a subclass overrides
++                                    and the template invokes (a default-body extension point).
++        """
++        abstract_types = [t for t in types.values() if t.is_abstract]
++        concrete_classes = [t for t in types.values() if t.kind == "class" and not t.is_abstract]
++
++        t1 = t2 = t3 = t4 = t5 = False
++        any_primitive = any_template = any_hook = False
++
++        for a in abstract_types:
++            concrete_methods = [m for m in a.methods if m.has_body and not m.is_constructor]
++            # A genuine abstract primitive is a bodyless, non-constructor method that declares a
++            # return type. The `return_type is not None` guard rejects spurious "methods" the
++            # signature regex harvests from CALL EXPRESSIONS inside other method bodies (e.g.
++            # `System.out.println(...)` -> a bodyless, return-type-less pseudo-method) -- those
++            # must never be counted as deferred primitives (they would fake inversion of control).
++            abstract_methods = [
++                m for m in a.methods
++                if (not m.has_body) and not m.is_constructor and m.return_type is not None
++            ]
++            primitive_names = {m.name for m in abstract_methods}
++
++            subclasses = [
++                s for s in concrete_classes
++                if s.extends == a.name or a.name in s.implements or self._conforms_to(s, a.name, types)
++            ]
++
++            # Hooks: concrete, overridable methods of A that a subclass actually overrides
++            # (proving they are extension points), not internal/final helpers.
++            hook_names = set()
++            for m in concrete_methods:
++                if {"final", "private", "static"} & m.modifiers:
++                    continue
++                if any(
++                    m.name in {sm.name for sm in s.methods if sm.has_body}
++                    for s in subclasses
++                ):
++                    hook_names.add(m.name)
++
++            deferred = primitive_names | hook_names
++
++            # Template methods: concrete methods that invoke >= 1 deferred operation (IoC).
++            templates = [
++                m for m in concrete_methods
++                if any(self._calls_within(m, op) for op in deferred)
++            ]
++            template_names = {m.name for m in templates}
++
++            if concrete_methods:
++                t1 = True  # a concrete skeleton method exists in an abstract type
++            if abstract_methods or hook_names:
++                t2 = True  # >=1 deferred primitive/hook
++            if templates:
++                t3 = True  # the skeleton invokes the deferred operations (inversion of control)
++                any_template = True
++            if any("final" in m.modifiers for m in templates):
++                t4 = True  # template is final / non-overridable
++            for s in subclasses:
++                s_bodies = {sm.name for sm in s.methods if sm.has_body}
++                if (s_bodies & deferred) and not (s_bodies & template_names):
++                    t5 = True  # subclass overrides the primitives, not the template
++
++            any_primitive = any_primitive or bool(abstract_methods)
++            any_hook = any_hook or bool(hook_names)
++
++        base = {
++            "isAbstract(x)": bool(abstract_types),
++            "isConcrete(x)": bool(concrete_classes),
++            "hasMethod(c,m)": any(t.methods for t in types.values()),
++            "overrides(m1,m2)": t5,
++            "extends(x,y)": any(t.extends for t in types.values() if t.kind == "class"),
++            "callsWithin(m,t)": any_template,
++        }
++
++        derived = {
++            "isAbstractClassType(x)": bool(abstract_types),
++            "isTemplateMethod(m)": any_template,
++            "isPrimitiveOp(m)": any_primitive,
++            "isHook(m)": any_hook,
++        }
++
++        rows = [
++            self._row("T1", 2, t1, "A concrete template method exists in an abstract type."),
++            self._row("T2", 2, t2, ">=1 abstract primitive and/or hook deferred to subclasses."),
++            self._row("T3", 3, t3, "The template body invokes the primitive/hook operations (inversion of control)."),
++            self._row("T4", 2, t4, "Template method is final / non-overridable (non-final accepted, lower-scoring)."),
++            self._row("T5", 2, t5, "Subclass overrides the primitives, not the template method."),
++        ]
++        return base, derived, rows
++
+     @staticmethod
+     def _extract_block(text: str, open_brace_idx: int) -> str:
+         if open_brace_idx < 0 or open_brace_idx >= len(text) or text[open_brace_idx] != "{":

@@ -95,7 +95,8 @@ async def analyze_piqs(
 ):
     """Calculate PIQS for one supported pattern from uploaded Java files.
 
-    Supported patterns: factory-method, strategy, composite, observer, singleton.
+    Supported patterns: factory-method, strategy, composite, observer, singleton,
+    builder, decorator, template-method.
     """
     java_files: dict[str, str] = {}
     for file in files:
