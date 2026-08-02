@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "output_dir": "data/outputs/generated_logprobs/llama31_8b",
+    "piqs_results": "data/outputs/piqs_llama31_8b.csv",
+    "threshold": 85.0,
+    "generated_at_utc": "2026-08-02T02:57:44.889591+00:00"
+  },
+  "counts": {
+    "pass": 49,
+    "fail": 47,
+    "unscored": 0,
+    "missing_from_output_dir": 0,
+    "missing_ids_example": null
+  },
+  "warnings": [],
+  "empty_pile": false,
+  "metrics": {
+    "mean_logprob": {
+      "pass": {
+        "n": 49,
+        "mean": -0.06699397715060808,
+        "median": -0.060945370137246685
+      },
+      "fail": {
+        "n": 47,
+        "mean": -0.06951826090604375,
+        "median": -0.06554886323570365
+      },
+      "diff": {
+        "mean": 0.0025242837554356745,
+        "median": 0.004603493098456965
+      }
+    },
+    "min_logprob": {
+      "pass": {
+        "n": 49,
+        "mean": -2.716301981283694,
+        "median": -2.578889846801758
+      },
+      "fail": {
+        "n": 47,
+        "mean": -2.8996781389764013,
+        "median": -2.965714931488037
+      },
+      "diff": {
+        "mean": 0.18337615769270732,
+        "median": 0.3868250846862793
+      }
+    },
+    "min_logprob_critical": {
+      "pass": {
+        "n": 49,
+        "mean": -2.2169152036005135,
+        "median": -2.253788948059082
+      },
+      "fail": {
+        "n": 47,
+        "mean": -2.4020062685012817,
+        "median": -2.253788948059082
+      },
+      "diff": {
+        "mean": 0.1850910649007682,
+        "median": 0.0
+      }
+    }
+  }
+}

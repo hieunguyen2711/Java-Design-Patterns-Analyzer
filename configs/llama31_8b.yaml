@@ -1,0 +1,38 @@
+# =============================================================================
+# llama31_8b.yaml -- generation config for Llama 3.1 8B Instruct (in-process HF).
+# Full grid: 8 PIQS-scoreable patterns x 12 project contexts x k=1 = 96 units.
+#
+#   Dry run:  python generation/run_generation.py --config configs/llama31_8b.yaml --dry-run
+# =============================================================================
+
+output_dir: generated_batches_llama31_8b     # point --output-dir at fast scratch on the cluster
+
+model:
+  id: "meta-llama/Llama-3.1-8B-Instruct"     # gated on HF: needs a one-time HF login/token to DOWNLOAD
+  provider: huggingface                       # load weights on the GPU, generate in-process (no server, no key)
+  dtype: bfloat16                             # auto | bfloat16 | float16 | float32
+  device: auto                                # auto (cuda if available, else cpu) | cuda | cpu
+  # trust_remote_code: false
+
+# The 8 patterns the validated PIQS scorer supports, so every unit is scoreable.
+patterns:
+  - singleton
+  - factory-method
+  - strategy
+  - composite
+  - observer
+  - builder
+  - decorator
+  - template-method
+
+# All 12 project contexts.
+contexts_file: data/input/common_java_projects.json
+
+generation:
+  k: 1                # generations per (pattern, context)
+  temperature: 0.2
+  max_tokens: 2500    # max_new_tokens
+
+retry:
+  max_attempts: 2     # local generation failures (e.g. OOM) are not transient; keep low
+  backoff_seconds: [2]

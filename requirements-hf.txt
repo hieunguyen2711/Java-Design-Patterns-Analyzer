@@ -1,0 +1,12 @@
+# Extra dependencies for the in-process Hugging Face backend
+# (provider: huggingface in the config).
+#
+#   pip install -r requirements-hf.txt
+#
+# torch is intentionally NOT pinned here: the correct build depends on your
+# cluster's CUDA/driver. Install it FIRST, matching your cluster, e.g.:
+#   module load cuda/12.1
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+# (or use your cluster's provided torch module), THEN install this file.
+transformers>=4.45.0
+accelerate>=0.34.0

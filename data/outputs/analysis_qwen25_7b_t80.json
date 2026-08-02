@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "output_dir": "data/outputs/generated_logprobs/qwen25_7b",
+    "piqs_results": "data/outputs/piqs_qwen25_7b.csv",
+    "threshold": 80.0,
+    "generated_at_utc": "2026-08-02T02:57:44.722724+00:00"
+  },
+  "counts": {
+    "pass": 62,
+    "fail": 34,
+    "unscored": 0,
+    "missing_from_output_dir": 0,
+    "missing_ids_example": null
+  },
+  "warnings": [],
+  "empty_pile": false,
+  "metrics": {
+    "mean_logprob": {
+      "pass": {
+        "n": 62,
+        "mean": -0.035024735770337684,
+        "median": -0.0354864712109144
+      },
+      "fail": {
+        "n": 34,
+        "mean": -0.04254551034398764,
+        "median": -0.04093111386759307
+      },
+      "diff": {
+        "mean": 0.007520774573649955,
+        "median": 0.005444642656678669
+      }
+    },
+    "min_logprob": {
+      "pass": {
+        "n": 62,
+        "mean": -1.870234993196303,
+        "median": -1.9082716703414917
+      },
+      "fail": {
+        "n": 34,
+        "mean": -1.9702982096111072,
+        "median": -1.8755613565444946
+      },
+      "diff": {
+        "mean": 0.10006321641480431,
+        "median": -0.03271031379699707
+      }
+    },
+    "min_logprob_critical": {
+      "pass": {
+        "n": 62,
+        "mean": -1.5500433002748797,
+        "median": -1.534665822982788
+      },
+      "fail": {
+        "n": 34,
+        "mean": -1.5916880001040066,
+        "median": -1.5760714411735535
+      },
+      "diff": {
+        "mean": 0.041644699829126886,
+        "median": 0.04140561819076538
+      }
+    }
+  }
+}

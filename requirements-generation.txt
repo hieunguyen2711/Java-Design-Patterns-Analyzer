@@ -1,0 +1,8 @@
+# Core dependencies for the generation runner (generation/run_generation.py).
+#   pip install -r requirements-generation.txt
+#
+# PyYAML is always needed (config parsing).
+# requests is only needed for the `ollama` (local OpenAI-compatible server) backend.
+# For the in-process Hugging Face backend, ALSO install requirements-hf.txt.
+PyYAML==6.0.3
+requests==2.32.3
