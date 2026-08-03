@@ -25,8 +25,17 @@ Model backends (config model.provider)
                   the default backend for this study (Llama 3.1 8B, Qwen 2.5 7B).
 * ollama       -- POST to a local OpenAI-compatible server (Ollama / vLLM / TGI /
                   LM Studio) at model.base_url. No API key. Needs requests.
+* vertex       -- request/response call to Google Gemini 2.5 on Vertex AI (a
+                  frontier-vendor arm of this SAME logprob pilot). NO GPU, NO
+                  weights, NO torch/transformers. Auth is Application Default
+                  Credentials via gcloud -- NO key or JSON in code; project and
+                  location come from the GOOGLE_CLOUD_PROJECT / GOOGLE_CLOUD_LOCATION
+                  env vars. Needs google-genai. Gemini 2.5 ONLY (gemini-2.5-flash,
+                  gemini-2.5-pro) -- response_logprobs is unsupported on 3.x.
 
-There is NO hosted/paid backend and NO API key anywhere.
+The huggingface and ollama backends use NO API key. The vertex backend is
+API-billed (Google credits) and authenticates via gcloud ADC -- still NO key in
+code. Backends load lazily, so you only need a backend's libraries if you use it.
 
 What it does
 ------------
@@ -85,7 +94,8 @@ from typing import Any, Optional
 # GPU node. The default flags below are unchanged from run_generation.py.)
 
 DEFAULT_OLLAMA_BASE = "http://127.0.0.1:11434"     # native Ollama OpenAI-compatible port
-VALID_PROVIDERS = {"huggingface", "ollama"}
+DEFAULT_VERTEX_LOCATION = "us-central1"            # Vertex region (overridable via env)
+VALID_PROVIDERS = {"huggingface", "ollama", "vertex"}
 
 # The study grid is patterns x contexts x reps. These are EXACTLY the 8 patterns
 # our PIQS checker scores (this is the logprob pilot: "Abstract Factory" and
@@ -137,7 +147,7 @@ class PermanentError(Exception):
 @dataclass
 class ModelConfig:
     id: str
-    provider: str = "huggingface"         # "huggingface" | "ollama"
+    provider: str = "huggingface"         # "huggingface" | "ollama" | "vertex"
     # huggingface backend:
     dtype: str = "auto"                   # auto | bfloat16 | float16 | float32
     device: str = "auto"                  # auto | cuda | cpu
@@ -259,6 +269,14 @@ def build_config(args: argparse.Namespace) -> StudyConfig:
         base_url=base_url,
         rate_limit_per_min=args.rate_limit_per_min,
     )
+
+    # vertex arm is Gemini 2.5 ONLY: response_logprobs is broken on Gemini 3.x on
+    # Vertex ("Logprobs is not supported"), which would silently defeat the whole
+    # pilot. Fail fast at config time (no API call) with a clear message.
+    if provider == "vertex" and re.search(r"gemini-3", str(args.model_id or ""), re.IGNORECASE):
+        raise SystemExit(
+            "Config error: response_logprobs is unsupported on Gemini 3.x on Vertex "
+            "('Logprobs is not supported'). Use --model-id gemini-2.5-flash or gemini-2.5-pro.")
 
     # --patterns wins over --patterns-file, which wins over the built-in list.
     inline_patterns = [p.strip() for p in args.patterns.split(",") if p.strip()] if args.patterns else None
@@ -757,12 +775,268 @@ def ollama_generate(model: ModelConfig, prompt: str, temperature: float, max_tok
     return CallResult(content, tokens_in, tokens_out, estimated, str(data.get("model") or model.id), finish_reason)
 
 
+# ---- Google Gemini on Vertex AI (request/response, NO GPU, NO weights) ----- #
+#                                                                             #
+# Additive sibling of hf_generate/ollama_generate for a frontier-vendor arm of #
+# the SAME logprob pilot. It returns the SAME CallResult and reuses the SAME    #
+# compute_logprob_summary, so unit.json / token_logprobs.json come out in the   #
+# IDENTICAL join-ready shape and analyze_logprob_separation.py needs NO change. #
+#                                                                             #
+# Auth is Application Default Credentials (gcloud): the SDK finds               #
+# ~/.config/gcloud/application_default_credentials.json on its own -- NO key or #
+# JSON is ever read or embedded here. Project/location come from the            #
+# GOOGLE_CLOUD_PROJECT / GOOGLE_CLOUD_LOCATION env vars. torch/transformers are #
+# NEVER imported on this path -- it runs on a laptop.                           #
+#                                                                             #
+# RESPONSE SHAPE (resolved from the installed google-genai typed schema, v2.16, #
+# and confirmed by the smoke test's chosen_candidates path -- NOT guessed):     #
+#   resp.candidates[0].logprobs_result.chosen_candidates : list, in gen order,  #
+#       each element (LogprobsResultCandidate) has:                             #
+#           .token           -> str    the chosen token's text                  #
+#           .log_probability -> float  the chosen token's logprob               #
+#   resp.candidates[0].finish_reason : FinishReason enum (STOP/MAX_TOKENS/...)  #
+#   resp.candidates[0].content.parts[*].text : the generated text              #
+#   resp.usage_metadata.{prompt_token_count, candidates_token_count,            #
+#                        thoughts_token_count} : token counts (cost eyeballing)  #
+#   resp.prompt_feedback.block_reason : set when the PROMPT itself was blocked  #
+# --------------------------------------------------------------------------- #
+_VERTEX_CLIENT_CACHE: dict = {}          # (project, location) -> genai.Client
+# Cumulative token ledger for a simple end-of-run spend eyeball (Vertex is
+# API-billed, unlike the free local GPU path). Incremented per successful call.
+_VERTEX_USAGE: dict = {"calls": 0, "prompt_tokens": 0, "candidates_tokens": 0,
+                       "thoughts_tokens": 0, "total_tokens": 0}
+
+
+def _import_genai():
+    """Import the Vertex SDK lazily so the huggingface/ollama paths never need it,
+    and so a clear PermanentError (not a raw ImportError) explains the fix. This
+    imports ONLY google-genai -- never torch/transformers."""
+    try:
+        from google import genai
+        from google.genai import types
+    except ImportError as exc:  # pragma: no cover - environment-specific
+        raise PermanentError(
+            "provider 'vertex' needs the Google GenAI SDK. Install: pip install google-genai "
+            "(auth once with `gcloud auth application-default login`)."
+        ) from exc
+    return genai, types
+
+
+def _get_vertex_client(project: Optional[str] = None, location: Optional[str] = None):
+    """Construct (once, cached) a Vertex-mode genai.Client. Project/location come
+    from args or the GOOGLE_CLOUD_PROJECT / GOOGLE_CLOUD_LOCATION env vars. Auth is
+    ADC: the SDK finds application_default_credentials.json itself -- NO key here.
+    Only called for a REAL generation, so --dry-run never needs the env set."""
+    genai, _ = _import_genai()
+    project = project or os.environ.get("GOOGLE_CLOUD_PROJECT")
+    if not project:
+        raise PermanentError(
+            "provider 'vertex' needs GOOGLE_CLOUD_PROJECT set (your GCP project id), and "
+            "`gcloud auth application-default login` run once for ADC.")
+    location = location or os.environ.get("GOOGLE_CLOUD_LOCATION", DEFAULT_VERTEX_LOCATION)
+    key = (project, location)
+    if key not in _VERTEX_CLIENT_CACHE:
+        _VERTEX_CLIENT_CACHE[key] = genai.Client(vertexai=True, project=project, location=location)
+        logger.info("Initialized Vertex genai.Client (project=%s, location=%s).", project, location)
+    return _VERTEX_CLIENT_CACHE[key]
+
+
+def _map_vertex_finish_reason(finish_reason) -> str:
+    """Map Gemini's FinishReason to the SAME two strings the HF path uses so the
+    shared truncation check (result.finish_reason == "length") behaves identically.
+    Anything that is neither a clean stop nor a length cap keeps its own lowercased
+    name (e.g. "safety", "recitation") so blocked units stay distinguishable."""
+    if finish_reason is None:
+        return "stop"
+    name = getattr(finish_reason, "name", None) or str(finish_reason)
+    if name == "MAX_TOKENS":
+        return "length"
+    if name in ("STOP", "FINISH_REASON_UNSPECIFIED"):
+        return "stop"
+    return name.lower()
+
+
+def _extract_vertex_text(candidate) -> str:
+    """Concatenate the text of every text part of a candidate (blocked/empty -> "")."""
+    content = getattr(candidate, "content", None)
+    parts = (getattr(content, "parts", None) or []) if content is not None else []
+    chunks = []
+    for p in parts:
+        t = getattr(p, "text", None)
+        if t:
+            chunks.append(t)
+    return "".join(chunks)
+
+
+def _parse_vertex_logprobs(logprobs_result) -> tuple[list, list]:
+    """Pull the CHOSEN-token logprobs and token strings out of a LogprobsResult,
+    in generation order.
+
+    Returns (token_logprobs, token_strings) as PARALLEL lists. Candidates with a
+    None logprob are skipped so the two lists stay aligned. Missing/empty -> ([], []).
+    """
+    if logprobs_result is None:
+        return [], []
+    chosen = getattr(logprobs_result, "chosen_candidates", None) or []
+    token_logprobs: list = []
+    token_strings: list = []
+    for cand in chosen:
+        lp = getattr(cand, "log_probability", None)
+        if lp is None:
+            continue
+        token_logprobs.append(float(lp))
+        tok = getattr(cand, "token", None)
+        token_strings.append(tok if tok is not None else "")
+    return token_logprobs, token_strings
+
+
+def _describe_vertex_block(resp) -> str:
+    """A short, code-free description of WHY a response has no usable text, saved
+    as the raw response so a blocked unit stays inspectable. It contains no Java
+    tokens, so it never parses to files -> the unit becomes parse_failed (terminal,
+    so resume skips it and it is NOT retried forever)."""
+    bits = ["VERTEX_BLOCKED"]
+    pf = getattr(resp, "prompt_feedback", None)
+    if pf is not None:
+        br = getattr(pf, "block_reason", None)
+        if br is not None:
+            bits.append(f"prompt_block_reason={getattr(br, 'name', br)}")
+        msg = getattr(pf, "block_reason_message", None)
+        if msg:
+            bits.append(f"message={msg}")
+    cands = getattr(resp, "candidates", None) or []
+    if cands:
+        fr = getattr(cands[0], "finish_reason", None)
+        if fr is not None:
+            bits.append(f"finish_reason={getattr(fr, 'name', fr)}")
+    return " ".join(bits)
+
+
+def _vertex_tokens(resp, prompt: str) -> tuple[int, int, int, bool]:
+    """(tokens_in, tokens_out, thoughts, estimated). Falls back to a ~chars/4
+    estimate (like the ollama path) if usage_metadata is absent, so a mock or a
+    partial response never crashes the counting."""
+    um = getattr(resp, "usage_metadata", None)
+    if um is not None:
+        tin = int(getattr(um, "prompt_token_count", 0) or 0)
+        tout = int(getattr(um, "candidates_token_count", 0) or 0)
+        thoughts = int(getattr(um, "thoughts_token_count", 0) or 0)
+        if tin or tout or thoughts:
+            return tin, tout, thoughts, False
+    return max(1, len(prompt) // 4), 0, 0, True
+
+
+def _parse_vertex_response(resp, prompt: str, model_id: str, max_tokens: int) -> CallResult:
+    """Turn a Gemini response into the SAME CallResult the HF path returns,
+    computing the three confidence numbers with the SHARED compute_logprob_summary.
+    PURE (no network, no globals) so it unit-tests with a synthetic response."""
+    tokens_in, tokens_out, _thoughts, estimated = _vertex_tokens(resp, prompt)
+    candidates = getattr(resp, "candidates", None) or []
+
+    if not candidates:
+        # Prompt-level block / no candidate: save the reason as the raw response;
+        # the marker never parses to Java -> parse_failed (terminal).
+        return CallResult(
+            _describe_vertex_block(resp), tokens_in, tokens_out, estimated, model_id, "blocked",
+            token_logprobs=[], token_strings=[], mean_logprob=None, min_logprob=None,
+            min_logprob_critical=None, critical_fallback=False, num_logprob_tokens=0,
+        )
+
+    cand = candidates[0]
+    finish_reason = _map_vertex_finish_reason(getattr(cand, "finish_reason", None))
+    text = _extract_vertex_text(cand)
+    # Candidate present but empty AND not a clean stop/length (e.g. SAFETY /
+    # RECITATION on the candidate): save the reason so it is inspectable, and let
+    # it flow to parse_failed exactly like any unparseable generation.
+    if not text.strip() and finish_reason not in ("stop", "length"):
+        text = _describe_vertex_block(resp)
+
+    token_logprobs, token_strings = _parse_vertex_logprobs(getattr(cand, "logprobs_result", None))
+    # Feed the token STRINGS as the decoded pieces to the SAME proxy the HF path
+    # uses. mean/min are exact regardless of token-string whitespace encoding;
+    # min_critical uses the identical (documented-approximation) proxy -- reused,
+    # NOT reimplemented -- so all three numbers are computed identically to HF.
+    summary = compute_logprob_summary(token_logprobs, token_strings)
+    return CallResult(
+        text, tokens_in, tokens_out, estimated, model_id, finish_reason,
+        token_logprobs=token_logprobs,
+        token_strings=token_strings,
+        mean_logprob=summary["mean_logprob"],
+        min_logprob=summary["min_logprob"],
+        min_logprob_critical=summary["min_logprob_critical"],
+        critical_fallback=summary["critical_fallback"],
+        num_logprob_tokens=summary["num_logprob_tokens"],
+    )
+
+
+def _record_vertex_usage(tokens_in: int, tokens_out: int, thoughts: int) -> None:
+    _VERTEX_USAGE["calls"] += 1
+    _VERTEX_USAGE["prompt_tokens"] += int(tokens_in or 0)
+    _VERTEX_USAGE["candidates_tokens"] += int(tokens_out or 0)
+    _VERTEX_USAGE["thoughts_tokens"] += int(thoughts or 0)
+    _VERTEX_USAGE["total_tokens"] += int((tokens_in or 0) + (tokens_out or 0) + (thoughts or 0))
+
+
+def _raise_mapped_vertex_error(exc: Exception) -> None:
+    """Classify a Vertex exception as transient (RetryableError) or permanent
+    (PermanentError) for the SHARED call_with_retries loop. 5xx and 429 are
+    transient; other 4xx are permanent; network/timeout errors are transient.
+    Always raises (never returns)."""
+    from google.genai import errors as genai_errors
+    if isinstance(exc, (PermanentError, RetryableError)):
+        raise exc
+    if isinstance(exc, genai_errors.ServerError):
+        raise RetryableError(f"Vertex 5xx: {exc}") from exc
+    if isinstance(exc, genai_errors.ClientError):
+        code = getattr(exc, "code", None)
+        if code in RETRYABLE_STATUS_CODES:            # 429 rate limit, etc.
+            raise RetryableError(f"Vertex {code}: {exc}") from exc
+        raise PermanentError(f"Vertex {code}: {exc}") from exc
+    # httpx timeouts / connection resets / anything else -> treat as transient.
+    raise RetryableError(f"Vertex transient error: {exc}") from exc
+
+
+def vertex_generate(model: ModelConfig, prompt: str, temperature: float, max_tokens: int,
+                    timeout: int, client=None) -> CallResult:
+    """Generate one unit via Gemini on Vertex AI and return the SAME CallResult as
+    hf_generate. `client` is injectable so the parse -> summary -> save path is
+    testable offline with a stub (no network, no credits)."""
+    _genai, types = _import_genai()
+    if client is None:
+        client = _get_vertex_client()
+
+    http_options = types.HttpOptions(timeout=int(timeout) * 1000) if timeout and timeout > 0 else None
+    config = types.GenerateContentConfig(
+        temperature=temperature,               # 0.7 for the pilot
+        max_output_tokens=max_tokens,          # reuse the script's --max-tokens cap
+        response_logprobs=True,                # ask for chosen-token logprobs
+        logprobs=5,                            # also return top-5 alternatives per step
+        http_options=http_options,
+    )
+    try:
+        resp = client.models.generate_content(model=model.id, contents=prompt, config=config)
+    except Exception as exc:  # classified into Retryable/Permanent for the retry loop
+        _raise_mapped_vertex_error(exc)
+
+    result = _parse_vertex_response(resp, prompt, model.id, max_tokens)
+    # Cost eyeball: per-call count logged now; cumulative totals printed at end of run().
+    tokens_in, tokens_out, thoughts, _est = _vertex_tokens(resp, prompt)
+    _record_vertex_usage(tokens_in, tokens_out, thoughts)
+    logger.info("  [vertex] tok in=%d out=%d thoughts=%d | cumulative in=%d out=%d thoughts=%d over %d call(s)",
+                tokens_in, tokens_out, thoughts,
+                _VERTEX_USAGE["prompt_tokens"], _VERTEX_USAGE["candidates_tokens"],
+                _VERTEX_USAGE["thoughts_tokens"], _VERTEX_USAGE["calls"])
+    return result
+
+
 def call_model(model: ModelConfig, prompt: str, temperature: float, max_tokens: int, timeout: int) -> CallResult:
     """Dispatch to the configured backend."""
     if model.provider == "huggingface":
         return hf_generate(model, prompt, temperature, max_tokens)
     if model.provider == "ollama":
         return ollama_generate(model, prompt, temperature, max_tokens, timeout)
+    if model.provider == "vertex":
+        return vertex_generate(model, prompt, temperature, max_tokens, timeout)
     raise PermanentError(f"unknown provider: {model.provider}")
 
 
@@ -1032,6 +1306,14 @@ def run(cfg: StudyConfig, shard_index: int, shard_count: int, limit: Optional[in
 
     logger.info("Done: ok=%d parse_failed=%d failed=%d skipped=%d.",
                 counts["ok"], counts["parse_failed"], counts["failed"], counts["skipped"])
+    # Cost eyeball for the API-billed vertex arm (no effect on the free HF/ollama
+    # paths, which never increment the ledger).
+    if cfg.model.provider == "vertex":
+        u = _VERTEX_USAGE
+        logger.info("Vertex token totals (API-billed): calls=%d prompt(in)=%d candidates(out)=%d "
+                    "thoughts=%d total=%d.",
+                    u["calls"], u["prompt_tokens"], u["candidates_tokens"],
+                    u["thoughts_tokens"], u["total_tokens"])
     attempted = counts["ok"] + counts["parse_failed"] + counts["failed"]
     if attempted > 0 and counts["ok"] == 0 and counts["parse_failed"] == 0:
         return 4     # every attempted unit failed -> surface a broken run to Slurm
@@ -1070,9 +1352,13 @@ def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="Standalone cluster-safe LLM code-generation runner.")
 
     g = parser.add_argument_group("model")
-    g.add_argument("--model-id", required=True, help="HF model id, e.g. meta-llama/Llama-3.1-8B-Instruct.")
+    g.add_argument("--model-id", required=True,
+                   help="HF model id (e.g. meta-llama/Llama-3.1-8B-Instruct) or, for "
+                        "--provider vertex, a Gemini 2.5 id (gemini-2.5-flash | gemini-2.5-pro).")
     g.add_argument("--provider", default="huggingface", choices=sorted(VALID_PROVIDERS),
-                   help="huggingface = in-process weights; ollama = local OpenAI-compatible server.")
+                   help="huggingface = in-process weights; ollama = local OpenAI-compatible "
+                        "server; vertex = Google Gemini 2.5 on Vertex AI (ADC auth, logprobs; "
+                        "set GOOGLE_CLOUD_PROJECT / GOOGLE_CLOUD_LOCATION).")
     g.add_argument("--dtype", default="auto", help="auto | bfloat16 | float16 | float32 (default auto).")
     g.add_argument("--device", default="auto", help="auto | cuda | cpu (default auto).")
     g.add_argument("--attn", default="sdpa", choices=["sdpa", "eager"],
@@ -1081,7 +1367,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     g.add_argument("--base-url", default=None,
                    help=f"ollama backend only; defaults to {DEFAULT_OLLAMA_BASE}.")
     g.add_argument("--rate-limit-per-min", type=float, default=0.0,
-                   help="Per-process request cap (0 = no throttle).")
+                   help="Per-process request cap (0 = no throttle). For the vertex arm, set this "
+                        "to your per-model Vertex quota, e.g. --rate-limit-per-min 60.")
 
     g = parser.add_argument_group("grid")
     g.add_argument("--patterns", default=None,

@@ -49,3 +49,7 @@ Thumbs.db
 # Project specific
 temp_uploads/
 *.log
+
+# Generation logprob-pilot outputs (large, regenerable; do not commit)
+generated_logprobs_*/
+/piqs_gemini_*.csv
