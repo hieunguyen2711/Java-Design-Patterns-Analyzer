@@ -118,9 +118,64 @@ Output: `data/outputs/three_models_minimal_metrics.csv`.
 
 All 180 rows get real CK values, because all 96 units per model have `gen_status = ok`.
 
-### Outcome
+### Outcome — the prediction held
 
-_(filled in after the run)_
+180 rows written in 99 s. 60 rows per model. **`ck_status` counts: `ok` = 180, and nothing else.**
+No unit failed, no unit was dropped, and no metric cell is blank in any of the 180 rows. Every
+(model, pattern) cell holds exactly 12 rows, and all 12 contexts are present with a non-empty
+`project_context`.
+
+`ck_status` distinguishes three failure modes that would otherwise be invisible: `no_java_files`,
+`ck_unavailable: <columns>` (MI ran, CK silently did not — the fallback path at
+`analysis_pipeline.py:73-76`), and `error: <type>: <msg>`. None of them occurred.
+
+Per-model min / mean / max:
+
+**qwen25_7b (n=60)**
+
+| metric | min | mean | max |
+|---|---|---|---|
+| n_files | 2.000 | 5.817 | 10.000 |
+| avg_mi_score | 54.740 | 63.813 | 76.860 |
+| avg_cbo | 0.625 | 1.502 | 2.400 |
+| avg_lcom_star | 0.000 | 0.169 | 0.542 |
+| avg_rfc | 0.000 | 1.617 | 4.500 |
+| avg_dit | 1.000 | 1.074 | 1.500 |
+| ck_overall_score | 74.000 | 84.894 | 88.000 |
+
+**llama31_8b (n=60)**
+
+| metric | min | mean | max |
+|---|---|---|---|
+| n_files | 2.000 | 5.950 | 10.000 |
+| avg_mi_score | 51.860 | 63.472 | 73.850 |
+| avg_cbo | 0.750 | 1.577 | 2.857 |
+| avg_lcom_star | 0.000 | 0.153 | 0.485 |
+| avg_rfc | 0.500 | 1.766 | 4.000 |
+| avg_dit | 1.000 | 1.109 | 1.600 |
+| ck_overall_score | 77.500 | 85.314 | 88.000 |
+
+**qwen25_14b (n=60)**
+
+| metric | min | mean | max |
+|---|---|---|---|
+| n_files | 2.000 | 5.400 | 10.000 |
+| avg_mi_score | 52.030 | 65.402 | 81.360 |
+| avg_cbo | 1.000 | 1.566 | 2.400 |
+| avg_lcom_star | 0.000 | 0.146 | 0.500 |
+| avg_rfc | 0.000 | 1.587 | 4.250 |
+| avg_dit | 1.000 | 1.119 | 1.625 |
+| ck_overall_score | 80.000 | 85.388 | 88.000 |
+
+**Observation, not yet a claim.** The three models are already nearly indistinguishable on every CK
+input. Mean `ck_overall_score` spans 84.89 -> 85.39, a range of 0.49 points, and all three share the
+same maximum of 88.0. Mean MI spans 63.47 -> 65.40. Whether that flatness survives into CQS, and
+how it compares to the PIQS spread, is Task 4's question.
+
+**Note on the `pattern` column.** It holds the Pattern Name form (`Factory Method`), matching both
+the zip directories and the `pattern` column of the PIQS CSVs. The paper's rows use the
+lower-case hyphenated form (`factory-method`); the mapping between them is `PAPER_PATTERNS` in the
+script and is applied at join time in Task 4.
 
 ---
 

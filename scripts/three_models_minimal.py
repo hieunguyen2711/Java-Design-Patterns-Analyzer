@@ -24,8 +24,10 @@ where <dir> is the extracted ``generated_logprobs/`` directory.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import sys
+import time
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +35,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 CONTEXTS_FILE = ROOT_DIR / "data" / "input" / "common_java_projects.json"
+METRICS_CSV = ROOT_DIR / "data" / "outputs" / "three_models_minimal_metrics.csv"
 
 SEED_DIR = "seed_40"
 
@@ -168,8 +171,6 @@ def verify_unit_ids(units: list[dict]) -> None:
 
     This is what makes the Task 4 join exact rather than approximate.
     """
-    import csv
-
     ok = True
     for model_dir, meta in MODELS.items():
         csv_path = ROOT_DIR / "data" / "outputs" / meta["piqs_csv"]
@@ -231,6 +232,112 @@ def print_inventory(units: list[dict]) -> None:
 # Stages                                                                      #
 # --------------------------------------------------------------------------- #
 
+# --------------------------------------------------------------------------- #
+# Scoring                                                                     #
+# --------------------------------------------------------------------------- #
+
+CSV_COLUMNS = [
+    "unit_id",
+    "model",
+    "pattern",
+    "context_slug",
+    "project_context",
+    "n_files",
+    "avg_mi_score",
+    "avg_cbo",
+    "avg_lcom_star",
+    "avg_rfc",
+    "avg_dit",
+    "ck_overall_score",
+    "ck_status",
+]
+
+# CK summary keys that analyze_project leaves as None when run_ck failed.
+# `analysis_pipeline.py:243-250` fills them from ck_summary.get(...), which is
+# an empty dict on the MI-only fallback path.
+CK_KEYS = ("avg_cbo", "avg_lcom_star", "avg_rfc", "avg_dit", "ck_overall_score")
+
+
+def score_unit(unit: dict) -> dict:
+    """Run MI + CK on one unit directory and flatten it into a CSV row.
+
+    Never raises and never drops a unit: a failure is recorded in ck_status
+    with the metric columns left empty.
+    """
+    from app.services.analysis_pipeline import analyze_project
+
+    row = {
+        "unit_id": unit["unit_id"],
+        "model": unit["model"],
+        "pattern": unit["pattern"],
+        "context_slug": unit["context_slug"],
+        "project_context": unit["project_context"],
+        "n_files": unit["n_files"],
+        "avg_mi_score": "",
+        "avg_cbo": "",
+        "avg_lcom_star": "",
+        "avg_rfc": "",
+        "avg_dit": "",
+        "ck_overall_score": "",
+        "ck_status": "",
+    }
+
+    if unit["n_files"] == 0:
+        row["ck_status"] = "no_java_files"
+        return row
+
+    try:
+        result = analyze_project(str(unit["dir"]), pattern_name=unit["pattern"])
+    except Exception as exc:  # noqa: BLE001 - record it, never drop the row
+        row["ck_status"] = f"error: {type(exc).__name__}: {exc}"
+        return row
+
+    summary = result.get("summary", {})
+    row["avg_mi_score"] = summary.get("avg_mi_score", "")
+
+    missing = [k for k in CK_KEYS if summary.get(k) is None]
+    if missing:
+        # MI ran, CK did not. analyze_project swallows the cause, so record
+        # which columns came back empty rather than implying a clean run.
+        row["ck_status"] = "ck_unavailable: " + ",".join(missing)
+        for k in CK_KEYS:
+            if summary.get(k) is not None:
+                row[k] = summary[k]
+        return row
+
+    for k in CK_KEYS:
+        row[k] = summary[k]
+    row["ck_status"] = "ok"
+    return row
+
+
+def stage_score(extract_root: Path) -> None:
+    bridge = load_context_bridge()
+    units = build_work_list(extract_root, bridge)
+    verify_context_slugs(units, bridge)
+
+    print(f"\nscoring {len(units)} units (MI + CK)...")
+    t0 = time.time()
+    rows: list[dict] = []
+
+    for i, unit in enumerate(units, 1):
+        row = score_unit(unit)
+        rows.append(row)
+        if i % 20 == 0 or i == len(units):
+            print(f"  {i:3d}/{len(units)}  ({time.time() - t0:6.1f}s elapsed)")
+        if not row["ck_status"].startswith("ok"):
+            print(f"  !! {row['unit_id']}: {row['ck_status']}")
+
+    METRICS_CSV.parent.mkdir(parents=True, exist_ok=True)
+    with METRICS_CSV.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=CSV_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"\nwrote {len(rows)} rows to {METRICS_CSV.relative_to(ROOT_DIR)} "
+          f"in {time.time() - t0:.1f}s")
+
+
 def stage_inventory(extract_root: Path) -> list[dict]:
     bridge = load_context_bridge()
     units = build_work_list(extract_root, bridge)
@@ -248,7 +355,7 @@ def stage_inventory(extract_root: Path) -> list[dict]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("stage", choices=("inventory",))
+    parser.add_argument("stage", choices=("inventory", "score"))
     parser.add_argument(
         "--extract-root",
         required=True,
@@ -262,6 +369,8 @@ def main() -> None:
 
     if args.stage == "inventory":
         stage_inventory(args.extract_root)
+    elif args.stage == "score":
+        stage_score(args.extract_root)
 
 
 if __name__ == "__main__":
