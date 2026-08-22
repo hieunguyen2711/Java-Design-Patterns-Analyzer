@@ -338,6 +338,139 @@ def stage_score(extract_root: Path) -> None:
           f"in {time.time() - t0:.1f}s")
 
 
+# --------------------------------------------------------------------------- #
+# Formula reconstruction                                                      #
+# --------------------------------------------------------------------------- #
+
+PAPER_SCORES_FILE = ROOT_DIR / "data" / "outputs" / "generated_evaluation_scores.json"
+
+
+def compute_compqs(piqs: float, mi: float, ck_q: float) -> float:
+    """CompQS = d_PIQS^0.5 * d_MI^0.25 * CK_q^0.25 * 100.
+
+    The string is recorded as `formula_compqs` in generated_evaluation_scores.json.
+    The script that produced that file is not in the repository, so the clamping
+    convention is taken from `_compute_cqs` (analysis_pipeline.py:32), the one
+    committed implementation of the CQS half.
+    """
+    d_piqs = max(0.0, min(1.0, piqs / 100.0))
+    d_mi = max(0.0, min(1.0, mi / 100.0))
+    d_ck_q = max(0.0, min(1.0, ck_q / 100.0))
+    return round((d_piqs ** 0.5) * (d_mi ** 0.25) * (d_ck_q ** 0.25) * 100.0, 2)
+
+
+def load_paper_rows() -> tuple[list[dict], dict]:
+    """Return (all 70 rows, the file's metadata) from the paper's score file."""
+    data = json.loads(PAPER_SCORES_FILE.read_text(encoding="utf-8"))
+    return data["rows"], data
+
+
+def filter_paper_rows_to_shared_contexts(rows: list[dict], bridge: dict[str, str]) -> list[dict]:
+    """Keep only rows whose project_context is one of the 12 shared contexts."""
+    shared = set(bridge.values())
+    return [r for r in rows if r["project_context"] in shared]
+
+
+# Half-unit in the last place of a value written to 2 decimals. The paper's
+# score file stores avg_mi_score / ck_q_score / piqs_score rounded to 2dp, but
+# computed cqs_score / compqs_score from the *unrounded* values. Recomputing
+# from the rounded columns therefore carries an unavoidable error; a row counts
+# as reproduced if the stored score falls inside the interval the rounded
+# inputs could have come from. Both formulas are monotonically increasing in
+# every input, so the interval endpoints are just the perturbed endpoints.
+ROUND_HALF_ULP = 0.005
+
+
+def check_formula(name, rows, inputs, recompute, stored_key) -> dict:
+    """Compare a recomputed score against the stored one on every row."""
+    exact, within, outside = [], [], []
+
+    for r in rows:
+        args = inputs(r)
+        got = recompute(*args)
+        stored = r[stored_key]
+        lo = recompute(*(a - ROUND_HALF_ULP for a in args))
+        hi = recompute(*(a + ROUND_HALF_ULP for a in args))
+
+        if got == stored:
+            exact.append(r)
+        elif lo <= stored <= hi:
+            within.append((r, stored, got, lo, hi))
+        else:
+            outside.append((r, stored, got, lo, hi))
+
+    print(f"\n{name} reconstruction vs stored {stored_key}")
+    print(f"  rows checked                     : {len(rows)}")
+    print(f"  exact to the stored 2dp          : {len(exact)}")
+    print(f"  within the inputs' own rounding  : {len(within)}")
+    print(f"  OUTSIDE (real disagreement)      : {len(outside)}")
+    for r, stored, got, lo, hi in within[:10]:
+        print(f"    ~ {r['pattern']:15s} stored={stored} got={got} "
+              f"reachable=[{lo}, {hi}]")
+    for r, stored, got, lo, hi in outside[:10]:
+        print(f"    X {r['pattern']:15s} stored={stored} got={got} "
+              f"reachable=[{lo}, {hi}]  {r['batch_name']}")
+
+    return {"exact": exact, "within": within, "outside": outside}
+
+
+def stage_reconstruct() -> None:
+    """Verify the reconstructed formulas against the paper's own stored scores.
+
+    If CQS cannot be reproduced from the stored avg_mi_score and ck_q_score,
+    the reconstruction is wrong and the new models must not be scored with it.
+    """
+    from app.services.analysis_pipeline import _compute_cqs
+
+    bridge = load_context_bridge()
+    all_rows, meta = load_paper_rows()
+
+    print(f"{PAPER_SCORES_FILE.relative_to(ROOT_DIR)}")
+    print(f"  generated_at_utc : {meta.get('generated_at_utc')}")
+    print(f"  formula_cqs      : {meta.get('formula_cqs')}")
+    print(f"  formula_compqs   : {meta.get('formula_compqs')}")
+    print(f"  rows             : {len(all_rows)}")
+    print(f"  models           : {sorted({r['model_used'] for r in all_rows})}")
+    print()
+
+    rows = filter_paper_rows_to_shared_contexts(all_rows, bridge)
+    dropped = sorted({r["project_context"] for r in all_rows} - {r["project_context"] for r in rows})
+    print(f"filtered to the {len(bridge)} shared contexts: {len(rows)} rows "
+          f"(dropped {len(all_rows) - len(rows)})")
+    for d in dropped:
+        print(f"  dropped context: {d!r}")
+
+    if len(rows) != 60:
+        raise SystemExit(f"ERROR: expected 60 rows after filtering, got {len(rows)}")
+
+    cqs_res = check_formula(
+        "CQS",
+        rows,
+        inputs=lambda r: (r["avg_mi_score"], r["ck_q_score"]),
+        recompute=_compute_cqs,
+        stored_key="cqs_score",
+    )
+    # CompQS is not required by the task, but Task 4 reports it for the new
+    # models, so it goes through the same gate.
+    comp_res = check_formula(
+        "CompQS",
+        rows,
+        inputs=lambda r: (r["piqs_score"], r["avg_mi_score"], r["ck_q_score"]),
+        recompute=compute_compqs,
+        stored_key="compqs_score",
+    )
+
+    print()
+    if cqs_res["outside"]:
+        raise SystemExit(
+            f"STOP: CQS reconstruction failed on {len(cqs_res['outside'])}/{len(rows)} rows "
+            "by more than the stored inputs' own rounding. Do not score the new models."
+        )
+    print(f"PASS: all {len(rows)} rows reproduce CQS and CompQS within rounding.")
+    if comp_res["outside"]:
+        print(f"WARNING: CompQS did not reproduce on {len(comp_res['outside'])} rows.")
+
+
 def stage_inventory(extract_root: Path) -> list[dict]:
     bridge = load_context_bridge()
     units = build_work_list(extract_root, bridge)
@@ -355,15 +488,21 @@ def stage_inventory(extract_root: Path) -> list[dict]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("stage", choices=("inventory", "score"))
+    parser.add_argument("stage", choices=("inventory", "score", "reconstruct"))
     parser.add_argument(
         "--extract-root",
-        required=True,
         type=Path,
-        help="Path to the extracted generated_logprobs/ directory (outside the repo)",
+        help="Path to the extracted generated_logprobs/ directory (outside the repo). "
+             "Required for the inventory and score stages.",
     )
     args = parser.parse_args()
 
+    if args.stage == "reconstruct":
+        stage_reconstruct()
+        return
+
+    if args.extract_root is None:
+        parser.error(f"--extract-root is required for the {args.stage} stage")
     if not args.extract_root.is_dir():
         raise SystemExit(f"ERROR: not a directory: {args.extract_root}")
 
