@@ -14,9 +14,17 @@ Stages:
     score       Run MI + CK on every unit in the work list and write
                 data/outputs/three_models_minimal_metrics.csv.
 
+    reconstruct Verify the reconstructed CQS/CompQS formulas against the 60
+                already-scored Qwen3-Coder rows. Gate for the `table` stage.
+
+    table       Join everything into 4 models x 5 patterns x 12 contexts = 240
+                rows and print the per-model and summary tables.
+
 Usage:
-    python3 scripts/three_models_minimal.py inventory --extract-root <dir>
-    python3 scripts/three_models_minimal.py score     --extract-root <dir>
+    python3 scripts/three_models_minimal.py inventory   --extract-root <dir>
+    python3 scripts/three_models_minimal.py score       --extract-root <dir>
+    python3 scripts/three_models_minimal.py reconstruct
+    python3 scripts/three_models_minimal.py table
 
 where <dir> is the extracted ``generated_logprobs/`` directory.
 """
@@ -471,6 +479,259 @@ def stage_reconstruct() -> None:
         print(f"WARNING: CompQS did not reproduce on {len(comp_res['outside'])} rows.")
 
 
+# --------------------------------------------------------------------------- #
+# Task 4 — the joined table                                                   #
+# --------------------------------------------------------------------------- #
+
+PAPER_MODEL = "qwen3-coder-30b-a3b-instruct"
+
+# Order the models appear in the report: the three new ones, then the paper's.
+REPORT_MODELS = ["qwen25_7b", "llama31_8b", "qwen25_14b", PAPER_MODEL]
+
+# Pattern display order, using the paper's label form.
+PATTERN_ORDER = ["singleton", "factory-method", "strategy", "observer", "composite"]
+
+
+def load_piqs(model_dir: str) -> dict[str, dict]:
+    """unit_id -> PIQS row, for one model."""
+    path = ROOT_DIR / "data" / "outputs" / MODELS[model_dir]["piqs_csv"]
+    with path.open(encoding="utf-8") as fh:
+        return {row["unit_id"]: row for row in csv.DictReader(fh)}
+
+
+def build_joined_rows() -> list[dict]:
+    """One row per (model, pattern, context) across all four models.
+
+    The three new models join `three_models_minimal_metrics.csv` to the PIQS
+    CSVs on unit_id. The fourth model's rows are already scored and are taken
+    from generated_evaluation_scores.json as-is, filtered to the 12 shared
+    contexts.
+    """
+    from app.services.analysis_pipeline import _compute_cqs
+
+    bridge = load_context_bridge()
+    joined: list[dict] = []
+
+    # ---- the three new models ------------------------------------------
+    with METRICS_CSV.open(encoding="utf-8") as fh:
+        metric_rows = list(csv.DictReader(fh))
+
+    piqs_by_model = {m: load_piqs(m) for m in MODELS}
+
+    for r in metric_rows:
+        if r["ck_status"] != "ok":
+            raise SystemExit(
+                f"ERROR: {r['unit_id']} has ck_status={r['ck_status']!r}; "
+                "scoring it would produce a misleading average"
+            )
+
+        piqs_row = piqs_by_model[r["model"]].get(r["unit_id"])
+        if piqs_row is None:
+            raise SystemExit(f"ERROR: no PIQS row for unit_id {r['unit_id']!r}")
+
+        mi = float(r["avg_mi_score"])
+        ck_q = float(r["ck_overall_score"])
+        piqs = float(piqs_row["piqs"])
+
+        joined.append(
+            {
+                "model": r["model"],
+                "pattern": PAPER_PATTERNS[r["pattern"]],
+                "project_context": r["project_context"],
+                "mi": mi,
+                "ck_q": ck_q,
+                "piqs": piqs,
+                "cqs": _compute_cqs(mi, ck_q),
+                "compqs": compute_compqs(piqs, mi, ck_q),
+                "source": "recomputed",
+            }
+        )
+
+    # ---- the paper's model ---------------------------------------------
+    # Its scores are used as stored rather than recomputed: they were computed
+    # from unrounded inputs, whereas the file's own mi/ck_q columns are rounded
+    # to 2dp (see the Task 3 reconstruction check).
+    paper_rows, _ = load_paper_rows()
+    for r in filter_paper_rows_to_shared_contexts(paper_rows, bridge):
+        joined.append(
+            {
+                "model": r["model_used"],
+                "pattern": r["pattern"],
+                "project_context": r["project_context"],
+                "mi": r["avg_mi_score"],
+                "ck_q": r["ck_q_score"],
+                "piqs": r["piqs_score"],
+                "cqs": r["cqs_score"],
+                "compqs": r["compqs_score"],
+                "source": "stored",
+            }
+        )
+
+    return joined
+
+
+def _mean(values) -> float:
+    return sum(values) / len(values)
+
+
+def _ranks(by_pattern: dict[str, float]) -> dict[str, int]:
+    """Rank 1 = highest score. Ties take the same (lower) rank number."""
+    ordered = sorted(by_pattern.items(), key=lambda kv: -kv[1])
+    ranks, prev_val, prev_rank = {}, None, 0
+    for i, (pattern, val) in enumerate(ordered, 1):
+        rank = prev_rank if val == prev_val else i
+        ranks[pattern] = rank
+        prev_val, prev_rank = val, rank
+    return ranks
+
+
+def per_model_table(rows: list[dict]) -> list[dict]:
+    """avg CQS / PIQS / CompQS, delta and both ranks, per pattern."""
+    by_pattern = {}
+    for p in PATTERN_ORDER:
+        sub = [r for r in rows if r["pattern"] == p]
+        if not sub:
+            continue
+        by_pattern[p] = {
+            "n": len(sub),
+            "cqs": _mean([r["cqs"] for r in sub]),
+            "piqs": _mean([r["piqs"] for r in sub]),
+            "compqs": _mean([r["compqs"] for r in sub]),
+        }
+
+    cqs_rank = _ranks({p: v["cqs"] for p, v in by_pattern.items()})
+    comp_rank = _ranks({p: v["compqs"] for p, v in by_pattern.items()})
+
+    out = []
+    for p in PATTERN_ORDER:
+        if p not in by_pattern:
+            continue
+        v = by_pattern[p]
+        out.append(
+            {
+                "pattern": p,
+                "n": v["n"],
+                "avg_cqs": v["cqs"],
+                "avg_piqs": v["piqs"],
+                "avg_compqs": v["compqs"],
+                # delta = how far CompQS moves the pattern away from CQS
+                "delta": v["compqs"] - v["cqs"],
+                "cqs_rank": cqs_rank[p],
+                "compqs_rank": comp_rank[p],
+            }
+        )
+    return out
+
+
+def _print_table(headers, rows) -> None:
+    cells = [headers] + [[str(c) for c in r] for r in rows]
+    widths = [max(len(c[i]) for c in cells) for i in range(len(headers))]
+    print("| " + " | ".join(h.ljust(w) for h, w in zip(headers, widths)) + " |")
+    print("|" + "|".join("-" * (w + 2) for w in widths) + "|")
+    for r in cells[1:]:
+        print("| " + " | ".join(c.ljust(w) for c, w in zip(r, widths)) + " |")
+
+
+def stage_table() -> None:
+    joined = build_joined_rows()
+
+    print(f"joined rows: {len(joined)}")
+    for m in REPORT_MODELS:
+        sub = [r for r in joined if r["model"] == m]
+        print(f"  {m:30s} {len(sub):3d} rows, "
+              f"{len({r['pattern'] for r in sub})} patterns, "
+              f"{len({r['project_context'] for r in sub})} contexts")
+
+    if len(joined) != 240:
+        raise SystemExit(f"ERROR: expected 240 rows (4 models x 5 patterns x 12 contexts), "
+                         f"got {len(joined)}")
+    print("\nassert 240 rows: OK")
+
+    summary_rows = []
+    for m in REPORT_MODELS:
+        rows = [r for r in joined if r["model"] == m]
+        table = per_model_table(rows)
+
+        print(f"\n{'=' * 78}")
+        print(f"{m}   (n={len(rows)}, {len(table)} patterns x 12 contexts)")
+        print("=" * 78)
+        _print_table(
+            ["pattern", "avg CQS", "avg PIQS", "avg CompQS", "delta", "CQS rank", "CompQS rank"],
+            [
+                [
+                    t["pattern"],
+                    f"{t['avg_cqs']:.2f}",
+                    f"{t['avg_piqs']:.2f}",
+                    f"{t['avg_compqs']:.2f}",
+                    f"{t['delta']:+.2f}",
+                    t["cqs_rank"],
+                    t["compqs_rank"],
+                ]
+                for t in table
+            ],
+        )
+
+        cqs_vals = [t["avg_cqs"] for t in table]
+        piqs_vals = [t["avg_piqs"] for t in table]
+        cqs_range = max(cqs_vals) - min(cqs_vals)
+        piqs_range = max(piqs_vals) - min(piqs_vals)
+
+        single = next(t for t in table if t["pattern"] == "singleton")
+        comp = next(t for t in table if t["pattern"] == "composite")
+
+        print(f"\n  CQS  across 5 patterns: {min(cqs_vals):.2f} - {max(cqs_vals):.2f}  "
+              f"(range {cqs_range:.2f})")
+        print(f"  PIQS across 5 patterns: {min(piqs_vals):.2f} - {max(piqs_vals):.2f}  "
+              f"(range {piqs_range:.2f})")
+        print(f"  mean CQS {_mean([r['cqs'] for r in rows]):.2f}   "
+              f"mean PIQS {_mean([r['piqs'] for r in rows]):.2f}   "
+              f"mean CompQS {_mean([r['compqs'] for r in rows]):.2f}")
+
+        summary_rows.append(
+            {
+                "model": m,
+                "cqs_range": f"{min(cqs_vals):.2f}-{max(cqs_vals):.2f} ({cqs_range:.2f})",
+                "piqs_range": f"{min(piqs_vals):.2f}-{max(piqs_vals):.2f} ({piqs_range:.2f})",
+                # "rises" = CompQS gives it a better (numerically lower) rank
+                "singleton": _movement(single, "rises"),
+                "composite": _movement(comp, "falls"),
+                "_mean_cqs": _mean([r["cqs"] for r in rows]),
+                "_mean_piqs": _mean([r["piqs"] for r in rows]),
+            }
+        )
+
+    print(f"\n{'=' * 78}")
+    print("SUMMARY — the table for the paper")
+    print("=" * 78)
+    _print_table(
+        ["model", "CQS range across 5 patterns", "PIQS range across 5 patterns",
+         "Singleton rises?", "Composite falls?"],
+        [[s["model"], s["cqs_range"], s["piqs_range"], s["singleton"], s["composite"]]
+         for s in summary_rows],
+    )
+
+    mean_cqs = [s["_mean_cqs"] for s in summary_rows]
+    mean_piqs = [s["_mean_piqs"] for s in summary_rows]
+    print(f"\nacross the four models:")
+    print(f"  mean CQS  spans {min(mean_cqs):.2f} - {max(mean_cqs):.2f}  "
+          f"(spread {max(mean_cqs) - min(mean_cqs):.2f})")
+    print(f"  mean PIQS spans {min(mean_piqs):.2f} - {max(mean_piqs):.2f}  "
+          f"(spread {max(mean_piqs) - min(mean_piqs):.2f})")
+
+
+def _movement(t: dict, expect: str) -> str:
+    """Answer 'does this pattern rise/fall in rank when CQS becomes CompQS?'
+
+    Rank 1 is best, so a *rise* is a decrease in the rank number.
+    """
+    a, b = t["cqs_rank"], t["compqs_rank"]
+    if a == b:
+        return f"no, unchanged ({a})"
+    moved = "rises" if b < a else "falls"
+    answer = "yes" if moved == expect else "no"
+    return f"{answer}, {moved} ({a} -> {b})"
+
+
 def stage_inventory(extract_root: Path) -> list[dict]:
     bridge = load_context_bridge()
     units = build_work_list(extract_root, bridge)
@@ -488,7 +749,7 @@ def stage_inventory(extract_root: Path) -> list[dict]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("stage", choices=("inventory", "score", "reconstruct"))
+    parser.add_argument("stage", choices=("inventory", "score", "reconstruct", "table"))
     parser.add_argument(
         "--extract-root",
         type=Path,
@@ -499,6 +760,9 @@ def main() -> None:
 
     if args.stage == "reconstruct":
         stage_reconstruct()
+        return
+    if args.stage == "table":
+        stage_table()
         return
 
     if args.extract_root is None:

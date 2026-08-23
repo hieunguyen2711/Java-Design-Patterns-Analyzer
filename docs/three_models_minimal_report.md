@@ -246,16 +246,215 @@ produced.
 
 ## Task 4 — The new table
 
-### Prediction
+### Prediction (written 2026-08-22, before running)
 
-_(to be written before that run)_
+Stated so it can be shown wrong:
+
+1. **CQS is flat across all four models.** The spread of per-model mean CQS is under 2 points.
+   Basis: Task 2 already showed the CK inputs nearly identical between the three new models (mean
+   `ck_overall_score` 84.89 -> 85.39, a 0.49-point spread; mean MI 63.47 -> 65.40), and CQS is a
+   geometric mean of exactly those two things. Qwen3-Coder could sit apart from the other three,
+   since it is a much larger model scored in a separate run, so this is the part of the prediction
+   most likely to fail.
+2. **PIQS is not flat.** The spread of per-model mean PIQS across the four models is at least
+   10 points, i.e. an order of magnitude wider than the CQS spread.
+3. **Within each model, across the 5 patterns, the same asymmetry holds:** the CQS range is
+   narrower than the PIQS range, for all four models.
+4. **Singleton rises and Composite falls** in at least 3 of the 4 models. Singleton is the easiest
+   of the five to implement correctly, so its PIQS should be high relative to its middling code
+   metrics; Composite is the most structurally demanding, so it should score well on CK/MI while
+   PIQS penalises incorrect structure.
+5. **Zero rows are lost in the join.** Exactly 240.
+
+Prediction 4 is the one I hold most loosely: rank movement depends on the whole ordering, and with
+5 patterns a single tie or near-tie can move a rank without meaning anything.
 
 ### Outcome
 
-_(filled in after the run)_
+The join produced **exactly 240 rows** — 4 models x 5 patterns x 12 contexts, 60 per model, no row
+lost and none duplicated.
+
+For the three new models, CQS and CompQS are computed from full-precision MI and CK_q. For
+`qwen3-coder-30b-a3b-instruct` the **stored** `cqs_score` / `compqs_score` are used rather than
+recomputed, because those were computed from unrounded inputs whereas the file's own `avg_mi_score`
+/ `ck_q_score` columns are rounded to 2dp (Task 3). Using the stored values keeps the paper's
+published numbers intact; Task 3 established the two agree to within that rounding.
+
+`delta` = avg CompQS - avg CQS. Rank 1 = best.
+
+#### qwen25_7b
+
+| pattern | avg CQS | avg PIQS | avg CompQS | delta | CQS rank | CompQS rank |
+|---|---|---|---|---|---|---|
+| singleton | 71.66 | 100.00 | 84.63 | +12.97 | 4 | 1 |
+| factory-method | 75.08 | 69.46 | 69.98 | -5.10 | 2 | 3 |
+| strategy | 76.88 | 92.58 | 84.24 | +7.36 | 1 | 2 |
+| observer | 72.67 | 65.72 | 67.67 | -4.99 | 3 | 4 |
+| composite | 71.59 | 63.95 | 63.66 | -7.93 | 5 | 5 |
+
+CQS 71.59-76.88 (range 5.29) · PIQS 63.95-100.00 (range 36.05) · mean CQS 73.57, mean PIQS 78.34,
+mean CompQS 74.03
+
+#### llama31_8b
+
+| pattern | avg CQS | avg PIQS | avg CompQS | delta | CQS rank | CompQS rank |
+|---|---|---|---|---|---|---|
+| singleton | 70.49 | 100.00 | 83.94 | +13.45 | 5 | 1 |
+| factory-method | 74.53 | 67.95 | 69.70 | -4.82 | 2 | 4 |
+| strategy | 76.14 | 87.95 | 78.34 | +2.20 | 1 | 2 |
+| observer | 74.08 | 71.89 | 71.44 | -2.64 | 3 | 3 |
+| composite | 72.55 | 69.86 | 69.22 | -3.33 | 4 | 5 |
+
+CQS 70.49-76.14 (range 5.65) · PIQS 67.95-100.00 (range 32.05) · mean CQS 73.56, mean PIQS 79.53,
+mean CompQS 74.53
+
+#### qwen25_14b
+
+| pattern | avg CQS | avg PIQS | avg CompQS | delta | CQS rank | CompQS rank |
+|---|---|---|---|---|---|---|
+| singleton | 72.95 | 100.00 | 85.35 | +12.41 | 4 | 2 |
+| factory-method | 77.86 | 98.49 | 87.54 | +9.68 | 1 | 1 |
+| strategy | 76.07 | 91.67 | 80.16 | +4.09 | 2 | 3 |
+| observer | 74.80 | 85.80 | 79.53 | +4.74 | 3 | 4 |
+| composite | 71.75 | 82.81 | 76.93 | +5.18 | 5 | 5 |
+
+CQS 71.75-77.86 (range 6.11) · PIQS 82.81-100.00 (range 17.19) · mean CQS 74.68, mean PIQS 91.75,
+mean CompQS 81.90
+
+#### qwen3-coder-30b-a3b-instruct (the paper's existing model, unchanged)
+
+| pattern | avg CQS | avg PIQS | avg CompQS | delta | CQS rank | CompQS rank |
+|---|---|---|---|---|---|---|
+| singleton | 61.56 | 100.00 | 78.35 | +16.78 | 4 | 2 |
+| factory-method | 72.88 | 78.31 | 75.45 | +2.57 | 2 | 3 |
+| strategy | 75.62 | 90.72 | 82.65 | +7.03 | 1 | 1 |
+| observer | 71.00 | 71.25 | 70.90 | -0.10 | 3 | 4 |
+| composite | 60.34 | 60.29 | 59.39 | -0.95 | 5 | 5 |
+
+CQS 60.34-75.62 (range 15.27) · PIQS 60.29-100.00 (range 39.71) · mean CQS 68.28, mean PIQS 80.11,
+mean CompQS 73.35
+
+#### Summary table for the paper
+
+| model | CQS range across 5 patterns | PIQS range across 5 patterns | Singleton rises? | Composite falls? |
+|---|---|---|---|---|
+| qwen25_7b | 71.59-76.88 (5.29) | 63.95-100.00 (36.05) | yes, 4 -> 1 | no, already last (5 -> 5) |
+| llama31_8b | 70.49-76.14 (5.65) | 67.95-100.00 (32.05) | yes, 5 -> 1 | yes, 4 -> 5 |
+| qwen25_14b | 71.75-77.86 (6.11) | 82.81-100.00 (17.19) | yes, 4 -> 2 | no, already last (5 -> 5) |
+| qwen3-coder-30b-a3b-instruct | 60.34-75.62 (15.27) | 60.29-100.00 (39.71) | yes, 4 -> 2 | no, already last (5 -> 5) |
+
+Across the four models: mean CQS spans 68.28-74.68 (spread **6.40**); mean PIQS spans 78.34-91.75
+(spread **13.41**).
+
+### Did the prediction hold?
+
+| # | Prediction | Verdict |
+|---|---|---|
+| 1 | Per-model mean CQS spread under 2 points | **FAILED** — 6.40 |
+| 2 | Per-model mean PIQS spread at least 10 points | held — 13.41 |
+| 3 | Within every model, CQS range < PIQS range | held — 4 of 4 |
+| 4 | Singleton rises and Composite falls in >=3 of 4 models | **half failed** — Singleton 4/4, Composite 1/4 |
+| 5 | Exactly 240 rows, none lost | held |
+
+**Prediction 1 failed, and it failed for the reason flagged when it was written.** The three new
+models are indeed flat — mean CQS 73.57 / 73.56 / 74.68, a spread of 1.12 points, comfortably inside
+the 2-point claim. Qwen3-Coder sits apart at 68.28, and it alone widens the spread to 6.40. The
+prediction was stated over all four models, so it fails as written.
+
+That gap is worth a sentence in the paper rather than being smoothed over: the largest model has the
+*lowest* mean CQS of the four, driven by singleton (61.56) and composite (60.34), where the three
+small models sit near 71-73. Its per-pattern CQS range, 15.27, is also 2.5x wider than any of the
+three new models. Qwen3-Coder was scored in a separate April run over a different context set, so
+run-to-run differences cannot be excluded as a contributing cause.
+
+**Prediction 4 was half wrong, and the failure is a floor effect rather than a counter-result.**
+Composite is *already* ranked 5th of 5 on CQS in three of the four models, so it has nowhere to
+fall; in the fourth (llama31_8b) it does fall, 4 -> 5. Composite ends bottom-ranked on both metrics
+in all four models. The right statement for the paper is "Composite ranks last on both CQS and
+CompQS in all four models", not "Composite falls". Singleton rises in 4 of 4.
+
+### What the table actually shows
+
+Prediction 3 is the load-bearing result and it held without exception. In every model the code
+quality score spans a far narrower band across the five patterns than PIQS does:
+
+| model | CQS range | PIQS range | ratio |
+|---|---|---|---|
+| qwen25_7b | 5.29 | 36.05 | 6.8x |
+| llama31_8b | 5.65 | 32.05 | 5.7x |
+| qwen25_14b | 6.11 | 17.19 | 2.8x |
+| qwen3-coder-30b-a3b-instruct | 15.27 | 39.71 | 2.6x |
+
+Singleton is the sharpest single case. It scores **PIQS 100.00 in all four models** while ranking
+4th or 5th of 5 on CQS in all four. A perfectly-implemented pattern is being ranked near-last by the
+code-quality score. CompQS, which mixes PIQS back in, lifts it to rank 1 or 2 in all four models —
+delta between +12.41 and +16.78.
+
+The same holds between models rather than within them. Mean PIQS rises 78.34 -> 79.53 -> 91.75 from
+qwen25_7b to llama31_8b to qwen25_14b, a 13.4-point climb in architectural correctness. Mean CQS
+over the same three models moves 73.57 -> 73.56 -> 74.68: **1.12 points, and not even monotonic.**
+The code-quality score is close to blind to a 13-point difference in pattern correctness.
+
+### A ceiling effect in PIQS that the paper should disclose
+
+Not something this task asked for, but it turned up in the data and it bears on how the table reads.
+
+**Every one of the 48 Singleton units — all 12 contexts, all 4 models — scores PIQS exactly 100.0.**
+The distinct set of PIQS values for singleton across all 240 rows is `[100.0]`. Singleton therefore
+contributes zero discriminating information to PIQS; it is a constant, not a measurement, and its
++12 to +17 CompQS delta is guaranteed by construction rather than observed.
+
+The saturation is broader than singleton. Units scoring exactly 100.0, out of 12 per cell:
+
+| model | singleton | factory-method | strategy | observer | composite |
+|---|---|---|---|---|---|
+| qwen25_7b | 12 | 3 | 8 | 3 | 2 |
+| llama31_8b | 12 | 1 | 9 | 3 | 3 |
+| qwen25_14b | 12 | 11 | 11 | 7 | 3 |
+| qwen3-coder-30b-a3b-instruct | 12 | 0 | 7 | 0 | 2 |
+
+For qwen25_14b that is 44 of 60 units pinned at the maximum. Much of its high mean PIQS is a ceiling
+rather than a spread, which weakens any claim that PIQS cleanly separates the stronger model. The
+honest framing is that PIQS discriminates well at the low end and saturates at the high end.
+
+### Pattern ordering under CQS is stable across models
+
+Best to worst by mean CQS:
+
+- qwen25_7b: strategy > factory-method > observer > singleton > composite
+- llama31_8b: strategy > factory-method > observer > composite > singleton
+- qwen25_14b: factory-method > strategy > observer > singleton > composite
+- qwen3-coder: strategy > factory-method > observer > singleton > composite
+
+Observer is 3rd in all four. Strategy and factory-method take the top two places in all four.
+Composite is last in three of four. This stability across two model families and a 4x parameter
+range suggests CQS is largely measuring properties of the *pattern*, not of the model — consistent
+with the paper's argument.
 
 ---
 
 ## Corrections — where a number in the task brief disagreed with the code
 
-_(filled in as they are found)_
+Everything checkable in the brief held up, with these exceptions and additions.
+
+| # | Brief says | Code says |
+|---|---|---|
+| 1 | `analyze_project` returns `CBO`, `LCOM*`, `RFC`, `DIT` | The summary keys are `avg_cbo`, `avg_lcom_star`, `avg_rfc`, `avg_dit`, `avg_wmc` (`analysis_pipeline.py:243-248`). |
+| 2 | Paper §3.3 floor is `max(0, ...)`, code uses `max(0.001, ...)` plus `min(1.0, ...)` on DIT | Correct but understated. `ck_metrics.py:136-140` applies **both** clamps to **all four** metrics, not just the floor and not just DIT. |
+| 3 | The paper's `project_context` is "the full sentence" | True for 12 of the 14. The other two are `'An e-commerce order management system in Java'` and `'a ticket booking system'` — confirmed as out of scope. They are exactly the two that the 12-context filter drops. |
+| 4 | `data/config/entropy_weights.json` says `n_evaluations = 996`, paper says 1162 | Confirmed: the file says 996. Not acted on. |
+| 5 | `generation/run_generation.py` broken at lines 55 and 905 | Confirmed verbatim, both single-underscore. Not fixed — out of scope. Consequence: `slugify` had to be reimplemented in `scripts/three_models_minimal.py` rather than imported. |
+| 6 | — | **Not in the brief:** there are two separate implementations of the desirability functions. `shannon_entropy.py` omits `min(1.0, ...)` on CBO/LCOM/RFC; `ck_metrics.py` includes it. Only `ck_metrics.py` runs in this study. Fix the paper against `ck_metrics.py`. |
+| 7 | — | **Not in the brief:** `summary["ck_q_score"]` is simply assigned `ck_overall_score` (`analysis_pipeline.py:250`). CK_q is not an independent quantity. |
+| 8 | — | **Not in the brief:** `configs/` contains only `llama31_8b.yaml` and `qwen25_7b.yaml`. There is **no `qwen25_14b.yaml`**, so the 14b grid is evidenced by its directory tree and PIQS CSV, not by a committed config. |
+| 9 | — | **Not in the brief:** the CK JAR path is hardcoded to a location outside the repo (`ck_metrics.py:25`). Elsewhere this study silently degrades to MI-only. |
+
+### Confirmed exactly as stated
+
+- Three model runs, 96 units each, 8 patterns x 12 contexts x k=1, seed 40.
+- 1528 `.java` files in the zip.
+- All 96 units per model have `gen_status = ok`, all three models. **Zero parse failures** — worth
+  the sentence the brief suggests: these small models did not fail to produce parseable Java.
+- The 12 contexts are an exact subset of the paper's 14.
+- The paper's 70 rows carry `project_context`, 5 rows per context, and filter to exactly 60.
+- `generated_evaluation_scores.json` records both formula strings, and both reconstruct.
