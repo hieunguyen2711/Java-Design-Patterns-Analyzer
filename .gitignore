@@ -53,3 +53,7 @@ temp_uploads/
 # Generation logprob-pilot outputs (large, regenerable; do not commit)
 generated_logprobs_*/
 /piqs_gemini_*.csv
+/compiles_gemini_*.csv
+logprobs_combined/
+reports/
+/*_all_token_logprobs.json

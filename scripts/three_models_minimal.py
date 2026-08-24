@@ -44,6 +44,7 @@ if str(ROOT_DIR) not in sys.path:
 
 CONTEXTS_FILE = ROOT_DIR / "data" / "input" / "common_java_projects.json"
 METRICS_CSV = ROOT_DIR / "data" / "outputs" / "three_models_minimal_metrics.csv"
+TABLE_CSV = ROOT_DIR / "data" / "outputs" / "four_models_pattern_summary.csv"
 
 SEED_DIR = "seed_40"
 
@@ -699,6 +700,50 @@ def stage_table() -> None:
                 "_mean_piqs": _mean([r["piqs"] for r in rows]),
             }
         )
+
+    table_rows = []
+    for m in REPORT_MODELS:
+        rows = [r for r in joined if r["model"] == m]
+        mean_cqs = _mean([r["cqs"] for r in rows])
+        mean_piqs = _mean([r["piqs"] for r in rows])
+        mean_compqs = _mean([r["compqs"] for r in rows])
+        table_rows.extend(
+            {
+                "model": m,
+                "mean_cqs": mean_cqs,
+                "mean_piqs": mean_piqs,
+                "mean_compqs": mean_compqs,
+                **row,
+            }
+            for row in per_model_table(rows)
+        )
+
+    TABLE_CSV.parent.mkdir(parents=True, exist_ok=True)
+    with TABLE_CSV.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(
+            fh,
+            fieldnames=[
+                "model", "mean_cqs", "mean_piqs", "mean_compqs", "pattern", "n",
+                "avg_cqs", "avg_piqs", "avg_compqs", "delta", "cqs_rank",
+                "compqs_rank",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(
+            {
+                **row,
+                "mean_cqs": f"{row['mean_cqs']:.2f}",
+                "mean_piqs": f"{row['mean_piqs']:.2f}",
+                "mean_compqs": f"{row['mean_compqs']:.2f}",
+                "avg_cqs": f"{row['avg_cqs']:.2f}",
+                "avg_piqs": f"{row['avg_piqs']:.2f}",
+                "avg_compqs": f"{row['avg_compqs']:.2f}",
+                "delta": f"{row['delta']:+.2f}",
+            }
+            for row in table_rows
+        )
+    print(f"\nwrote unified pattern summary to {TABLE_CSV.relative_to(ROOT_DIR)} "
+          f"({len(table_rows)} rows)")
 
     print(f"\n{'=' * 78}")
     print("SUMMARY — the table for the paper")
