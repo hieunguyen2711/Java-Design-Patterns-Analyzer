@@ -1,148 +1,161 @@
-DP RECOGNITION BACKEND - README
-================================
+# Code appendix: a two-tier evaluation of LLM-generated Java design patterns
 
-What this project does
-----------------------
-This backend analyzes Java projects for design pattern usage and quality metrics.
-It exposes FastAPI endpoints to:
-- Analyze uploaded Java projects (ZIP or multiple .java files) with an LLM.
-- Generate Java code for specific design patterns.
-- Ask follow-up questions about a prior analysis.
-- Package generated files into a downloadable Maven project ZIP.
-- Run project metrics (CK + Maintainability Index) for uploaded ZIPs or local directories.
-- Compute PIQS scores for supported patterns.
-- Run batch generation jobs for passing patterns and track/download results.
+Anonymous supplementary material for a double-blind submission. This repository
+contains the evaluation instrument described in the paper, the artifacts it
+produced, and the scripts that reproduce every number in the paper's tables.
 
-The API is designed to work with:
-- Ollama (local model server), and
-- optional OpenRouter configuration via environment variables.
+The paper asks what a composite code-quality score actually measures. It builds
+two scores over the same generated Java programs:
 
+| Tier | Score | What it uses | Coverage |
+|---|---|---|---|
+| 1 | **CQS**, Code Quality Score | Maintainability Index + entropy-weighted CK metrics | any Java project |
+| 2 | **CompQS**, Comprehensive Quality Score | CQS inputs **+ PIQS**, a predicate-logic check of whether the requested design pattern is structurally present | patterns with PIQS rules |
 
-Core flow
----------
-1) Client uploads Java input (ZIP or files) or sends generation request.
-2) Backend validates input and checks LLM availability when needed.
-3) Services orchestrate prompt building, LLM calls, parsing, and file processing.
-4) API returns structured JSON responses (analysis, generation, metrics, status, etc.).
+The claim the code supports is that these two numbers order the same programs
+differently, and that the disagreement is exactly the part that says whether the
+requested architecture exists.
 
+---
 
-Project structure (important folders)
--------------------------------------
-- app/api
-  FastAPI routers and HTTP endpoints.
-- app/core
-  Application settings and environment configuration.
-- app/schemas
-  Request/response Pydantic models.
-- app/services
-  Business logic (analysis pipeline, metrics, batching, file handling).
-- app/llm
-  LLM client and chunking helpers.
-- app/utils
-  Utility helpers.
-- scripts
-  Pipeline and data-processing scripts.
-- tests
-  Automated tests.
-- data/config
-  Reusable config artifacts.
-- data/input
-  Input JSONs consumed by scripts/services.
-- data/outputs
-  Generated output artifacts.
-- data/reports
-  Validation/report files.
-- generated_batches
-  Batch generation workspace and job artifacts.
+## 1. What you can reproduce, and how
 
+Every script below runs with no arguments. Paths are relative to the repository
+root.
 
-Main API endpoints
-------------------
-General + analysis:
-- POST /analyze
-  Upload a ZIP Java project and run pattern analysis.
-- POST /analyze-folder
-  Upload multiple .java files and run pattern analysis.
-- POST /followup
-  Ask a follow-up question based on a previous analysis response.
-- GET /health
-  Health status for API and model service.
+| Paper artifact | Command | Reads | Writes |
+|---|---|---|---|
+| Entropy weights for the CK sub-score | `python shannon_entropy.py` | `data/outputs/generated_common_projects_pipeline_results.json` | `data/config/entropy_weights.json` |
+| Spearman correlation between tiers | `python spearman.py` | `data/outputs/generated_evaluation_scores.json` | stdout |
+| Spearman check | `python validate_spearman.py` | same | stdout |
+| Mann–Whitney separation analysis | `python scripts/validate_mann_whitney_evaluation.py` | `data/outputs/generated_evaluation_scores.json` | stdout |
+| Monte Carlo weight sensitivity | `python scripts/validate_sensitivity_evaluation.py` | same | stdout |
+| MI + CK over a batch of generated projects | `python scripts/run_generated_batches_quality.py` | `generated_batches/` | `data/outputs/generated_batches_quality_results.json` |
+| Identifier obfuscation (the renaming test) | `python scripts/obfuscate.py` | `datasets_zipped/` | `datasets_obfuscated/` |
+| LLM-judge comparison | `python run_judge_evaluation.py` | judge pair files under `data/` | judge report under `data/reports/` |
 
-Model information:
-- GET /models
-  List available Ollama models.
+Pre-computed outputs for all of these are committed under `data/outputs/`, so
+you can inspect the results without re-running anything.
 
-Code generation + packaging:
-- POST /generate
-  Generate Java files for a selected design pattern.
-- POST /package
-  Package generated files into a Maven project ZIP.
+### Scoring a single project directly
 
-Batch generation workflow:
-- POST /api/v1/generate-pass-projects
-  Start async batch generation for pass patterns.
-- GET /api/v1/generate-pass-projects/{job_id}
-  Get batch job status/results.
-- GET /api/v1/generate-pass-projects/{job_id}/download
-  Download final ZIP for a completed job.
-- GET /api/v1/generate-pass-projects/{job_id}/analyze-metrics
-  Run metrics across generated outputs for that job.
+```python
+from app.services.analysis_pipeline import analyze_project
 
-Metrics + PIQS:
-- POST /api/v1/analyze-metrics
-  Upload ZIP and compute CK + MI.
-- POST /api/v1/analyze-metrics-dir
-  Compute CK + MI for a local directory path.
-- POST /api/v1/analyze-piqs
-  Compute PIQS for uploaded .java files and a supported pattern.
+result = analyze_project("path/to/java/project", pattern_name="Singleton")
+print(result["summary"])   # avg_mi_score, avg_cbo, avg_lcom_star, avg_rfc, avg_dit, ck_q_score, cqs_score
+```
 
+PIQS alone:
 
-Requirements
-------------
-- Python 3.10+
-- Dependencies in requirements.txt
-- Ollama running if you use analysis/generation/follow-up/model-list endpoints
-  (unless you switch to OpenRouter mode in settings)
+```python
+from app.services.piqs_service import PIQSService
 
+PIQSService().evaluate("Singleton", {"Config.java": source_text})
+```
 
-Quick start
------------
-1) Create and activate a virtual environment:
-   python -m venv .venv
-   source .venv/bin/activate
+---
 
-2) Install dependencies:
-   pip install -r requirements.txt
+## 2. Setup
 
-3) Configure environment (optional but recommended):
-   Create/update .env in project root.
+Python 3.10 or newer.
 
-4) Start the API server:
-   uvicorn main:app --reload
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-5) Open API docs:
-   http://127.0.0.1:8000/docs
+`requirements-generation.txt` and `requirements-hf.txt` are only needed if you
+want to re-run generation on a GPU. Scoring and analysis do not need them.
 
+### The CK tool is a required external dependency
 
-Key environment settings
-------------------------
-From app/core/config.py (defaults shown in code):
-- OLLAMA_BASE_URL
-- DEFAULT_MODEL
-- USE_OPEN_ROUTER
-- OPEN_ROUTER_BASE_URL
-- OPEN_ROUTER_API_KEY
-- MAX_FILE_SIZE_MB
-- MAX_JAVA_FILES
-- MAX_CHARS_PER_CHUNK
-- BATCH_MAX_CONCURRENCY
-- BATCH_RETRY_COUNT
-- PASS_PATTERNS_FILE
+CK metrics are produced by an external Java tool invoked through `subprocess`.
+You need a JDK and the CK JAR, then point the code at it:
 
+```bash
+export CK_JAR_PATH=/absolute/path/to/ck-<version>-jar-with-dependencies.jar
+```
 
-Notes
------
-- Uploaded files are stored temporarily and cleaned up by file services.
-- Batch generation outputs are persisted under generated_batches/.
-- Metrics endpoints validate that .java files exist before processing.
-- API startup logs show backend URL, Ollama status, and default model.
+**This step is not optional, and skipping it fails quietly.** If the JAR is
+missing, `analyze_project` returns Maintainability Index results with all CK
+fields empty and raises no error, and `compute_class_quality` silently falls
+back to a different, non-entropy formula that includes WMC. Every CK and CQS
+number would then be wrong while the run still looks successful.
+
+Verify before you trust any output:
+
+```python
+from app.services.analysis_pipeline import analyze_project
+s = analyze_project("<any java project dir>", "Singleton")["summary"]
+assert s["avg_cbo"] is not None and s["avg_lcom_star"] is not None
+```
+
+---
+
+## 3. Repository layout
+
+```
+app/services/      the instrument
+  analysis_pipeline.py   orchestration; analyze_project() and _compute_cqs()
+  ck_metrics.py          CK invocation, desirability functions, entropy weighting
+  piqs_service.py        predicate-logic pattern rules (PIQS)
+  file_service.py        Java file discovery and parsing
+app/api/           FastAPI routers (a convenience wrapper; not needed to reproduce results)
+app/core/          settings and environment configuration
+
+scripts/           pipeline and analysis scripts (see the table above)
+validation/        checker validation against the published ground truth
+generation/        the code-generation runner (GPU; see limitations)
+configs/           per-model generation configs
+tests/             automated tests
+
+data/config/       entropy_weights.json, the committed weight vector
+data/input/        application-domain definitions and pattern lists
+data/outputs/      all committed result artifacts
+data/reports/      validation and judge reports
+generated_batches/ generated Java projects and per-job artifacts
+datasets_zipped/, datasets_obfuscated/   corpora before and after renaming
+```
+
+### Where each formula lives
+
+| Formula | File and role |
+|---|---|
+| Desirability functions, with both clamps | `app/services/ck_metrics.py` |
+| Entropy weighting of the four CK metrics | `app/services/ck_metrics.py`, weights loaded once at import from `data/config/entropy_weights.json` |
+| `CQS = d_MI^0.5 · CK_q^0.5 · 100` | `app/services/analysis_pipeline.py` |
+| `CompQS = d_PIQS^0.5 · d_MI^0.25 · CK_q^0.25 · 100` | recorded in `data/outputs/generated_evaluation_scores.json` under `formula_compqs` |
+| PIQS property rules | `app/services/piqs_service.py` |
+
+Note that the desirability functions are implemented twice: `ck_metrics.py` is
+the version that runs during scoring, and `shannon_entropy.py` contains a
+second copy used only to derive the weights. They differ in the upper clamp.
+Only `ck_metrics.py` affects any score reported in the paper.
+
+---
+
+## 4. Limitations of this artifact
+
+- **Generation needs a GPU.** `generation/run_generation.py` runs the
+  open-weight models locally through Hugging Face. Reproducing the generated
+  corpora from scratch requires GPU access; all generated outputs are committed
+  so that scoring can be reproduced without one.
+- **The judge comparison needs API keys.** `run_judge_evaluation.py` calls
+  hosted models through a routing service. Its outputs are committed.
+- **Result artifacts are pre-computed.** Re-running a scoring script overwrites
+  the corresponding file under `data/outputs/`. Copy anything you want to keep
+  before re-running.
+- **Two corpora sit on different grids.** The 1162-project corpus spans 83
+  patterns and 14 application domains at one generation per cell. The matched
+  grid spans 5 patterns and 12 domains with three seeds. The paper says which
+  table rests on which.
+
+---
+
+## 5. Anonymity
+
+This is an anonymized mirror prepared for double-blind review. Identifying
+strings have been replaced. If any remain, they are an oversight and not an
+attempt to signal authorship.
