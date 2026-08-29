@@ -56,7 +56,7 @@ from app.services.piqs_service import PIQSService  # noqa: E402  (after sys.path
 # analyzer auto-detects its pass/fail column from ("status","passed","pass",
 # "result","piqs","score",...) in order, and "status" would hijack "piqs".
 # Hence "gen_status". The analyzer picks "piqs" (first value-field present).
-FIELDNAMES = ["unit_id", "pattern", "gen_status", "num_files", "psr", "cpc", "piqs", "grade", "error"]
+FIELDNAMES = ["unit_id", "seed", "pattern", "gen_status", "num_files", "psr", "cpc", "piqs", "grade", "error"]
 
 
 def pattern_to_slug(pattern: str) -> str:
@@ -76,6 +76,7 @@ def score_unit(svc: PIQSService, unit_json: Path) -> dict:
         return row
 
     row["unit_id"] = rec.get("unit_id", "")
+    row["seed"] = rec.get("seed", "")
     row["pattern"] = rec.get("pattern", "")
     row["gen_status"] = rec.get("status", "")
 

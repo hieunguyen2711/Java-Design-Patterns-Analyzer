@@ -17,8 +17,9 @@ Stages:
     reconstruct Verify the reconstructed CQS/CompQS formulas against the 60
                 already-scored Qwen3-Coder rows. Gate for the `table` stage.
 
-    table       Join everything into 4 models x 5 patterns x 12 contexts = 240
-                rows and print the per-model and summary tables.
+    table       Join everything into 3 models x 3 seeds x 5 patterns x 12
+                contexts plus 60 stored Qwen3 rows = 600 rows, then print the
+                per-model and summary tables.
 
 Usage:
     python3 scripts/three_models_minimal.py inventory   --extract-root <dir>
@@ -46,7 +47,7 @@ CONTEXTS_FILE = ROOT_DIR / "data" / "input" / "common_java_projects.json"
 METRICS_CSV = ROOT_DIR / "data" / "outputs" / "three_models_minimal_metrics.csv"
 TABLE_CSV = ROOT_DIR / "data" / "outputs" / "four_models_pattern_summary.csv"
 
-SEED_DIR = "seed_40"
+SEEDS = (40, 41, 42)
 
 # Directory name under generated_logprobs/ -> the model_slug used in the
 # unit_id column of data/outputs/piqs_<model>.csv. Each of those CSVs contains
@@ -122,43 +123,45 @@ def load_context_bridge() -> dict[str, str]:
 def build_work_list(extract_root: Path, bridge: dict[str, str]) -> list[dict]:
     """One entry per (model, paper pattern, context) unit directory.
 
-    Layout: <extract_root>/<model_dir>/seed_40/<Pattern Name>/<context-slug>/rep0/
+    Layout: <extract_root>/<model_dir>/seed_<seed>/<Pattern Name>/<context-slug>/rep0/
     """
     units: list[dict] = []
 
     for model_dir, meta in MODELS.items():
-        seed_root = extract_root / model_dir / SEED_DIR
-        if not seed_root.is_dir():
-            raise SystemExit(f"ERROR: not a directory: {seed_root}")
+        for seed in SEEDS:
+            seed_root = extract_root / model_dir / f"seed_{seed}"
+            if not seed_root.is_dir():
+                raise SystemExit(f"ERROR: not a directory: {seed_root}")
 
-        for pattern_dir in sorted(PAPER_PATTERNS):
-            pattern_root = seed_root / pattern_dir
-            if not pattern_root.is_dir():
-                raise SystemExit(f"ERROR: missing pattern directory: {pattern_root}")
+            for pattern_dir in sorted(PAPER_PATTERNS):
+                pattern_root = seed_root / pattern_dir
+                if not pattern_root.is_dir():
+                    raise SystemExit(f"ERROR: missing pattern directory: {pattern_root}")
 
-            for context_root in sorted(c for c in pattern_root.iterdir() if c.is_dir()):
-                if context_root.name.startswith("."):
-                    continue
-                for rep_root in sorted(r for r in context_root.iterdir() if r.is_dir()):
-                    if rep_root.name.startswith("."):
+                for context_root in sorted(c for c in pattern_root.iterdir() if c.is_dir()):
+                    if context_root.name.startswith("."):
                         continue
+                    for rep_root in sorted(r for r in context_root.iterdir() if r.is_dir()):
+                        if rep_root.name.startswith("."):
+                            continue
 
-                    java_files = sorted(rep_root.rglob("*.java"))
-                    units.append(
-                        {
-                            "unit_id": (
-                                f"{meta['slug']}__{pattern_dir}__"
-                                f"{context_root.name}__{rep_root.name}"
-                            ),
-                            "model": model_dir,
-                            "pattern": pattern_dir,
-                            "paper_pattern": PAPER_PATTERNS[pattern_dir],
-                            "context_slug": context_root.name,
-                            "project_context": bridge.get(context_root.name),
-                            "dir": rep_root,
-                            "n_files": len(java_files),
-                        }
-                    )
+                        java_files = sorted(rep_root.rglob("*.java"))
+                        units.append(
+                            {
+                                "unit_id": (
+                                    f"{meta['slug']}__{pattern_dir}__"
+                                    f"{context_root.name}__{rep_root.name}"
+                                ),
+                                "seed": seed,
+                                "model": model_dir,
+                                "pattern": pattern_dir,
+                                "paper_pattern": PAPER_PATTERNS[pattern_dir],
+                                "context_slug": context_root.name,
+                                "project_context": bridge.get(context_root.name),
+                                "dir": rep_root,
+                                "n_files": len(java_files),
+                            }
+                        )
     return units
 
 
@@ -184,9 +187,9 @@ def verify_unit_ids(units: list[dict]) -> None:
     for model_dir, meta in MODELS.items():
         csv_path = ROOT_DIR / "data" / "outputs" / meta["piqs_csv"]
         with csv_path.open(encoding="utf-8") as fh:
-            piqs_ids = {row["unit_id"] for row in csv.DictReader(fh)}
+            piqs_ids = {(row["unit_id"], int(row["seed"])) for row in csv.DictReader(fh)}
 
-        ours = {u["unit_id"] for u in units if u["model"] == model_dir}
+        ours = {(u["unit_id"], u["seed"]) for u in units if u["model"] == model_dir}
         missing = sorted(ours - piqs_ids)
         if missing:
             ok = False
@@ -194,7 +197,7 @@ def verify_unit_ids(units: list[dict]) -> None:
             for m in missing[:5]:
                 print(f"    {m}")
         else:
-            print(f"  {model_dir}: all {len(ours)} unit_ids present in {meta['piqs_csv']} "
+            print(f"  {model_dir}: all {len(ours)} (unit_id, seed) keys present in {meta['piqs_csv']} "
                   f"({len(piqs_ids)} rows total, 5-pattern subset used)")
 
     if not ok:
@@ -247,6 +250,7 @@ def print_inventory(units: list[dict]) -> None:
 
 CSV_COLUMNS = [
     "unit_id",
+    "seed",
     "model",
     "pattern",
     "context_slug",
@@ -277,6 +281,7 @@ def score_unit(unit: dict) -> dict:
 
     row = {
         "unit_id": unit["unit_id"],
+        "seed": unit["seed"],
         "model": unit["model"],
         "pattern": unit["pattern"],
         "context_slug": unit["context_slug"],
@@ -497,7 +502,7 @@ def load_piqs(model_dir: str) -> dict[str, dict]:
     """unit_id -> PIQS row, for one model."""
     path = ROOT_DIR / "data" / "outputs" / MODELS[model_dir]["piqs_csv"]
     with path.open(encoding="utf-8") as fh:
-        return {row["unit_id"]: row for row in csv.DictReader(fh)}
+        return {(row["unit_id"], int(row["seed"])): row for row in csv.DictReader(fh)}
 
 
 def build_joined_rows() -> list[dict]:
@@ -526,7 +531,7 @@ def build_joined_rows() -> list[dict]:
                 "scoring it would produce a misleading average"
             )
 
-        piqs_row = piqs_by_model[r["model"]].get(r["unit_id"])
+        piqs_row = piqs_by_model[r["model"]].get((r["unit_id"], int(r["seed"])))
         if piqs_row is None:
             raise SystemExit(f"ERROR: no PIQS row for unit_id {r['unit_id']!r}")
 
@@ -537,6 +542,7 @@ def build_joined_rows() -> list[dict]:
         joined.append(
             {
                 "model": r["model"],
+                "seed": r["seed"],
                 "pattern": PAPER_PATTERNS[r["pattern"]],
                 "project_context": r["project_context"],
                 "mi": mi,
@@ -557,6 +563,7 @@ def build_joined_rows() -> list[dict]:
         joined.append(
             {
                 "model": r["model_used"],
+                "seed": 40,
                 "pattern": r["pattern"],
                 "project_context": r["project_context"],
                 "mi": r["avg_mi_score"],
@@ -643,10 +650,11 @@ def stage_table() -> None:
               f"{len({r['pattern'] for r in sub})} patterns, "
               f"{len({r['project_context'] for r in sub})} contexts")
 
-    if len(joined) != 240:
-        raise SystemExit(f"ERROR: expected 240 rows (4 models x 5 patterns x 12 contexts), "
+    if len(joined) != 600:
+        raise SystemExit(f"ERROR: expected 600 rows (3 models x 3 seeds x 5 patterns x 12 "
+                         "contexts + 60 stored Qwen3 rows), "
                          f"got {len(joined)}")
-    print("\nassert 240 rows: OK")
+    print("\nassert 600 rows: OK")
 
     summary_rows = []
     for m in REPORT_MODELS:

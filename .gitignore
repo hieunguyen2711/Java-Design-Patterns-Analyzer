@@ -52,6 +52,11 @@ temp_uploads/
 
 # Generation logprob-pilot outputs (large, regenerable; do not commit)
 generated_logprobs_*/
+/generated_logprobs/
+/data/outputs/generated_logprobs/
+/generated_batches/
+/generated_batches_piqs/
+/generated_batches_study/
 /piqs_gemini_*.csv
 /compiles_gemini_*.csv
 logprobs_combined/
